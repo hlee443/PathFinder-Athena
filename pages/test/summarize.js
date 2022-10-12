@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'
 
 export default function Summarize() {
     const [called, setCalled] = useState(false)
@@ -8,6 +8,7 @@ export default function Summarize() {
     const [originalContent, setOriginalContent] = useState("")
     const [jsonContent, setJsonContent] = useState({})
     const [postContent, setPostContent] = useState("")
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,10 +19,10 @@ export default function Summarize() {
                 url: "http://localhost:8080/api/summarize",
                 data: {
                     text: postContent,
-                    key: process.env.INTERNAL_KEY
+                    key: 'Bearman123'
                 }
             }).then((res) => {
-
+                console.log(res)
                 // Meaning cloud api
                 setContent(res.data.summary)
                 setStatus(JSON.stringify(res.data.status))
