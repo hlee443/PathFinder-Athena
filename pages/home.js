@@ -17,7 +17,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          "Building bridges with Hermes"
+        `&quot;`Building bridges with Hermes`&quot;`
         </p>
 
         <div className={styles.grid}>
