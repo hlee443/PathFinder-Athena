@@ -3,9 +3,12 @@ import Input from "./Input";
 // The default export metadata controls how Storybook lists your stories and provides information used by addons.
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Input",
-  component: Input,
+  title: "Text Input",
+  component: TextInput,
 };
 
 // Any other named exports will be treated as stories, which should be functions that return your component
-export const Default = () => <Input />;
+const Template = (args) => <TextInput {...args} />;
+
+export const Primary = Template.bind({});
+TextInput.args = {};
