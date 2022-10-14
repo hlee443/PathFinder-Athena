@@ -1,3 +1,48 @@
+# Storybook Development
+
+Please follow this readme for all component development and testing while working on this repo.
+
+## Setup
+
+Follow this section to properly setup this repository and start developing React components!
+
+### Requirements
+
+- Node 16 [node.js](https://nodejs.org/en/)
+
+### Configuration
+
+- npm i
+
+## Development Steps
+
+Follow these steps whenever you are ready to start working on a new component.
+
+Quick Tip: Try to limit the amount of files and folders you change per branch. The rule of thumb is every pull request should only have 1 purpose. If a single pull request is altering multiple components, or a dozen or more files, then consider splitting your code into multiple branches. This will make merging much easier in the long run.
+
+### Starting
+
+- git checkout -B ComponentName
+
+- Create a new folder with the component name inside the src/components/(atoms/molecules/organism) folder. This folder will hold the new component's (.jsx), (.css), (.stories.js), and (.spec.js) files.
+
+### Deployment
+
+- npm run build
+- npm run build-storybook
+- git add .
+- git commit -m "Commit message"
+- git push (or) git push origin BranchName
+
+### GitHub
+
+- Got to GitHub and create a pull-request for the newly pushed branch. Include details for what was added/changed in the comments.
+- Navigate to Reviewers on the right sidebar.
+- Select a team member to review your pull-request. You are not to merge your code with master until it has been approved.
+
+
+# Athena General Info (Needs changing)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
