@@ -13,7 +13,7 @@ export default function Button() {
     cursor: pointer;
     color: black;
     &:hover {
-      border: 1px solid black;
+      background: teal;
     }
   `;
 

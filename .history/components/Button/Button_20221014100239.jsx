@@ -9,17 +9,20 @@ export default function Button() {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 50px;
-    background-color: #96adfc;
+    background-color: green;
     cursor: pointer;
-    color: black;
+    color: white;
     &:hover {
-      border: 1px solid black;
+      background: teal;
+    }
+    &:active {
+      background: blue;
     }
   `;
 
   return (
     <Button type="button" onClick={handleClick}>
-      Placeholder
+      Click Me
     </Button>
   );
 }

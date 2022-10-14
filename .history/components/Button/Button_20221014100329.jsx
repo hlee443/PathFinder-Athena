@@ -13,13 +13,13 @@ export default function Button() {
     cursor: pointer;
     color: black;
     &:hover {
-      border: 1px solid black;
+      background: teal;
     }
   `;
 
   return (
     <Button type="button" onClick={handleClick}>
-      Placeholder
+      Click Me
     </Button>
   );
 }

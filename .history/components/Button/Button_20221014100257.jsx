@@ -11,15 +11,18 @@ export default function Button() {
     border-radius: 50px;
     background-color: #96adfc;
     cursor: pointer;
-    color: black;
+    color: white;
     &:hover {
-      border: 1px solid black;
+      background: teal;
+    }
+    &:active {
+      background: blue;
     }
   `;
 
   return (
     <Button type="button" onClick={handleClick}>
-      Placeholder
+      Click Me
     </Button>
   );
 }
