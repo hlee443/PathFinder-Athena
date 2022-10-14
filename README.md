@@ -24,7 +24,7 @@ Quick Tip: Try to limit the amount of files and folders you change per branch. T
 
 - git checkout -B ComponentName
 
-- Create a new folder with the component name inside the src/components/(atoms/molecules/organism) folder. This folder will hold the new component's (.jsx), (.css), (.stories.js), and (.spec.js) files.
+- Create a new folder with the component name inside the src/components folder. This folder will hold the new component's (.jsx), (.stories.js), and (.spec.js) files.
 
 ### Deployment
 
