@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function Simplify(){
     const [textSimplified, setTextSimplified] = useState([])
     const [jsonAPI, setJsonAPI] = useState('')
-    const [formData, setFormData] = useState('')
+    const [formData, setFormData] = useState({ text: '' })
 
     function handleChange(e){
         e.preventDefault()
@@ -31,8 +31,8 @@ export default function Simplify(){
                 method: "post",
                 url: "http://localhost:8080/api/simplify",
                 data: {
-                    text: textData,
-                    key: 'Bearer IeOtRPMQtY84AiTQuc1CqWQjm7l9PDVq'
+                    text: textData.text,
+                    key: 'Bearman123'
                 }
             })
             .then((res) => {
