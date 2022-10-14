@@ -8,10 +8,14 @@ export default function Label({
   const Label = styled.p`
     background: ${backgroundColor};
     display: inline-block;
-    text-align: center;
     padding: 5px;
     border-radius: 50px;
+    width: ${width};
   `;
 
-  return <Label backgroundColor="#FFFEF6">{text}</Label>;
+  return (
+    <Label backgroundColor="#FFFEF6" width="20px">
+      {text}
+    </Label>
+  );
 }

@@ -13,11 +13,9 @@ const Template = (args) => <Label {...args} />;
 export const Keyword = Template.bind({});
 Keyword.args = {
   text: "Keyword",
-  backgroundColor: "#FFFEF6",
 };
 
 export const Hover = Template.bind({});
 Hover.args = {
   text: "Hover",
-  backgroundColor: "#FFFEF6",
 };

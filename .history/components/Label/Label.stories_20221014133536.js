@@ -19,5 +19,4 @@ Keyword.args = {
 export const Hover = Template.bind({});
 Hover.args = {
   text: "Hover",
-  backgroundColor: "#FFFEF6",
 };

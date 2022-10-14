@@ -13,5 +13,9 @@ export default function Label({
     border-radius: 50px;
   `;
 
-  return <Label backgroundColor="#FFFEF6">{text}</Label>;
+  return (
+    <Label backgroundColor="#FFFEF6" width="20px">
+      {text}
+    </Label>
+  );
 }
