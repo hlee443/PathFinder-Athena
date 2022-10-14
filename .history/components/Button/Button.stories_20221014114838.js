@@ -16,24 +16,12 @@ export default {
 //👇 We create a “template” of how args map to rendering
 const Template = (args) => <Button {...args} />;
 
-//👇 Each story then reuses that template
+// 👇 Each story then reuses that template
 export const Primary = Template.bind({});
-Primary.args = {
-  text: "Primary",
-  backgroundColor: "#96ADFC",
-  icon: "",
-};
+Primary.args = { backgroundColor: "#ff0", label: "Button" };
 
 export const Secondary = Template.bind({});
-Secondary.args = {
-  text: "Secondary",
-  backgroundColor: "#C3D1FF",
-  icon: "",
-};
+Secondary.args = { ...Primary.args, label: "😄👍😍💯" };
 
 export const Tertiary = Template.bind({});
-Tertiary.args = {
-  text: "Tertiary",
-  backgroundColor: "transparent",
-  icon: "",
-};
+Tertiary.args = { ...Primary.args, label: "📚📕📈🤓" };

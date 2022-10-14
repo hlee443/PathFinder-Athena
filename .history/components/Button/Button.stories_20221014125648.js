@@ -21,7 +21,7 @@ export const Primary = Template.bind({});
 Primary.args = {
   text: "Primary",
   backgroundColor: "#96ADFC",
-  icon: "",
+  // icon: "",
 };
 
 export const Secondary = Template.bind({});

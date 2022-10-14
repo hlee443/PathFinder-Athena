@@ -15,7 +15,7 @@ export default function Button({
     border: none;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     width: 240px;
     height: 62px;
     font-size: 18px;

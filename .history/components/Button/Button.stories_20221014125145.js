@@ -28,12 +28,4 @@ export const Secondary = Template.bind({});
 Secondary.args = {
   text: "Secondary",
   backgroundColor: "#C3D1FF",
-  icon: "",
-};
-
-export const Tertiary = Template.bind({});
-Tertiary.args = {
-  text: "Tertiary",
-  backgroundColor: "transparent",
-  icon: "",
 };

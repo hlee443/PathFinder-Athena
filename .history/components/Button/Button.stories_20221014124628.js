@@ -19,21 +19,12 @@ const Template = (args) => <Button {...args} />;
 //👇 Each story then reuses that template
 export const Primary = Template.bind({});
 Primary.args = {
-  text: "Primary",
+  label: "Button",
   backgroundColor: "#96ADFC",
-  icon: "",
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  text: "Secondary",
+  label: "Button",
   backgroundColor: "#C3D1FF",
-  icon: "",
-};
-
-export const Tertiary = Template.bind({});
-Tertiary.args = {
-  text: "Tertiary",
-  backgroundColor: "transparent",
-  icon: "",
 };

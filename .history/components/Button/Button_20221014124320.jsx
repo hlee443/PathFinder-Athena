@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export default function Button({
   backgroundColor = "#96ADFC",
-  text = "hi",
-  icon = "https://placekitten.com/25/25",
+  label = "hi",
+  border = "1px solid black",
 }) {
   const handleClick = () => {
     console.log("hi!");
@@ -12,25 +12,17 @@ export default function Button({
   const Button = styled.button`
     background-color: ${backgroundColor};
     border-radius: 50px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 240px;
-    height: 62px;
-    font-size: 18px;
+    border: ${border};
   `;
-  const Src = styled.img``;
 
   return (
     <Button
       type="button"
       onClick={handleClick}
-      text="First"
+      label="First"
       backgroundColor="#96ADFC"
     >
-      {text}
-      <Src src={icon}></Src>
+      {label}
     </Button>
   );
 }

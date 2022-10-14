@@ -34,6 +34,6 @@ Secondary.args = {
 export const Tertiary = Template.bind({});
 Tertiary.args = {
   text: "Tertiary",
-  backgroundColor: "transparent",
+  backgroundColor: "none",
   icon: "",
 };
