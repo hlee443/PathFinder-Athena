@@ -7,9 +7,9 @@ export default function Icon({
 }) {
   const Icon = styled.img`
   background-color: {backgroundColor};
-  height:{size};
+  height:100px;
   width: {size};
-  object-fit:fill;`;
+  object-fit:contain;`;
 
-  return <Icon src={src} backgroundColor={backgroundColor} size="1px"></Icon>;
+  return <Icon src={src} backgroundColor={backgroundColor} size={size}></Icon>;
 }

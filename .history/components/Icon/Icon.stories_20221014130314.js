@@ -11,8 +11,4 @@ export default {
 const Template = (args) => <Icon {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {
-  src: "https://placekitten.com/200/100",
-  backgroundColor: "black",
-  size: "500px",
-};
+Primary.args = {};

@@ -12,7 +12,7 @@ const Template = (args) => <Icon {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  src: "https://placekitten.com/200/100",
+  src: "https://placekitten.com/50/50",
   backgroundColor: "black",
-  size: "500px",
+  size: "50px",
 };

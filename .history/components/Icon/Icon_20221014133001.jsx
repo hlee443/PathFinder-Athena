@@ -9,7 +9,7 @@ export default function Icon({
   background-color: {backgroundColor};
   height:{size};
   width: {size};
-  object-fit:fill;`;
+  object-fit:cover;`;
 
   return <Icon src={src} backgroundColor={backgroundColor} size="1px"></Icon>;
 }
