@@ -22,8 +22,11 @@ export default function Simplify(){
     }
 
     const onSubmit = async (textData) => {
-       
-        console.log("SUBMIT", textData)
+
+        const checkText = textData.text.endsWith('.')
+        if(checkText === false){
+            textData.text = textData.text + '.'
+        }
 
         try{
 
