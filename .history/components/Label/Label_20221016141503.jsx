@@ -10,7 +10,7 @@ export default function Label({
     display: inline-block;
     text-align: center;
     padding: 0.5rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
   `;
 
   return <Label backgroundColor="#FFFEF6">{text}</Label>;
