@@ -1,11 +1,18 @@
-import Input from "./Input";
+import Icon from "./Icon.jsx";
 
 // The default export metadata controls how Storybook lists your stories and provides information used by addons.
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Input",
-  component: Input,
+  title: "Icon",
+  component: Icon,
 };
 
 // Any other named exports will be treated as stories, which should be functions that return your component
-export const Default = () => <Input />;
+const Template = (args) => <Icon {...args} />;
+
+export const Primary = Template.bind({});
+Primary.args = {
+  size: "2rem",
+  src: "https://placekitten.com/200/100",
+  backgroundColor: "black",
+};
