@@ -11,16 +11,11 @@ a {
   text-decoration: none;
 }
 
-form { /* added temporarily for the api test forms to look a little better */
-  display: flex;
-  flex-direction: column;
-}
-
 * {
   box-sizing: border-box;
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
@@ -28,4 +23,4 @@ form { /* added temporarily for the api test forms to look a little better */
     color: white;
     background: black;
   }
-} */
+}
