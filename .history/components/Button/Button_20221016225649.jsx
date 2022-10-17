@@ -16,9 +16,9 @@ export default function Button({
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 15rem;
-    height: 4rem;
-    font-size: 1.125rem;
+    width: 240px;
+    height: 62px;
+    font-size: 18px;
   `;
   const Src = styled.img``;
 

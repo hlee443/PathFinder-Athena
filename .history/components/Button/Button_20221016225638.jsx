@@ -11,14 +11,14 @@ export default function Button({
 
   const Button = styled.button`
     background-color: ${backgroundColor};
-    border-radius: 2rem;
+    border-radius: 50px;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 15rem;
-    height: 4rem;
-    font-size: 1.125rem;
+    width: 240px;
+    height: 62px;
+    font-size: 18px;
   `;
   const Src = styled.img``;
 
