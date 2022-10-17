@@ -7,26 +7,26 @@ import { saveAs } from 'file-saver'
 import { jsPDF } from "jspdf";
 
 
-export function handleDownload(fileData, fileName = 'Pathfinder_download', fileType = 'pdf'){
+export function handleDownload(fileTextData, fileName = 'Pathfinder_download', fileType){
 
     switch (fileType){
         case 'pdf': 
         {
             const doc = new jsPDF();
-            doc.text(fileData, 20, 20);
+            doc.text(fileTextData, 20, 20);
             doc.save(`${fileName}.pdf`);
             break
         }
 
         case 'csv':
         {
-            var fileData = new Blob(myBigCSVFile, {type: "text/csv;charset=utf-8"});
-            saveAs(fileData, "file.csv");
+            const fileData = new Blob([fileTextData], {type: "text/csv;charset=utf-8"});
+            saveAs(fileData, `${fileName}.csv`);
         }
 
         case 'txt': 
         {
-            const fileData = new Blob([fileData], {type: "text/plain;charset=utf-8"});
+            const fileData = new Blob([fileTextData], {type: "text/plain;charset=utf-8"});
             saveAs(fileData, `${fileName}.txt`);
             break
         }
@@ -34,7 +34,7 @@ export function handleDownload(fileData, fileName = 'Pathfinder_download', fileT
         default: 
         {
             const doc = new jsPDF();
-            doc.text(fileData, 20, 20);
+            doc.text(fileTextData, 20, 20);
             doc.save(`${fileName}.pdf`);
         }
 
