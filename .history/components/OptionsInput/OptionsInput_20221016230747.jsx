@@ -8,7 +8,7 @@ export default function OptionsInput() {
   `;
   return (
     <OptionsInput>
-      <option value="" disabled selected>
+      <option value="" disabled selected hidden>
         Placeholder
       </option>
       <option></option>
