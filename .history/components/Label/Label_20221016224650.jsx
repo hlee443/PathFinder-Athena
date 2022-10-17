@@ -6,12 +6,12 @@ export default function Label({
   width = "2rem",
 }) {
   const LabelCont = styled.p`
-    background-color: ${backgroundColor};
+    background: ${backgroundColor};
     display: inline-block;
     text-align: center;
     padding: 0.5rem;
     border-radius: 2rem;
   `;
 
-  return <LabelCont>{text}</LabelCont>;
+  return <LabelCont backgroundColor="#FFFEF6">{text}</LabelCont>;
 }
