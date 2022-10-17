@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const ButtonCont = styled.button`
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${backgroundColor};
   border-radius: 2rem;
   border: none;
   display: flex;
@@ -23,11 +23,7 @@ export default function Button({
   };
 
   return (
-    <ButtonCont
-      type="button"
-      onClick={handleClick}
-      backgroundColor={backgroundColor}
-    >
+    <ButtonCont type="button" onClick={handleClick}>
       {text}
       <Src src={icon}></Src>
     </ButtonCont>

@@ -23,11 +23,7 @@ export default function Button({
   };
 
   return (
-    <ButtonCont
-      type="button"
-      onClick={handleClick}
-      backgroundColor={backgroundColor}
-    >
+    <ButtonCont type="button" onClick={handleClick}>
       {text}
       <Src src={icon}></Src>
     </ButtonCont>
