@@ -4,7 +4,6 @@ import * as mainHandler from '../../handlers/main'
 
 
 export default function Simplify(){
-    console.log("HANDLER", mainHandler)
     const [textSimplified, setTextSimplified] = useState('')
     const [jsonAPI, setJsonAPI] = useState('')
     const [formData, setFormData] = useState({ text: '' })
@@ -88,7 +87,7 @@ export default function Simplify(){
           {
             textSimplified &&
             <button onClick={() => mainHandler.handleDownload(textSimplified)}> 
-                Download text as pdf 
+                Download text
             </button>
           } 
     
