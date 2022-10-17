@@ -8,12 +8,6 @@ const InputCont = styled.input`
   padding: 1rem;
 `;
 
-export default function TextInput({ width = "15rem" }) {
-  return (
-    <InputCont
-      type="text"
-      placeholder="placeholder text"
-      width={width}
-    ></InputCont>
-  );
+export default function TextInput({ width = "" }) {
+  return <InputCont type="text" placeholder="placeholder text"></InputCont>;
 }
