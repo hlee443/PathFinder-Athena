@@ -11,11 +11,6 @@ a {
   text-decoration: none;
 }
 
-form { /* added temporarily for the api test forms to look a little better */
-  display: flex;
-  flex-direction: column;
-}
-
 * {
   box-sizing: border-box;
 }

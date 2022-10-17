@@ -1,11 +1,11 @@
-import Button from "./Button.jsx"
+import Button from "./Button.jsx";
 
-// The default export metadata controls how Storybook lists your stories and provides information used by addons. 
+// The default export metadata controls how Storybook lists your stories and provides information used by addons.
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Button",
-  component: Button
-}
+  component: Button,
+};
 
 // Any other named exports will be treated as stories, which should be functions that return your component
-export const Default = () => <Button />
+export const Default = () => <Button />;
