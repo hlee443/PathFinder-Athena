@@ -5,5 +5,4 @@
 export default function handleHighlighter(selectedText) {
   // return the selected colour
   console.log(selectedText);
-  return selectedText;
 }
