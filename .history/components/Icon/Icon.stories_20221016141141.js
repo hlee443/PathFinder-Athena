@@ -12,7 +12,11 @@ const Template = (args) => <Icon {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
+<<<<<<< HEAD:.history/components/Icon/Icon.stories_20221016141141.js
   size: "2rem",
+=======
+>>>>>>> parent of a54c7dd (fix props):components/Icon/Icon.stories.js
   src: "https://placekitten.com/200/100",
   backgroundColor: "black",
+  size: "500px",
 };
