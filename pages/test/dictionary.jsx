@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import SelectionHighlighter from "react-highlight-selection";
+import handleHighlighter from "../handlers/features/highlighter";
 
 export default function Home() {
   const [word, setWord] = useState("");
@@ -37,51 +38,24 @@ export default function Home() {
       document.removeEventListener("mouseup", fetchInfo);
     };
   }, []);
-
+  const highlightText =
+    "The term “full stack developer” originated during the early days of the web, when websites were small and uncomplicated enough to allow a single person to tackle every aspect of site-building. But in the decades since those initial days, the web has grown ever more complex.";
 
   return (
     <div>
       <h2>
         <span>Dictionary</span> App
       </h2>
-      <h3>
-        Check Meaning of any word
-      </h3>
-      <p>
-        The term “full stack developer” originated during the early days of the
-        web, when websites were small and uncomplicated enough to allow a single
-        person to tackle every aspect of site-building. But in the decades since
-        those initial days, the web has grown ever more complex. The rise of
-        machine learning, predictive computing, and responsive design has made
-        it challenging — but not impossible! — for a single developer to handle
-        every aspect of building and designing a site or application. Today,
-        modern businesses often rely on entire teams of developers to operate
-        network equipment, work with virtual machines, and manage enormous
-        databases. It takes time to develop a comprehensive, nuts-and-bolts
-        understanding of all these emerging technologies. The developers who do
-        so are, for that reason, versatile enough to shift fluidly between front
-        and back end development and take on any task that their team might need
-        them to tackle.{" "}
-      </p>
+      <h3>Check Meaning of any word</h3>
+
+      <h2>Highlight</h2>
+      <SelectionHighlighter
+        text={highlightText}
+        selectionHandler={handleHighlighter}
+        customClass="highlight"
+      ></SelectionHighlighter>
+
       <div>
-        {/* <form
-          onSubmit={(e) => fetchInfo(e)}
-          className="flex w-full justify-center md:flex-col md:w-5/6 "
-        >
-          <input
-            autoFocus={true}
-            type="text"
-            className="border-none outline-none w-2/5 bg-primary px-4 py-2 rounded-sm font-raleway md:w-full"
-            placeholder="Enter any word..."
-            onChange={(e) => setWord(e.target.value)}
-          />
-          <button
-            className="outline-none border border-danger font-bold font-raleway ml-4 px-12 py-2 rounded-sm bg-danger text-primary transition duration-300 hover:bg-bc hover:text-black md:ml-0 md:mt-4"
-            onClick={fetchInfo}
-          >
-            Search
-          </button>
-        </form> */}
         {wordInfo && (
           <div>
             <table>
