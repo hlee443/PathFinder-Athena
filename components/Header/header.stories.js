@@ -1,4 +1,4 @@
-import Header from "./header"
+import Header from "."
 export default {
     title: "Header",
     component: Header,
