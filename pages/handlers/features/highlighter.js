@@ -2,7 +2,8 @@
 // - user action (mouseover)
 // - expected behaviour (highlight selected text in a different colour)
 
-export default function handleHighlighter(selection) {
-  // Do something with the selection
-  return selection;
+export default function handleHighlighter(selectedText) {
+  // return the selected colour
+  console.log(selectedText);
+  return selectedText;
 }

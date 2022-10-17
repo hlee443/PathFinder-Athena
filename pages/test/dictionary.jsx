@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import SelectionHighlighter from "react-highlight-selection";
-import handleHighlighter from "../handlers/features/highlighter";
 
 export default function Home() {
   const [word, setWord] = useState("");
@@ -38,8 +36,6 @@ export default function Home() {
       document.removeEventListener("mouseup", fetchInfo);
     };
   }, []);
-  const highlightText =
-    "The term “full stack developer” originated during the early days of the web, when websites were small and uncomplicated enough to allow a single person to tackle every aspect of site-building. But in the decades since those initial days, the web has grown ever more complex.";
 
   return (
     <div>
@@ -47,13 +43,7 @@ export default function Home() {
         <span>Dictionary</span> App
       </h2>
       <h3>Check Meaning of any word</h3>
-
-      <h2>Highlight</h2>
-      <SelectionHighlighter
-        text={highlightText}
-        selectionHandler={handleHighlighter}
-        customClass="highlight"
-      ></SelectionHighlighter>
+      <p>The term “full stack developer” originated during the early days of the web, when websites were small and uncomplicated enough to allow a single person to tackle every aspect of site-building. But in the decades since those initial days, the web has grown ever more complex.</p>
 
       <div>
         {wordInfo && (
