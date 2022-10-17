@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const IconCont = styled.img`
   background-color: ${(props) => props.backgroundColor};
-  height: ${(props) => props.size};
-  width: ${(props) => props.size};
+  height: ${size};
+  width: ${size};
   object-fit: cover;
 `;
 
@@ -12,11 +12,5 @@ export default function Icon({
   backgroundColor = "none",
   size = "2rem",
 }) {
-  return (
-    <IconCont
-      src={src}
-      backgroundColor={backgroundColor}
-      size={size}
-    ></IconCont>
-  );
+  return <IconCont src={src} backgroundColor={backgroundColor}></IconCont>;
 }
