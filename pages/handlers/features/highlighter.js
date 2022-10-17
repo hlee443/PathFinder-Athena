@@ -4,5 +4,5 @@
 
 export default function handleHighlighter(selection) {
   // Do something with the selection
-  console.log(selection);
+  return selection;
 }
