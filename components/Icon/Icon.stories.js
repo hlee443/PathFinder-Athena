@@ -10,8 +10,22 @@ export default {
 // Any other named exports will be treated as stories, which should be functions that return your component
 const Template = (args) => <Icon {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Default = Template.bind({});
+Default.args = {
+  size: "2rem",
+  src: "https://placekitten.com/200/100",
+  backgroundColor: "transparent",
+};
+
+export const Hover = Template.bind({});
+Hover.args = {
+  size: "2rem",
+  src: "https://placekitten.com/200/100",
+  backgroundColor: "black",
+};
+
+export const Selected = Template.bind({});
+Selected.args = {
   size: "2rem",
   src: "https://placekitten.com/200/100",
   backgroundColor: "black",
