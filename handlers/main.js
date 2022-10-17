@@ -1,6 +1,4 @@
 // Main Handlers
 
-module.exports = {
-    ...require("./features/download"),
-    ...require("./features/summarize")
-}
+export * from "./features/download";
+export * from "./features/summarize";
