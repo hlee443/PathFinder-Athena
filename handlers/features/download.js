@@ -3,10 +3,10 @@
 // - secondary action (user selects file type)
 // - expected behaviour (the document is SAVED locally to the user's computer with the selected file type)
 
-// import FileSaver from 'file-saver' -- does not convert content content (e.g pdf)
+// import FileSaver from 'file-saver' -- does not convert content (e.g pdf)
 import { jsPDF } from 'jspdf'
 
-export default function handleDownload(text){
+module.exports.handleDownload = function (text){
 
     const doc = new jsPDF()
     doc.text(text, 20, 20)

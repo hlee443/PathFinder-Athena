@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import handleDownload from '../../handlers/features/download';
+import mainHandler from '../../handlers/main'
 
 
 export default function Simplify(){
@@ -16,6 +16,8 @@ export default function Simplify(){
             [e.target.name]: e.target.value
         })
     }
+
+    console.log("HANDLER", mainHandler)
 
     function handleSubmit(e){
         e.preventDefault()
@@ -86,7 +88,7 @@ export default function Simplify(){
 
           {
             textSimplified &&
-            <button onClick={() => handleDownload(textSimplified)}> 
+            <button onClick={() => mainHandler.handleDownload(textSimplified)}> 
                 Download text as pdf 
             </button>
           } 
