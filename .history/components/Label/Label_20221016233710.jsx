@@ -9,8 +9,8 @@ const LabelCont = styled.p`
 `;
 export default function Label({
   text = "placeholder",
-  backgroundColor = "#FFFEF6",
+  backgroundColor = { backgroundColor },
   width = "2rem",
 }) {
-  return <LabelCont backgroundColor={backgroundColor}>{text}</LabelCont>;
+  return <LabelCont backgroundColor="#FFFEF6">{text}</LabelCont>;
 }

@@ -12,5 +12,5 @@ export default function Label({
   backgroundColor = "#FFFEF6",
   width = "2rem",
 }) {
-  return <LabelCont backgroundColor={backgroundColor}>{text}</LabelCont>;
+  return <LabelCont>{text}</LabelCont>;
 }
