@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { text_data } from '../../styles/globals';
 
 const HeaderCont = styled.h1`
-    font-size: ${props => props.size || text_data.h1.size};
+    font-size:  ${text_data.h1.size};
     color: ${props => props.color};
     line-height: ${text_data.line_height};
     letter-spacing: ${text_data.letter_spacing}
@@ -11,7 +11,7 @@ const HeaderCont = styled.h1`
 export default function Header({ text = "Header text" }) {
 
     return (
-        <HeaderCont size ={text_data.h1.size}>
+        <HeaderCont>
             {text}
         </HeaderCont>
     )
