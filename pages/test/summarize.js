@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios'
+import * as mainHandler from '../../handlers/main'
+
 
 export default function Summarize() {
     const [called, setCalled] = useState(false)
@@ -13,24 +14,18 @@ export default function Summarize() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // axios call
-            await axios({
-                method: "post",
-                url: "http://localhost:8080/api/summarize",
-                data: {
-                    text: postContent,
-                    key: 'Bearman123'
-                }
-            }).then((res) => {
+            
+            const res = await mainHandler.handleSummarize(postContent) // call handler for axios call
+            if(res){
                 console.log(res)
-                // Meaning cloud api
                 setContent(res.data.summary)
                 setStatus(JSON.stringify(res.data.status))
                 setJsonContent(JSON.stringify(res.data))
                 setOriginalContent(postContent)
                 setPostContent("")
                 setCalled(true)
-            })
+            }
+
         } catch (error) {
             console.log(error)
         }
