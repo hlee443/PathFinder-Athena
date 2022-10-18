@@ -8,7 +8,7 @@ const HeaderCont = styled.h1`
     letter-spacing: ${text_data.letter_spacing}
 `;
 
-export default function Header({ text = "Header text", size = {size}}) {
+export default function Header({ text = "Header text" }) {
 
     return (
         <HeaderCont size ={text_data.h1.size}>
