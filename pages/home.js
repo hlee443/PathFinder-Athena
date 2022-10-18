@@ -39,6 +39,14 @@ export default function Home() {
             <p>Test the Dictionary API.</p>
           </a>
 
+          <a
+            href="./test/upload"
+            className={styles.card}
+          >
+            <h2>Upload &rarr;</h2>
+            <p>Test the Upload function.</p>
+          </a>
+
         </div>
       </main>
 

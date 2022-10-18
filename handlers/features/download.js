@@ -22,6 +22,7 @@ export function handleDownload(fileTextData, fileName = 'Pathfinder_download', f
         {
             const fileData = new Blob([fileTextData], {type: "text/csv;charset=utf-8"});
             saveAs(fileData, `${fileName}.csv`);
+            break
         }
 
         case 'txt': 
