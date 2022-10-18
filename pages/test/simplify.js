@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import * as mainHandler from '../../handlers/main'
+
 
 export default function Simplify(){
-    const [textSimplified, setTextSimplified] = useState([])
+    const [textSimplified, setTextSimplified] = useState('')
     const [jsonAPI, setJsonAPI] = useState('')
     const [formData, setFormData] = useState({ text: '' })
 
@@ -20,6 +22,7 @@ export default function Simplify(){
         onSubmit(formData)
         
     }
+    
 
     const onSubmit = async (textData) => {
 
@@ -51,6 +54,7 @@ export default function Simplify(){
         }  catch (error) {
             console.log(error)
         }
+
     }
 
     return (
@@ -79,13 +83,20 @@ export default function Simplify(){
     
           <h2>Result</h2>
           <p>{textSimplified}</p>
+
+          {
+            textSimplified &&
+            <button onClick={() => mainHandler.handleDownload(textSimplified)}> 
+                Download text
+            </button>
+          } 
     
           <hr />
     
           <h2>JSON</h2>
           <p>{jsonAPI}</p>
-    
-    
+
         </div>
+        
       )
 }
