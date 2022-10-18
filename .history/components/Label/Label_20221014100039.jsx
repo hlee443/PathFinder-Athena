@@ -1,7 +1,22 @@
 import styled from "styled-components";
 
-export default function Icon() {
-  const Icon = styled.img``;
+const IconCont = styled.img`
+  background-color: ${(props) => props.backgroundColor};
+  height: ${(props) => props.size};
+  width: ${(props) => props.size};
+  object-fit: cover;
+`;
 
-  return <Icon src="https://placekitten.com/100/100"></Icon>;
+export default function Icon({
+  src = "https://placekitten.com/25/25",
+  backgroundColor = "none",
+  size = "2rem",
+}) {
+  return (
+    <IconCont
+      src={src}
+      backgroundColor={backgroundColor}
+      size={size}
+    ></IconCont>
+  );
 }
