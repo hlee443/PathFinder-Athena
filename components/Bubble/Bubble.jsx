@@ -4,6 +4,7 @@ import Header from "../Header/Header";
 import Input from "../Input/Input";
 import Subheader from "../Subheader/SubHeader";
 import Button from "../Button/Button";
+import icon_svgs from "../Icon/data.js";
 
 export default function Bubble({
   width = "60rem",
@@ -28,12 +29,20 @@ export default function Bubble({
 
   return (
     <Bubble width={width} height={height}>
-      <Icon></Icon>
+      <Icon src={icon_svgs.close}></Icon>
       <Header></Header>
       {type === "login" && (
         <InputDiv>
-          <Input type="email"></Input>
-          <Input type="password"></Input>
+          <Input
+            type="email"
+            width="100%"
+            placeholder="Enter your email"
+          ></Input>
+          <Input
+            type="password"
+            width="100%"
+            placeholder="Enter your password"
+          ></Input>
         </InputDiv>
       )}
       <Subheader></Subheader>
