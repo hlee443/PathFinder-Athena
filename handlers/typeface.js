@@ -15,7 +15,7 @@ export default function saveTypeface(bgColour, typeFace, fontSize, lineSpacing, 
 // component where data comes from should always be 100% valid
     const updateSettingObj = {backgroundColour: bgColour, typeface: typeFace, font_size: fontSize, line_spacing: lineSpacing, letter_spacing: letterSpacing}
 
-  axios.post("https://localhost:8080/db/updateSettings", updateSettingObj)
+  axios.post(`${process.env.HERMES_PATH}/api/db/updateSettings`, updateSettingObj)
     .then((res) => {return res})
     .catch((err) => console.error(err))
 }
