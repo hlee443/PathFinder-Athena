@@ -17,13 +17,17 @@ const OptionCont = styled.select`
   padding: 1rem;
 `;
 
-export default function Input({ width = "15rem", type = "text" }) {
+export default function Input({
+  width = "15rem",
+  type = "text",
+  placeholder = "placeholder",
+}) {
   return (
     <InputCont>
       {type === "text" && (
         <TextCont
           type="text"
-          placeholder="placeholder text"
+          placeholder={placeholder}
           width={width}
         ></TextCont>
       )}
@@ -34,6 +38,28 @@ export default function Input({ width = "15rem", type = "text" }) {
           </option>
           <option value=""></option>
         </OptionCont>
+      )}
+      {type === "email" && (
+        <TextCont
+          type="email"
+          placeholder={placeholder}
+          width={width}
+        ></TextCont>
+      )}
+      {type === "password" && (
+        <TextCont
+          type="password"
+          placeholder={placeholder}
+          width={width}
+        ></TextCont>
+      )}
+      {type === "number" && (
+        <TextCont
+          type="number"
+          min="0"
+          placeholder={placeholder}
+          width={width}
+        ></TextCont>
       )}
     </InputCont>
   );

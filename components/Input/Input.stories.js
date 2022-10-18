@@ -21,3 +21,21 @@ OptionsInput.args = {
   type: "dropdown",
   width: "15rem",
 };
+
+export const EmailInput = Template.bind({});
+EmailInput.args = {
+  type: "email",
+  width: "15rem",
+};
+
+export const PasswordInput = Template.bind({});
+PasswordInput.args = {
+  type: "password",
+  width: "15rem",
+};
+
+export const NumberInput = Template.bind({});
+NumberInput.args = {
+  type: "number",
+  width: "15rem",
+};
