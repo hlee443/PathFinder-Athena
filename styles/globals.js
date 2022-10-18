@@ -12,7 +12,13 @@ export const text_data = {
 }
 
 export const colors = {
-    
+
 }
 
-
+export const Flexbox = styled.div`
+display: flex;
+flex-direction: ${props => props.dir || "column"};
+`
+export const Wrapper = styled(Flexbox)`
+padding: 6rem;
+`
