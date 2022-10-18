@@ -1,16 +1,21 @@
 import styled from "styled-components";
 
 const IconCont = styled.img`
-background-color: ${props => props.backgroundColor};
-width: ${props => props.size};
-height: ${props => props.size};
+  background-color: ${(props) => props.backgroundColor};
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
 `;
 
 export default function Icon({
-    src = "https://placekitten.com/25/25",
-    backgroundColor = "transparent",
-    size = "2rem"
+  src = "https://placekitten.com/25/25",
+  backgroundColor = "transparent",
+  size = "3rem",
 }) {
-    return <IconCont src={src} size={size} backgroundColor={backgroundColor}>
-    </IconCont>
+  return (
+    <IconCont
+      src={src}
+      size={size}
+      backgroundColor={backgroundColor}
+    ></IconCont>
+  );
 }
