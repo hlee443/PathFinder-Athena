@@ -1,11 +1,17 @@
 import styled from "styled-components";
+import Button from "../Button/Button";
+import { Flexbox } from "../../styles/globals";
+
+const TabBarCont = styled(Flexbox)`
+border-bottom: 0.25rem solid #E1E1E1;
+width: 100%;
+`
 
 export default function TabBar() {
-  const TabBar = styled.div``;
-
   return (
-    <TabBar>
+    <TabBarCont dir ="row">
       <Button></Button>
-    </TabBar>
+      <Button></Button>
+    </TabBarCont>
   );
 }
