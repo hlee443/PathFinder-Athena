@@ -1,13 +1,19 @@
 import styled from "styled-components";
 
-export default function TextInput({ width = "" }) {
-  const TextInput = styled.input`
-    border-radius: 50px;
-    border: 1px solid #3e3e3e;
-    width: ${width};
-  `;
+const InputCont = styled.input`
+  border-radius: 2rem;
+  border: 0.05rem solid #3e3e3e;
+  width: ${(props) => props.width};
+  height: 3.875rem;
+  padding: 1rem;
+`;
 
+export default function TextInput({ width = "15rem" }) {
   return (
-    <TextInput type="text" placeholder="placeholder text" width=""></TextInput>
+    <InputCont
+      type="text"
+      placeholder="placeholder text"
+      width={width}
+    ></InputCont>
   );
 }
