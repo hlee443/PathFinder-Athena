@@ -1,18 +1,14 @@
-import Icon from "./Icon.jsx";
+import Bubble from "./Bubble.jsx";
 
 // The default export metadata controls how Storybook lists your stories and provides information used by addons.
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Icon",
-  component: Icon,
+  title: "Bubble",
+  component: Bubble,
 };
 
 // Any other named exports will be treated as stories, which should be functions that return your component
-const Template = (args) => <Icon {...args} />;
+const Template = (args) => <Bubble {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {
-  src: "https://placekitten.com/20/100",
-  backgroundColor: "black",
-  size: "200px",
-};
+Primary.args = {};
