@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Icon from "../Icon/Icon";
 
 const ButtonCont = styled.button`
   background-color: ${(props) => props.backgroundColor};
@@ -11,13 +12,12 @@ const ButtonCont = styled.button`
   height: 4rem;
   font-size: 1.125rem;
 `;
-const Src = styled.img``;
 
 export default function Button({
   backgroundColor = "#96ADFC",
-  text = "hi",
-  icon = "https://placekitten.com/25/25",
+  text = "button text",
 }) {
+
   const handleClick = () => {
     console.log("hi!");
   };
@@ -29,7 +29,7 @@ export default function Button({
       backgroundColor={backgroundColor}
     >
       {text}
-      <Src src={icon}></Src>
+      <Icon src="" />
     </ButtonCont>
   );
 }
