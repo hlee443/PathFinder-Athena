@@ -1,23 +1,23 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
+import { icon_svgs } from "../Icon/data";
 
-export default function Toolbar() {
-  const Toolbar = styled.div`
-    display: flex;
-    justify-content: space-between;
-    border: none;
-    width: 53rem;
-  `;
-
+const ToolbarCont = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border: none;
+  width: 53rem;
+`;
+export default function Toolbar(src) {
   return (
-    <Toolbar>
-      <Icon></Icon>
-      <Icon></Icon>
-      <Icon></Icon>
-      <Icon></Icon>
-      <Icon></Icon>
-      <Icon></Icon>
-      <Icon></Icon>
-    </Toolbar>
+    <ToolbarCont>
+      <Icon src={icon_svgs.sound}></Icon>
+      <Icon src={icon_svgs.dictionary}></Icon>
+      <Icon src={icon_svgs.summarize}></Icon>
+      <Icon src={icon_svgs.highlight}></Icon>
+      <Icon src={icon_svgs.font}></Icon>
+      <Icon src={icon_svgs.save}></Icon>
+      <Icon src={icon_svgs.download}></Icon>
+    </ToolbarCont>
   );
 }
