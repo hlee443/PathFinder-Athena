@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { icon_svgs } from "./data";
 
 const IconCont = styled.img`
   background-color: ${(props) => props.backgroundColor};
