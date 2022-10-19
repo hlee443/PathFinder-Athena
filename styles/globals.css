@@ -16,6 +16,10 @@ form { /* added temporarily for the api test forms to look a little better */
   flex-direction: column;
 }
 
+.fileOutput__container{
+  white-space: pre-line;  /* recognizes <br /> in the HTML and will line break it. Pretty coolllll*/
+}
+
 * {
   box-sizing: border-box;
 }
