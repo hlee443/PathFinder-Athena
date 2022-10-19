@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../styles/globals";
 
 const InputCont = styled.div`
 height: 100%;
