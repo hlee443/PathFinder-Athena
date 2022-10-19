@@ -2,9 +2,15 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { icon_svgs } from "../Icon/data";
 import { colors } from "../../styles/globals";
-import { btn_data } from "../TabBar/data";
+import { btn_data } from "./data";
 
-const ButtonCont = styled.button`
+
+const ButtonCont = styled.div`
+position: ${(props) => props.position};
+
+`
+
+const StyledButton = styled.button`
 border: none;
 display: flex;
 align-items: center;
@@ -13,7 +19,7 @@ background-color: ${(props) => props.backgroundColor};
 border-radius: ${(props) => props.borderRadius || "3.125rem"};
 border-bottom: ${(props) => props.borderBottom};
 width: ${(props) => props.width || "15rem"};
-height: ${(props) => props.height};
+height: ${(props) => props.height || "3.875rem"};
 font-size: ${(props) => props.fontSize};
 border-color: ${(props) => props.borderColor};
 `
@@ -29,7 +35,8 @@ export default function Button({
   borderColor = "none",
   type = "btn type",
   icon_name = "link",
-  handleClick = () => {}
+  handleClick = () => { },
+  position = "relative"
 }) {
 
   // const handleClick = () => {
@@ -37,19 +44,37 @@ export default function Button({
   // };
 
   return (
-    <div onClick={handleClick}>
+    <ButtonCont onClick={handleClick}>
       {
-        type === "TabBar" &&
-        <ButtonCont
-          borderBottom={borderBottom}
-          backgroundColor="transparent"
-          borderRadius="0"
+        type === "default" &&
+        <StyledButton
         >
           {text}
-          <Icon size = "2.563rem" changeIcon={icon_svgs[icon_name]} />
-        </ButtonCont>
+        </StyledButton>
       }
-    </div>
+
+      {
+        type === "TabBar" &&
+        <StyledButton
+          borderBottom={borderBottom}
+          backgroundColor="transparent"
+            borderRadius="0"
+            position="absolute"
+        >
+          {text}
+          <Icon size="2.563rem" changeIcon={icon_svgs[icon_name]} />
+        </StyledButton>
+      }
+
+      {
+        type === "IconButton" &&
+        <StyledButton backgroundColor ={btn_data.state.active.backgroundColor}
+        >
+          {text}
+          <Icon size="2.563rem" changeIcon={icon_svgs[icon_name]} />
+        </StyledButton>
+      }
+    </ButtonCont>
 
   );
 }
