@@ -6,8 +6,8 @@ width: 100%;
 `;
 
 const TextCont = styled.input`
-  border-radius: 2rem;
-  border: 0.05rem solid #3e3e3e;
+  border-radius: ${(props) => props.borderRadius || "3.125rem"};
+  border: ${(props) => props.border};
   width: ${(props) => props.width || "100%"};
   height: 3.875rem;
   padding: 1rem;
@@ -24,14 +24,17 @@ export default function Input({
   width = "15rem",
   type = "text",
   placeholder = "placeholder",
+  border = `0.05rem solid ${colors.DarkGray}`
 }) {
   return (
     <InputCont>
       {type === "text" && (
         <TextCont
+          borderRadius="3.125rem 0 0 3.125rem;"
           type="text"
           placeholder={placeholder}
           width={width}
+          border ={border}
         ></TextCont>
       )}
       {type === "dropdown" && (
