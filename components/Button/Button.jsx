@@ -8,14 +8,19 @@ const ButtonCont = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15rem;
-  height: 4rem;
-  font-size: 1.125rem;
-`;
+  color: ${(props) => props.textColor};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  font-size: ${(props) => props.fontSize};
+  `
 
 export default function Button({
   backgroundColor = "#96ADFC",
   text = "button text",
+  width = "100%",
+  height = "100%",
+  fontSize = "1rem",
+  textColor = "black"
 }) {
 
   const handleClick = () => {
@@ -27,6 +32,10 @@ export default function Button({
       type="button"
       onClick={handleClick}
       backgroundColor={backgroundColor}
+      width={width}
+      height={height}
+      fontSize={fontSize}
+      textColor={textColor}
     >
       {text}
       <Icon src="" />
