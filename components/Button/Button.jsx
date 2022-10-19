@@ -23,8 +23,14 @@ export default function Button({
   textColor = "black"
 }) {
 
+  var src = "/Link.svg"
+
   const handleClick = () => {
     console.log("hi!");
+  };
+
+  const changeIcon = (src) => {
+    src = "/Link.svg"
   };
 
   return (
@@ -38,7 +44,7 @@ export default function Button({
       textColor={textColor}
     >
       {text}
-      <Icon src="" />
+      <Icon src={changeIcon(src)} />
     </ButtonCont>
   );
 }

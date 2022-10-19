@@ -10,8 +10,8 @@ width: 100%;
 export default function TabBar() {
   return (
     <TabBarCont dir ="row">
-      <Button></Button>
-      <Button></Button>
+      <Button text = "Import from URL"></Button>
+      <Button text = "Upload a File"></Button>
     </TabBarCont>
   );
 }
