@@ -35,14 +35,14 @@ export default function Simplify(){
 
             await axios({
                 method: "post",
-                url: "http://localhost:8080/api/simplify",
+                url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/simplify`,
                 data: {
                     text: textData.text,
                     key: 'Bearman123'
                 }
             })
             .then((res) => {
-                console.log('res', res)
+                // console.log('res', res)
                 // AI21 studio API
                 setJsonAPI(JSON.stringify(res.data))
                 setTextSimplified(res.data.completions[0].data.text)
