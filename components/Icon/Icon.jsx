@@ -1,6 +1,6 @@
 import styled from "styled-components";
+import { iconSvgs } from "./data";
 import { Flexbox } from "../../styles/globals";
-import { icon_svgs } from "./data";
 
 const IconCont = styled(Flexbox)`
 align-self: ${(props) => props.align};
@@ -19,21 +19,18 @@ const IconImg = styled.img`
 export default function Icon({
   backgroundColor = "transparent",
   size = "3rem",
-  icon_name = "sound",
+  iconName = "sound",
   changeIcon = () => { },
-  align = "",
-  handleClick = () => { }
+  handleClick = () => {},
+  align = ""
 }) {
-
   return (
     <IconCont align={align} size={size} onClick={handleClick}>
       <IconImg
         src={changeIcon}
-        name={icon_name}
-
+        name={iconName}
         backgroundColor={backgroundColor}
       ></IconImg>
     </IconCont>
-
   );
 }

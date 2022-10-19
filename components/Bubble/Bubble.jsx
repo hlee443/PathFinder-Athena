@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import Input from "../Input/Input";
 import Subheader from "../Subheader/SubHeader";
 import Button from "../Button/Button";
-import { icon_svgs } from "../Icon/data.js";
+import { iconSvgs } from "../Icon/data.js";
 import { Flexbox } from "../../styles/globals";
 
 const BubbleCont = styled(Flexbox)`
@@ -41,7 +41,7 @@ export default function Bubble({
 
     return (
         <BubbleCont width={width} height={height}>
-            <Icon align="flex-end" changeIcon={icon_svgs.close} size="2rem" />
+            <Icon align="flex-end" changeIcon={iconSvgs.close} size="2rem" />
             <Header text="Please Login!"></Header>
             {type === "login" && (
                 <InputDiv>
@@ -64,4 +64,4 @@ export default function Bubble({
             </ButtonCont>
         </BubbleCont>  
   );  
-}
+}; 

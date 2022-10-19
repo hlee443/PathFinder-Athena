@@ -1,6 +1,6 @@
 import { colors } from "../../styles/globals";
 
-export const btn_data = {
+export const btnData = {
   size: {
     small: {
       fontSize: "1rem",
@@ -16,19 +16,19 @@ export const btn_data = {
       fontSize: "1.25rem",
       width: "23.75rem",
       height: "4.375rem",
-    }
+    },
   },
   state: {
     active: {
-      backgroundColor: colors.Button_PrimaryBlue,
+      backgroundColor: colors.buttonPrimaryBlue,
     },
     inactive: {
-      backgroundColor: colors.Button_Gray,
-      textColor: colors.Button_TextGrey
+      backgroundColor: colors.buttonGray,
+      textColor: colors.buttonTextGrey,
     },
     hover: {
-      backgroundColor: colors.Button_SecondaryBlue,
+      backgroundColor: colors.buttonSecondaryBlue,
       fontWeight: "bolder",
     },
-  }
+  },
 };

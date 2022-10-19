@@ -1,14 +1,9 @@
 import styled from "styled-components";
 import { colors } from "../../styles/globals";
 
-const InputCont = styled.div`
-  height: 100%;
-  width: 100%;
-`;
-
-const TextCont = styled.input`
+const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
-  border: ${(props) => props.border};
+  border: 0.05rem solid ${colors.darkGray};
   width: ${(props) => props.width || "100%"};
   height: 3.875rem;
   padding: 1rem;
@@ -26,25 +21,26 @@ export default function Input({
   type = "text",
   borderRadius = "",
   placeholder = "placeholder",
-  border = `0.05rem solid ${colors.DarkGray}`
 }) {
-  return (
-    <InputCont>
-      <TextCont
-        borderRadius={borderRadius}
+  if (type === "text") {
+    return (
+      <InputCont
+        borderRadius="3.125rem 0 0 3.125rem;"
         type={type}
         placeholder={placeholder}
         width={width}
-        border={border}
-      ></TextCont>
-      {type === "dropdown" && (
-        <OptionCont type="option" width={width}>
-          <option value="" selected>
-            Placeholder
-          </option>
-          <option value=""></option>
-        </OptionCont>
-      )}
-    </InputCont>
-  );
+      ></InputCont>
+    );
+  }
+
+  if (type === "dropdown") {
+    return (
+      <OptionCont OptionCont type="option" width={width}>
+        <option value="" selected>
+          Placeholder
+        </option>
+        <option value=""></option>
+      </OptionCont>
+    );
+  }
 }
