@@ -8,13 +8,16 @@ const IconCont = styled.img`
 `;
 
 export default function Icon({
-  src = "https://placekitten.com/25/25",
   backgroundColor = "transparent",
   size = "3rem",
+  icon_name = "sound",
+  changeIcon = () => { }
 }) {
+
   return (
     <IconCont
-      src={src}
+      src={changeIcon}
+      name={icon_name}
       size={size}
       backgroundColor={backgroundColor}
     ></IconCont>
