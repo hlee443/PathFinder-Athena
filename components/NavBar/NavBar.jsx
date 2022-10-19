@@ -3,6 +3,7 @@ import Icon from "../Icon/Icon";
 import { useState } from "react";
 import Button from "../Button/Button";
 import { btn_data } from "./data";
+import Bubble from "../Bubble/Bubble"
 
 
 const NavBarCont = styled.div`
@@ -52,7 +53,8 @@ align-items: center;
 export default function NavBar() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const [showBubble, setShowBubble] = useState(false);
+ 
     return <NavBarCont>
         <TopBar backgroundColor="#96ADFC">
             <Logo src="" />
@@ -65,9 +67,10 @@ export default function NavBar() {
                 </IconContainer>
             }
             <ButtonContainer>
-                <Button width={btn_data.width} height={btn_data.height} backgroundColor={btn_data.state.default.backgroundColor} text = "Log In" ></Button>
-                <Button width={btn_data.width} height={btn_data.height} backgroundColor={btn_data.state.default.backgroundColor} text = "Sign Up"></Button>
+                <Button handleClick={setShowBubble} width={btn_data.width} height={btn_data.height} backgroundColor={btn_data.state.default.backgroundColor} text = "Log In" ></Button>
+                <Button handleClick={setShowBubble} width={btn_data.width} height={btn_data.height} backgroundColor={btn_data.state.default.backgroundColor} text = "Sign Up"></Button>
             </ButtonContainer>
+            {showBubble && <Bubble></Bubble>}
         </TopBar>
         <Bar backgroundColor="#A8BCFF"></Bar>
         <Bar backgroundColor="#C3D1FF"></Bar>
