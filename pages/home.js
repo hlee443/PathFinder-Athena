@@ -40,7 +40,7 @@ export default function Home() {
           </a>
 
           <a
-            href="./test/upload"
+            href="./test/upload_test"
             className={styles.card}
           >
             <h2>Upload &rarr;</h2>
