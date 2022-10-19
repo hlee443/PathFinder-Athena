@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { useState } from "react"
+import { useState } from "react";
+import Button from "../Button/Button";
+import { btn_data } from "./data";
 
 
 const NavBarCont = styled.div`
@@ -40,10 +42,10 @@ justify-content: space-between;
 align-items: center;
 `
 const ButtonContainer = styled.div`
-min-width: 12rem;
+min-width: 23.75rem;
 height: 100%;
 display: flex;
-justify-content: space-between;
+justify-content: space-around;
 align-items: center;
 `
 
@@ -62,10 +64,9 @@ export default function NavBar() {
                     <Icon src=""></Icon>
                 </IconContainer>
             }
-
             <ButtonContainer>
-                <button></button>
-                <button></button>
+                <Button width={btn_data.width} height={btn_data.height} backgroundColor={btn_data.state.default.backgroundColor} text = "Log In" ></Button>
+                <Button width={btn_data.width} height={btn_data.height} backgroundColor={btn_data.state.default.backgroundColor} text = "Sign Up"></Button>
             </ButtonContainer>
         </TopBar>
         <Bar backgroundColor="#A8BCFF"></Bar>
