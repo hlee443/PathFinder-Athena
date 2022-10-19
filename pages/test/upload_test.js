@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {handleUpload} from '../../handlers/main'
+import * as mainHandler from '../../handlers/main'
 
 
 export default function Upload(){
@@ -10,7 +10,6 @@ export default function Upload(){
         fileContent: ''
     })
     const [displayFileNameForm, setFileNameForm] = useState(false)
-    const renderedFileContent = ''
 
     function handleChange(e){
         e.preventDefault()
@@ -25,11 +24,10 @@ export default function Upload(){
 
         const selectedFile = e.target.files[0]
 
-        uploadedFile.fileName = selectedFile.name
+        uploadedFile.fileName = selectedFile.name.split(".")[0]
+        uploadedFile.fileType = selectedFile.name.slice((Math.max(0, selectedFile.name.lastIndexOf(".")) || Infinity) + 1)
         uploadedFile.fileObj = selectedFile
 
-        uploadedFile.fileExtension = uploadedFile.fileContent.slice((Math.max(0, uploadedFile.fileContent.lastIndexOf(".")) || Infinity) + 1)
-       
         setFileNameForm(true)
        
     }
@@ -37,35 +35,34 @@ export default function Upload(){
     function onFileUpload(e){
         e.preventDefault()
 
-
-        const renderedFile = handleUpload(uploadedFile)
-
-        // setUploadedFile({
-        //     []
-        // })
+        mainHandler.handleUpload(uploadedFile, (readFileContent) => {
+            uploadedFile.fileContent = readFileContent
+            setFileNameForm(false)
+        })
 
     }
 
     if(displayFileNameForm){
         return (
-            <>
-                <form> 
-                    <label htmlFor="uploadFileName">Enter the file Name</label>
-                    <input type="text" name='fileName' value={uploadedFile.fileName}
-                    onChange={handleChange}></input>
-                    <button onClick={(e) => onFileUpload(e)}>Upload File</button>
-
-                </form>
-
-            </>
-        )
+          <>
+            <form>
+              <label htmlFor="uploadFileName">Enter the file Name</label>
+              <input
+                type="text"
+                name="fileName"
+                value={uploadedFile.fileName}
+                onChange={handleChange}
+              ></input>
+              <button onClick={(e) => onFileUpload(e)}>Upload File</button>
+            </form>
+          </>
+        );
     } else {
 
 
         if(uploadedFile.fileContent){
             return (
                 <>
-                        {console.log("TEXT", uploadedFile.fileContent)}
                         <h1>{uploadedFile.fileName}</h1>
                         <p className="fileOutput__container"> {uploadedFile.fileContent}</p>
                 </>
@@ -76,7 +73,7 @@ export default function Upload(){
                 <h1> Upload your document! </h1>
                 
                 <form>
-                    <input id="fileInput" type="file" name="file" onChange={(e) => onFileSelect(e)} accept=".doc, .docx, .txt"/>
+                    <input id="fileInput" type="file" name="file" onChange={(e) => onFileSelect(e)} accept=".txt"/>
                 </form>
                 </>
             )

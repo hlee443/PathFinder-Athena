@@ -10,7 +10,7 @@ export async function handleSummarize(postContent){
         // axios call
         return await axios({
             method: "post",
-            url: "http://localhost:8080/api/summarize",
+            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/summarize`,
             data: {
                 text: postContent,
                 key: 'Bearman123'

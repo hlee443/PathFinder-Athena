@@ -13,11 +13,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Athena v.0.1
+          Athena v.0.2
         </h1>
 
         <p className={styles.description}>
-        &quot;Building bridges with Hermes&quot;
+        &quot;Live-ing with Hermes&quot;
         </p>
 
         <div className={styles.grid}>

@@ -4,16 +4,36 @@
 // - returns the doc content
 // - render the content on client
 
-export default function handleUpload(uploadedFile){
 
+export function handleUpload(uploadedFile, callback){
     const fileReader = new FileReader()
-        
-    fileReader.onload = function (){
-        setFileNameForm(false)
-        uploadedFile.fileContent = fileReader.result
-        return uploadedFile.fileContent
-    }
+    
+    switch (uploadedFile.fileType){
+        case 'txt':
+        {
 
-    fileReader.readAsText(uploadedFile.fileObj,"UTF-8")
+            fileReader.readAsText(uploadedFile.fileObj,"UTF-8")
+            
+            fileReader.onload = function (){
+                uploadedFile.fileContent = fileReader.result
+                callback(uploadedFile.fileContent)
+            }
+ 
+        }
+        case 'docx':
+        case 'doc':
+        {
+            // Read file for doc and docx
+            // after reading the fileContent, resave it in the property
+            // pass the property back using callback
+        }
+        case 'pdf': 
+        {
+            // Read file for pdf
+            // after reading the fileContent, resave it in the property
+            // pass the property back using callback
+
+        }
+    }
 
 }
