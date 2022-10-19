@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { icon_svgs } from "./data";
+import { iconSvgs } from "./data";
 
 const IconCont = styled.img`
   background-color: ${(props) => props.backgroundColor};
@@ -10,14 +10,13 @@ const IconCont = styled.img`
 export default function Icon({
   backgroundColor = "transparent",
   size = "3rem",
-  icon_name = "sound",
-  changeIcon = () => { }
+  iconName = "sound",
+  changeIcon = () => {},
 }) {
-
   return (
     <IconCont
       src={changeIcon}
-      name={icon_name}
+      name={iconName}
       size={size}
       backgroundColor={backgroundColor}
     ></IconCont>
