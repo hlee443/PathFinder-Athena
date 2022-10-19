@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { colors } from "../../styles/globals";
 
 const InputCont = styled.div`
-height: 100%;
-width: 100%;
+  height: 100%;
+  width: 100%;
 `;
 
 const TextCont = styled.input`
@@ -24,20 +24,19 @@ const OptionCont = styled.select`
 export default function Input({
   width = "15rem",
   type = "text",
+  borderRadius = "",
   placeholder = "placeholder",
   border = `0.05rem solid ${colors.DarkGray}`
 }) {
   return (
     <InputCont>
-      {type === "text" && (
-        <TextCont
-          borderRadius="3.125rem 0 0 3.125rem;"
-          type="text"
-          placeholder={placeholder}
-          width={width}
-          border ={border}
-        ></TextCont>
-      )}
+      <TextCont
+        borderRadius={borderRadius}
+        type={type}
+        placeholder={placeholder}
+        width={width}
+        border={border}
+      ></TextCont>
       {type === "dropdown" && (
         <OptionCont type="option" width={width}>
           <option value="" selected>
@@ -45,28 +44,6 @@ export default function Input({
           </option>
           <option value=""></option>
         </OptionCont>
-      )}
-      {type === "email" && (
-        <TextCont
-          type="email"
-          placeholder={placeholder}
-          width={width}
-        ></TextCont>
-      )}
-      {type === "password" && (
-        <TextCont
-          type="password"
-          placeholder={placeholder}
-          width={width}
-        ></TextCont>
-      )}
-      {type === "number" && (
-        <TextCont
-          type="number"
-          min="0"
-          placeholder={placeholder}
-          width={width}
-        ></TextCont>
       )}
     </InputCont>
   );
