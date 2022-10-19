@@ -30,8 +30,13 @@ export const colors = {
 export const Flexbox = styled.div`
 display: flex;
 flex-direction: ${props => props.dir || "column"};
+justify-content: center;
+align-items: center
 `
 
 export const Wrapper = styled(Flexbox)`
 padding: 6rem;
+justify-content: space-between;
+height: 100vh;
+align-items: start;
 `
