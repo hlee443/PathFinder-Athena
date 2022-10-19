@@ -6,29 +6,33 @@ import Subheader from "../Subheader/SubHeader";
 import Button from "../Button/Button";
 import { icon_svgs } from "../Icon/data.js";
 
+const BubbleCont = styled.div`
+width: ${(props) => props.width};
+height: ${(props) => props.height};
+border-radius: 2rem;
+background-color: #fffef6;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+padding: 4rem;
+z-index: 1;
+`;
+const ButtonCont = styled.div`
+display: flex;
+justify-content: space-between;
+`;
+
+const InputDiv = styled.div``;
+
+
 export default function Bubble({
   width = "60rem",
   type = "login",
   height = "42rem",
 }) {
-  const Bubble = styled.div`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    border-radius: 2rem;
-    background-color: #fffef6;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 4rem;
-  `;
-  const ButtonCont = styled.div`
-    display: flex;
-    justify-content: space-between;
-  `;
-  const InputDiv = styled.div``;
 
   return (
-    <Bubble width={width} height={height}>
+    <BubbleCont width={width} height={height}>
       <Icon src={icon_svgs.close} size="2rem"></Icon>
       <Header></Header>
       {type === "login" && (
@@ -50,6 +54,6 @@ export default function Bubble({
         <Button></Button>
         <Button></Button>
       </ButtonCont>
-    </Bubble>
+    </BubbleCont>
   );
 }
