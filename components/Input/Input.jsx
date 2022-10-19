@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
-const InputCont = styled.div``;
+const InputCont = styled.div`
+height: 100%;
+width: 100%;
+`;
 
 const TextCont = styled.input`
   border-radius: 2rem;
   border: 0.05rem solid #3e3e3e;
-  width: ${(props) => props.width};
+  width: ${(props) => props.width || "100%"};
   height: 3.875rem;
   padding: 1rem;
 `;
