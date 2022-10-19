@@ -1,17 +1,24 @@
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { Flexbox } from "../../styles/globals";
+import { colors, Flexbox } from "../../styles/globals";
+import { icon_svgs } from "../Icon/data";
+import { btn_data } from "./data";
+import { useState } from "react";
 
 const TabBarCont = styled(Flexbox)`
 border-bottom: 0.25rem solid #E1E1E1;
 width: 100%;
+justify-content: flex-start;
 `
 
 export default function TabBar() {
-  return (
-    <TabBarCont dir ="row">
-      <Button text = "Import from URL"></Button>
-      <Button text = "Upload a File"></Button>
-    </TabBarCont>
-  );
+
+    const [selected, isSelected] = useState();
+
+    return (
+        <TabBarCont dir="row">
+            <Button icon_name = "link" type = "TabBar" text="Import from URL" ></Button>
+            <Button icon_name = "upload" type = "TabBar" text="Upload a File"></Button>
+        </TabBarCont>
+    );
 }
