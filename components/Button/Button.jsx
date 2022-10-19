@@ -3,12 +3,11 @@ import Icon from "../Icon/Icon";
 
 const ButtonCont = styled.button`
   background-color: ${(props) => props.backgroundColor};
-  border-radius: 2rem;
+  border-radius: ${(props) => props.borderRadius};
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.textColor};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   font-size: ${(props) => props.fontSize};
@@ -19,8 +18,8 @@ export default function Button({
   text = "button text",
   width = "100%",
   height = "100%",
-  fontSize = "1rem",
-  textColor = "black"
+    fontSize = "1rem",
+    textColor={textColor}
 }) {
 
   var src = "/Link.svg"
@@ -38,8 +37,8 @@ export default function Button({
       type="button"
       onClick={handleClick}
       backgroundColor={backgroundColor}
-      width={width}
-      height={height}
+      width = {width}
+      height = {height}
       fontSize={fontSize}
       textColor={textColor}
     >

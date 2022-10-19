@@ -12,13 +12,26 @@ export const text_data = {
 }
 
 export const colors = {
-
+    PrimaryBlue: "#96ADFC",
+    SecondaryBlue: "#C3D1FF",
+    Background_White: "#FFFFFC",
+    Background_Yellow: "#F3F0E1",
+    Background_Cream: "#FFFEF7",
+    Button_PrimaryBlue: "#C3D1FF",
+    Button_SecondaryBlue: "#96ADFC",
+    Button_LightBlue: "#E5EBFF",
+    Button_Gray: "#CACACA",
+    Button_TextGrey: "#9F9F9F",
+    Text_Black: "#000000",
+    DarkGray: "#3E3E3E",
+    LightGray: "#E1E1E1",
 }
 
 export const Flexbox = styled.div`
 display: flex;
 flex-direction: ${props => props.dir || "column"};
 `
+
 export const Wrapper = styled(Flexbox)`
 padding: 6rem;
 `

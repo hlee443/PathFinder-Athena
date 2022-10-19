@@ -1,57 +1,46 @@
-import styled from 'styled-components'
+import { useState } from 'react';
+import styled from 'styled-components';
+import Icon from "../Icon/Icon"
 
-export default function File({text = "Title", size = "2.375rem", type = "default", borderType = "0px solid black", color = "#D9D9D9", buttonDisplay = "none"}) {
+const FileCont = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+font-size: ${props => props.size};
+width: 10rem;
+height: 11rem;
+border-radius: 2rem;
+background-color: ${props => props.color};
+border: ${props => props.borderType};
+border-style: dashed;
+`;
 
-  var bottomContDisplay = "flex";
+const FileImage = styled.img`
+width: 100%;
+height: 13rem;
+`
 
-  if(type==="onlyBox"){
-    bottomContDisplay = "none";
-  }
+const BottomCont = styled.div`
+width: 10rem;
+height: 13rem;
+`
 
-  if(type==="addFile"){
-    bottomContDisplay = "none"; 
-    borderType = "3px solid black";
-    color = "white";
-    buttonDisplay = "flex"
-  }
 
-  const FileCont = styled.div`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size: ${size};
-    width: 10rem;
-    height: 11rem;
-    border-radius: 2rem;
-    background-color: ${color};
-    border: ${borderType};
-    border-style: dashed;
-  `;
-  
-  const Cont = styled.div`
-    width: 10rem;
-    height: 13rem;
-  `
-  const BottomCont = styled.div`
-    display: ${bottomContDisplay};
-    justify-content:space-between;
-  `
-  const PlusButton = styled.div`
-    display: ${buttonDisplay}};
-  `
+export default function File({ text = "Title", size = "2.375rem", type = "default", borderType = "0px solid black", color = "#D9D9D9", buttonDisplay = "none" }) {
+
+  const [isFileSaved, setIsFileSaved] = useState(false);
 
   return (
-    <Cont>
-      <FileCont>
-        <PlusButton>
-          +
-        </PlusButton>
-      </FileCont>
+    <FileCont>
+      {isFileSaved && <FileImage>
+
+      </FileImage>
+      }
       <BottomCont>
         <div>{text}</div>
-        <div>Icon</div>
-
+        <Icon />
       </BottomCont>
-    </Cont>
+    </FileCont>
+
   )
 }
