@@ -17,5 +17,8 @@ export const icon_svgs = {
     plus: "plus.svg",
     search: "search.svg",
     check: "check.svg",
-    upload: "upload.svg"
+    upload: "upload.svg",
+    chevronDown: "chevronDown.svg"
+    
+
 };
