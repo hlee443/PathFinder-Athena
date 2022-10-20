@@ -1,16 +1,12 @@
-import styled from "styled-components";
-
-const IconCont = styled.img`
-background-color: ${props => props.backgroundColor};
-width: ${props => props.size};
-height: ${props => props.size};
-`;
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Icon({
-    src = "https://placekitten.com/25/25",
-    backgroundColor = "transparent",
-    size = "2rem"
+  faIconName = faLink,
+  handleClick = () => { },
+  size = "lg"
 }) {
-    return <IconCont src={src} size={size} backgroundColor={backgroundColor}>
-    </IconCont>
-}
+  return (
+    <FontAwesomeIcon size={size} onClick={handleClick} icon={faIconName}></FontAwesomeIcon>
+  );
+};

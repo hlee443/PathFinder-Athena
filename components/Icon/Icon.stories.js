@@ -1,9 +1,9 @@
 import Icon from "./Icon";
 
 export default {
-    title: "Icon",
-    component: Icon,
-  };
+  title: "Icon",
+  component: Icon,
+};
 
 const Template = (args) => <Icon {...args} />;
 
@@ -23,7 +23,7 @@ Hover.args = {
 
 export const Selected = Template.bind({});
 Selected.args = {
-    size: "2rem",
-    src: "https://placekitten.com/200/100",
-    backgroundColor: "black",
-}
+  size: "2rem",
+  src: "https://placekitten.com/200/100",
+  backgroundColor: "black",
+};

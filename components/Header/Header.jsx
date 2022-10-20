@@ -1,18 +1,13 @@
-import styled from 'styled-components';
-import { text_data } from '../../styles/globals';
+import styled from "styled-components";
+import { textData } from "../../styles/globals";
 
 const HeaderCont = styled.h1`
-    font-size: ${props => props.size || text_data.h1.size};
-    color: ${props => props.color};
-    line-height: ${text_data.line_height};
-    letter-spacing: ${text_data.letter_spacing}
+  font-size: ${textData.h1.size};
+  color: ${(props) => props.color};
+  line-height: ${textData.lineHeight};
+  letter-spacing: ${textData.letterSpacing};
 `;
 
 export default function Header({ text = "Header text" }) {
-
-    return (
-        <HeaderCont size ={text_data.h1.size}>
-            {text}
-        </HeaderCont>
-    )
+  return <HeaderCont>{text}</HeaderCont>;
 }
