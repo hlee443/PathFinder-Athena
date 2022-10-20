@@ -7,6 +7,7 @@ import Button from "../Button/Button";
 import { iconSvgs } from "../Icon/data.js";
 import { Flexbox } from "../../styles/globals";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 const BubbleCont = styled(Flexbox)`
 max-width: ${(props) => props.width};
@@ -23,7 +24,7 @@ align-items: flex-start;
 justify-content: space-around;
 `;
 
-const ButtonCont = styled(Flexbox)`
+const BtnCont = styled(Flexbox)`
 justify-content: space-between;
 width: 100%;
 `;
@@ -42,20 +43,28 @@ align-self: end;
 export default function Bubble({
     width = "60rem",
     type = "login",
-    height = "42rem"
+    height = "42rem",
+    active = null,
+    setActive = null
 }) {
+    
+    const closeBubble = () => {
+        setActive(!active)
+    }
 
     return (
         <BubbleCont>
             <CloseButton>
-                <Icon faIconName ={faClose} />
+                <Icon handleClick={closeBubble} faIconName={faClose} />
             </CloseButton>
-            <Header></Header>
-            <Input></Input>
-            <Input></Input>
-            <SubHeader></SubHeader>
-            <Button></Button>
-            <Button></Button>
+            <Header text="Please Login"></Header>
+            <Input width="100%"></Input>
+            <Input width="100%"></Input>
+            <SubHeader text="If you don’t have an account with us,  please Sign Up!"></SubHeader>
+            <BtnCont dir="row">
+                <Button text="Cancel" />
+                <Button text="Log In" />
+            </BtnCont>
         </BubbleCont>
     );
 };
