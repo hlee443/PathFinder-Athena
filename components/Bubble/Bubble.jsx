@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import Header from "../Header/Header";
 import Input from "../Input/Input";
-import Subheader from "../Subheader/SubHeader";
+import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
 import { iconSvgs } from "../Icon/data.js";
 import { Flexbox } from "../../styles/globals";
@@ -36,32 +36,18 @@ height: 100%;
 export default function Bubble({
     width = "60rem",
     type = "login",
-    height = "42rem",
+    height = "42rem"
 }) {
 
     return (
-        <BubbleCont width={width} height={height}>
-            <Icon align="flex-end" changeIcon={iconSvgs.close} size="2rem" />
-            <Header text="Please Login!"></Header>
-            {type === "login" && (
-                <InputDiv>
-                    <Input
-                        type="email"
-                        width="100%"
-                        placeholder="Enter your email"
-                    ></Input>
-                    <Input
-                        type="password"
-                        width="100%"
-                        placeholder="Enter your password"
-                    ></Input>
-                </InputDiv>
-            )}
-            <Subheader text="If you don’t have an account with us,  please Sign Up!"></Subheader>
-      <ButtonCont dir ="row">
-              <Button text="Cancel" ></Button>
-                <Button text="Sign Up"></Button>
-            </ButtonCont>
-        </BubbleCont>  
-  );  
-}; 
+        <BubbleCont>
+            <Icon />
+            <Header></Header>
+            <Input></Input>
+            <Input></Input>
+            <SubHeader></SubHeader>
+            <Button></Button>
+            <Button></Button>
+        </BubbleCont>
+    );
+};
