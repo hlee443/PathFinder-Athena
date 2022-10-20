@@ -6,13 +6,14 @@ import { colors, Flexbox, Wrapper } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
-import { icon_svgs } from "../components/Icon/data";
+import { iconSvgs } from "../components/Icon/data";
 
 const URLbox = styled(Flexbox)`
   background: ${colors.Background_White};
   border: 2px solid ${colors.DarkGrey};
   border-radius: 50px;
   width: 100%;
+  justify-content: start;
 `;
 
 export default function Sandbox() {
@@ -33,7 +34,7 @@ export default function Sandbox() {
           <Button
             borderRadius="0 3.125rem 3.125rem 0;"
             text="Customize"
-            icon_name="chevronDown"
+            iconName="chevronDown"
             type="IconButton"
           />
         </URLbox>
