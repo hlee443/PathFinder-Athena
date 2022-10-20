@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { iconSvgs } from "../Icon/data";
 import { colors, Flexbox } from "../../styles/globals";
 import { btnData } from "./data";
 import { faLink } from "@fortawesome/free-solid-svg-icons";

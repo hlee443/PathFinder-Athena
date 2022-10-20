@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
-import { iconSvgs } from "../Icon/data";
 import { btnData } from "./data";
 import { useState } from "react";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
