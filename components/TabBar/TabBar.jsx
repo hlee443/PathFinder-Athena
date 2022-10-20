@@ -4,6 +4,7 @@ import { colors, Flexbox } from "../../styles/globals";
 import { iconSvgs } from "../Icon/data";
 import { btnData } from "./data";
 import { useState } from "react";
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const TabBarCont = styled(Flexbox)`
   border-bottom: 0.25rem solid #e1e1e1;
@@ -32,6 +33,7 @@ export default function TabBar() {
         icon_name="upload"
         text="Upload a File"
         width={btnData.width}
+        ButtonFaIconName={faArrowUpFromBracket}
       />
     </TabBarCont>
   );

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { iconSvgs } from "../Icon/data";
+import { faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload} from "@fortawesome/free-solid-svg-icons"
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -11,13 +12,13 @@ const ToolBarCont = styled.div`
 export default function ToolBar(src) {
   return (
     <ToolBarCont>
-      <Icon src={iconSvgs.sound}></Icon>
-      <Icon src={iconSvgs.dictionary}></Icon>
-      <Icon src={iconSvgs.summarize}></Icon>
-      <Icon src={iconSvgs.highlight}></Icon>
-      <Icon src={iconSvgs.font}></Icon>
-      <Icon src={iconSvgs.save}></Icon>
-      <Icon src={iconSvgs.download}></Icon>
+      <Icon faIconName={faVolumeHigh} ></Icon>
+      <Icon faIconName={faMagnifyingGlass}></Icon>
+      <Icon faIconName={faFileLines} ></Icon>
+      <Icon faIconName={faHighlighter}></Icon>
+      <Icon faIconName={faFont} ></Icon>
+      <Icon faIconName={faBookmark}></Icon>
+      <Icon faIconName={faDownload} ></Icon>
     </ToolBarCont>
   );
 }

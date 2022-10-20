@@ -7,6 +7,7 @@ import TabBar from "../components/TabBar/TabBar";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
 import { icon_svgs } from "../components/Icon/data";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 
 const URLbox = styled(Flexbox)`
   background: ${colors.Background_White};
@@ -35,6 +36,7 @@ export default function Sandbox() {
             text="Customize"
             icon_name="chevronDown"
             type="IconButton"
+            ButtonFaIconName={faChevronDown}
           />
         </URLbox>
       </Wrapper>

@@ -3,6 +3,7 @@ import Icon from "../Icon/Icon";
 import { iconSvgs } from "../Icon/data";
 import { colors, Flexbox } from "../../styles/globals";
 import { btnData } from "./data";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 const StyledButton = styled.button`
   border: none;
@@ -30,6 +31,7 @@ export default function Button({
   iconName = "link",
   handleClick = () => {},
   width = "",
+  ButtonFaIconName = faLink
 }) {
   // const handleClick = () => {
   //   console.log("hi!");
@@ -51,7 +53,7 @@ export default function Button({
     >
       {text}
       {type === "IconButton" && (
-        <Icon size="2.563rem" changeIcon={iconSvgs[iconName]} />
+        <Icon size="2.563rem" changeIcon={iconSvgs[iconName]} faIconName={ButtonFaIconName} />
       )}
     </StyledButton>
   );
