@@ -28,7 +28,6 @@ export default function Button({
   borderBottom = "none",
   borderRadius = "3.125rem",
   type = "btn type",
-  iconName = "link",
   handleClick = () => { },
   width = "",
   ButtonFaIconName = faLink
@@ -48,7 +47,6 @@ export default function Button({
       borderBottom={borderBottom}
       borderRadius={borderRadius}
       type="btn type"
-      iconName={iconName}
       width={width}
     >
       {text}
