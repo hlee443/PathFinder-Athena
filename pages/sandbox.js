@@ -8,12 +8,14 @@ import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
 import { icon_svgs } from "../components/Icon/data";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { iconSvgs } from "../components/Icon/data";
 
 const URLbox = styled(Flexbox)`
   background: ${colors.Background_White};
   border: 2px solid ${colors.DarkGrey};
   border-radius: 50px;
   width: 100%;
+  justify-content: start;
 `;
 
 export default function Sandbox() {
