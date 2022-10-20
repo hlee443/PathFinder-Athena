@@ -78,7 +78,7 @@ export default function NavBar() {
             text="Sign Up"
           ></Button>
         </ButtonContainer>
-        {showBubble && <Bubble></Bubble>}
+        {showBubble && <Bubble active ={showBubble} setActive={setShowBubble}></Bubble>}
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
