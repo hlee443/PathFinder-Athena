@@ -2,58 +2,52 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import Header from "../Header/Header";
 import Input from "../Input/Input";
-import Subheader from "../Subheader/SubHeader";
+import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
-import { icon_svgs } from "../Icon/data.js";
+import { iconSvgs } from "../Icon/data.js";
+import { Flexbox } from "../../styles/globals";
 
-const BubbleCont = styled.div`
-width: ${(props) => props.width};
-height: ${(props) => props.height};
+const BubbleCont = styled(Flexbox)`
+max-width: ${(props) => props.width};
+max-height: ${(props) => props.height};
 border-radius: 2rem;
 background-color: #fffef6;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
 padding: 4rem;
 z-index: 1;
-`;
-const ButtonCont = styled.div`
-display: flex;
-justify-content: space-between;
+position: absolute;
+top: 50%;
+left: 20%;
+right: 20%;
+align-items: flex-start;
+justify-content: space-around;
 `;
 
-const InputDiv = styled.div``;
+const ButtonCont = styled(Flexbox)`
+justify-content: space-between;
+width: 100%;
+`;
+
+const InputDiv = styled(Flexbox)`
+width: 100%;
+height: 100%;
+`;
 
 
 export default function Bubble({
-  width = "60rem",
-  type = "login",
-  height = "42rem",
+    width = "60rem",
+    type = "login",
+    height = "42rem"
 }) {
 
-  return (
-    <BubbleCont width={width} height={height}>
-      <Icon src={icon_svgs.close} size="2rem"></Icon>
-      <Header></Header>
-      {type === "login" && (
-        <InputDiv>
-          <Input
-            type="email"
-            width="100%"
-            placeholder="Enter your email"
-          ></Input>
-          <Input
-            type="password"
-            width="100%"
-            placeholder="Enter your password"
-          ></Input>
-        </InputDiv>
-      )}
-      <Subheader></Subheader>
-      <ButtonCont>
-        <Button></Button>
-        <Button></Button>
-      </ButtonCont>
-    </BubbleCont>
-  );
-}
+    return (
+        <BubbleCont>
+            <Icon />
+            <Header></Header>
+            <Input></Input>
+            <Input></Input>
+            <SubHeader></SubHeader>
+            <Button></Button>
+            <Button></Button>
+        </BubbleCont>
+    );
+};

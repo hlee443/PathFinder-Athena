@@ -1,22 +1,22 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { icon_svgs } from "../Icon/data";
+import { iconSvgs } from "../Icon/data";
 import { colors, Flexbox } from "../../styles/globals";
-import { btn_data } from "./data";
+import { btnData } from "./data";
 
 const StyledButton = styled.button`
-border: none;
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: ${(props) => props.backgroundColor};
-border-radius: ${(props) => props.borderRadius || "3.125rem"};
-border-bottom: ${(props) => props.borderBottom};
-width: ${(props) => props.width || "15rem"};
-height: ${(props) => props.height || "3.875rem"};
-font-size: ${(props) => props.fontSize};
-border-color: ${(props) => props.borderColor};
-`
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.backgroundColor};
+  border-radius: ${(props) => props.borderRadius || "3.125rem"};
+  border-bottom: ${(props) => props.borderBottom};
+  width: ${(props) => props.width || "15rem"};
+  height: ${(props) => props.height || "3.875rem"};
+  font-size: ${(props) => props.fontSize};
+  border-color: ${(props) => props.borderColor};
+`;
 
 export default function Button({
   backgroundColor = "#96ADFC",
@@ -27,11 +27,10 @@ export default function Button({
   borderBottom = "none",
   borderRadius = "3.125rem",
   type = "btn type",
-  icon_name = "link",
-  handleClick = () => { },
-  width = ""
+  iconName = "link",
+  handleClick = () => {},
+  width = "",
 }) {
-
   // const handleClick = () => {
   //   console.log("hi!");
   // };
@@ -47,11 +46,13 @@ export default function Button({
       borderBottom={borderBottom}
       borderRadius={borderRadius}
       type="btn type"
-      icon_name={icon_name}
+      iconName={iconName}
       width={width}
     >
       {text}
-      {type === "IconButton" && <Icon size="2.563rem" changeIcon={icon_svgs[icon_name]} />}
+      {type === "IconButton" && (
+        <Icon size="2.563rem" changeIcon={iconSvgs[iconName]} />
+      )}
     </StyledButton>
   );
 }

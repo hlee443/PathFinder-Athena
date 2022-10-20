@@ -1,17 +1,17 @@
 import Header from "./Header";
-import { text_data } from "../../styles/globals";
+import { textData } from "../../styles/globals";
 
 export default {
-    title: "Header",
-    component: Header,
-}
+  title: "Header",
+  component: Header,
+};
 
-const Template = args => <Header {...args} />
+const Template = (args) => <Header {...args} />;
 
-export const Primary = Template.bind({})
+export const Primary = Template.bind({});
 Primary.args = {
-    text: 'Header text',
-    size: text_data.h1.size,
-    line_height: text_data.line_height,
-    letter_spacing: text_data.letter_spacing
-}
+  text: "Header text",
+  size: textData.h1.size,
+  lineHeight: textData.lineHeight,
+  letterSpacing: textData.letterSpacing,
+};

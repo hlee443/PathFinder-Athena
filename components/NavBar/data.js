@@ -1,20 +1,20 @@
 import { colors } from "../../styles/globals";
 
-export const btn_data = {
+export const btnData = {
   width: "10.938rem",
   height: "2.5rem",
   state: {
     default: {
-      backgroundColor: colors.Background_White,
-      fontWeight: "normal"
+      backgroundColor: colors.backgroundWhite,
+      fontWeight: "normal",
     },
     hover: {
-      backgroundColor: colors.Button_LightBlue,
-      fontWeight: "bolder"
+      backgroundColor: colors.buttonLightBlue,
+      fontWeight: "bolder",
     },
     clicked: {
-      backgroundColor: colors.Button_LightBlue,
-      fontWeight: "bolder"
-    }
-  }
+      backgroundColor: colors.buttonLightBlue,
+      fontWeight: "bolder",
+    },
+  },
 };
