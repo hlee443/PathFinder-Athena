@@ -37,6 +37,6 @@ export const Flexbox = styled.div`
 export const Wrapper = styled(Flexbox)`
   padding: 6rem;
   justify-content: space-between;
-  height: 100vh;
+  min-height: 38.188rem;
   align-items: start;
 `;
