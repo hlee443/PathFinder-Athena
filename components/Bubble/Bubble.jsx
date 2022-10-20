@@ -6,6 +6,7 @@ import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
 import { iconSvgs } from "../Icon/data.js";
 import { Flexbox } from "../../styles/globals";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const BubbleCont = styled(Flexbox)`
 max-width: ${(props) => props.width};
@@ -32,6 +33,11 @@ width: 100%;
 height: 100%;
 `;
 
+const CloseButton = styled.div`
+display: flex;
+align-self: end;
+`;
+
 
 export default function Bubble({
     width = "60rem",
@@ -41,7 +47,9 @@ export default function Bubble({
 
     return (
         <BubbleCont>
-            <Icon />
+            <CloseButton>
+                <Icon faIconName ={faClose} />
+            </CloseButton>
             <Header></Header>
             <Input></Input>
             <Input></Input>

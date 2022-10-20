@@ -29,7 +29,7 @@ export default function Button({
   borderRadius = "3.125rem",
   type = "btn type",
   iconName = "link",
-  handleClick = () => {},
+  handleClick = () => { },
   width = "",
   ButtonFaIconName = faLink
 }) {
@@ -53,7 +53,7 @@ export default function Button({
     >
       {text}
       {type === "IconButton" && (
-        <Icon size="2.563rem" changeIcon={iconSvgs[iconName]} faIconName={ButtonFaIconName} />
+        <Icon faIconName={ButtonFaIconName} />
       )}
     </StyledButton>
   );
