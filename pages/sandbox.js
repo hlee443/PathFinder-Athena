@@ -36,7 +36,6 @@ export default function Sandbox() {
           <Button
             borderRadius="0 3.125rem 3.125rem 0;"
             text="Customize"
-            icon_name="chevronDown"
             type="IconButton"
             ButtonFaIconName={faChevronDown}
           />
