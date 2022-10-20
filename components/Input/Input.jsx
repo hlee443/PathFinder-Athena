@@ -19,13 +19,13 @@ const OptionCont = styled.select`
 export default function Input({
   width = "15rem",
   type = "text",
-  borderRadius = "",
+  borderRadius = "3.125rem",
   placeholder = "placeholder",
 }) {
   if (type === "text") {
     return (
       <InputCont
-        borderRadius="3.125rem 0 0 3.125rem;"
+        borderRadius={borderRadius}
         type={type}
         placeholder={placeholder}
         width={width}
@@ -35,7 +35,7 @@ export default function Input({
 
   if (type === "dropdown") {
     return (
-      <OptionCont OptionCont type="option" width={width}>
+      <OptionCont type="option" width={width}>
         <option value="" selected>
           Placeholder
         </option>
