@@ -1,5 +1,7 @@
-import Header from "../components/Header"
+import styled from "styled-components";
 
-export default function Sandbox() { 
-return <Header text="header works"></Header>
+export default function Sandbox() {
+  return (
+    <div></div>
+  );
 }
