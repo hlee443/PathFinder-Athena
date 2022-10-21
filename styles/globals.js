@@ -8,7 +8,7 @@ export const textData = {
   },
   h2: {
     size: "1.5rem",
-  },
+    },
 };
 
 export const colors = {
@@ -40,3 +40,10 @@ export const Wrapper = styled(Flexbox)`
   height: 100vh;
   align-items: start;
 `;
+
+export const BodyText = styled.p`
+font-size: 1em;
+margin: 1em;
+line-height: 150%;
+letter-spacing: 0.35em,
+`
