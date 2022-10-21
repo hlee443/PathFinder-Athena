@@ -12,13 +12,19 @@ import {
   faFolderPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { SuccessBubble } from "../Bubble/Bubble";
+import Label from "../Label/Label";
 
 const DropdownCont = styled.div`
   border-radius: 3rem;
-  //   background-color: ${colors.backgroundCream};
+  background-color: ${colors.backgroundCream};
   width: fit-content;
   //   padding: 1rem;
-  overflow: hidden;
+  //   overflow: hidden;
+  position: absolute;
+  z-index: 1;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
 `;
 
 const DropdownDiv = styled.div`
@@ -35,27 +41,38 @@ const IconLeftDiv = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-export default function ToolBarDropdown() {
+export default function ToolBarDropdown({
+  active = null,
+  setActive = null,
+  left = "",
+  top = "",
+}) {
+  const [showBubble, setShowBubble] = useState(false);
+  const closeBubble = () => {
+    setActive(!active);
+  };
   return (
-    <DropdownCont>
+    <DropdownCont left={left} top={top}>
       <DropdownDiv backgroundColor={colors.primaryBlue}>
-        <p>My Library</p>
-        <Icon faIconName={faClose}></Icon>
+        <Label backgroundColor="transparent" text="My Library"></Label>
+        <Icon faIconName={faClose} handleClick={closeBubble}></Icon>
       </DropdownDiv>
       <DropdownDiv backgroundColor={colors.backgroundCream}>
         <IconLeftDiv>
           <Icon faIconName={faFolder}></Icon>
-          <p>1st folder</p>
+          <Label
+            backgroundColor="transparent"
+            text="Assignments"
+            handleClick={setShowBubble}
+          ></Label>
         </IconLeftDiv>
-
         <Icon faIconName={faChevronRight}></Icon>
       </DropdownDiv>
-      <DropdownDiv backgroundColor={colors.backgroundYellow}>
+      <DropdownDiv backgroundColor={colors.backgroundCream}>
         <IconLeftDiv>
           <Icon faIconName={faFolder}></Icon>
-          <p>2nd folder</p>
+          <Label backgroundColor="transparent" text="Quizzes"></Label>
         </IconLeftDiv>
-
         <Icon faIconName={faChevronRight}></Icon>
       </DropdownDiv>
       <DropdownDiv>
@@ -64,8 +81,16 @@ export default function ToolBarDropdown() {
           backgroundColor="transparent"
           type="IconButton"
           ButtonFaIconName={faFolderPlus}
+          handleClick={setShowBubble}
         ></Button>
       </DropdownDiv>
+      {showBubble && (
+        <SuccessBubble
+          header="You have saved your file to the Assignment folder!"
+          active={showBubble}
+          setActive={setShowBubble}
+        ></SuccessBubble>
+      )}
     </DropdownCont>
   );
 }

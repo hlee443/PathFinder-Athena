@@ -7,11 +7,17 @@ const LabelCont = styled.p`
   padding: 0.5rem;
   border-radius: 2rem;
   width: fit-content;
+  cursor: pointer;
 `;
 
 export default function Label({
-    text = "placeholder",
-    backgroundColor = "#FFFEF6",
+  text = "placeholder",
+  backgroundColor = "#FFFEF6",
+  handleClick = () => {},
 }) {
-    return <LabelCont backgroundColor={backgroundColor}>{text}</LabelCont>;
+  return (
+    <LabelCont backgroundColor={backgroundColor} onClick={handleClick}>
+      {text}
+    </LabelCont>
+  );
 }
