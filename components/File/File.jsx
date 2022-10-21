@@ -1,46 +1,42 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import Icon from "../Icon/Icon"
+import { colors, Flexbox, BodyText } from '../../styles/globals';
+import Icon from "../Icon/Icon";
+import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const FileCont = styled.div`
-display:flex;
-justify-content:center;
-align-items:center;
+const FileCont = styled.div``
+
+const Preview = styled(Flexbox)`
 font-size: ${props => props.size};
-width: 10rem;
-height: 11rem;
-border-radius: 2rem;
-background-color: ${props => props.color};
-border: ${props => props.borderType};
-border-style: dashed;
+min-width: 12.813rem;
+min-height: 15.625rem;
+border-radius: 3.125rem;
+background-color: ${props => props.color || colors.backgroundWhite};
+border: 0.188rem dashed ${colors.darkGray};
 `;
 
-const FileImage = styled.img`
-width: 100%;
-height: 13rem;
+
+const BottomCont = styled(Flexbox)`
+min-width: 100%;
+justify-content: space-between;
 `
 
-const BottomCont = styled.div`
-width: 10rem;
-height: 13rem;
-`
+export default function File({
+    text = "Title",
+    type = "default",
+}) {
 
+    const [isFileSaved, setIsFileSaved] = useState(false);
 
-export default function File({ text = "Title", size = "2.375rem", type = "default", borderType = "0px solid black", color = "#D9D9D9", buttonDisplay = "none" }) {
-
-  const [isFileSaved, setIsFileSaved] = useState(false);
-
-  return (
-    <FileCont>
-      {isFileSaved && <FileImage>
-
-      </FileImage>
-      }
-      <BottomCont>
-        <div>{text}</div>
-        <Icon />
-      </BottomCont>
-    </FileCont>
-
-  )
-}
+    return (
+        <FileCont>
+            <Preview>
+                <Icon faIconName={faPlus} size ="2x"/>
+            </Preview>
+            <BottomCont dir="row">
+                <div>{text}</div>
+                <Icon faIconName={faEllipsisVertical} />
+            </BottomCont>
+        </FileCont>
+    );
+};
