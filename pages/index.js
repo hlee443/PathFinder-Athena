@@ -2,11 +2,13 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper } from "../styles/globals";
+import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faUpload } from "@fortawesome/free-solid-svg-icons"
+import Icon from "../components/Icon/Icon";
+import { useRouter } from "next/router";
 
 const URLbox = styled(Flexbox)`
   background: ${colors.Background_White};
@@ -17,6 +19,7 @@ const URLbox = styled(Flexbox)`
 `;
 
 export default function Home() {
+
   return (
     <Flexbox>
       <NavBar></NavBar>
@@ -38,8 +41,14 @@ export default function Home() {
             ButtonFaIconName={faChevronDown}
           />
         </URLbox>
+        <Container width="100%">
+          <Icon faIconName={faUpload} ></Icon>
+          <SubHeader text="Drag and drop a file here"></SubHeader>
+          <p>or</p>
+          <Button text="Choose a file"></Button>
+        </Container>
       </Wrapper>
       <Button text="upload" type="default" />
     </Flexbox>
   );
-}
+};
