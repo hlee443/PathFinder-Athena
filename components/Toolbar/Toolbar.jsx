@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { iconSvgs } from "../Icon/data";
 import { faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload} from "@fortawesome/free-solid-svg-icons"
 
 const ToolBarCont = styled.div`
@@ -9,7 +8,7 @@ const ToolBarCont = styled.div`
   border: none;
   width: 53rem;
 `;
-export default function ToolBar(src) {
+export default function ToolBar() {
   return (
     <ToolBarCont>
       <Icon faIconName={faVolumeHigh} ></Icon>
