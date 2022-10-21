@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 html,
 body {
+  font-family: "Open Sans", sans-serif;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -14,6 +15,10 @@ a {
 form { /* added temporarily for the api test forms to look a little better */
   display: flex;
   flex-direction: column;
+}
+
+.fileOutput__container{
+  white-space: pre-line;  /* recognizes <br /> in the HTML and will line break it. Pretty coolllll*/
 }
 
 * {

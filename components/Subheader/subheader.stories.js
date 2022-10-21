@@ -1,17 +1,17 @@
 import SubHeader from "./SubHeader";
-import { text_data } from "../../styles/globals";
+import { textData } from "../../styles/globals";
 
 export default {
-    title: "SubHeader",
-    component: SubHeader,
-}
+  title: "SubHeader",
+  component: SubHeader,
+};
 
-const Template = args => <SubHeader {...args} />
+const Template = (args) => <SubHeader {...args} />;
 
-export const Subheader = Template.bind({})
-Subheader.args = {
-    text: 'Subheader text',
-    size: text_data.h2.size,
-    line_height: text_data.line_height,
-    letter_spacing: text_data.letter_spacing
-}
+export const Default = Template.bind({});
+Default.args = {
+  text: "Subheader text",
+  size: textData.h2.size,
+  lineHeight: textData.lineHeight,
+  letterSpacing: textData.letterSpacing,
+};

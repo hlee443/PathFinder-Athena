@@ -13,11 +13,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Athena v.0.1
+          Athena v.0.2
         </h1>
 
         <p className={styles.description}>
-        &quot;Building bridges with Hermes&quot;
+        &quot;Live-ing with Hermes&quot;
         </p>
 
         <div className={styles.grid}>
@@ -37,6 +37,14 @@ export default function Home() {
           >
             <h2>Dictionary &rarr;</h2>
             <p>Test the Dictionary API.</p>
+          </a>
+
+          <a
+            href="./test/upload_test"
+            className={styles.card}
+          >
+            <h2>Upload &rarr;</h2>
+            <p>Test the Upload function.</p>
           </a>
 
         </div>

@@ -1,6 +1,6 @@
 import { colors } from "../../styles/globals";
 
-export const btn_data = {
+export const btnData = {
   width: "21rem",
   height: "4.375rem",
   backgroundColor: "transparent",
@@ -8,13 +8,13 @@ export const btn_data = {
   border: "0.25rem",
   state: {
     default: {
-      borderColor: "transparent"
+      borderBottom: "0.25rem solid transparent",
     },
     hover: {
-      borderColor: "transparent"
+      borderBottom: "0.25rem solid transparent",
     },
     clicked: {
-      borderColor: colors.PrimaryBlue
+      borderBottom: `0.25rem solid ${colors.primaryBlue}`,
     },
   },
 };
