@@ -49,7 +49,7 @@ const ButtonContainer = styled.div`
 
 export default function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showBubble, setShowBubble] = useState(false);
+  const [showBubble, setShowBubble] = useState(true);
 
   return (
     <NavBarCont>
@@ -78,10 +78,10 @@ export default function NavBar() {
             text="Sign Up"
           ></Button>
         </ButtonContainer>
-        {showBubble && <Bubble active ={showBubble} setActive={setShowBubble}></Bubble>}
+        {showBubble && <Bubble type="login" active={showBubble} setActive={setShowBubble}></Bubble>}
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
     </NavBarCont>
   );
-}
+};

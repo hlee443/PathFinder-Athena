@@ -4,17 +4,16 @@ import Header from "../Header/Header";
 import Input from "../Input/Input";
 import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
-import { iconSvgs } from "../Icon/data.js";
-import { Flexbox } from "../../styles/globals";
+import { colors, Flexbox } from "../../styles/globals";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 const BubbleCont = styled(Flexbox)`
-max-width: ${(props) => props.width};
-max-height: ${(props) => props.height};
+max-width: 60rem;
+max-height: 42rem;
 border-radius: 2rem;
 background-color: #fffef6;
-padding: 4rem;
+padding: 2.5rem;
 z-index: 1;
 position: absolute;
 top: 50%;
@@ -29,41 +28,37 @@ justify-content: space-between;
 width: 100%;
 `;
 
-const InputDiv = styled(Flexbox)`
-width: 100%;
-height: 100%;
-`;
-
 const CloseButton = styled.div`
 display: flex;
 align-self: end;
 `;
 
-
 export default function Bubble({
-    width = "60rem",
-    type = "login",
-    height = "42rem",
     active = null,
-    setActive = null
+    setActive = null,
+    type = "login",
 }) {
     
     const closeBubble = () => {
         setActive(!active)
     }
 
+    const [header, setHeader] = useState("Header Text");
+    const [subHeader, setSubHeader] = useState("Subheader text");
+
     return (
         <BubbleCont>
             <CloseButton>
                 <Icon handleClick={closeBubble} faIconName={faClose} />
             </CloseButton>
-            <Header text="Please Login"></Header>
+            <Header text={header}></Header>
             <Input width="100%"></Input>
             <Input width="100%"></Input>
-            <SubHeader text="If you don’t have an account with us,  please Sign Up!"></SubHeader>
+            {type === "signup" && <Input width="100%"></Input>}
+            <SubHeader text={subHeader}></SubHeader>
             <BtnCont dir="row">
-                <Button text="Cancel" />
-                <Button text="Log In" />
+                <Button text="Cancel" handleClick={closeBubble} backgroundColor={colors.buttonPrimaryBlue}></Button>
+                <Button text="Log In" ></Button>
             </BtnCont>
         </BubbleCont>
     );

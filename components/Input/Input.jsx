@@ -24,7 +24,7 @@ export default function Input({
 }) {
   if (type === "text") {
     return (
-        <InputCont
+      <InputCont
         borderRadius={borderRadius}
         type={type}
         placeholder={placeholder}
@@ -35,7 +35,7 @@ export default function Input({
 
   if (type === "dropdown") {
     return (
-      <OptionCont OptionCont type="option" width={width}>
+      <OptionCont type="option" width={width}>
         <option value="" selected>
           Placeholder
         </option>
