@@ -47,3 +47,12 @@ margin: 1em;
 line-height: 150%;
 letter-spacing: 0.35em,
 `
+
+export const Container = styled(Flexbox)`
+width: ${(props) => props.width};
+height: ${(props) => props.height};
+padding: 3em;
+border: 0.125rem solid ${colors.darkGray};
+background-color: ${colors.backgroundWhite};
+border-radius: 2rem;
+`
