@@ -1,57 +1,42 @@
-import styled from 'styled-components'
+import { useState } from 'react';
+import styled from 'styled-components';
+import { colors, Flexbox, BodyText } from '../../styles/globals';
+import Icon from "../Icon/Icon";
+import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-export default function File({text = "Title", size = "2.375rem", type = "default", borderType = "0px solid black", color = "#D9D9D9", buttonDisplay = "none"}) {
+const FileCont = styled.div``
 
-  var bottomContDisplay = "flex";
+const Preview = styled(Flexbox)`
+font-size: ${props => props.size};
+min-width: 12.813rem;
+min-height: 15.625rem;
+border-radius: 3.125rem;
+background-color: ${props => props.color || colors.backgroundWhite};
+border: 0.188rem dashed ${colors.darkGray};
+`;
 
-  if(type==="onlyBox"){
-    bottomContDisplay = "none";
-  }
 
-  if(type==="addFile"){
-    bottomContDisplay = "none"; 
-    borderType = "3px solid black";
-    color = "white";
-    buttonDisplay = "flex"
-  }
+const BottomCont = styled(Flexbox)`
+min-width: 100%;
+justify-content: space-between;
+`
 
-  const FileCont = styled.div`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size: ${size};
-    width: 10rem;
-    height: 11rem;
-    border-radius: 2rem;
-    background-color: ${color};
-    border: ${borderType};
-    border-style: dashed;
-  `;
-  
-  const Cont = styled.div`
-    width: 10rem;
-    height: 13rem;
-  `
-  const BottomCont = styled.div`
-    display: ${bottomContDisplay};
-    justify-content:space-between;
-  `
-  const PlusButton = styled.div`
-    display: ${buttonDisplay}};
-  `
+export default function File({
+    text = "Title",
+    type = "default",
+}) {
 
-  return (
-    <Cont>
-      <FileCont>
-        <PlusButton>
-          +
-        </PlusButton>
-      </FileCont>
-      <BottomCont>
-        <div>{text}</div>
-        <div>Icon</div>
+    const [isFileSaved, setIsFileSaved] = useState(false);
 
-      </BottomCont>
-    </Cont>
-  )
-}
+    return (
+        <FileCont>
+            <Preview>
+                <Icon faIconName={faPlus} size ="2x"/>
+            </Preview>
+            <BottomCont dir="row">
+                <div>{text}</div>
+                <Icon faIconName={faEllipsisVertical} />
+            </BottomCont>
+        </FileCont>
+    );
+};

@@ -1,4 +1,4 @@
-export const icon_svgs = {
+export const iconSvgs = {
   sound: "sound.svg",
   dictionary: "dictionary.svg",
   summarize: "summarize.svg",
@@ -17,4 +17,6 @@ export const icon_svgs = {
   plus: "plus.svg",
   search: "search.svg",
   check: "check.svg",
+  upload: "upload.svg",
+  chevronDown: "chevronDown.svg",
 };

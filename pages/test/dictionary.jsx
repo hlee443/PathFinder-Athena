@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import * as mainHandler from '../../handlers/main'
 
 
 export default function Home() {
@@ -14,14 +14,18 @@ export default function Home() {
     e.preventDefault();
     try {
       const word = window.getSelection().toString();
-      const res = await axios.get(`/api/info`, {
-        params: { word },
-      });
-      const { data } = res;
-      const { definition } = data;
-      // split the response string into an array using regex
-      const newDefinition = definition.split(/1. |2. | 3. /);
-      setWordInfo(newDefinition);
+      // const res = await axios.get(`/api/info`, {
+      //   params: { word },
+      // });
+      const res = await mainHandler.handleDictionary(word)
+      if (res) {
+        const { data } = res;
+        const { definition } = data;
+        // split the response string into an array using regex
+        const newDefinition = definition.split(/1. |2. | 3. /);
+        setWordInfo(newDefinition);
+      }
+
       // console.log(window.getSelection().toString());
     } catch (err) {
       console.log(err);
