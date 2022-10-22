@@ -20,7 +20,7 @@ export default function Converted() {
           <Header text="Assignment"></Header>
           <Icon faIconName={faPencil}></Icon>
         </Title>
-        <Toolbar></Toolbar>
+        <ToolBar></ToolBar>
         <Container width="100%" height="100%">
           //converted text goes here
         </Container>

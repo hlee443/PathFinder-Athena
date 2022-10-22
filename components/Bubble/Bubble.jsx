@@ -14,7 +14,7 @@ const BubbleCont = styled(Flexbox)`
   border-radius: 2rem;
   background-color: #fffef6;
   padding: 2.5rem;
-  z-index: 5;
+  z-index: 1;
   position: absolute;
   top: 50%;
   left: 20%;
