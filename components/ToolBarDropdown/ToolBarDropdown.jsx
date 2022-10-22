@@ -15,6 +15,8 @@ import {
   faTextSize,
   faFont,
   faFillDrip,
+  faBooks,
+  faBook,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { SuccessBubble } from "../Bubble/Bubble";
@@ -61,7 +63,7 @@ export default function ToolBarDropdown({
     <DropdownCont left={left} top={top}>
       <DropdownDiv backgroundColor={colors.primaryBlue}>
         <IconLeftDiv>
-          <Icon faIconName={faClose}></Icon>
+          <Icon faIconName={faBook}></Icon>
           <Label backgroundColor="transparent" text="My Library"></Label>
         </IconLeftDiv>
         <Icon faIconName={faClose} handleClick={closeBubble}></Icon>
