@@ -4,6 +4,9 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
+import { faBookBookmark, faHome, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
+import { colors } from "../../styles/globals";
 
 const NavBarCont = styled.div`
   width: 100%;
@@ -12,6 +15,7 @@ const NavBarCont = styled.div`
   backdrop-filter: blur(0.125rem);
   align-items: center;
   flex-direction: column;
+  z-index: 100;
 `;
 
 const Logo = styled.img``;
@@ -39,6 +43,7 @@ const IconContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const ButtonContainer = styled.div`
   min-width: 23.75rem;
   height: 100%;
@@ -48,40 +53,46 @@ const ButtonContainer = styled.div`
 `;
 
 export default function NavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showBubble, setShowBubble] = useState(true);
+  const r = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [showBubble, setShowBubble] = useState(false);
 
   return (
     <NavBarCont>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {isLoggedIn && (
-          <IconContainer>
-            <Icon src=""></Icon>
-            <Icon src=""></Icon>
-            <Icon src=""></Icon>
-          </IconContainer>
+        {
+          isLoggedIn ? <IconContainer>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={()=>r.push("/")}></Icon>
+            <Icon size ="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={()=>r.push("/library")}></Icon>
+            <Icon size ="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
+          </IconContainer> : <ButtonContainer>
+            <Button
+              handleClick={setShowBubble}
+              width={btnData.width}
+              height={btnData.height}
+              backgroundColor={btnData.state.default.backgroundColor}
+              text="Log In"
+            ></Button>
+            <Button
+              handleClick={setShowBubble}
+              width={btnData.width}
+              height={btnData.height}
+              backgroundColor={btnData.state.default.backgroundColor}
+              text="Sign Up"
+            ></Button>
+          </ButtonContainer>
+        }
+        {showBubble && (
+          <Bubble
+            type="login"
+            active={showBubble}
+            setActive={setShowBubble}
+          ></Bubble>
         )}
-        <ButtonContainer>
-          <Button
-            handleClick={setShowBubble}
-            width={btnData.width}
-            height={btnData.height}
-            backgroundColor={btnData.state.default.backgroundColor}
-            text="Log In"
-          ></Button>
-          <Button
-            handleClick={setShowBubble}
-            width={btnData.width}
-            height={btnData.height}
-            backgroundColor={btnData.state.default.backgroundColor}
-            text="Sign Up"
-          ></Button>
-        </ButtonContainer>
-        {showBubble && <Bubble type="login" active={showBubble} setActive={setShowBubble}></Bubble>}
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
     </NavBarCont>
   );
-};
+}
