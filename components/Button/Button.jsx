@@ -28,9 +28,9 @@ export default function Button({
   borderBottom = "none",
   borderRadius = "3.125rem",
   type = "btn type",
-  handleClick = () => { },
+  handleClick = () => {},
   width = "",
-  ButtonFaIconName = faLink
+  ButtonFaIconName = faLink,
 }) {
   // const handleClick = () => {
   //   console.log("hi!");
@@ -50,9 +50,7 @@ export default function Button({
       width={width}
     >
       {text}
-      {type === "IconButton" && (
-        <Icon faIconName={ButtonFaIconName} />
-      )}
+      {type === "IconButton" && <Icon faIconName={ButtonFaIconName} />}
     </StyledButton>
   );
 }
