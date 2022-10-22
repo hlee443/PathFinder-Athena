@@ -10,6 +10,11 @@ import {
   faFolder,
   faChevronRight,
   faFolderPlus,
+  faLineHeight,
+  faTextWidth,
+  faTextSize,
+  faFont,
+  faFillDrip,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { SuccessBubble } from "../Bubble/Bubble";
@@ -18,9 +23,10 @@ import Label from "../Label/Label";
 const DropdownCont = styled.div`
   border-radius: 3rem;
   background-color: ${colors.backgroundCream};
+  border: 0.15rem solid black;
   width: fit-content;
   //   padding: 1rem;
-  //   overflow: hidden;
+  overflow: hidden;
   position: absolute;
   z-index: 1;
   top: ${(props) => props.top};
@@ -54,7 +60,10 @@ export default function ToolBarDropdown({
   return (
     <DropdownCont left={left} top={top}>
       <DropdownDiv backgroundColor={colors.primaryBlue}>
-        <Label backgroundColor="transparent" text="My Library"></Label>
+        <IconLeftDiv>
+          <Icon faIconName={faClose}></Icon>
+          <Label backgroundColor="transparent" text="My Library"></Label>
+        </IconLeftDiv>
         <Icon faIconName={faClose} handleClick={closeBubble}></Icon>
       </DropdownDiv>
       <DropdownDiv backgroundColor={colors.backgroundCream}>
@@ -91,6 +100,66 @@ export default function ToolBarDropdown({
           setActive={setShowBubble}
         ></SuccessBubble>
       )}
+    </DropdownCont>
+  );
+}
+
+export function FontDropdown({
+  active = null,
+  setActive = null,
+  left = "",
+  top = "",
+}) {
+  const closeBubble = () => {
+    setActive(!active);
+  };
+  return (
+    <DropdownCont left={left} top={top}>
+      <DropdownDiv backgroundColor={colors.primaryBlue}>
+        <IconLeftDiv>
+          <Icon faIconName={faFont}></Icon>
+          <Label backgroundColor="transparent" text="Typeface"></Label>
+        </IconLeftDiv>
+        <Icon faIconName={faClose} handleClick={closeBubble}></Icon>
+      </DropdownDiv>
+      <DropdownDiv>
+        <IconLeftDiv></IconLeftDiv>
+        <Icon faIconName={faFillDrip}></Icon>
+        <Label backgroundColor="transparent" text="Background Color"></Label>
+        <Input type="dropdown" width="12rem"></Input>
+      </DropdownDiv>
+      <DropdownDiv>
+        <IconLeftDiv>
+          <Icon faIconName={faFont}></Icon>
+          <Label backgroundColor="transparent" text="Typeface"></Label>
+        </IconLeftDiv>
+        <Input type="dropdown" width="12rem"></Input>
+      </DropdownDiv>
+      <DropdownDiv>
+        <IconLeftDiv>
+          <Icon faIconName={faTextSize}></Icon>
+          <Label backgroundColor="transparent" text="Font Size"></Label>
+        </IconLeftDiv>
+        <Input type="text" width="6rem"></Input>
+        <Label backgroundColor="transparent" text="pt"></Label>
+      </DropdownDiv>
+      <DropdownDiv>
+        <IconLeftDiv>
+          <Icon faIconName={faLineHeight}></Icon>
+          <Label backgroundColor="transparent" text="Line Spacing"></Label>
+        </IconLeftDiv>
+        <Input type="text" width="6rem"></Input>
+        <Label backgroundColor="transparent" text="pt"></Label>
+      </DropdownDiv>
+      <DropdownDiv>
+        <IconLeftDiv>
+          <Icon faIconName={faTextWidth}></Icon>
+          <Label backgroundColor="transparent" text="Letter Spacing"></Label>
+        </IconLeftDiv>
+        <Input type="text" width="6rem"></Input>
+        <Label backgroundColor="transparent" text="pt"></Label>
+      </DropdownDiv>
+      <Button text="Clear"></Button>
     </DropdownCont>
   );
 }
