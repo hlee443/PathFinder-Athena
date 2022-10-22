@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { colors, Flexbox } from "../../styles/globals";
+import { colors, Flexbox, textData } from "../../styles/globals";
 import { btnData } from "./data";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,6 +16,8 @@ const StyledButton = styled.button`
   height: ${(props) => props.height || "3.875rem"};
   font-size: ${(props) => props.fontSize};
   border-color: ${(props) => props.borderColor};
+  line-height: ${textData.lineHeight};
+  letter-spacing: ${textData.letterSpacing}
 `;
 
 export default function Button({
