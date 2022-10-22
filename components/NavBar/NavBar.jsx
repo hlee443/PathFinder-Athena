@@ -50,7 +50,7 @@ const ButtonContainer = styled.div`
 
 export default function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showBubble, setShowBubble] = useState(true);
+  const [showBubble, setShowBubble] = useState(false);
 
   return (
     <NavBarCont>
