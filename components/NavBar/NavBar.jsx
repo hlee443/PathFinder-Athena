@@ -49,36 +49,35 @@ const ButtonContainer = styled.div`
 `;
 
 export default function NavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showBubble, setShowBubble] = useState(false);
 
   return (
     <NavBarCont>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {isLoggedIn && (
-          <IconContainer>
+        {
+          isLoggedIn ? <IconContainer>
             <Icon src=""></Icon>
             <Icon src=""></Icon>
             <Icon src=""></Icon>
-          </IconContainer>
-        )}
-        <ButtonContainer>
-          <Button
-            handleClick={setShowBubble}
-            width={btnData.width}
-            height={btnData.height}
-            backgroundColor={btnData.state.default.backgroundColor}
-            text="Log In"
-          ></Button>
-          <Button
-            handleClick={setShowBubble}
-            width={btnData.width}
-            height={btnData.height}
-            backgroundColor={btnData.state.default.backgroundColor}
-            text="Sign Up"
-          ></Button>
-        </ButtonContainer>
+          </IconContainer> : <ButtonContainer>
+            <Button
+              handleClick={setShowBubble}
+              width={btnData.width}
+              height={btnData.height}
+              backgroundColor={btnData.state.default.backgroundColor}
+              text="Log In"
+            ></Button>
+            <Button
+              handleClick={setShowBubble}
+              width={btnData.width}
+              height={btnData.height}
+              backgroundColor={btnData.state.default.backgroundColor}
+              text="Sign Up"
+            ></Button>
+          </ButtonContainer>
+        }
         {showBubble && (
           <Bubble
             type="login"
