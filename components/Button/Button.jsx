@@ -5,6 +5,7 @@ import { btnData } from "./data";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 const StyledButton = styled.button`
+  font-weight: ${(props) => props.fontWeight};
   border: none;
   display: flex;
   align-items: center;
@@ -34,26 +35,28 @@ export default function Button({
   handleClick = () => { },
   width = "",
   ButtonFaIconName = faLink,
+  fontWeight = "normal"
 }) {
   // const handleClick = () => {
   //   console.log("hi!");
   // };
 
   return (
-      <StyledButton
-        onClick={handleClick}
-        backgroundColor={backgroundColor}
-        text="button text"
-        height={height}
-        fontSize={fontSize}
-        textColor={textColor}
-        borderBottom={borderBottom}
-        borderRadius={borderRadius}
-        type="btn type"
-        width={width}
-      >
-        {text}
-        {type === "IconButton" && <Icon faIconName={ButtonFaIconName} />}
-      </StyledButton>
+    <StyledButton
+      onClick={handleClick}
+      backgroundColor={backgroundColor}
+      text="button text"
+      height={height}
+      fontSize={fontSize}
+      textColor={textColor}
+      borderBottom={borderBottom}
+      borderRadius={borderRadius}
+      type="btn type"
+      width={width}
+      fontWeight={fontWeight}
+    >
+      {text}
+      {type === "IconButton" && <Icon faIconName={ButtonFaIconName} />}
+    </StyledButton>
   );
 }
