@@ -1,4 +1,4 @@
-import ToolBar from "./ToolBar";
+import ToolBar from "./Toolbar";
 
 // The default export metadata controls how Storybook lists your stories and provides information used by addons.
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
