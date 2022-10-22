@@ -5,11 +5,13 @@ import SubHeader from "../components/SubHeader/SubHeader";
 import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
-import { faChevronDown, faUpload } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faUpload, faPaintRoller, faFont, faTextHeight } from "@fortawesome/free-solid-svg-icons"
 import Icon from "../components/Icon/Icon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Input from "../components/Input/Input";
+import Option from "../components/Option/Option";
+import { btnData } from "../components/Button/data";
 
 const URLbox = styled(Flexbox)`
   background: ${colors.Background_White};
@@ -19,10 +21,14 @@ const URLbox = styled(Flexbox)`
   justify-content: start;
 `;
 
+const ClearButton = styled(Flexbox)`
+align-self: end`
+
 export default function Home() {
 
   const r = useRouter();
   const [inputType, setInputType] = useState("url");
+  const [active, setActive] = useState(false);
 
   // const changeInputType = (newInputType) => {
   //   if (newInputType === "url") {
@@ -39,7 +45,7 @@ export default function Home() {
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
         <SubHeader text="Enter URL or upload files, we will make it easier to understand for you."></SubHeader>
-        <TabBar changePage ={() => inputType === "url" ? setInputType("upload") : setInputType("url")}></TabBar>
+        <TabBar changePage={() => inputType === "url" ? setInputType("upload") : setInputType("url")}></TabBar>
         {
           inputType === "url" && <URLbox dir="row">
             <Input
@@ -49,6 +55,8 @@ export default function Home() {
               placeholder="Paste your URL here.."
             ></Input>
             <Button
+              handleClick={setActive}
+              backgroundColor={colors.buttonPrimaryBlue}
               borderRadius="0 3.125rem 3.125rem 0;"
               text="Customize"
               type="IconButton"
@@ -57,15 +65,56 @@ export default function Home() {
           </URLbox>
         }
         {
+          active && <Container width="100%">
+            <Option
+              faIconName={faPaintRoller}
+              option="Background Colour"
+              inputType="color"
+            ></Option>
+            <Option
+              faIconName={faFont}
+              option="Typeface"
+              inputType="dropdown"
+              placeholder="Choose your typeface"
+            ></Option>
+            <Option
+              faIconName={faFont}
+              option="Font Size"
+              inputType="text"
+              unit="pt"
+              placeholder="##"
+              type="unit"
+            ></Option>
+            <Option
+              faIconName={faTextHeight}
+              option="Line Spacing"
+              inputType="text"
+              placeholder="##"
+              type="unit"
+            ></Option>
+            <Option
+              faIconName={faFont}
+              option="Letter Spacing"
+              inputType="text"
+              unit="%"
+              placeholder="##"
+              type="unit"
+            ></Option>
+            <ClearButton>
+              <Button text="Clear" backgroundColor={colors.buttonPrimaryBlue} width={btnData.size.small.width} height={btnData.size.small.height}></Button>
+            </ClearButton>
+          </Container>
+        }
+        {
           inputType === "upload" && <Container width="100%">
             <Icon faIconName={faUpload} ></Icon>
             <SubHeader text="Drag and drop a file here"></SubHeader>
             <p>or</p>
-            <Button text="Choose a file"></Button>
+            <Button backgroundColor={colors.buttonPrimaryBlue} text="Choose a file"></Button>
           </Container>
         }
       </Wrapper>
-      {inputType === "url" && <Button text="upload" type="default" />}
+      {inputType === "url" && <Button backgroundColor={colors.buttonPrimaryBlue} text="upload" type="default" />}
     </Flexbox>
   );
 };
