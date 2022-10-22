@@ -12,11 +12,11 @@ const TabBarCont = styled(Flexbox)`
   width: 100%;
 `;
 
-export default function TabBar(
+export default function TabBar({
   changePage = () => { },
   inputType = "url"
 
-) {
+}) {
 
   const [isActive, setIsActive] = useState(false);
 
@@ -37,17 +37,17 @@ export default function TabBar(
         type="IconButton"
         text="Import from URL"
         width={btnData.width}
-        handleClick={() => { changeState(), changePage}}
+        handleClick={() => { changeState(), changePage() }}
       />
       <Button
-        borderBottom={isActive ? btnData.state.clicked.borderBottom : btnData.state.default.borderBottom}
+        borderBottom={!isActive ? btnData.state.clicked.borderBottom : btnData.state.default.borderBottom}
         backgroundColor="transparent"
         borderRadius="0"
         type="IconButton"
         text="Upload a File"
         width={btnData.width}
         ButtonFaIconName={faArrowUpFromBracket}
-        handleClick={() => { changeState, changePage }} />
+        handleClick={() => { changeState(), changePage() }} />
     </TabBarCont>
   );
 };

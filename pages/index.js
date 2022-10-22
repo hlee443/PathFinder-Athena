@@ -39,7 +39,7 @@ export default function Home() {
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
         <SubHeader text="Enter URL or upload files, we will make it easier to understand for you."></SubHeader>
-        <TabBar changePage ={() => setInputType("url")}></TabBar>
+        <TabBar changePage ={() => inputType === "url" ? setInputType("upload") : setInputType("url")}></TabBar>
         {
           inputType === "url" && <URLbox dir="row">
             <Input
