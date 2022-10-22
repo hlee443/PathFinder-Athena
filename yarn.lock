@@ -1250,6 +1250,7 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.2.0"
 
+<<<<<<< HEAD
 "@fortawesome/free-brands-svg-icons@^6.2.0":
   "integrity" "sha512-fm1y4NyZ2qKYNmYhdMz9VAWRw1Et7PMHNunSw3W0SVAwKwv6o0qiJworLH3Y9SnmhHzAymXJwCX1op22FFvGiA=="
   "resolved" "https://registry.npmjs.org/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-6.2.0.tgz"
@@ -1257,6 +1258,8 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.2.0"
 
+=======
+>>>>>>> b16cf6674d2ad411d52e86f2d56c911b87b9ff8f
 "@fortawesome/free-regular-svg-icons@^6.2.0":
   "integrity" "sha512-M1dG+PAmkYMTL9BSUHFXY5oaHwBYfHCPhbJ8qj8JELsc9XCrUJ6eEHWip4q0tE+h9C0DVyFkwIM9t7QYyCpprQ=="
   "resolved" "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-6.2.0.tgz"

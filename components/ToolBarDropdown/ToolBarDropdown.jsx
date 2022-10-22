@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import Header from "../Header/Header";
 import Input from "../Input/Input";
-import SubHeader from "../SubHeader/SubHeader";
+import SubHeader from "../Subheader/SubHeader";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
 import {
@@ -60,6 +60,7 @@ export default function ToolBarDropdown({
     setActive(!active);
   };
   return (
+    <>
     <DropdownCont left={left} top={top}>
       <DropdownDiv backgroundColor={colors.primaryBlue}>
         <IconLeftDiv>
@@ -95,14 +96,15 @@ export default function ToolBarDropdown({
           handleClick={setShowBubble}
         ></Button>
       </DropdownDiv>
-      {showBubble && (
+    </DropdownCont>
+    {showBubble && (
         <SuccessBubble
           header="You have saved your file to the Assignment folder!"
           active={showBubble}
           setActive={setShowBubble}
         ></SuccessBubble>
       )}
-    </DropdownCont>
+    </>
   );
 }
 

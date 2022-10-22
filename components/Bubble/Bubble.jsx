@@ -39,8 +39,8 @@ export default function Bubble({
   type = "login",
 }) {
 
-    const [header, setHeader] = useState("Header Text");
-    const [subHeader, setSubHeader] = useState("Subheader text");
+  const [header, setHeader] = useState("Header Text");
+  const [subHeader, setSubHeader] = useState("Subheader text");
 
   const closeBubble = () => {
     setActive(!active);
