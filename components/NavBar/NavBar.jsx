@@ -12,6 +12,7 @@ const NavBarCont = styled.div`
   backdrop-filter: blur(0.125rem);
   align-items: center;
   flex-direction: column;
+  z-index: 100;
 `;
 
 const Logo = styled.img``;
@@ -78,10 +79,16 @@ export default function NavBar() {
             text="Sign Up"
           ></Button>
         </ButtonContainer>
-        {showBubble && <Bubble type="login" active={showBubble} setActive={setShowBubble}></Bubble>}
+        {showBubble && (
+          <Bubble
+            type="login"
+            active={showBubble}
+            setActive={setShowBubble}
+          ></Bubble>
+        )}
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
     </NavBarCont>
   );
-};
+}
