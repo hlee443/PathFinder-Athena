@@ -6,7 +6,7 @@ import File from "../components/File/File";
 import FeatureExplain from "../components/FeatureExplain/FeatureExplain";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
-import { faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload, faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload, faChevronDown, faSquarePlus } from "@fortawesome/free-solid-svg-icons"
 
 const FileDisplay = styled(Flexbox)`
 width: 100%;
@@ -70,7 +70,11 @@ export default function library() {
                         icon={faMagnifyingGlass}
                         featureDescription="Look up the meaning of English words"    
                     />
-                    <FeatureExplain featureName="More to come..." featureDescription=""/>
+                    <FeatureExplain 
+                        featureName="More to come..."
+                        icon={faSquarePlus} 
+                        featureDescription=""
+                    />
                 </FeatureExplainCont>
         </Flexbox>)
 }
