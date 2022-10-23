@@ -7,6 +7,7 @@ import FeatureExplain from "../components/FeatureExplain/FeatureExplain";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
 import { faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload, faChevronDown, faSquarePlus } from "@fortawesome/free-solid-svg-icons"
+import SearchBar from "../components/SearchBar/SearchBar";
 
 const FileDisplay = styled(Flexbox)`
 width: 100%;
@@ -30,6 +31,7 @@ export default function library() {
         <Flexbox>
             <NavBar></NavBar>
             <Wrapper>
+                <SearchBar />
                 <TabBar></TabBar>
                 <FileDisplay dir="row">
                     <File></File>
