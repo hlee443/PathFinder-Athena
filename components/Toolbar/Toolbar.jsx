@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
 import { FontDropdown } from "../ToolBarDropdown/ToolBarDropdown";
+import { colors } from "../../styles/globals";
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -19,17 +20,39 @@ const ToolBarCont = styled.div`
   border: none;
   width: 53rem;
   position: relative;
+  margin: 1rem;
 `;
 export default function ToolBar() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showFont, setShowFont] = useState(false);
   return (
     <ToolBarCont>
-      <Icon faIconName={faVolumeHigh}></Icon>
-      <Icon faIconName={faMagnifyingGlass}></Icon>
-      <Icon faIconName={faFileLines}></Icon>
-      <Icon faIconName={faHighlighter}></Icon>
-      <Icon faIconName={faFont} handleClick={setShowFont}></Icon>
+      <Icon
+        faIconName={faVolumeHigh}
+        text="Text-to-Speech"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
+      <Icon
+        faIconName={faMagnifyingGlass}
+        text="Dictionary"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
+      <Icon
+        faIconName={faFileLines}
+        text="Summarize"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
+      <Icon
+        faIconName={faHighlighter}
+        text="Highlighter"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
+      <Icon
+        faIconName={faFont}
+        handleClick={setShowFont}
+        text="Typeface"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
       {showFont && (
         <FontDropdown
           active={showFont}
@@ -38,7 +61,12 @@ export default function ToolBar() {
           left="25rem"
         ></FontDropdown>
       )}
-      <Icon faIconName={faBookmark} handleClick={setShowLibrary}></Icon>
+      <Icon
+        faIconName={faBookmark}
+        handleClick={setShowLibrary}
+        text="Save to Library"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
       {showLibrary && (
         <ToolBarDropdown
           active={showLibrary}
@@ -47,7 +75,11 @@ export default function ToolBar() {
           left="40rem"
         ></ToolBarDropdown>
       )}
-      <Icon faIconName={faDownload}></Icon>
+      <Icon
+        faIconName={faDownload}
+        text="Download"
+        hoverColor={colors.backgroundYellow}
+      ></Icon>
     </ToolBarCont>
   );
 }
