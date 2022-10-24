@@ -9,11 +9,11 @@ const OptionCont = styled(Flexbox)`
   justify-content: space-between;
 `;
 
-export default function Option({ type = "type", option = "text", unit = "unit", faIconName = faBook, inputType ="text", placeholder ={} }) {
+export default function Option({ type = "type", text = "text", unit = "unit", faIconName = faBook, inputType ="text", placeholder ={} }) {
 
   return <OptionCont type={type} dir="row">
     <Icon faIconName={faIconName}></Icon>
-    <BodyText>{option}</BodyText>
+    <BodyText>{text}</BodyText>
     <Input type={inputType} placeholder={placeholder}></Input>
     {
       type === "unit" && <BodyText>{unit}</BodyText>
