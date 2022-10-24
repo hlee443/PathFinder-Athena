@@ -16,6 +16,9 @@ export function handleUpload(uploadedFile, callback){
             
             fileReader.onload = function (){
                 uploadedFile.fileContent = fileReader.result
+
+                
+
                 callback(uploadedFile.fileContent)
             }
  
