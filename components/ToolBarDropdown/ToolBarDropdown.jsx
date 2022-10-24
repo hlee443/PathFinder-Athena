@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import Header from "../Header/Header";
 import Input from "../Input/Input";
-import SubHeader from "../Subheader/SubHeader";
+import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option"
