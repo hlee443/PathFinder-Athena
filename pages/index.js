@@ -222,7 +222,7 @@ export default function Home() {
         {displayFileNameForm && inputType === "upload" && (
           <Button
             backgroundColor={colors.buttonPrimaryBlue}
-            text="upload"
+            text="Upload"
             type="default"
             handleClick={(e) => onFileUpload(e)}
           />
@@ -230,7 +230,7 @@ export default function Home() {
         {inputType === "url" && (
           <Button
             backgroundColor={colors.buttonPrimaryBlue}
-            text="upload"
+            text="Upload"
             type="default"
           />
         )}
