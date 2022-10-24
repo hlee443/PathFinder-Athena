@@ -101,15 +101,6 @@ export default function Home() {
     inputType === "url" ? setInputType("upload") : setInputType("url");
   }
 
-  // const changeInputType = (newInputType) => {
-  //   if (newInputType === "url") {
-  //     setInputType("url");
-  //   }
-  //   else if (newInputType === "upload") {
-  //     setInputType("upload");
-  //   }
-  // }
-
   return (
     <Flexbox>
       <NavBar></NavBar>
