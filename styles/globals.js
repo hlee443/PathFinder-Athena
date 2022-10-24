@@ -37,15 +37,14 @@ export const Flexbox = styled.div`
 export const Wrapper = styled(Flexbox)`
   padding: 6rem;
   justify-content: space-between;
-  height: 100vh;
-  align-items: start;
+  align-items: center;
 `;
 
 export const BodyText = styled.p`
 font-size: 1em;
 margin: 1em;
-line-height: 150%;
-letter-spacing: 0.35em,
+line-height: ${textData.lineHeight};
+letter-spacing: ${textData.letterSpacing};
 `
 
 export const Container = styled(Flexbox)`
@@ -55,4 +54,6 @@ padding: 3em;
 border: 0.125rem solid ${colors.darkGray};
 background-color: ${colors.backgroundWhite};
 border-radius: 2rem;
+justify-content: flex-start;
+align-items: flex-start;
 `

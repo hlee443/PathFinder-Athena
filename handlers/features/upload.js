@@ -4,6 +4,8 @@
 // - returns the doc content
 // - render the content on client
 
+import axios from "axios"
+
 
 export function handleUpload(uploadedFile, callback){
     const fileReader = new FileReader()
@@ -17,7 +19,10 @@ export function handleUpload(uploadedFile, callback){
             fileReader.onload = function (){
                 uploadedFile.fileContent = fileReader.result
 
-                
+                // Call Hermes and send the file object to be saved in the database
+                // axios.post(`${process.env.NEXT_PUBLIC_HERMES_PATH}/db/uploadFile`, uploadedFile)
+                //     .then(() =>  console.log("added file to database"))
+                //     .catch((err) => console.error(err))
 
                 callback(uploadedFile.fileContent)
             }

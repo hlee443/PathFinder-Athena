@@ -5,15 +5,17 @@ import SubHeader from "../components/Subheader/SubHeader";
 import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
-import { faChevronDown, faUpload } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faUpload, faPaintRoller, faFont, faTextHeight } from "@fortawesome/free-solid-svg-icons"
 import Icon from "../components/Icon/Icon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Input from "../components/Input/Input";
 import * as mainHandler from '../handlers/main';
 
+import Option from "../components/Option/Option";
+import { btnData } from "../components/Button/data";
 
-const URLbox = styled(Flexbox)`
+const CustomizeInputBox = styled(Flexbox)`
   background: ${colors.Background_White};
   border: 2px solid ${colors.DarkGrey};
   border-radius: 50px;
@@ -21,9 +23,13 @@ const URLbox = styled(Flexbox)`
   justify-content: start;
 `;
 
+const ClearButton = styled(Flexbox)`
+align-self: end`
+
 export default function Home() {
-  const r = useRouter();
+  const router = useRouter();
   const [inputType, setInputType] = useState("url");
+  const [active, setActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState({
     fileObj: {},
     fileName: '',
@@ -58,11 +64,28 @@ export default function Home() {
 
     mainHandler.handleUpload(uploadedFile, (readFileContent) => {
         uploadedFile.fileContent = readFileContent
-        setFileNameForm(false)
+
+        router.push({
+          pathname: '/converted', 
+          query: {
+            fileContent: readFileContent,
+            fileName: uploadedFile.fileName
+          },
+        }, '/converted')
         
     })
+  }
 
-}
+  function resetPageStates(){
+    setActive(false)
+    setFileNameForm(false)
+    uploadedFile.fileName = ""
+    uploadedFile.fileContent = ""
+    uploadedFile.fileType = ""
+    uploadedFile.fileObj = {}
+    inputType === "url" ? setInputType("upload") : setInputType("url")
+  }
+  
 
   // const changeInputType = (newInputType) => {
   //   if (newInputType === "url") {
@@ -79,9 +102,9 @@ export default function Home() {
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
         <SubHeader text="Enter URL or upload files, we will make it easier to understand for you."></SubHeader>
-        <TabBar changePage ={() => inputType === "url" ? setInputType("upload") : setInputType("url")}></TabBar>
-        {
-          inputType === "url" && <URLbox dir="row">
+        <TabBar changePage={resetPageStates}></TabBar>
+        {inputType === "url" && (
+          <CustomizeInputBox dir="row">
             <Input
               border="none"
               borderRadius="3.125rem 0 0 3.125rem;"
@@ -89,62 +112,119 @@ export default function Home() {
               placeholder="Paste your URL here.."
             ></Input>
             <Button
+              handleClick={setActive}
+              backgroundColor={colors.buttonPrimaryBlue}
               borderRadius="0 3.125rem 3.125rem 0;"
               text="Customize"
               type="IconButton"
               ButtonFaIconName={faChevronDown}
             />
-          </URLbox>
-        }
-        {
-          displayFileNameForm && inputType === "upload" &&
-          (
-            <>
+          </CustomizeInputBox>
+        )}
 
-                <label htmlFor="uploadFileName">Enter the file Name</label>
-                <Input
-                  border="none"
-                  borderRadius="3.125rem 0 0 3.125rem;"
-                  width="100%"
-                  placeholder="Enter file name"
-                  type="text"
-                  name="fileName"
-                  value={uploadedFile.fileName}
-                  onChange={handleChange}
-                ></Input>
-                <Button
-                  borderRadius="0 3.125rem 3.125rem 0;"
-                  text="Customize"
-                  type="IconButton"
-                  ButtonFaIconName={faChevronDown}
-                />
-                <Button 
-                  text="Upload"
-                  onClick={(e) => onFileUpload(e)} 
-                />
+        {displayFileNameForm && inputType === "upload" && (
+          <>
+            <CustomizeInputBox dir="row">
+              <Input
+                border="none"
+                borderRadius="3.125rem 0 0 3.125rem;"
+                width="100%"
+                placeholder="Enter file name"
+                type="text"
+                name="fileName"
+                value={uploadedFile.fileName}
+                onChange={handleChange}
+              ></Input>
+              <Button
+                handleClick={setActive}
+                backgroundColor={colors.buttonPrimaryBlue}
+                borderRadius="0 3.125rem 3.125rem 0;"
+                text="Customize"
+                type="IconButton"
+                ButtonFaIconName={faChevronDown}
+              />
+            </CustomizeInputBox>
+          </>
+        )}
+        {active && (
+          <Container width="100%">
+            <Option
+              faIconName={faPaintRoller}
+              option="Background Colour"
+              inputType="color"
+            ></Option>
+            <Option
+              faIconName={faFont}
+              option="Typeface"
+              inputType="dropdown"
+              placeholder="Choose your typeface"
+            ></Option>
+            <Option
+              faIconName={faFont}
+              option="Font Size"
+              inputType="text"
+              unit="pt"
+              placeholder="##"
+              type="unit"
+            ></Option>
+            <Option
+              faIconName={faTextHeight}
+              option="Line Spacing"
+              inputType="text"
+              placeholder="##"
+              type="unit"
+            ></Option>
+            <Option
+              faIconName={faFont}
+              option="Letter Spacing"
+              inputType="text"
+              unit="%"
+              placeholder="##"
+              type="unit"
+            ></Option>
+            <ClearButton>
+              <Button
+                text="Clear"
+                backgroundColor={colors.buttonPrimaryBlue}
+                width={btnData.size.small.width}
+                height={btnData.size.small.height}
+              ></Button>
+            </ClearButton>
+          </Container>
+        )}
+        {displayFileNameForm === false && inputType === "upload" && (
+          <Container width="100%" alignItems="center">
+            <Icon faIconName={faUpload}></Icon>
+            <SubHeader text="Drag and drop a file here"></SubHeader>
+            <p>or</p>
 
-            </>
-          )
-                  
-        }
-        {
-          displayFileNameForm === false && inputType === "upload" &&
-          (
-            
-              inputType === "upload" && <Container width="100%">
-                <Icon faIconName={faUpload} ></Icon>
-                <SubHeader text="Drag and drop a file here"></SubHeader>
-                <p>or</p>
+            <input
+              id="fileInput"
+              type="file"
+              name="file"
+              onChange={(e) => onFileSelect(e)}
+              accept=".txt"
+            />
 
-                <input id="fileInput" type="file" name="file" onChange={(e) => onFileSelect(e)} accept=".txt"/>
-
-                <Button text="Choose a file"></Button>
-              </Container>
-            
-          )
-        }
+            <Button text="Choose a file"></Button>
+          </Container>
+        )}
+        {displayFileNameForm && inputType === "upload" && (
+        <Button
+          backgroundColor={colors.buttonPrimaryBlue}
+          text="upload"
+          type='default'
+          handleClick={(e) => onFileUpload(e)}
+        />
+      )}
+      {inputType === "url" && (
+        <Button
+          backgroundColor={colors.buttonPrimaryBlue}
+          text="upload"
+          type="default"
+        />
+      )}
       </Wrapper>
-      {inputType === "url" && <Button text="upload" type="default" />}
     </Flexbox>
   );
 };

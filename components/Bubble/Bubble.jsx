@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import Header from "../Header/Header";
 import Input from "../Input/Input";
-import SubHeader from "../Subheader/SubHeader";
+import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
@@ -38,6 +38,7 @@ export default function Bubble({
   setActive = null,
   type = "login",
 }) {
+
   const [header, setHeader] = useState("Header Text");
   const [subHeader, setSubHeader] = useState("Subheader text");
 

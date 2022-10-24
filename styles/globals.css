@@ -7,9 +7,17 @@ body {
   margin: 0;
 }
 
+div {
+  font-family: "Open Sans", sans-serif;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  font-family: "Open Sans", sans-serif;
 }
 
 form { /* added temporarily for the api test forms to look a little better */
