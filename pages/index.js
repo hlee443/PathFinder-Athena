@@ -22,7 +22,11 @@ const URLbox = styled(Flexbox)`
 `;
 
 const ClearButton = styled(Flexbox)`
-align-self: end`
+align-self: end;
+`
+const Upload = styled(Flexbox)`
+align-self: center;
+`
 
 export default function Home() {
 
@@ -70,6 +74,7 @@ export default function Home() {
               faIconName={faPaintRoller}
               text="Background Colour"
               inputType="color"
+              type="color"
             ></Option>
             <Option
               faIconName={faFont}
@@ -114,8 +119,12 @@ export default function Home() {
             <Button backgroundColor={colors.buttonPrimaryBlue} text="Choose a file"></Button>
           </Container>
         }
+        {
+          inputType === "url" && <Upload>
+            <Button backgroundColor={colors.buttonPrimaryBlue} text="upload" type="default"></Button>
+          </Upload>
+        }
       </Wrapper>
-      {inputType === "url" && <Button backgroundColor={colors.buttonPrimaryBlue} text="upload" type="default" />}
     </Flexbox>
   );
 };
