@@ -164,6 +164,7 @@ export default function Home() {
               text="Typeface"
               inputType="dropdown"
               placeholder="Choose your typeface"
+              type="option"
             ></Option>
             <Option
               faIconName={faFont}
@@ -171,7 +172,6 @@ export default function Home() {
               inputType="text"
               unit="pt"
               placeholder="##"
-              type="unit"
             ></Option>
             <Option
               faIconName={faTextHeight}
@@ -179,7 +179,6 @@ export default function Home() {
               inputType="text"
               placeholder="##"
               unit="%"
-              type="unit"
             ></Option>
             <Option
               faIconName={faFont}
@@ -187,7 +186,6 @@ export default function Home() {
               inputType="text"
               unit="%"
               placeholder="##"
-              type="unit"
             ></Option>
             <ClearButton>
               <Button
