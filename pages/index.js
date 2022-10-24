@@ -1,16 +1,22 @@
 import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
-import SubHeader from "../components/Subheader/SubHeader";
+import SubHeader from "../components/SubHeader/SubHeader";
 import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
-import { faChevronDown, faUpload, faPaintRoller, faFont, faTextHeight } from "@fortawesome/free-solid-svg-icons"
+import {
+  faChevronDown,
+  faUpload,
+  faPaintRoller,
+  faFont,
+  faTextHeight,
+} from "@fortawesome/free-solid-svg-icons";
 import Icon from "../components/Icon/Icon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Input from "../components/Input/Input";
-import * as mainHandler from '../handlers/main';
+import * as mainHandler from "../handlers/main";
 
 import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
@@ -24,7 +30,8 @@ const CustomizeInputBox = styled(Flexbox)`
 `;
 
 const ClearButton = styled(Flexbox)`
-align-self: end`
+  align-self: end;
+`;
 
 export default function Home() {
   const router = useRouter();
@@ -32,60 +39,61 @@ export default function Home() {
   const [active, setActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState({
     fileObj: {},
-    fileName: '',
-    fileType: '',
-    fileContent: ''
-  })
-  const [displayFileNameForm, setFileNameForm] = useState(false)
+    fileName: "",
+    fileType: "",
+    fileContent: "",
+  });
+  const [displayFileNameForm, setFileNameForm] = useState(false);
 
-  function handleChange(e){
-    e.preventDefault()
+  function handleChange(e) {
+    e.preventDefault();
 
     setUploadedFile({
-        ...uploadedFile,
-        [e.target.name]: e.target.value
-    })
+      ...uploadedFile,
+      [e.target.name]: e.target.value,
+    });
   }
 
-  function onFileSelect(e){
+  function onFileSelect(e) {
+    const selectedFile = e.target.files[0];
 
-    const selectedFile = e.target.files[0]
+    uploadedFile.fileName = selectedFile.name.split(".")[0];
+    uploadedFile.fileType = selectedFile.name.slice(
+      (Math.max(0, selectedFile.name.lastIndexOf(".")) || Infinity) + 1
+    );
+    uploadedFile.fileObj = selectedFile;
 
-    uploadedFile.fileName = selectedFile.name.split(".")[0]
-    uploadedFile.fileType = selectedFile.name.slice((Math.max(0, selectedFile.name.lastIndexOf(".")) || Infinity) + 1)
-    uploadedFile.fileObj = selectedFile
-
-    setFileNameForm(true)
-   
+    setFileNameForm(true);
   }
 
-  function onFileUpload(e){
-    e.preventDefault()
+  function onFileUpload(e) {
+    e.preventDefault();
 
     mainHandler.handleUpload(uploadedFile, (readFileContent) => {
-        uploadedFile.fileContent = readFileContent
+      uploadedFile.fileContent = readFileContent;
 
-        router.push({
-          pathname: '/converted', 
+      router.push(
+        {
+          pathname: "/converted",
           query: {
             fileContent: readFileContent,
-            fileName: uploadedFile.fileName
+            fileName: uploadedFile.fileName,
           },
-        }, '/converted')
-        
-    })
+        },
+        "/converted"
+      );
+    });
   }
 
-  function resetPageStates(){
-    setActive(false)
-    setFileNameForm(false)
-    uploadedFile.fileName = ""
-    uploadedFile.fileContent = ""
-    uploadedFile.fileType = ""
-    uploadedFile.fileObj = {}
-    inputType === "url" ? setInputType("upload") : setInputType("url")
+  function resetPageStates() {
+    setActive(false);
+    setFileNameForm(false);
+    uploadedFile.fileName = "";
+    uploadedFile.fileContent = "";
+    uploadedFile.fileType = "";
+    uploadedFile.fileObj = {};
+    inputType === "url" ? setInputType("upload") : setInputType("url");
   }
-  
 
   // const changeInputType = (newInputType) => {
   //   if (newInputType === "url") {
@@ -210,21 +218,21 @@ export default function Home() {
           </Container>
         )}
         {displayFileNameForm && inputType === "upload" && (
-        <Button
-          backgroundColor={colors.buttonPrimaryBlue}
-          text="upload"
-          type='default'
-          handleClick={(e) => onFileUpload(e)}
-        />
-      )}
-      {inputType === "url" && (
-        <Button
-          backgroundColor={colors.buttonPrimaryBlue}
-          text="upload"
-          type="default"
-        />
-      )}
+          <Button
+            backgroundColor={colors.buttonPrimaryBlue}
+            text="upload"
+            type="default"
+            handleClick={(e) => onFileUpload(e)}
+          />
+        )}
+        {inputType === "url" && (
+          <Button
+            backgroundColor={colors.buttonPrimaryBlue}
+            text="upload"
+            type="default"
+          />
+        )}
       </Wrapper>
     </Flexbox>
   );
-};
+}

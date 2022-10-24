@@ -1,6 +1,6 @@
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
-import SubHeader from "../components/Subheader/SubHeader";
+import SubHeader from "../components/SubHeader/SubHeader";
 import { colors, Flexbox, Wrapper } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Container from "../components/Container/Container";
@@ -13,8 +13,9 @@ import { useRouter } from "next/router";
 
 const Title = styled(Flexbox)``;
 
-export default function Converted() { // props: file settings, -- probably -- file info, and url
-  const router = useRouter()
+export default function Converted() {
+  // props: file settings, -- probably -- file info, and url
+  const router = useRouter();
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
@@ -28,7 +29,11 @@ export default function Converted() { // props: file settings, -- probably -- fi
           <Icon faIconName={faPencil}></Icon>
         </Title>
         <ToolBar></ToolBar>
-        <Container width="100%" height="100%" contentText={router.query.fileContent}>
+        <Container
+          width="100%"
+          height="100%"
+          contentText={router.query.fileContent}
+        >
           {/* FUTURE: content component, props passed into will be the fiile 
             info and file settings (text size, container bg-colour, etc) 
           */}
