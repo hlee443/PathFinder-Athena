@@ -90,6 +90,7 @@ export default function Home() {
               text="Line Spacing"
               inputType="text"
               placeholder="##"
+              unit="%"
               type="unit"
             ></Option>
             <Option
