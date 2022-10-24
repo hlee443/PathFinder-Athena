@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { useState } from "react";
-import { useEffect } from "react";
 import {
   faVolumeHigh,
   faMagnifyingGlass,
@@ -11,9 +10,10 @@ import {
   faBookmark,
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
-import mainHandler from "../../handlers/main";
-import DictionaryDropdown from "../ToolBarDropdown/ToolBarDropdown";
-import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
+import * as mainHandler from "../../handlers/main";
+import ToolBarDropdown, {
+  DictionaryDropdown,
+} from "../ToolBarDropdown/ToolBarDropdown";
 import { FontDropdown } from "../ToolBarDropdown/ToolBarDropdown";
 import { colors } from "../../styles/globals";
 
@@ -25,36 +25,33 @@ const ToolBarCont = styled.div`
   position: relative;
   margin: 1rem;
 `;
-
 export default function ToolBar() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showFont, setShowFont] = useState(false);
   const [wordInfo, setWordInfo] = useState(null);
-  const [showDictionary, setShowDictionary] = useState(false);
-
   /**
    *
-   * Prop drilling
+   *
    * Fetch word information
    */
-  const fetchInfo = async (e) => {
+  function fetchInfo(e) {
     e.preventDefault();
     try {
       const word = window.getSelection().toString();
-      const res = await mainHandler.handleDictionary(word);
-      if (res) {
+      // callback 
+      mainHandler.handleDictionary(word, (res) => {
         const { data } = res;
         const { definition } = data;
+        console.log("RES", res);
         // split the response string into an array using regex
         const newDefinition = definition.split(/1. |2. | 3. /);
+
         setWordInfo(newDefinition);
-      }
-
+      });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
-  };
-
+  }
 
   return (
     <ToolBarCont>
@@ -65,17 +62,35 @@ export default function ToolBar() {
       ></Icon>
       <Icon
         faIconName={faMagnifyingGlass}
-        handleClick={()=> fetchInfo()}
         text="Dictionary"
+        handleClick={fetchInfo}
         hoverColor={colors.backgroundYellow}
       ></Icon>
-      {showDictionary && (
-        <DictionaryDropdown
-          active={showDictionary}
-          setActive={setShowDictionary}
-          word = {word}
-          wordInfo = {wordInfo}
-        ></DictionaryDropdown>
+      {wordInfo && (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <span>{window.getSelection().toString()}</span>
+                </th>
+                <th>
+                  <span>Definition</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1.</td>
+                <td>{wordInfo[1]}</td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>{wordInfo[2]}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       )}
       <Icon
         faIconName={faFileLines}
