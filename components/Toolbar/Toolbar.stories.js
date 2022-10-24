@@ -4,11 +4,11 @@ import ToolBar from "./Toolbar";
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Toolbar",
-  component: Toolbar,
+  component: ToolBar,
 };
 
 // Any other named exports will be treated as stories, which should be functions that return your component
-const Template = (args) => <Toolbar {...args} />;
+const Template = (args) => <ToolBar {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {};
