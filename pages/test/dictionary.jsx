@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as mainHandler from '../../handlers/main'
 
 
-export default function Home() {
+export default function Dictionary() {
   const [word, setWord] = useState("");
   const [wordInfo, setWordInfo] = useState(null);
   /**
@@ -68,24 +68,6 @@ export default function Home() {
         them to tackle.{" "}
       </p>
       <div>
-        {/* <form
-          onSubmit={(e) => fetchInfo(e)}
-          className="flex w-full justify-center md:flex-col md:w-5/6 "
-        >
-          <input
-            autoFocus={true}
-            type="text"
-            className="border-none outline-none w-2/5 bg-primary px-4 py-2 rounded-sm font-raleway md:w-full"
-            placeholder="Enter any word..."
-            onChange={(e) => setWord(e.target.value)}
-          />
-          <button
-            className="outline-none border border-danger font-bold font-raleway ml-4 px-12 py-2 rounded-sm bg-danger text-primary transition duration-300 hover:bg-bc hover:text-black md:ml-0 md:mt-4"
-            onClick={fetchInfo}
-          >
-            Search
-          </button>
-        </form> */}
         {wordInfo && (
           <div>
             <table>

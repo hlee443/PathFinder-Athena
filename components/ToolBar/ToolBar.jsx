@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { useState } from "react";
+import { useEffect } from "react";
+import mainHandler from "../../handlers/main";
 import {
   faVolumeHigh,
   faMagnifyingGlass,
@@ -23,10 +25,18 @@ const ToolBarCont = styled.div`
 export default function ToolBar() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showFont, setShowFont] = useState(false);
+
   return (
     <ToolBarCont>
       <Icon faIconName={faVolumeHigh}></Icon>
-      <Icon faIconName={faMagnifyingGlass}></Icon>
+
+      <Icon
+        faIconName={faMagnifyingGlass}
+        handleClick={() => {
+          console.log(window.getSelection().toString());
+        }}
+      ></Icon>
+
       <Icon faIconName={faFileLines}></Icon>
       <Icon faIconName={faHighlighter}></Icon>
       <Icon faIconName={faFont} handleClick={setShowFont}></Icon>
