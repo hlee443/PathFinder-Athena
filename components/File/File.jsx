@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors, Flexbox, BodyText } from '../../styles/globals';
 import Icon from "../Icon/Icon";
 import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router';
 
 const FileCont = styled.div``
 
@@ -22,21 +23,21 @@ justify-content: space-between;
 `
 
 export default function File({
-    text = "Title",
-    type = "default",
+  text = "Title",
+  type = "default",
 }) {
+  const r = useRouter();
+  const [isFileSaved, setIsFileSaved] = useState(false);
 
-    const [isFileSaved, setIsFileSaved] = useState(false);
-
-    return (
-        <FileCont>
-            <Preview>
-                <Icon faIconName={faPlus} size ="2x"/>
-            </Preview>
-            <BottomCont dir="row">
-                <div>{text}</div>
-                <Icon faIconName={faEllipsisVertical} />
-            </BottomCont>
-        </FileCont>
-    );
+  return (
+    <FileCont>
+      <Preview>
+        <Icon handleClick={() => { r.push("/") }} faIconName={faPlus} size="2x" />
+      </Preview>
+      <BottomCont dir="row">
+        <div>{text}</div>
+        <Icon faIconName={faEllipsisVertical} />
+      </BottomCont>
+    </FileCont>
+  );
 };
