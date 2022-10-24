@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Input from "../components/Input/Input";
 import * as mainHandler from "../handlers/main";
+import { useRef } from "react";
 
 import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
@@ -47,6 +48,8 @@ export default function Home() {
     fileContent: "",
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
+  const fileInput = useRef(null);
+
 
   function handleChange(e) {
     e.preventDefault();
@@ -210,16 +213,19 @@ export default function Home() {
             <Icon faIconName={faUpload}></Icon>
             <SubHeader text="Drag and drop a file here"></SubHeader>
             <p>or</p>
-
+            <Button
+              handleClick={() => fileInput.current.click()}
+              text="Choose a file">
+            </Button>
             <input
               id="fileInput"
               type="file"
               name="file"
               onChange={(e) => onFileSelect(e)}
               accept=".txt"
+              ref={fileInput}
+              style={{ display: 'none' }}
             />
-
-            <Button text="Choose a file"></Button>
           </Container>
         )}
         {displayFileNameForm && inputType === "upload" && (
