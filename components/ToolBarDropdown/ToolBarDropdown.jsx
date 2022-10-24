@@ -97,6 +97,36 @@ export default function ToolBarDropdown({
   );
 };
 
+export function DictionaryDropdown({word,wordInfo})
+{
+  return (
+    <div>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <span>{word}</span>
+          </th>
+          <th>
+            <span>Definition</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.</td>
+          <td>{wordInfo[1]}</td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>{wordInfo[2]}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  )
+}
+
 // export function FontDropdown({
 //   active = null,
 //   setActive = null,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import * as mainHandler from '../../handlers/main'
-
+import * as mainHandler from "../../handlers/main";
 
 export default function Dictionary() {
   const [word, setWord] = useState("");
@@ -14,10 +13,7 @@ export default function Dictionary() {
     e.preventDefault();
     try {
       const word = window.getSelection().toString();
-      // const res = await axios.get(`/api/info`, {
-      //   params: { word },
-      // });
-      const res = await mainHandler.handleDictionary(word)
+      const res = await mainHandler.handleDictionary(word);
       if (res) {
         const { data } = res;
         const { definition } = data;
@@ -25,6 +21,7 @@ export default function Dictionary() {
         const newDefinition = definition.split(/1. |2. | 3. /);
         setWordInfo(newDefinition);
       }
+
     } catch (err) {
       console.log(err);
     }
@@ -40,35 +37,34 @@ export default function Dictionary() {
     };
   }, []);
 
-
   return (
-      <div>
-        {wordInfo && (
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th>
-                    <span>{window.getSelection().toString()}</span>
-                  </th>
-                  <th>
-                    <span>Definition</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1.</td>
-                  <td>{wordInfo[1]}</td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>{wordInfo[2]}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+    <div>
+      {wordInfo && (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <span>{window.getSelection().toString()}</span>
+                </th>
+                <th>
+                  <span>Definition</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1.</td>
+                <td>{wordInfo[1]}</td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>{wordInfo[2]}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
