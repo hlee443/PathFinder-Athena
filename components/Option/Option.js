@@ -23,7 +23,8 @@ export default function Option({
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleClick =() => {}
+  handleClick = () => { },
+  width = "100%"
 }) {
 
   return <OptionCont onClick={handleClick} dir="row" bgColor={bgColor}>
@@ -31,7 +32,7 @@ export default function Option({
       <Icon faIconName={faIconName}></Icon>
       <BodyText>{text}</BodyText>
       {
-        inputType !== null && <Input type={inputType} placeholder={placeholder}></Input>
+        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder}></Input>
       }
       {
         unit !== null && <BodyText>{unit}</BodyText>
