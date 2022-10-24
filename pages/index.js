@@ -68,18 +68,18 @@ export default function Home() {
           active && <Container width="100%">
             <Option
               faIconName={faPaintRoller}
-              option="Background Colour"
+              text="Background Colour"
               inputType="color"
             ></Option>
             <Option
               faIconName={faFont}
-              option="Typeface"
+              text="Typeface"
               inputType="dropdown"
               placeholder="Choose your typeface"
             ></Option>
             <Option
               faIconName={faFont}
-              option="Font Size"
+              text="Font Size"
               inputType="text"
               unit="pt"
               placeholder="##"
@@ -87,14 +87,15 @@ export default function Home() {
             ></Option>
             <Option
               faIconName={faTextHeight}
-              option="Line Spacing"
+              text="Line Spacing"
               inputType="text"
               placeholder="##"
+              unit="%"
               type="unit"
             ></Option>
             <Option
               faIconName={faFont}
-              option="Letter Spacing"
+              text="Letter Spacing"
               inputType="text"
               unit="%"
               placeholder="##"
