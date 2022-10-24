@@ -19,6 +19,7 @@ const OptionCont = styled.select`
 export default function Input({
   width = "15rem",
   type = "text",
+  value= "",
   borderRadius = "3.125rem",
   placeholder = "placeholder",
 }) {
@@ -29,6 +30,7 @@ export default function Input({
         type={type}
         placeholder={placeholder}
         width={width}
+        value= {value}
       ></InputCont>
     );
   }

@@ -7,7 +7,8 @@ export default function Upload(){
         fileObj: {},
         fileName: '',
         fileType: '',
-        fileContent: ''
+        fileContent: '',
+        userId: 1
     })
     const [displayFileNameForm, setFileNameForm] = useState(false)
 
@@ -28,6 +29,8 @@ export default function Upload(){
         uploadedFile.fileType = selectedFile.name.slice((Math.max(0, selectedFile.name.lastIndexOf(".")) || Infinity) + 1)
         uploadedFile.fileObj = selectedFile
 
+        console.log("BEFORE", uploadedFile)
+
         setFileNameForm(true)
        
     }
@@ -38,6 +41,11 @@ export default function Upload(){
         mainHandler.handleUpload(uploadedFile, (readFileContent) => {
             uploadedFile.fileContent = readFileContent
             setFileNameForm(false)
+
+            // redirect to https://localhost:80800808/converted while passing in the file content -- will have to change but MVP
+            
+
+
         })
 
     }
