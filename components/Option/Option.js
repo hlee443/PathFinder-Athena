@@ -7,16 +7,39 @@ import { useState } from "react";
 
 const OptionCont = styled(Flexbox)`
   justify-content: space-between;
+  background-color: ${props => props.bgColor || "transparent"};
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  width: 100%;
+  cursor: pointer;
 `;
 
-export default function Option({ type = "type", text = "text", unit = "unit", faIconName = faBook, inputType ="text", placeholder ={} }) {
+const OptionName = styled(Flexbox)``
 
-  return <OptionCont type={type} dir="row">
-    <Icon faIconName={faIconName}></Icon>
-    <BodyText>{text}</BodyText>
-    <Input type={inputType} placeholder={placeholder}></Input>
+export default function Option({
+  bgColor = "transparent",
+  type = null,
+  text = "text",
+  unit = null,
+  faIconName = faIconName,
+  inputType = "text",
+  placeholder = "placeholder",
+  faIconNameRight = null,
+  handleClick =() => {}
+}) {
+
+  return <OptionCont onClick={handleClick} type={type} dir="row" bgColor={bgColor}>
+    <OptionName dir="row">
+      <Icon faIconName={faIconName}></Icon>
+      <BodyText>{text}</BodyText>
+      {
+        type !== null && <Input type={inputType} placeholder={placeholder}></Input>
+      }
+      {
+        unit !== null && <BodyText>{unit}</BodyText>
+      }
+    </OptionName>
     {
-      type === "unit" && <BodyText>{unit}</BodyText>
+      faIconNameRight !== null && <Icon faIconName={faIconNameRight} />
     }
   </OptionCont>
 }
