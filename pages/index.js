@@ -33,9 +33,6 @@ const CustomizeInputBox = styled(Flexbox)`
 const ClearButton = styled(Flexbox)`
 align-self: end;
 `
-const Upload = styled(Flexbox)`
-align-self: center;
-`
 
 export default function Home() {
   const router = useRouter();
@@ -165,6 +162,7 @@ export default function Home() {
               inputType="dropdown"
               placeholder="Choose your typeface"
               type="option"
+              width="100%"
             ></Option>
             <Option
               faIconName={faFont}
