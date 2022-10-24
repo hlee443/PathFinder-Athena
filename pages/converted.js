@@ -1,9 +1,8 @@
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper } from "../styles/globals";
+import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
-import Container from "../components/Container/Container";
 import Icon from "../components/Icon/Icon";
 import styled from "styled-components";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
@@ -32,8 +31,8 @@ export default function Converted() {
         <Container
           width="100%"
           height="100%"
-          contentText={router.query.fileContent}
         >
+          {router.query.fileContent}
           {/* FUTURE: content component, props passed into will be the fiile 
             info and file settings (text size, container bg-colour, etc) 
           */}
