@@ -2,7 +2,7 @@ import SubHeader from "./SubHeader";
 import { textData } from "../../styles/globals";
 
 export default {
-  title: "SubHeader",
+  title: "Text/SubHeader",
   component: SubHeader,
 };
 

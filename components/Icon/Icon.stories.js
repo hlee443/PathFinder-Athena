@@ -1,7 +1,8 @@
 import Icon from "./Icon";
+import { colors } from "../../styles/globals";
 
 export default {
-  title: "Icon",
+  title: "Clickables/Icon",
   component: Icon,
 };
 
@@ -10,20 +11,17 @@ const Template = (args) => <Icon {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   size: "2rem",
-  src: "https://placekitten.com/200/100",
-  backgroundColor: "transparent",
+  color: "black",
 };
 
-export const Hover = Template.bind({});
-Hover.args = {
-  size: "2rem",
-  src: "https://placekitten.com/200/100",
-  backgroundColor: "black",
+export const FileIcon = Template.bind({});
+FileIcon.args = {
+  size: "2x",
+  color: "black",
 };
 
-export const Selected = Template.bind({});
-Selected.args = {
-  size: "2rem",
-  src: "https://placekitten.com/200/100",
-  backgroundColor: "black",
+export const NavBarIcon = Template.bind({});
+NavBarIcon.args = {
+  size: "2x",
+  color: colors.backgroundWhite,
 };

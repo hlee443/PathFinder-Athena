@@ -1,11 +1,11 @@
 import File from "./File";
 
 export default {
-  title: "File",
+  title: "Clickables/File",
   component: File,
 };
 
 const Template = (args) => <File {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Default = Template.bind({});
+Default.args = {};

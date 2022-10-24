@@ -1,16 +1,16 @@
-import Container from "./Container"
+import Container from "./Container";
 
 export default {
-    title: "Container",
-    component: Container,
-}
+  title: "Layout/Container",
+  component: Container,
+};
 
-const Template = args => <Container {...args} />
+const Template = (args) => <Container {...args} />;
 
-export const Primary = Template.bind({}) 
+export const Primary = Template.bind({});
 Primary.args = {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
-    txt: "text"
-}
+  width: "100%",
+  height: "100%",
+  backgroundColor: "white",
+  txt: "text",
+};

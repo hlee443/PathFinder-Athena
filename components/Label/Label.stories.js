@@ -1,7 +1,7 @@
 import Label from "./Label";
 
 export default {
-  title: "Label",
+  title: "Text/Label",
   component: Label,
 };
 
