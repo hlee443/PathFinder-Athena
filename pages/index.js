@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Input from "../components/Input/Input";
 import * as mainHandler from "../handlers/main";
+import { useRef } from "react";
 
 import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
@@ -30,8 +31,11 @@ const CustomizeInputBox = styled(Flexbox)`
 `;
 
 const ClearButton = styled(Flexbox)`
-  align-self: end;
-`;
+align-self: end;
+`
+const Upload = styled(Flexbox)`
+align-self: center;
+`
 
 export default function Home() {
   const router = useRouter();
@@ -44,6 +48,8 @@ export default function Home() {
     fileContent: "",
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
+  const fileInput = useRef(null);
+
 
   function handleChange(e) {
     e.preventDefault();
@@ -94,15 +100,6 @@ export default function Home() {
     uploadedFile.fileObj = {};
     inputType === "url" ? setInputType("upload") : setInputType("url");
   }
-
-  // const changeInputType = (newInputType) => {
-  //   if (newInputType === "url") {
-  //     setInputType("url");
-  //   }
-  //   else if (newInputType === "upload") {
-  //     setInputType("upload");
-  //   }
-  // }
 
   return (
     <Flexbox>
@@ -158,18 +155,19 @@ export default function Home() {
           <Container width="100%">
             <Option
               faIconName={faPaintRoller}
-              option="Background Colour"
+              text="Background Colour"
               inputType="color"
+              type="color"
             ></Option>
             <Option
               faIconName={faFont}
-              option="Typeface"
+              text="Typeface"
               inputType="dropdown"
               placeholder="Choose your typeface"
             ></Option>
             <Option
               faIconName={faFont}
-              option="Font Size"
+              text="Font Size"
               inputType="text"
               unit="pt"
               placeholder="##"
@@ -177,14 +175,15 @@ export default function Home() {
             ></Option>
             <Option
               faIconName={faTextHeight}
-              option="Line Spacing"
+              text="Line Spacing"
               inputType="text"
               placeholder="##"
+              unit="%"
               type="unit"
             ></Option>
             <Option
               faIconName={faFont}
-              option="Letter Spacing"
+              text="Letter Spacing"
               inputType="text"
               unit="%"
               placeholder="##"
@@ -205,22 +204,25 @@ export default function Home() {
             <Icon faIconName={faUpload}></Icon>
             <SubHeader text="Drag and drop a file here"></SubHeader>
             <p>or</p>
-
+            <Button
+              handleClick={() => fileInput.current.click()}
+              text="Choose a file">
+            </Button>
             <input
               id="fileInput"
               type="file"
               name="file"
               onChange={(e) => onFileSelect(e)}
               accept=".txt"
+              ref={fileInput}
+              style={{ display: 'none' }}
             />
-
-            <Button text="Choose a file"></Button>
           </Container>
         )}
         {displayFileNameForm && inputType === "upload" && (
           <Button
             backgroundColor={colors.buttonPrimaryBlue}
-            text="upload"
+            text="Upload"
             type="default"
             handleClick={(e) => onFileUpload(e)}
           />
@@ -228,7 +230,7 @@ export default function Home() {
         {inputType === "url" && (
           <Button
             backgroundColor={colors.buttonPrimaryBlue}
-            text="upload"
+            text="Upload"
             type="default"
           />
         )}
