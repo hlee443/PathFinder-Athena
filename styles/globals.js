@@ -8,7 +8,7 @@ export const textData = {
   },
   h2: {
     size: "1.5rem",
-    },
+  },
 };
 
 export const colors = {
@@ -42,19 +42,19 @@ export const Wrapper = styled(Flexbox)`
 `;
 
 export const BodyText = styled.p`
-font-size: 1em;
-margin: 1em;
-line-height: ${textData.lineHeight};
-letter-spacing: ${textData.letterSpacing};
-`
+  font-size: 1em;
+  margin: 1em;
+  line-height: ${textData.lineHeight};
+  letter-spacing: ${textData.letterSpacing};
+`;
 
 export const Container = styled(Flexbox)`
-width: ${(props) => props.width};
-height: ${(props) => props.height};
-padding: 3em;
-border: 0.125rem solid ${colors.darkGray};
-background-color: ${colors.backgroundWhite};
-border-radius: 2rem;
-justify-content: flex-start;
-align-items: flex-start;
-`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  padding: 2em;
+  border: 0.125rem solid ${colors.darkGray};
+  background-color: ${colors.backgroundWhite};
+  border-radius: 2rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
