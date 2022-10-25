@@ -23,11 +23,12 @@ export default function Option({
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleClick = () => { },
-  width = "100%"
+  handleOption = () => { },
+  width = "100%",
+  onClose = () => {}
 }) {
 
-  return <OptionCont onClick={handleClick} dir="row" bgColor={bgColor}>
+  return <OptionCont onClick={handleOption} dir="row" bgColor={bgColor}>
     <OptionName dir="row">
       <Icon faIconName={faIconName}></Icon>
       <BodyText>{text}</BodyText>
@@ -39,7 +40,7 @@ export default function Option({
       }
     </OptionName>
     {
-      faIconNameRight !== null && <Icon faIconName={faIconNameRight} />
+      faIconNameRight !== null && <Icon faIconName={faIconNameRight} handleClick={onClose} />
     }
   </OptionCont>
 }
