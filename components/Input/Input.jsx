@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../styles/globals";
+import { useState } from 'react';
 
 const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
@@ -27,6 +28,9 @@ export default function Input({
   border = "",
   bgColor = "none",
 }) {
+
+  const [inputValue, setInputValue] = useState(value);
+
   if (type === "dropdown") {
     return (
       <OptionCont type="option" width={width}>
@@ -43,7 +47,8 @@ export default function Input({
         type={type}
         placeholder={placeholder}
         width={width}
-        value={value}
+        onChange={(e) => setInputValue(e.target.value)}
+        defaultValue={inputValue}
         border={border}
         bgColor={bgColor}
       ></InputCont>
