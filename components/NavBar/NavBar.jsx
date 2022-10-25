@@ -61,11 +61,6 @@ export default function NavBar({ type = "loggedIn" }) {
     <NavBarCont type={type}>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {/* <IconContainer dir= "row">
-            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
-            <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
-            <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser}></Icon>
-          </IconContainer> */}
         {
           !isLoggedIn ? <IconContainer>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>

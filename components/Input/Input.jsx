@@ -31,7 +31,16 @@ export default function Input({
 
   const [inputValue, setInputValue] = useState(value);
 
-  if (type === "text") {
+  if (type === "dropdown") {
+    return (
+      <OptionCont type="option" width={width}>
+        <option value="" selected>
+          Placeholder
+        </option>
+        <option value=""></option>
+      </OptionCont>
+    );
+  } else {
     return (
       <InputCont
         borderRadius={borderRadius}
@@ -43,17 +52,6 @@ export default function Input({
         border={border}
         bgColor={bgColor}
       ></InputCont>
-    );
-  }
-
-  if (type === "dropdown") {
-    return (
-      <OptionCont type="option" width={width}>
-        <option value="" selected>
-          Placeholder
-        </option>
-        <option value=""></option>
-      </OptionCont>
     );
   }
 }

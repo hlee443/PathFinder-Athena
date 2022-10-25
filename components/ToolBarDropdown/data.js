@@ -10,6 +10,17 @@ import {
   faTextWidth
 } from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../styles/globals";
+import {
+  faBook,
+  faFolder,
+  faFont,
+  faFillDrip,
+  faTextSize,
+  faLineHeight,
+  faTextWidth,
+  faClose,
+} from "@fortawesome/free-solid-svg-icons";
+import { iconSvgs } from "../Icon/data";
 
 export const dropdownArr = [
   {
@@ -74,7 +85,7 @@ export const dropdownData = {
   typeface: [
     {
       backgroundColor: colors.primaryBlue,
-      faIconName: faFont,
+      faIconName: iconSvgs.typeface,
       labelBg: "transparent",
       labelText: "Typeface",
     },
@@ -100,15 +111,16 @@ export const dropdownData = {
       width: "5rem",
       unit: "pt",
       placeholder: "#",
+      src: iconSvgs.fontSize,
     },
     {
-      faIconName: "faLineHeight",
       labelBg: "transparent",
       labelText: "Line Height",
       inputType: "text",
       width: "5rem",
       unit: "pt",
       placeholder: "#",
+      src: iconSvgs.lineSpacing,
     },
     {
       faIconName: faTextWidth,
@@ -118,6 +130,7 @@ export const dropdownData = {
       width: "5rem",
       unit: "pt",
       placeholder: "#",
+      src: iconSvgs.letterSpacing,
     },
   ],
 };

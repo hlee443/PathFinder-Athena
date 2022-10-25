@@ -7,13 +7,14 @@ import { useState } from "react";
 
 const OptionCont = styled(Flexbox)`
   justify-content: space-between;
-  background-color: ${props => props.bgColor || "transparent"};
+  background-color: ${(props) => props.bgColor || "transparent"};
   padding: 0.5rem 2rem 0.5rem 2rem;
   width: 100%;
   cursor: pointer;
+  align-items: flex-start;
 `;
 
-const OptionName = styled(Flexbox)``
+const OptionName = styled(Flexbox)``;
 
 export default function Option({
   bgColor = "transparent",

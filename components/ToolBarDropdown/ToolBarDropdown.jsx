@@ -24,6 +24,7 @@ import { useState } from "react";
 import { SuccessBubble } from "../Bubble/Bubble";
 import Label from "../Label/Label";
 import { dropdownArr } from "./data";
+import { iconSvgs } from "../Icon/data";
 
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
@@ -62,11 +63,17 @@ export default function ToolBarDropdown({
       ></Option>
       {dropdownArr.map((o, i) => (
         <Option
+          key={i}
           bgColor={o.backgroundColor}
           faIconName={o.faIconName}
           text={o.labelText}
           faIconNameRight={o.faIconNameRight}
           handleOption={onExpand}
+          inputType={o.inputType}
+          width={o.width}
+          unit={o.unit}
+          placeholder={o.placeholder}
+          src={o.src}
         ></Option>
       ))}
       <CreateNew>
