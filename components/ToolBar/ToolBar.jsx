@@ -42,7 +42,7 @@ export default function ToolBar() {
         const { definition } = data;
         console.log("RES", res);
         // split the response string into an array using regex
-        const newDefinition = definition.split(/1. |2. | 3. /);
+        const newDefinition = definition.split(/1. |2. |3. /);
 
         setWordInfo(newDefinition);
       });
