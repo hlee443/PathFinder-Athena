@@ -1,3 +1,4 @@
+import { BLOCKED_PAGES } from "next/constants";
 import styled from "styled-components";
 
 export const textData = {
@@ -5,6 +6,7 @@ export const textData = {
   letterSpacing: "0.35em",
   h1: {
     size: "2.375rem",
+    fontWeight: "700",
   },
   h2: {
     size: "1.5rem",
@@ -38,6 +40,8 @@ export const Wrapper = styled(Flexbox)`
   padding: 6rem;
   justify-content: space-between;
   align-items: center;
+  max-width: 75rem;
+  min-height: 85vh;
 `;
 
 export const BodyText = styled.p`

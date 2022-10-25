@@ -11,19 +11,19 @@ const TabBarCont = styled(Flexbox)`
 `;
 
 export default function TabBar({
-  changePage = () => { },
+  changePage = () => {},
   inputType = "url",
-  btnArr = []
+  btnArr = [],
 }) {
   const [sel, setSel] = useState(0);
 
   return (
     <TabBarCont inputType={inputType} dir="row">
-      {
-        btnArr.map((o, i) => <Button
+      {btnArr.map((o, i) => (
+        <Button
           key={o.text}
           borderBottom={
-            (sel === i)
+            sel === i
               ? btnData.state.clicked.borderBottom
               : btnData.state.default.borderBottom
           }
@@ -33,9 +33,11 @@ export default function TabBar({
           type="IconButton"
           text={o.text}
           width={btnData.width}
-          handleClick={() => { setSel(i), changePage() }}>
-        </Button>)
-      }
+          handleClick={() => {
+            setSel(i), changePage();
+          }}
+        ></Button>
+      ))}
     </TabBarCont>
   );
 }
