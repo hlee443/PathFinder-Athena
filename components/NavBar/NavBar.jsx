@@ -74,7 +74,7 @@ export default function NavBar({ type = "loggedIn" }) {
               size="2x"
               color={colors.backgroundWhite}
               faIconName={faUser}
-              handleClick={{}}
+              handleClick={() => console.log("User Click")}
             ></Icon>
           </IconContainer>
         ) : (
