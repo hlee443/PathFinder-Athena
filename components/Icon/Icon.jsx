@@ -15,6 +15,8 @@ const IconCont = styled.div`
   }
 `;
 
+const Img = styled.img``;
+
 export default function Icon({
   faIconName = faLink,
   handleClick = () => {},
@@ -23,6 +25,7 @@ export default function Icon({
   text = "",
   hoverColor = "transparent",
   paddingTop = "",
+  src = null,
 }) {
   return (
     <IconCont
@@ -31,11 +34,14 @@ export default function Icon({
       hoverColor={hoverColor}
       paddingTop={paddingTop}
     >
-      <FontAwesomeIcon
-        size={size}
-        color={color}
-        icon={faIconName}
-      ></FontAwesomeIcon>
+      {src === null && (
+        <FontAwesomeIcon
+          size={size}
+          color={color}
+          icon={faIconName}
+        ></FontAwesomeIcon>
+      )}
+      {src !== null && <Img src={src}></Img>}
       {text && <Label text={text} backgroundColor="transparent"></Label>}
     </IconCont>
   );

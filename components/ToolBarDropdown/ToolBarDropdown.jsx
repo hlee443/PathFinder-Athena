@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { SuccessBubble } from "../Bubble/Bubble";
 import Label from "../Label/Label";
+import { iconSvgs } from "../Icon/data";
 
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
@@ -113,6 +114,7 @@ export function FontDropdown({
           width={o.width}
           unit={o.unit}
           placeholder={o.placeholder}
+          src={o.src}
         ></Option>
       ))}
       <Button text="Clear"></Button>
