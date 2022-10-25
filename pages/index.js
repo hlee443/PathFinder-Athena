@@ -32,8 +32,8 @@ const CustomizeInputBox = styled(Flexbox)`
 `;
 
 const ClearButton = styled(Flexbox)`
-align-self: end;
-`
+  align-self: end;
+`;
 
 export const tabBarBtns = [
   {
@@ -58,7 +58,6 @@ export default function Home() {
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
-
 
   function handleChange(e) {
     e.preventDefault();
@@ -115,7 +114,7 @@ export default function Home() {
       <NavBar></NavBar>
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
-        <SubHeader text="Enter URL or upload files, we will make it easier to understand for you."></SubHeader>
+        <SubHeader text="Let us make your websites and documents easier to understand."></SubHeader>
         <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
@@ -214,8 +213,8 @@ export default function Home() {
             <p>or</p>
             <Button
               handleClick={() => fileInput.current.click()}
-              text="Choose a file">
-            </Button>
+              text="Choose a file"
+            ></Button>
             <input
               id="fileInput"
               type="file"
@@ -223,7 +222,7 @@ export default function Home() {
               onChange={(e) => onFileSelect(e)}
               accept=".txt"
               ref={fileInput}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </Container>
         )}
