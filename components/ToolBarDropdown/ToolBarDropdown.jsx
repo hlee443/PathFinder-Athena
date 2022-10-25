@@ -52,12 +52,11 @@ export default function ToolBarDropdown({
 }) {
 
   return (
-    <DropdownCont type={type} left={left} top={top}>
-      {type}
+    <DropdownCont left={left} top={top}>
       <Option
         bgColor={colors.primaryBlue}
         faIconName={faFolder}
-        text="cat"
+        text={type}
         faIconNameRight={faClose}
         handleOption={onClose}
       ></Option>
