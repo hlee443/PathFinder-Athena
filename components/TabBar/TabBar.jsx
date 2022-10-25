@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { colors, Flexbox, Container } from "../../styles/globals";
+import { Flexbox } from "../../styles/globals";
 import { btnData } from "./data";
 import { useState } from "react";
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
 
 const TabBarCont = styled(Flexbox)`
   border-bottom: 0.25rem solid #e1e1e1;
@@ -12,54 +10,32 @@ const TabBarCont = styled(Flexbox)`
   width: 100%;
 `;
 
-export default function TabBar({ changePage = () => {}, inputType = "url" }) {
-  const [isActive, setIsActive] = useState(false);
-
-  const changeState = () => {
-    setIsActive(!isActive);
-  };
-
-  useEffect(() => {
-    setIsActive(true);
-  }, []);
+export default function TabBar({
+  changePage = () => { },
+  inputType = "url",
+  btnArr = []
+}) {
+  const [sel, setSel] = useState(0);
 
   return (
     <TabBarCont inputType={inputType} dir="row">
-      <Button
-        borderBottom={
-          isActive
-            ? btnData.state.clicked.borderBottom
-            : btnData.state.default.borderBottom
-        }
-        backgroundColor="transparent"
-        borderRadius="0"
-        type="IconButton"
-        text="Import from URL"
-        width={btnData.width}
-        handleClick={() => {
-          if (!isActive) {
-            changeState(), changePage();
+      {
+        btnArr.map((o, i) => <Button
+          key={o.text}
+          borderBottom={
+            (sel === i)
+              ? btnData.state.clicked.borderBottom
+              : btnData.state.default.borderBottom
           }
-        }}
-      />
-      <Button
-        borderBottom={
-          !isActive
-            ? btnData.state.clicked.borderBottom
-            : btnData.state.default.borderBottom
-        }
-        backgroundColor="transparent"
-        borderRadius="0"
-        type="IconButton"
-        text="Upload a File"
-        width={btnData.width}
-        ButtonFaIconName={faArrowUpFromBracket}
-        handleClick={() => {
-          if (isActive) {
-            changeState(), changePage();
-          }
-        }}
-      />
+          faIconName={o.icon}
+          backgroundColor="transparent"
+          borderRadius="0"
+          type="IconButton"
+          text={o.text}
+          width={btnData.width}
+          handleClick={() => { setSel(i), changePage() }}>
+        </Button>)
+      }
     </TabBarCont>
   );
 }

@@ -6,6 +6,7 @@ import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
 import {
+  faLink,
   faChevronDown,
   faUpload,
   faPaintRoller,
@@ -33,9 +34,17 @@ const CustomizeInputBox = styled(Flexbox)`
 const ClearButton = styled(Flexbox)`
 align-self: end;
 `
-const Upload = styled(Flexbox)`
-align-self: center;
-`
+
+export const tabBarBtns = [
+  {
+    text: "Import a URL",
+    icon: faLink,
+  },
+  {
+    text: "Upload a file",
+    icon: faUpload,
+  },
+];
 
 export default function Home() {
   const router = useRouter();
@@ -107,7 +116,7 @@ export default function Home() {
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
         <SubHeader text="Enter URL or upload files, we will make it easier to understand for you."></SubHeader>
-        <TabBar changePage={resetPageStates}></TabBar>
+        <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
             <Input
@@ -164,6 +173,8 @@ export default function Home() {
               text="Typeface"
               inputType="dropdown"
               placeholder="Choose your typeface"
+              type="option"
+              width="100%"
             ></Option>
             <Option
               faIconName={faFont}
@@ -171,7 +182,6 @@ export default function Home() {
               inputType="text"
               unit="pt"
               placeholder="##"
-              type="unit"
             ></Option>
             <Option
               faIconName={faTextHeight}
@@ -179,7 +189,6 @@ export default function Home() {
               inputType="text"
               placeholder="##"
               unit="%"
-              type="unit"
             ></Option>
             <Option
               faIconName={faFont}
@@ -187,7 +196,6 @@ export default function Home() {
               inputType="text"
               unit="%"
               placeholder="##"
-              type="unit"
             ></Option>
             <ClearButton>
               <Button

@@ -24,6 +24,7 @@ const ToolBarCont = styled.div`
   position: relative;
   margin: 1rem;
 `;
+
 export default function ToolBar() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showFont, setShowFont] = useState(false);
@@ -35,27 +36,32 @@ export default function ToolBar() {
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faFileLines}
         text="Summarize"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faHighlighter}
         text="Highlighter"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faFont}
         handleClick={setShowFont}
         text="Typeface"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
       {showFont && (
         <FontDropdown
@@ -70,6 +76,7 @@ export default function ToolBar() {
         handleClick={setShowLibrary}
         text="Save to Library"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
       {showLibrary && (
         <ToolBarDropdown
@@ -83,6 +90,7 @@ export default function ToolBar() {
         faIconName={faDownload}
         text="Download"
         hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
       ></Icon>
     </ToolBarCont>
   );

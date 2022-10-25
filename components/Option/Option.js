@@ -17,22 +17,22 @@ const OptionName = styled(Flexbox)``
 
 export default function Option({
   bgColor = "transparent",
-  type = null,
   text = "text",
   unit = null,
   faIconName = faIconName,
-  inputType = "text",
+  inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleClick =() => {}
+  handleClick = () => { },
+  width = "100%"
 }) {
 
-  return <OptionCont onClick={handleClick} type={type} dir="row" bgColor={bgColor}>
+  return <OptionCont onClick={handleClick} dir="row" bgColor={bgColor}>
     <OptionName dir="row">
       <Icon faIconName={faIconName}></Icon>
       <BodyText>{text}</BodyText>
       {
-        type !== null && <Input type={inputType} placeholder={placeholder}></Input>
+        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder}></Input>
       }
       {
         unit !== null && <BodyText>{unit}</BodyText>
