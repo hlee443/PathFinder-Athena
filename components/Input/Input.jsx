@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../styles/globals";
+import { useState } from 'react';
 
 const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
@@ -7,7 +8,7 @@ const InputCont = styled.input`
   width: ${(props) => props.width || "100%"};
   height: 100%;
   padding: 1rem;
-  background-color: ${(props) => props.bgColor || `${colors.backgroundWhite}`};
+  background-color: ${(props) => props.bgColor || `${colors.backgroundWhite}`}
 `;
 
 const OptionCont = styled.select`
@@ -25,8 +26,26 @@ export default function Input({
   borderRadius = "3.125rem",
   placeholder = "placeholder",
   border = "",
-  bgColor = "none",
+  bgColor = "none"
 }) {
+
+  const [inputValue, setInputValue] = useState(value);
+
+  if (type === "text") {
+    return (
+      <InputCont
+        borderRadius={borderRadius}
+        type={type}
+        placeholder={placeholder}
+        width={width}
+        onChange={(e) => setInputValue(e.target.value)}
+        value={inputValue}
+        border={border}
+        bgColor={bgColor}
+      ></InputCont>
+    );
+  }
+
   if (type === "dropdown") {
     return (
       <OptionCont type="option" width={width}>
@@ -35,18 +54,6 @@ export default function Input({
         </option>
         <option value=""></option>
       </OptionCont>
-    );
-  } else {
-    return (
-      <InputCont
-        borderRadius={borderRadius}
-        type={type}
-        placeholder={placeholder}
-        width={width}
-        value={value}
-        border={border}
-        bgColor={bgColor}
-      ></InputCont>
     );
   }
 }

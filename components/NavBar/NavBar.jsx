@@ -64,7 +64,7 @@ export default function NavBar() {
         <IconContainer>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
-            <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser}></Icon>
           </IconContainer>
         {/* {
           isLoggedIn ? <IconContainer>
