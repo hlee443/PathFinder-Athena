@@ -56,7 +56,7 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-export default function NavBar({ type = "guest" }) {
+export default function NavBar({ type = "loggedIn" }) {
   const r = useRouter();
   const [showBubble, setShowBubble] = useState(false);
 
