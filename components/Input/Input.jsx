@@ -39,7 +39,7 @@ export default function Input({
         placeholder={placeholder}
         width={width}
         onChange={(e) => setInputValue(e.target.value)}
-        value={inputValue}
+        defaultValue={inputValue}
         border={border}
         bgColor={bgColor}
       ></InputCont>
