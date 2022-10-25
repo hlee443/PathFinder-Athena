@@ -7,6 +7,7 @@ import Button from "../Button/Button";
 import { colors, Flexbox, BodyText } from "../../styles/globals";
 import { faClose, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { bubbleData } from "./data";
 
 const BubbleCont = styled(Flexbox)`
   max-width: 60rem;
@@ -46,19 +47,14 @@ export default function Bubble({
   type = "login",
   onClose = () => { },
   handleBubble = () => { },
-  header = "header text",
-  subHeader1 = "subheader text",
-  subHeader2 = "subheader text",
-  btnTextLeft = "btn left",
-  btnTextRight = "btn right"
 }) {
 
   return (
-    <BubbleCont>
+    <BubbleCont type ={type}>
       <CloseButton>
         <Icon handleClick={onClose} faIconName={faClose} />
       </CloseButton>
-      <Header text={header} />
+      <Header text={bubbleData[type].header} />
       {
         (type == "login" || type === "signup") && <InputCont>
         <Input width="100%" />
@@ -67,20 +63,20 @@ export default function Bubble({
       }
       <SubHeaderCont dir="row">
         {type === "signup" && <Icon faIconName={faSquare} />}
-        <SubHeader text={subHeader1} />
+        <SubHeader text={bubbleData[type].subHeader1} />
       </SubHeaderCont>
       <BtnCont dir="row">
         <Button
-          text={btnTextLeft}
+          text={bubbleData[type].btnTextLeft}
           handleClick={onClose}
           backgroundColor={colors.buttonPrimaryBlue}
         />
         <Button
-          text={btnTextRight}
+          text={bubbleData[type].btnTextRight}
           handleClick={handleBubble}
         />
       </BtnCont>
-      {type === "signup" && <SubHeader text={subHeader2} />}
+      {type === "signup" && <SubHeader text={bubbleData[type].subHeader2} />}
     </BubbleCont>
   );
 };
