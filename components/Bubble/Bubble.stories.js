@@ -3,7 +3,7 @@ import Bubble from "./Bubble.jsx";
 // The default export metadata controls how Storybook lists your stories and provides information used by addons.
 // https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Popups/Bubble",
+  title: "Molecules/Bubble",
   component: Bubble,
 };
 

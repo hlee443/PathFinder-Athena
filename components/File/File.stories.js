@@ -1,7 +1,7 @@
 import File from "./File";
 
 export default {
-  title: "Clickables/File",
+  title: "Molecules/File",
   component: File,
 };
 

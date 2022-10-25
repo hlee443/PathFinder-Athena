@@ -1,7 +1,7 @@
 import Input from "./Input";
 
 export default {
-  title: "Clickables/Input",
+  title: "Atoms/Input",
   component: Input,
 };
 

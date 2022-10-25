@@ -7,7 +7,7 @@ const InputCont = styled.input`
   width: ${(props) => props.width || "100%"};
   height: 100%;
   padding: 1rem;
-  background-color: ${(props) => props.bgColor || `${colors.backgroundWhite}`}
+  background-color: ${(props) => props.bgColor || `${colors.backgroundWhite}`};
 `;
 
 const OptionCont = styled.select`
@@ -25,9 +25,18 @@ export default function Input({
   borderRadius = "3.125rem",
   placeholder = "placeholder",
   border = "",
-  bgColor = "none"
+  bgColor = "none",
 }) {
-  if (type === "text") {
+  if (type === "dropdown") {
+    return (
+      <OptionCont type="option" width={width}>
+        <option value="" selected>
+          Placeholder
+        </option>
+        <option value=""></option>
+      </OptionCont>
+    );
+  } else {
     return (
       <InputCont
         borderRadius={borderRadius}
@@ -38,17 +47,6 @@ export default function Input({
         border={border}
         bgColor={bgColor}
       ></InputCont>
-    );
-  }
-
-  if (type === "dropdown") {
-    return (
-      <OptionCont type="option" width={width}>
-        <option value="" selected>
-          Placeholder
-        </option>
-        <option value=""></option>
-      </OptionCont>
     );
   }
 }

@@ -1,7 +1,7 @@
 import Label from "./Label";
 
 export default {
-  title: "Text/Label",
+  title: "Atoms/Label",
   component: Label,
 };
 

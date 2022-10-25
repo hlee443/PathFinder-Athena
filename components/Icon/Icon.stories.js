@@ -2,7 +2,7 @@ import Icon from "./Icon";
 import { colors } from "../../styles/globals";
 
 export default {
-  title: "Clickables/Icon",
+  title: "Atoms/Icon",
   component: Icon,
 };
 

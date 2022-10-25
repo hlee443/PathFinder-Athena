@@ -2,7 +2,7 @@ import Header from "./Header";
 import { textData } from "../../styles/globals";
 
 export default {
-  title: "Text/Header",
+  title: "Atoms/Header",
   component: Header,
 };
 
