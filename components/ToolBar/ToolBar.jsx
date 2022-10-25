@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   faVolumeHigh,
   faMagnifyingGlass,
@@ -13,6 +13,7 @@ import {
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
 import { FontDropdown } from "../ToolBarDropdown/ToolBarDropdown";
 import { colors } from "../../styles/globals";
+import * as mainHandler from '../../handlers/main'
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -26,6 +27,37 @@ const ToolBarCont = styled.div`
 export default function ToolBar() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showFont, setShowFont] = useState(false);
+  const [summarizedContent, setSummarizedContent] = useState(null);
+  const [highlightedText, setHighlightedText] = useState("");
+
+  useEffect(() => {
+    // add event listener to the document
+    const saveSelection = () => {
+      setHighlightedText(window.getSelection().toString())
+    }
+    
+    document.addEventListener("mousedown", saveSelection);
+
+    // remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", saveSelection);
+    };
+  }, []);
+
+  async function fetchSummarize(e){
+    e.preventDefault()
+
+    try {
+      const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
+      if(res){
+          console.log(res)
+          setSummarizedContent(res.data.summary)
+      }
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
   return (
     <ToolBarCont>
       <Icon
@@ -43,9 +75,20 @@ export default function ToolBar() {
       <Icon
         faIconName={faFileLines}
         text="Summarize"
+        handleClick={(e) => fetchSummarize(e)}
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
       ></Icon>
+      {
+        summarizedContent && (
+          <>
+            <h2>Summarize</h2>
+            <p>
+              {summarizedContent}
+            </p>
+          </>
+        )
+      }
       <Icon
         faIconName={faHighlighter}
         text="Highlighter"
