@@ -30,35 +30,29 @@ export default function ToolBar() {
   const [summarizedContent, setSummarizedContent] = useState(null);
   const [highlightedText, setHighlightedText] = useState("");
 
-  // useEffect(() => {
-  //   // add event listener to the document
-  //   const saveSelection = () => {
-  //     setHighlightedText(window.getSelection().toString())
-  //     console.log("Highlighted", highlightedText)
-  //   }
+  useEffect(() => {
+    // add event listener to the document
+    const saveSelection = () => {
+      setHighlightedText(window.getSelection().toString())
+    }
     
-  //   document.addEventListener("mouseup", saveSelection);
+    document.addEventListener("mousedown", saveSelection);
 
-  //   // remove event listener when component unmounts
-  //   return () => {
-  //     document.removeEventListener("mouseup", saveSelection);
-  //   };
-  // }, []);
+    // remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", saveSelection);
+    };
+  }, []);
 
-  function fetchSummarize(e){
+  async function fetchSummarize(e){
     e.preventDefault()
 
     try {
-      const postContent = window.getSelection().toString()
-      // console.log("window", window)
-      // console.log("WINDOW", window.getSelection().toString())
-      console.log("POST CONTENT", postContent)
-
-      // const res = await mainHandler.handleSummarize(postContent) // call handler for axios call
-      // if(res){
-      //     console.log(res)
-      //     setSummarizedContent(res.data.summary)
-    //   }
+      const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
+      if(res){
+          console.log(res)
+          setSummarizedContent(res.data.summary)
+      }
     } catch (error) {
         console.log(error)
     }
@@ -88,6 +82,7 @@ export default function ToolBar() {
       {
         summarizedContent && (
           <>
+            <h2>Summarize</h2>
             <p>
               {summarizedContent}
             </p>
