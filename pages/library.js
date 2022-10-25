@@ -6,7 +6,7 @@ import File from "../components/File/File";
 import Header from "../components/Header/Header";
 import Input from "../components/Input/Input";
 import Icon from "../components/Icon/Icon";
-import { faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload, faChevronDown, faSquarePlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faLink, faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload, faChevronDown, faSquarePlus, faSearch, faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import FeatureExplain from "../components/FeatureExplain/FeatureExplain";
 import SubHeader from "../components/SubHeader/SubHeader";
 
@@ -40,6 +40,21 @@ align-self: flex-start;
 margin-top: -5rem;
 `
 
+export const tabBarBtns = [
+  {
+    text: "Assignments",
+    icon: faFolder,
+  },
+  {
+    text: "Quizzes",
+    icon: faFolder,
+  },
+  {
+    text: "Create New",
+    icon: faFolderPlus,
+  }
+];
+
 export default function library() {
   return (
     <Flexbox>
@@ -52,7 +67,9 @@ export default function library() {
             <Icon faIconName={faSearch}></Icon>
           </SearchBar>
         </TopCont>
-        <TabBar></TabBar>
+        <TabBar
+        btnArr = {tabBarBtns}
+        ></TabBar>
         <FileDisplay dir="row">
           <File></File>
           <BodyText>Your library is currently empty, add a document to get started.</BodyText>
