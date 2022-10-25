@@ -4,7 +4,11 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
-import { faBookBookmark, faHome, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookBookmark,
+  faHome,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { colors } from "../../styles/globals";
 
@@ -52,21 +56,37 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-export default function NavBar() {
+export default function NavBar({ type = "guest" }) {
   const r = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showBubble, setShowBubble] = useState(false);
 
   return (
-    <NavBarCont>
+    <NavBarCont type={type}>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {
-          isLoggedIn ? <IconContainer>
-            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={()=>r.push("/")}></Icon>
-            <Icon size ="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={()=>r.push("/library")}></Icon>
-            <Icon size ="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
-          </IconContainer> : <ButtonContainer>
+        {type === "loggedIn" ? (
+          <IconContainer>
+            <Icon
+              size="2x"
+              color={colors.backgroundWhite}
+              faIconName={faHome}
+              handleClick={() => r.push("/")}
+            ></Icon>
+            <Icon
+              size="2x"
+              color={colors.backgroundWhite}
+              faIconName={faBookBookmark}
+              handleClick={() => r.push("/library")}
+            ></Icon>
+            <Icon
+              size="2x"
+              color={colors.backgroundWhite}
+              faIconName={faUser}
+              handleClick={{}}
+            ></Icon>
+          </IconContainer>
+        ) : (
+          <ButtonContainer>
             <Button
               handleClick={setShowBubble}
               width={btnData.width}
@@ -82,7 +102,7 @@ export default function NavBar() {
               text="Sign Up"
             ></Button>
           </ButtonContainer>
-        }
+        )}
         {showBubble && (
           <Bubble
             type="login"

@@ -32,10 +32,10 @@ export default function Button({
   borderBottom = "none",
   borderRadius = "3.125rem",
   type = "btn type",
-  handleClick = () => { },
-  width = "",
+  handleClick = () => {},
+  width = "15rem",
   ButtonFaIconName = faLink,
-  fontWeight = "normal"
+  fontWeight = "normal",
 }) {
   // const handleClick = () => {
   //   console.log("hi!");
