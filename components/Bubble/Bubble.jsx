@@ -4,8 +4,8 @@ import Header from "../Header/Header";
 import Input from "../Input/Input";
 import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
-import { colors, Flexbox } from "../../styles/globals";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { colors, Flexbox, BodyText } from "../../styles/globals";
+import { faClose, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 const BubbleCont = styled(Flexbox)`
@@ -16,7 +16,7 @@ const BubbleCont = styled(Flexbox)`
   padding: 2.5rem;
   z-index: 1;
   position: absolute;
-  top: 50%;
+  top: 100%;
   left: 20%;
   right: 20%;
   align-items: flex-start;
@@ -33,63 +33,54 @@ const CloseButton = styled.div`
   align-self: end;
 `;
 
+const SubHeaderCont = styled(Flexbox)`
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const InputCont = styled(Flexbox)`
+  width: 100%;
+`
+
 export default function Bubble({
-  active = null,
-  setActive = null,
   type = "login",
+  onClose = () => { },
+  handleBubble = () => { },
+  header = "header text",
+  subHeader1 = "subheader text",
+  subHeader2 = "subheader text",
+  btnTextLeft = "btn left",
+  btnTextRight = "btn right"
 }) {
-
-  const [header, setHeader] = useState("Header Text");
-  const [subHeader, setSubHeader] = useState("Subheader text");
-
-  const closeBubble = () => {
-    setActive(!active);
-  };
 
   return (
     <BubbleCont>
       <CloseButton>
-        <Icon handleClick={closeBubble} faIconName={faClose} />
+        <Icon handleClick={onClose} faIconName={faClose} />
       </CloseButton>
-      <Header text={header}></Header>
-      <Input width="100%"></Input>
-      <Input width="100%"></Input>
-      {type === "signup" && <Input width="100%"></Input>}
-      <SubHeader text={subHeader}></SubHeader>
+      <Header text={header} />
+      {
+        (type == "login" || type === "signup") && <InputCont>
+        <Input width="100%" />
+        <Input width="100%" />
+      </InputCont>
+      }
+      <SubHeaderCont dir="row">
+        {type === "signup" && <Icon faIconName={faSquare} />}
+        <SubHeader text={subHeader1} />
+      </SubHeaderCont>
       <BtnCont dir="row">
         <Button
-          text="Cancel"
-          handleClick={closeBubble}
+          text={btnTextLeft}
+          handleClick={onClose}
           backgroundColor={colors.buttonPrimaryBlue}
-        ></Button>
-        <Button text="Log In"></Button>
-      </BtnCont>
-    </BubbleCont>
-  );
-}
-
-export function SuccessBubble({
-  active = null,
-  setActive = null,
-  header = "",
-}) {
-  const closeBubble = () => {
-    setActive(!active);
-  };
-  return (
-    <BubbleCont>
-      <CloseButton>
-        <Icon handleClick={closeBubble} faIconName={faClose} />
-      </CloseButton>
-      <Header text={header}></Header>
-      <BtnCont dir="row">
+        />
         <Button
-          text="Go back to Doc"
-          handleClick={closeBubble}
-          backgroundColor={colors.buttonPrimaryBlue}
-        ></Button>
-        <Button text="Go to your Library"></Button>
+          text={btnTextRight}
+          handleClick={handleBubble}
+        />
       </BtnCont>
+      {type === "signup" && <SubHeader text={subHeader2} />}
     </BubbleCont>
   );
-}
+};
