@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { SuccessBubble } from "../Bubble/Bubble";
 import Label from "../Label/Label";
+import { dropdownArr } from "./data";
 
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
@@ -43,77 +44,68 @@ const CreateNew = styled(Flexbox)`
 `;
 
 export default function ToolBarDropdown({
-  active = null,
-  setActive = null,
   left = "",
   top = "",
+  onExpand = () => { },
+  onClose = () => { },
+  type ="type"
 }) {
-  const [showBubble, setShowBubble] = useState(false);
 
-  const closeBubble = () => {
-    setActive(!active);
-  };
-  const arr = dropdownData.library;
   return (
-    <>
-      <DropdownCont left={left} top={top}>
-        {arr.map((o, i) => (
-          <Option
-            bgColor={o.backgroundColor}
-            faIconName={o.faIconName}
-            // not sure how to make these icons show up yet ! just a string rn
-            // also missing close icon
-            text={o.labelText}
-            faIconNameRight={o.faIconNameRight}
-            handleClick={setShowBubble}
-            // right now, if you click any of them, the popup will show up
-          ></Option>
-        ))}
-        <CreateNew>
-          <Button
-            text="New Folder"
-            backgroundColor="transparent"
-            type="IconButton"
-            ButtonFaIconName={faFolderPlus}
-            // handleClick={setShowBubble}
-          ></Button>
-        </CreateNew>
-      </DropdownCont>
-      {showBubble && (
-        <SuccessBubble
-          header="You have saved your file to the Assignment folder!"
-          active={showBubble}
-          setActive={setShowBubble}
-        ></SuccessBubble>
-      )}
-    </>
-  );
-}
-
-export function FontDropdown({
-  active = null,
-  setActive = null,
-  left = "",
-  top = "",
-}) {
-  const closeBubble = () => {
-    setActive(!active);
-  };
-  const arr = dropdownData.typeface;
-  return (
-    <DropdownCont left={left} top={top}>
-      {arr.map((o, i) => (
+    <DropdownCont type={type} left={left} top={top}>
+      {type}
+      <Option
+        bgColor={colors.primaryBlue}
+        faIconName={faFolder}
+        text="cat"
+        faIconNameRight={faClose}
+        handleOption={onClose}
+      ></Option>
+      {dropdownArr.map((o, i) => (
         <Option
           bgColor={o.backgroundColor}
           faIconName={o.faIconName}
           text={o.labelText}
-          inputType={o.inputType}
-          width={o.width}
-          unit={o.unit}
-          placeholder={o.placeholder}
+          faIconNameRight={o.faIconNameRight}
+          handleOption={onExpand}
         ></Option>
       ))}
-      <Button text="Clear"></Button>
+      <CreateNew>
+        <Button
+          text="New Folder"
+          backgroundColor="transparent"
+          type="IconButton"
+          faIconName={faFolderPlus}
+        ></Button>
+      </CreateNew>
     </DropdownCont>
   );
 }
+
+// export function FontDropdown({
+//   active = null,
+//   setActive = null,
+//   left = "",
+//   top = "",
+// }) {
+//   const closeBubble = () => {
+//     setActive(!active);
+//   };
+//   const arr = dropdownData.typeface;
+//   return (
+//     <DropdownCont left={left} top={top}>
+//       {arr.map((o, i) => (
+//         <Option
+//           bgColor={o.backgroundColor}
+//           faIconName={o.faIconName}
+//           text={o.labelText}
+//           inputType={o.inputType}
+//           width={o.width}
+//           unit={o.unit}
+//           placeholder={o.placeholder}
+//         ></Option>
+//       ))}
+//       <Button text="Clear"></Button>
+//     </DropdownCont>
+//   );
+// }
