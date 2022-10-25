@@ -37,13 +37,10 @@ export default function Button({
   faIconName = faLink,
   fontWeight = "normal",
 }) {
-  // const handleClick = () => {
-  //   console.log("hi!");
-  // };
 
   return (
     <StyledButton
-      onClick={()=>handleClick(text)}
+      onClick={handleClick}
       backgroundColor={backgroundColor}
       text="button text"
       height={height}
