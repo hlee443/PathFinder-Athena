@@ -19,9 +19,3 @@ FileIcon.args = {
   size: "2x",
   color: "black",
 };
-
-export const NavBarIcon = Template.bind({});
-NavBarIcon.args = {
-  size: "2x",
-  color: colors.backgroundWhite,
-};

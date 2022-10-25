@@ -8,4 +8,7 @@ export default {
 const Template = (args) => <File {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  text: "File",
+  type: "default",
+};
