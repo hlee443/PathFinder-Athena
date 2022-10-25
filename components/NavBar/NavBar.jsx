@@ -55,27 +55,32 @@ const ButtonContainer = styled.div`
 export default function NavBar() {
   const r = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [showBubble, setShowBubble] = useState(false);
+  const [showBubble, setShowBubble] = useState("type");
 
   return (
     <NavBarCont>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {
+        <IconContainer>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
+          </IconContainer>
+        {/* {
           isLoggedIn ? <IconContainer>
-            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={()=>r.push("/")}></Icon>
-            <Icon size ="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={()=>r.push("/library")}></Icon>
-            <Icon size ="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
           </IconContainer> : <ButtonContainer>
             <Button
-              handleClick={setShowBubble}
+              handleClick={() => setShowBubble("login")}
               width={btnData.width}
               height={btnData.height}
               backgroundColor={btnData.state.default.backgroundColor}
               text="Log In"
             ></Button>
             <Button
-              handleClick={setShowBubble}
+              handleClick={() => setShowBubble("signup")}
               width={btnData.width}
               height={btnData.height}
               backgroundColor={btnData.state.default.backgroundColor}
@@ -83,16 +88,44 @@ export default function NavBar() {
             ></Button>
           </ButtonContainer>
         }
-        {showBubble && (
+        {showBubble === "login" && (
           <Bubble
             type="login"
-            active={showBubble}
-            setActive={setShowBubble}
+            onClose={() => setShowBubble(false)}
+            header="Log in"
+            subHeader1="If you don’t have an account with us, please Sign Up!"
+            handleBubble={() => setShowBubble("success")}
+            btnTextLeft="Cancel"
+            btnTextRight="Log In"
           ></Bubble>
         )}
+        {showBubble === "signup" && (
+          <Bubble
+            type="signup"
+            onClose={() => setShowBubble(false)}
+            header="Sign up"
+            subHeader1="I read and agree to Terms & Conditions"
+            subHeader2="Already a member? Sign In!"
+            btnTextLeft="Cancel"
+            btnTextRight="Sign Up"
+          ></Bubble>
+        )}
+        {
+          showBubble === "success" && (
+            <Bubble
+              type="success"
+              onClose={() => setShowBubble(false)}
+              header="Your have successfully signed in!"
+              subHeader1="Happy studying!"
+              btnTextLeft="Back to Main"
+              btnTextRight="Go to the Library"
+              handleBubble={() => r.push("/library")}
+            ></Bubble>
+          )
+        } */}
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
     </NavBarCont>
   );
-}
+};

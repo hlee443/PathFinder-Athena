@@ -43,7 +43,7 @@ export default function Button({
 
   return (
     <StyledButton
-      onClick={handleClick}
+      onClick={()=>handleClick(text)}
       backgroundColor={backgroundColor}
       text="button text"
       height={height}
