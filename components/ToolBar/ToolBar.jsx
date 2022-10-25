@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Icon from "../Icon/Icon";
 import { useState } from "react";
+import Icon from "../Icon/Icon";
 import {
   faVolumeHigh,
   faMagnifyingGlass,
@@ -11,7 +11,6 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
-import { FontDropdown } from "../ToolBarDropdown/ToolBarDropdown";
 import { colors } from "../../styles/globals";
 
 const ToolBarCont = styled.div`
@@ -23,23 +22,84 @@ const ToolBarCont = styled.div`
   margin: 1rem;
 `;
 
+export const iconArr = [
+  {
+    name: "Text-to-Speech",
+    icon: faVolumeHigh,
+  },
+  {
+    name: "Dictionary",
+    icon: faMagnifyingGlass,
+  },
+  {
+    name: "Summarize",
+    icon: faFileLines,
+  },
+  {
+    name: "Highlighter",
+    icon: faHighlighter,
+  },
+  {
+    name: "Typeface",
+    icon: faFont,
+  },
+  {
+    name: "Save to library",
+    icon: faBookmark,
+  },
+  {
+    name: "Download",
+    icon: faDownload,
+  }
+];
+
 export default function ToolBar() {
-  const [showLibrary, setShowLibrary] = useState(false);
-  const [showFont, setShowFont] = useState(false);
+
+  const [sel, setSel] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const closeDropdown = () => {
+    setShowDropdown(false);
+  };
+
   return (
     <ToolBarCont>
-      <Icon
+      {
+        iconArr.map((o, i) => <Icon
+          key={o.text}
+          hoverColor={
+            (sel === i)
+              ? colors.backgroundYellow
+              : "transparent"
+          }
+          faIconName={o.icon}
+          text={o.name}
+          onClose ={closeDropdown}
+          handleClick={() => { setSel(i), setShowDropdown(o.name) }}>
+        </Icon>)
+      }
+      {showDropdown !== false && <ToolBarDropdown
+        type={showDropdown}
+        onClose={closeDropdown}
+      ></ToolBarDropdown>
+      }
+    </ToolBarCont>
+  );
+};
+
+{/* <Icon
+        faIconName={faMagnifyingGlass}
+        text="Dictionary"
+        hoverColor={colors.backgroundYellow}
+        paddingTop="1rem"
+      ></Icon> */}
+{/* <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
       ></Icon>
-      <Icon
-        faIconName={faMagnifyingGlass}
-        text="Dictionary"
-        hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
-      ></Icon>
+
       <Icon
         faIconName={faFileLines}
         text="Summarize"
@@ -54,40 +114,21 @@ export default function ToolBar() {
       ></Icon>
       <Icon
         faIconName={faFont}
-        handleClick={setShowFont}
+        handleClick={setShowDropdown}
         text="Typeface"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
       ></Icon>
-      {showFont && (
-        <FontDropdown
-          active={showFont}
-          setActive={setShowFont}
-          top="2rem"
-          left="25rem"
-        ></FontDropdown>
-      )}
       <Icon
         faIconName={faBookmark}
-        handleClick={setShowLibrary}
+        handleClick={setShowDropdown}
         text="Save to Library"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
       ></Icon>
-      {showLibrary && (
-        <ToolBarDropdown
-          active={showLibrary}
-          setActive={setShowLibrary}
-          top="2rem"
-          left="40rem"
-        ></ToolBarDropdown>
-      )}
       <Icon
         faIconName={faDownload}
         text="Download"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
-      ></Icon>
-    </ToolBarCont>
-  );
-}
+      ></Icon> */}
