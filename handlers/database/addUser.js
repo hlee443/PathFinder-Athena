@@ -6,9 +6,9 @@ export async function handleAddUser(dbData) {
         dbData.settingData = {
             backgroundColour: "beige",
             typeface: "Aria",
-            fontSize: "24",
-            lineSpace: "4",
-            letterSpace: "2"
+            fontSize: "16",
+            lineSpace: "6",
+            letterSpace: "6"
         }
     }
     if (!dbData.folderData) {
