@@ -8,8 +8,10 @@ const IconCont = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: ${(props) => props.paddingTop};
   :hover {
     background-color: ${(props) => props.hoverColor};
+    border-radius: 2rem;
   }
 `;
 
@@ -20,9 +22,15 @@ export default function Icon({
   color = "black",
   text = "",
   hoverColor = "transparent",
+  paddingTop = "",
 }) {
   return (
-    <IconCont text={text} onClick={handleClick} hoverColor={hoverColor}>
+    <IconCont
+      text={text}
+      onClick={handleClick}
+      hoverColor={hoverColor}
+      paddingTop={paddingTop}
+    >
       <FontAwesomeIcon
         size={size}
         color={color}
