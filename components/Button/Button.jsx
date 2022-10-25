@@ -34,7 +34,7 @@ export default function Button({
   type = "btn type",
   handleClick = () => {},
   width = "15rem",
-  ButtonFaIconName = faLink,
+  faIconName = faLink,
   fontWeight = "normal",
 }) {
   // const handleClick = () => {
@@ -56,7 +56,7 @@ export default function Button({
       fontWeight={fontWeight}
     >
       {text}
-      {type === "IconButton" && <Icon faIconName={ButtonFaIconName} />}
+      {type === "IconButton" && <Icon faIconName={faIconName} />}
     </StyledButton>
   );
 }
