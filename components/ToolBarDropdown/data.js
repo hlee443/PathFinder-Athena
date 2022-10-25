@@ -1,60 +1,99 @@
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronRight,
+  faBook,
+  faFolder,
+  faFillDrip,
+  faTextSlash,
+  faTextHeight,
+  faFont,
+  faClose,
+  faTextWidth
+} from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../styles/globals";
+
+export const dropdownArr = [
+  {
+    type: "library",
+    faIconName: faFolder,
+  },
+  {
+    type: ""
+  }
+]
+
+
+// export const dropdownArr = [
+//   [
+//     {
+//       type: "library",
+//       faIconName: faFolder,
+//       labelText: "Assignments",
+//       faIconNameRight: faChevronRight,
+//     },
+//     {
+//       type: "library",
+//       faIconName: faFolder,
+//       labelText: "Assignments",
+//       faIconNameRight: faChevronRight,
+//     },
+//   ]
+// ]
+
 
 export const dropdownData = {
   library: [
     {
       backgroundColor: colors.primaryBlue,
-      faIconName: "faBook",
+      faIconName: faBook,
       labelBg: "transparent",
       labelText: "My Library",
-      faIconNameRight: "faClose",
+      faIconNameRight: faClose,
     },
     {
-      faIconName: "faFolder",
+      faIconName: faFolder,
       labelBg: "transparent",
       labelText: "Assignments",
-      faIconNameRight: "faChevronRight",
-      handleClick: "setShowBubble",
+      faIconNameRight: faChevronRight,
+      // handleClick: "setShowBubble",
     },
     {
-      faIconName: "faFolder",
+      faIconName: faFolder,
       labelBg: "transparent",
       labelText: "Folder 2",
-      faIconNameRight: "faChevronRight",
+      faIconNameRight: faChevronRight,
       handleClick: "setShowBubble",
     },
     {
-      faIconName: "faFolder",
+      faIconName: faFolder,
       labelBg: "transparent",
       labelText: "New Folder",
-      faIconNameRight: "faChevronRight",
+      faIconNameRight: faChevronRight,
       handleClick: "setShowBubble",
     },
   ],
   typeface: [
     {
       backgroundColor: colors.primaryBlue,
-      faIconName: "faFont",
+      faIconName: faFont,
       labelBg: "transparent",
       labelText: "Typeface",
     },
     {
-      faIconName: "faFillDrip",
+      faIconName: faFillDrip,
       labelBg: "transparent",
       labelText: "Background Color",
       width: "6rem",
       inputType: "color",
     },
     {
-      faIconName: "faFont",
+      faIconName: faFont,
       labelBg: "transparent",
       labelText: "Typeface",
       inputType: "dropdown",
       width: "12rem",
     },
     {
-      faIconName: "faTextSize",
+      faIconName: "",
       labelBg: "transparent",
       labelText: "Font Size",
       inputType: "text",
@@ -72,7 +111,7 @@ export const dropdownData = {
       placeholder: "#",
     },
     {
-      faIconName: "faTextWidth",
+      faIconName: faTextWidth,
       labelBg: "transparent",
       labelText: "Letter Spacing",
       inputType: "text",
