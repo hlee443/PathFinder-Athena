@@ -1,6 +1,7 @@
 import Icon from "../Icon/Icon";
 import styled from "styled-components";
 import { faVolumeHigh, faXmark } from "@fortawesome/free-solid-svg-icons"
+import { colors } from "../../styles/globals";
 
 const TopSection = styled.div`
   display: flex;
@@ -32,7 +33,12 @@ const StyledPopUp = styled.div`
 
 const Word = styled.div`
     font-weight: bold;
-    text-align:center;
+    display: flex;
+
+`
+
+const IconCont = styled.div`
+    margin-left: 0.5rem;
 `
 
 const WordDefinition = styled.div`
@@ -42,7 +48,7 @@ const WordDefinition = styled.div`
 
 export default function Dictionary ({
 
-    backgroundColor = "#FFFEF6",
+    backgroundColor = colors.backgroundCream,
     word="word",
     wordDefinition="word definition",
 
@@ -56,7 +62,9 @@ export default function Dictionary ({
         <TopSection>
             <TopSectionLeft>
                 <Word>{word}</Word>
-                <Icon faIconName={faVolumeHigh } size="0.875em"></Icon>
+                <IconCont>
+                    <Icon faIconName={faVolumeHigh } size="0.875em"></Icon>
+                </IconCont>
             </TopSectionLeft>
             <Icon faIconName={faXmark}></Icon>
         </TopSection>
