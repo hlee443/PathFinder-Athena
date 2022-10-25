@@ -53,21 +53,25 @@ export default function NavBar({ type = "loggedIn" }) {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showBubble, setShowBubble] = useState("type");
 
+  const closeBubble = () => {
+    setShowBubble(false)
+  }
+
   return (
     <NavBarCont type={type}>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        <IconContainer>
+        {/* <IconContainer dir= "row">
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser}></Icon>
-          </IconContainer>
-        {/* {
-          isLoggedIn ? <IconContainer>
+          </IconContainer> */}
+        {
+          !isLoggedIn ? <IconContainer>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
             <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
-          </IconContainer> : <ButtonContainer>
+          </IconContainer> : <ButtonContainer dir ="row">
             <Button
               handleClick={() => setShowBubble("login")}
               width={btnData.width}
@@ -87,38 +91,25 @@ export default function NavBar({ type = "loggedIn" }) {
         {showBubble === "login" && (
           <Bubble
             type="login"
-            onClose={() => setShowBubble(false)}
-            header="Log in"
-            subHeader1="If you don’t have an account with us, please Sign Up!"
+            onClose={closeBubble}
             handleBubble={() => setShowBubble("success")}
-            btnTextLeft="Cancel"
-            btnTextRight="Log In"
           ></Bubble>
         )}
         {showBubble === "signup" && (
           <Bubble
             type="signup"
-            onClose={() => setShowBubble(false)}
-            header="Sign up"
-            subHeader1="I read and agree to Terms & Conditions"
-            subHeader2="Already a member? Sign In!"
-            btnTextLeft="Cancel"
-            btnTextRight="Sign Up"
+            onClose={closeBubble}
           ></Bubble>
         )}
         {
           showBubble === "success" && (
             <Bubble
               type="success"
-              onClose={() => setShowBubble(false)}
-              header="Your have successfully signed in!"
-              subHeader1="Happy studying!"
-              btnTextLeft="Back to Main"
-              btnTextRight="Go to the Library"
+              onClose={closeBubble}
               handleBubble={() => r.push("/library")}
             ></Bubble>
           )
-        } */}
+        }
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
