@@ -7,13 +7,14 @@ import { useState } from "react";
 
 const OptionCont = styled(Flexbox)`
   justify-content: space-between;
-  background-color: ${props => props.bgColor || "transparent"};
+  background-color: ${(props) => props.bgColor || "transparent"};
   padding: 0.5rem 2rem 0.5rem 2rem;
   width: 100%;
   cursor: pointer;
+  align-items: flex-start;
 `;
 
-const OptionName = styled(Flexbox)``
+const OptionName = styled(Flexbox)``;
 
 export default function Option({
   bgColor = "transparent",
@@ -23,23 +24,25 @@ export default function Option({
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleClick = () => { },
-  width = "100%"
+  handleClick = () => {},
+  width = "100%",
+  src = null,
 }) {
-
-  return <OptionCont onClick={handleClick} dir="row" bgColor={bgColor}>
-    <OptionName dir="row">
-      <Icon faIconName={faIconName}></Icon>
-      <BodyText>{text}</BodyText>
-      {
-        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder}></Input>
-      }
-      {
-        unit !== null && <BodyText>{unit}</BodyText>
-      }
-    </OptionName>
-    {
-      faIconNameRight !== null && <Icon faIconName={faIconNameRight} />
-    }
-  </OptionCont>
+  return (
+    <OptionCont onClick={handleClick} dir="row" bgColor={bgColor}>
+      <OptionName dir="row">
+        <Icon faIconName={faIconName} src={src}></Icon>
+        <BodyText>{text}</BodyText>
+        {inputType !== null && (
+          <Input
+            width={width}
+            type={inputType}
+            placeholder={placeholder}
+          ></Input>
+        )}
+        {unit !== null && <BodyText>{unit}</BodyText>}
+      </OptionName>
+      {faIconNameRight !== null && <Icon faIconName={faIconNameRight} />}
+    </OptionCont>
+  );
 }

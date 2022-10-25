@@ -47,6 +47,14 @@ export default function Home() {
             <p>Test the Upload function.</p>
           </a>
 
+          <a
+            href="./test/db_test"
+            className={styles.card}
+          >
+            <h2>Database &rarr;</h2>
+            <p>Test the Database.</p>
+          </a>
+
         </div>
       </main>
 
