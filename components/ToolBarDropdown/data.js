@@ -1,14 +1,3 @@
-import {
-  faChevronRight,
-  faBook,
-  faFolder,
-  faFillDrip,
-  faTextSlash,
-  faTextHeight,
-  faFont,
-  faClose,
-  faTextWidth
-} from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../styles/globals";
 import {
   faBook,
@@ -19,6 +8,7 @@ import {
   faLineHeight,
   faTextWidth,
   faClose,
+  faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 import { iconSvgs } from "../Icon/data";
 
@@ -26,6 +16,8 @@ export const dropdownArr = [
   {
     type: "library",
     faIconName: faFolder,
+    labelText: "Assignments",
+    faIconNameRight: faChevronRight,
   },
   {
     type: ""
