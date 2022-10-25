@@ -59,6 +59,7 @@ export default function ToolBarDropdown({
       <DropdownCont left={left} top={top}>
         {arr.map((o, i) => (
           <Option
+            key={i}
             bgColor={o.backgroundColor}
             faIconName={o.faIconName}
             // not sure how to make these icons show up yet ! just a string rn
@@ -104,6 +105,7 @@ export function FontDropdown({
     <DropdownCont left={left} top={top}>
       {arr.map((o, i) => (
         <Option
+          key={i}
           bgColor={o.backgroundColor}
           faIconName={o.faIconName}
           text={o.labelText}
