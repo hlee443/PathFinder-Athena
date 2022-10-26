@@ -1,22 +1,26 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { iconSvgs } from "../Icon/data";
-import { colors, Flexbox } from "../../styles/globals";
+import { colors, Flexbox, textData } from "../../styles/globals";
 import { btnData } from "./data";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 const StyledButton = styled.button`
+  font-weight: ${(props) => props.fontWeight};
   border: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   background-color: ${(props) => props.backgroundColor};
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
+  max-width: 15rem;
   width: ${(props) => props.width || "15rem"};
   height: ${(props) => props.height || "3.875rem"};
   font-size: ${(props) => props.fontSize};
   border-color: ${(props) => props.borderColor};
+  line-height: ${textData.lineHeight};
+  letter-spacing: ${textData.letterSpacing};
+  cursor: pointer;
 `;
 
 export default function Button({
@@ -28,13 +32,11 @@ export default function Button({
   borderBottom = "none",
   borderRadius = "3.125rem",
   type = "btn type",
-  handleClick = () => { },
-  width = "",
-  ButtonFaIconName = faLink
+  handleClick = () => {},
+  width = "15rem",
+  faIconName = faLink,
+  fontWeight = "normal",
 }) {
-  // const handleClick = () => {
-  //   console.log("hi!");
-  // };
 
   return (
     <StyledButton
@@ -48,11 +50,10 @@ export default function Button({
       borderRadius={borderRadius}
       type="btn type"
       width={width}
+      fontWeight={fontWeight}
     >
       {text}
-      {type === "IconButton" && (
-        <Icon faIconName={ButtonFaIconName} />
-      )}
+      {type === "IconButton" && <Icon faIconName={faIconName} />}
     </StyledButton>
   );
 }
