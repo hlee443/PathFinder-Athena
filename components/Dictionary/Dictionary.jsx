@@ -28,8 +28,9 @@ const StyledPopUp = styled.div`
   height: ${(props) => props.height || "8.875rem"};
   font-size: ${(props) => props.fontSize};
   margin-bottom: 2rem;
-  
+  position: absolute; 
 `
+// position: absolute -- temporary for mvp???
 
 const Word = styled.div`
     font-weight: bold;

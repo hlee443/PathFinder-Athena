@@ -109,9 +109,8 @@ export default function ToolBar() {
   function fetchDictionary(e) {
     e.preventDefault();
     try {
-      const word = window.getSelection().toString();
       // callback
-      mainHandler.handleDictionary(word, (res) => {
+      mainHandler.handleDictionary(highlightedText, (res) => {
         const { data } = res;
         const { definition } = data;
         console.log("RES", res);
