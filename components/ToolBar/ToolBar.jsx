@@ -11,6 +11,7 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
+import Summary from '../Summary/Summary';
 import { colors } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
 
@@ -58,13 +59,21 @@ export default function ToolBar() {
 
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [summarizedContent, setSummarizedContent] = useState(null);
+  const [highlightedText, setHighlightedText] = useState("");
+  const [showPopUp, setShowPopUp] = useState("type");
 
   const closeDropdown = () => {
     setShowDropdown(false);
   };
 
-  const [summarizedContent, setSummarizedContent] = useState(null);
-  const [highlightedText, setHighlightedText] = useState("");
+  const closePopUp = () => {
+    setShowPopUp("type")
+
+    // clean up all the selected text and the api results
+    setSummarizedContent(null)
+    setHighlightedText('')
+  }
 
   useEffect(() => {
     // add event listener to the document
@@ -85,9 +94,10 @@ export default function ToolBar() {
 
     try {
       const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
-      if (res) {
-        console.log(res)
-        setSummarizedContent(res.data.summary)
+      if(res){
+          console.log(res)
+          setSummarizedContent(res.data.summary)
+          setShowPopUp("summarize")
       }
     } catch (error) {
       console.log(error)
@@ -113,13 +123,12 @@ export default function ToolBar() {
         hoverColor={colors.backgroundYellow}
       ></Icon>
       {
-        summarizedContent && (
-          <>
-            <h2>Summarize</h2>
-            <p>
-              {summarizedContent}
-            </p>
-          </>
+        summarizedContent && showPopUp === "summarize" && (
+          <Summary
+            originalContent={highlightedText}
+            summarizedContent={summarizedContent}
+            onClose={closePopUp}
+          ></Summary>
         )
       }
       <Icon
