@@ -80,7 +80,7 @@ export default function ToolBar() {
     const saveSelection = () => {
       setHighlightedText(window.getSelection().toString())
     }
-    
+
     document.addEventListener("mousedown", saveSelection);
 
     // remove event listener when component unmounts
@@ -89,7 +89,7 @@ export default function ToolBar() {
     };
   }, []);
 
-  async function fetchSummarize(e){
+  async function fetchSummarize(e) {
     e.preventDefault()
 
     try {
@@ -100,10 +100,9 @@ export default function ToolBar() {
           setShowPopUp("summarize")
       }
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
   }
-
 
   return (
     <ToolBarCont>
@@ -111,21 +110,17 @@ export default function ToolBar() {
         faIconName={faMagnifyingGlass}
         text="Dictionary"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
-      ></Icon> 
+      ></Icon>
       <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
-
       <Icon
         faIconName={faFileLines}
         text="Summarize"
         handleClick={(e) => fetchSummarize(e)}
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       {
         summarizedContent && showPopUp === "summarize" && (
@@ -140,29 +135,37 @@ export default function ToolBar() {
         faIconName={faHighlighter}
         text="Highlighter"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faFont}
-        handleClick={setShowDropdown}
+        handleClick={()=>setShowDropdown("typeface")}
         text="Typeface"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faBookmark}
-        handleClick={setShowDropdown}
+        handleClick={()=>setShowDropdown("library")}
         text="Save to Library"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faDownload}
         text="Download"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
-      ></Icon> 
-      </ToolBarCont>
+      ></Icon>
+      {
+        showDropdown === "library" && <ToolBarDropdown
+          type="Library"
+          onClose={closeDropdown}
+        ></ToolBarDropdown>
+      }
+      {
+        showDropdown === "typeface" && <ToolBarDropdown
+          type="Typeface"
+          onClose={closeDropdown}
+        ></ToolBarDropdown>
+      }
+    </ToolBarCont>
   )
 
   // return (
