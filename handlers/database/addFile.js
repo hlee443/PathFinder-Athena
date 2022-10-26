@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleAddFile(dbData) {
+export async function handleAddFile(dbData, cb) {
 
     // will consume fileData.folderId if supplied and place the file in that folder
 
@@ -27,7 +27,7 @@ export async function handleAddFile(dbData) {
             data: dbData
         })
             .then((response) => {
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);
