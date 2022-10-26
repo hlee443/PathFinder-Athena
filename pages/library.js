@@ -4,56 +4,18 @@ import { colors, Flexbox, Wrapper, BodyText } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import File from "../components/File/File";
 import Header from "../components/Header/Header";
-import Input from "../components/Input/Input";
-import Icon from "../components/Icon/Icon";
-import { faLink, faVolumeHigh, faMagnifyingGlass, faFileLines, faHighlighter, faFont, faBookmark, faDownload, faChevronDown, faSquarePlus, faSearch, faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import FeatureExplain from "../components/FeatureExplain/FeatureExplain";
-import SubHeader from "../components/SubHeader/SubHeader";
+import SearchBar from "../components/SearchBar/SearchBar";
+import { btnArr } from "../components/TabBar/data";
 
 const FileDisplay = styled(Flexbox)`
 width: 100%;
-`
-
-const SearchBar = styled(Flexbox)`
-background-color: ${colors.backgroundWhite};
-border-radius: 50rem;
-padding-right: 1rem;
-height: 3.25rem;
-border: 0.125rem solid ${colors.darkGray};
 `
 
 const TopCont = styled(Flexbox)`
 justify-content: space-between;
 width: 100%;
 `
-
-const FeatureExplainText = styled(Flexbox)`
-padding: 6rem;
-`
-
-const FeatureExplainCont = styled(Flexbox)`
-flex-direction:row;
-justify-content: space-between;
-padding: 6rem;
-flex-wrap: wrap;
-align-self: flex-start;
-margin-top: -5rem;
-`
-
-export const tabBarBtns = [
-  {
-    text: "Assignments",
-    icon: faFolder,
-  },
-  {
-    text: "Quizzes",
-    icon: faFolder,
-  },
-  {
-    text: "Create New",
-    icon: faFolderPlus,
-  }
-];
 
 export default function library() {
   return (
@@ -62,21 +24,33 @@ export default function library() {
       <Wrapper>
         <TopCont dir="row">
           <Header text="Library"></Header>
-          <SearchBar dir="row">
-            <Input border="none" bgColor="transparent" placeholder="Search.."></Input>
-            <Icon faIconName={faSearch}></Icon>
-          </SearchBar>
+          <SearchBar></SearchBar>
         </TopCont>
         <TabBar
-        btnArr = {tabBarBtns}
+          btnArr={btnArr}
         ></TabBar>
         <FileDisplay dir="row">
           <File></File>
           <BodyText>Your library is currently empty, add a document to get started.</BodyText>
         </FileDisplay>
       </Wrapper>
+    </Flexbox>);
+};
 
-      {/* <FeatureExplainText>
+  // const FeatureExplainText = styled(Flexbox)`
+  // padding: 6rem;
+  // `
+
+  // const FeatureExplainCont = styled(Flexbox)`
+  // flex-direction:row;
+  // justify-content: space-between;
+  // padding: 6rem;
+  // flex-wrap: wrap;
+  // align-self: flex-start;
+  // margin-top: -5rem;
+  // `
+
+{/* <FeatureExplainText>
         <Header text="Customize your documents to your needs" />
         <SubHeader text="Pathfinder gives you the tools to have a better experiance accessing documents. Use the tools in the toolbar to customize and access documents" />
       </FeatureExplainText>
@@ -122,5 +96,3 @@ export default function library() {
           featureDescription=""
         />
       </FeatureExplainCont> */}
-    </Flexbox>)
-};
