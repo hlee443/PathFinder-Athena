@@ -11,118 +11,75 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 import { iconSvgs } from "../Icon/data";
+import { btnArr } from "../TabBar/data";
 
-export const dropdownArr = [
+var num = 0;
+
+export const libraryDataArr = [
   {
-    type: "library",
+    bgColor: colors.primaryBlue,
+    text: "Library",
+    faIconName: faBook,
+    faIconNameRight: faClose,
+  },
+  {
     faIconName: faFolder,
-    labelText: "Assignments",
+    text: btnArr[num].text,
     faIconNameRight: faChevronRight,
   },
   {
-    type: ""
-  }
-]
+    faIconName: faFolder,
+    text: btnArr[num + 1].text,
+    faIconNameRight: faChevronRight,
+  },
+  {
+    faIconName: faFolder,
+    text: btnArr[num + 2].text,
+    faIconNameRight: faChevronRight,
+  },
+];
+  
+export const typefaceDataArr = [
+  {
+    bgColor: colors.primaryBlue,
+    text: "Typeface",
+    faIconName: faFont,
+    faIconNameRight: faClose,
+  },
+  {
+    faIconName: faFillDrip,
+    text: "Background Color",
+    width: "6rem",
+    inputType: "color",
+  },
+  {
+    faIconName: faFont,
+    text: "Typeface",
+    inputType: "dropdown",
+    width: "12rem",
+  },
+  {
+    text: "Font Size",
+    width: "5rem",
+    unit: "pt",
+    inputType: "text",
+    src: iconSvgs.fontSize,
+  },
+  {
+    text: "Line Height",
+    width: "5rem",
+    unit: "pt",
+    inputType: "text",
+    src: iconSvgs.lineSpacing,
+  },
+  {
+    faIconName: faTextWidth,
+    text: "Letter Spacing",
+    width: "5rem",
+    unit: "pt",
+    inputType: "text",
+    placeholder: "#",
+    src: iconSvgs.letterSpacing,
+  },
+];
 
-
-// export const dropdownArr = [
-//   [
-//     {
-//       type: "library",
-//       faIconName: faFolder,
-//       labelText: "Assignments",
-//       faIconNameRight: faChevronRight,
-//     },
-//     {
-//       type: "library",
-//       faIconName: faFolder,
-//       labelText: "Assignments",
-//       faIconNameRight: faChevronRight,
-//     },
-//   ]
-// ]
-
-
-export const dropdownData = {
-  library: [
-    {
-      backgroundColor: colors.primaryBlue,
-      faIconName: faBook,
-      labelBg: "transparent",
-      labelText: "My Library",
-      faIconNameRight: faClose,
-    },
-    {
-      faIconName: faFolder,
-      labelBg: "transparent",
-      labelText: "Assignments",
-      faIconNameRight: faChevronRight,
-      // handleClick: "setShowBubble",
-    },
-    {
-      faIconName: faFolder,
-      labelBg: "transparent",
-      labelText: "Folder 2",
-      faIconNameRight: faChevronRight,
-      handleClick: "setShowBubble",
-    },
-    {
-      faIconName: faFolder,
-      labelBg: "transparent",
-      labelText: "New Folder",
-      faIconNameRight: faChevronRight,
-      handleClick: "setShowBubble",
-    },
-  ],
-  typeface: [
-    {
-      backgroundColor: colors.primaryBlue,
-      faIconName: iconSvgs.typeface,
-      labelBg: "transparent",
-      labelText: "Typeface",
-    },
-    {
-      faIconName: faFillDrip,
-      labelBg: "transparent",
-      labelText: "Background Color",
-      width: "6rem",
-      inputType: "color",
-    },
-    {
-      faIconName: faFont,
-      labelBg: "transparent",
-      labelText: "Typeface",
-      inputType: "dropdown",
-      width: "12rem",
-    },
-    {
-      faIconName: "",
-      labelBg: "transparent",
-      labelText: "Font Size",
-      inputType: "text",
-      width: "5rem",
-      unit: "pt",
-      placeholder: "#",
-      src: iconSvgs.fontSize,
-    },
-    {
-      labelBg: "transparent",
-      labelText: "Line Height",
-      inputType: "text",
-      width: "5rem",
-      unit: "pt",
-      placeholder: "#",
-      src: iconSvgs.lineSpacing,
-    },
-    {
-      faIconName: faTextWidth,
-      labelBg: "transparent",
-      labelText: "Letter Spacing",
-      inputType: "text",
-      width: "5rem",
-      unit: "pt",
-      placeholder: "#",
-      src: iconSvgs.letterSpacing,
-    },
-  ],
-};

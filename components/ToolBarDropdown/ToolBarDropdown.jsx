@@ -1,29 +1,10 @@
 import styled from "styled-components";
-import Icon from "../Icon/Icon";
-import Header from "../Header/Header";
-import Input from "../Input/Input";
-import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option";
-import { dropdownData } from "./data";
-import {
-  faClose,
-  faFolder,
-  faChevronRight,
-  faFolderPlus,
-  faLineHeight,
-  faTextWidth,
-  faTextSize,
-  faFont,
-  faFillDrip,
-  faBooks,
-  faBook,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { SuccessBubble } from "../Bubble/Bubble";
-import Label from "../Label/Label";
-import { dropdownArr } from "./data";
+import { libraryDataArr, typefaceDataArr, dataArr } from "./data";
 import { iconSvgs } from "../Icon/data";
 
 const DropdownCont = styled(Flexbox)`
@@ -40,7 +21,7 @@ const DropdownCont = styled(Flexbox)`
   left: ${(props) => props.left};
 `;
 
-const CreateNew = styled(Flexbox)`
+const ButtonCont = styled(Flexbox)`
   align-self: flex-end;
 `;
 
@@ -49,69 +30,44 @@ export default function ToolBarDropdown({
   top = "",
   onExpand = () => { },
   onClose = () => { },
-  type ="type"
+  type =""
 }) {
+  const [sel, setSel] = useState(0);
 
   return (
-    <DropdownCont left={left} top={top}>
-      <Option
-        bgColor={colors.primaryBlue}
-        faIconName={faFolder}
-        text={type}
-        faIconNameRight={faClose}
-        handleOption={onClose}
-      ></Option>
-      {dropdownArr.map((o, i) => (
+    <DropdownCont type={type} left={left} top={top}>
+      {type === "Library" && libraryDataArr.map((o, i) => (
         <Option
           key={i}
-          bgColor={o.backgroundColor}
+          bgColor={o.bgColor}
           faIconName={o.faIconName}
-          text={o.labelText}
+          text={o.text}
           faIconNameRight={o.faIconNameRight}
-          handleOption={onExpand}
-          inputType={o.inputType}
-          width={o.width}
-          unit={o.unit}
-          placeholder={o.placeholder}
-          src={o.src}
+          handleOption={sel === i ? onClose : onExpand}
         ></Option>
       ))}
-      <CreateNew>
+      {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
+        key={i}
+        bgColor={o.bgColor|| "transparent"}
+        faIconName={o.faIconName}
+        text={o.text}
+        faIconNameRight={o.faIconNameRight}
+        handleOption={sel === i ? onClose : onExpand}
+        inputType={o.inputType}
+        width={o.width}
+        unit={o.unit}
+        placeholder={o.placeholder || "#"}
+        src={o.src}
+      ></Option>))
+      }
+      <ButtonCont>
         <Button
           text="New Folder"
           backgroundColor="transparent"
           type="IconButton"
           faIconName={faFolderPlus}
         ></Button>
-      </CreateNew>
-    </DropdownCont>
+      </ButtonCont>
+    </DropdownCont >
   );
-}
-
-// export function FontDropdown({
-//   active = null,
-//   setActive = null,
-//   left = "",
-//   top = "",
-// }) {
-//   const closeBubble = () => {
-//     setActive(!active);
-//   };
-//   const arr = dropdownData.typeface;
-//   return (
-//     <DropdownCont left={left} top={top}>
-//       {arr.map((o, i) => (
-//         <Option
-//           bgColor={o.backgroundColor}
-//           faIconName={o.faIconName}
-//           text={o.labelText}
-//           inputType={o.inputType}
-//           width={o.width}
-//           unit={o.unit}
-//           placeholder={o.placeholder}
-//         ></Option>
-//       ))}
-//       <Button text="Clear"></Button>
-//     </DropdownCont>
-//   );
-// }
+};

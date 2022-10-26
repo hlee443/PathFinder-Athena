@@ -30,6 +30,10 @@ export const btnArr = [
     icon: faFolder,
   },
   {
+    text: "Others",
+    icon: faFolder,
+  },
+  {
     text: "Create New",
     icon: faFolderPlus,
   }
