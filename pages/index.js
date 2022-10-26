@@ -83,15 +83,15 @@ export default function Home() {
   function onFileUpload(e) {
     e.preventDefault();
 
-    mainHandler.handleUpload(uploadedFile, (readFileContent) => {
-      uploadedFile.fileContent = readFileContent;
+    mainHandler.handleUpload(uploadedFile, (res) => {
 
       router.push(
         {
           pathname: "/converted",
           query: {
-            fileContent: readFileContent,
-            fileName: uploadedFile.fileName,
+            fileContent: res.data.file_content,
+            fileName: res.data.file_name,
+            settingId: res.data.setting_id
           },
         },
         "/converted"
