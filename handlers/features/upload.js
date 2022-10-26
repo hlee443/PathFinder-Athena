@@ -4,8 +4,8 @@
 // - returns the doc content
 // - render the content on client
 
-import axios from "axios"
-
+import axios from "axios";
+import * as mainHandler from '../main';
 
 export function handleUpload(uploadedFile, callback){
     const fileReader = new FileReader()
@@ -24,7 +24,28 @@ export function handleUpload(uploadedFile, callback){
                 //     .then(() =>  console.log("added file to database"))
                 //     .catch((err) => console.error(err))
 
-                callback(uploadedFile.fileContent)
+
+                const postFileObj = {
+                    fileData: {
+                        userId: 9,
+                        fileLink: "im crying",
+                        fileContent: uploadedFile.fileContent,
+                        fileName: uploadedFile.fileName
+                    },
+                    settingData: {
+                        backgroundColour: '#FFFFFC',
+                        typeface: 'Open Sans',
+                        fontSize: 16,
+                        lineSpace: 7.5,
+                        letterSpace: 150
+                    }
+                }
+
+                mainHandler.handleAddFile(postFileObj, (res) => {
+                    callback(res)
+                });
+
+                // callback(uploadedFile.fileContent)
             }
  
         }
