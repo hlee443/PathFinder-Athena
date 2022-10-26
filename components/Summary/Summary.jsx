@@ -7,7 +7,7 @@ const KeywordCont = styled(Flexbox)`
 flex-wrap: wrap;
 `
 
-export default function Summar() {
+export default function Summary() {
 
   return <Container bgColor ={colors.backgroundYellow}>
     <Header text="Keyword"></Header>

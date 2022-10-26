@@ -23,36 +23,36 @@ const ToolBarCont = styled.div`
   margin: 1rem;
 `;
 
-export const iconArr = [
-  {
-    name: "Text-to-Speech",
-    icon: faVolumeHigh,
-  },
-  {
-    name: "Dictionary",
-    icon: faMagnifyingGlass,
-  },
-  {
-    name: "Summarize",
-    icon: faFileLines,
-  },
-  {
-    name: "Highlighter",
-    icon: faHighlighter,
-  },
-  {
-    name: "Typeface",
-    icon: faFont,
-  },
-  {
-    name: "Save to library",
-    icon: faBookmark,
-  },
-  {
-    name: "Download",
-    icon: faDownload,
-  }
-];
+// export const iconArr = [
+//   {
+//     name: "Text-to-Speech",
+//     icon: faVolumeHigh,
+//   },
+//   {
+//     name: "Dictionary",
+//     icon: faMagnifyingGlass,
+//   },
+//   {
+//     name: "Summarize",
+//     icon: faFileLines,
+//   },
+//   {
+//     name: "Highlighter",
+//     icon: faHighlighter,
+//   },
+//   {
+//     name: "Typeface",
+//     icon: faFont,
+//   },
+//   {
+//     name: "Save to library",
+//     icon: faBookmark,
+//   },
+//   {
+//     name: "Download",
+//     icon: faDownload,
+//   }
+// ];
 
 export default function ToolBar() {
 
@@ -94,38 +94,16 @@ export default function ToolBar() {
     }
   }
 
+
   return (
     <ToolBarCont>
-      {
-        iconArr.map((o, i) => <Icon
-          key={i}
-          hoverColor={
-            (sel === i)
-              ? colors.backgroundYellow
-              : "transparent"
-          }
-          faIconName={o.icon}
-          text={o.name}
-          onClose ={closeDropdown}
-          handleClick={() => { setSel(i), setShowDropdown(o.name) }}>
-        </Icon>)
-      }
-      {showDropdown !== false && <ToolBarDropdown
-        type={showDropdown}
-        onClose={closeDropdown}
-      ></ToolBarDropdown>
-      }
-    </ToolBarCont>
-  );
-};
-
-{/* <Icon
+      <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
-      ></Icon> */}
-{/* <Icon
+      ></Icon> 
+      <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
         hoverColor={colors.backgroundYellow}
@@ -174,4 +152,31 @@ export default function ToolBar() {
         text="Download"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
-      ></Icon> */}
+      ></Icon> 
+      </ToolBarCont>
+  )
+
+  // return (
+  //   <ToolBarCont>
+  //     {
+  //       iconArr.map((o, i) => <Icon
+  //         key={i}
+  //         hoverColor={
+  //           (sel === i)
+  //             ? colors.backgroundYellow
+  //             : "transparent"
+  //         }
+  //         faIconName={o.icon}
+  //         text={o.name}
+  //         onClose ={closeDropdown}
+  //         handleClick={() => { setSel(i), setShowDropdown(o.name) }}>
+  //       </Icon>)
+  //     }
+  //     {showDropdown !== false && <ToolBarDropdown
+  //       type={showDropdown}
+  //       onClose={closeDropdown}
+  //     ></ToolBarDropdown>
+  //     }
+  //   </ToolBarCont>
+  // );
+};
