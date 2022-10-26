@@ -50,61 +50,64 @@ const ButtonContainer = styled(Flexbox)`
 
 export default function NavBar({ type = "loggedIn" }) {
   const r = useRouter();
-  const [showBubble, setShowBubble] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [showBubble, setShowBubble] = useState("type");
+
+  const closeBubble = () => {
+    setShowBubble(false)
+  }
 
   return (
     <NavBarCont type={type}>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {type === "loggedIn" ? (
-          <IconContainer dir="row">
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              faIconName={faHome}
-              handleClick={() => r.push("/")}
-            ></Icon>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              faIconName={faBookBookmark}
-              handleClick={() => r.push("/library")}
-            ></Icon>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              faIconName={faUser}
-              handleClick={() => console.log("User Click")}
-            ></Icon>
-          </IconContainer>
-        ) : (
-          <ButtonContainer dir="row">
+        {
+          !isLoggedIn ? <IconContainer>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faHome} handleClick={() => r.push("/")}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faBookBookmark} handleClick={() => r.push("/library")}></Icon>
+            <Icon size="2x" color={colors.backgroundWhite} faIconName={faUser} handleClick={{}}></Icon>
+          </IconContainer> : <ButtonContainer dir ="row">
             <Button
-              handleClick={setShowBubble}
+              handleClick={() => setShowBubble("login")}
               width={btnData.width}
               height={btnData.height}
               backgroundColor={btnData.state.default.backgroundColor}
               text="Log In"
             ></Button>
             <Button
-              handleClick={setShowBubble}
+              handleClick={() => setShowBubble("signup")}
               width={btnData.width}
               height={btnData.height}
               backgroundColor={btnData.state.default.backgroundColor}
               text="Sign Up"
             ></Button>
           </ButtonContainer>
-        )}
-        {showBubble && (
+        }
+        {showBubble === "login" && (
           <Bubble
             type="login"
-            active={showBubble}
-            setActive={setShowBubble}
+            onClose={closeBubble}
+            handleBubble={() => setShowBubble("success")}
           ></Bubble>
         )}
+        {showBubble === "signup" && (
+          <Bubble
+            type="signup"
+            onClose={closeBubble}
+          ></Bubble>
+        )}
+        {
+          showBubble === "success" && (
+            <Bubble
+              type="success"
+              onClose={closeBubble}
+              handleBubble={() => r.push("/library")}
+            ></Bubble>
+          )
+        }
       </TopBar>
       <Bar backgroundColor="#A8BCFF"></Bar>
       <Bar backgroundColor="#C3D1FF"></Bar>
     </NavBarCont>
   );
-}
+};

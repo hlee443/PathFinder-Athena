@@ -11,9 +11,10 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
-import Dictionary from "../Dictionary/Dictionary";
+import Summary from '../Summary/Summary';
 import { colors } from "../../styles/globals";
-import * as mainHandler from "../../handlers/main";
+import * as mainHandler from '../../handlers/main'
+import Dictionary from "../Dictionary/Dictionary";
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -56,23 +57,32 @@ const ToolBarCont = styled.div`
 // ];
 
 export default function ToolBar() {
+
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [summarizedContent, setSummarizedContent] = useState(null);
+  const [wordInfo, setWordInfo] = useState(null);
+  const [highlightedText, setHighlightedText] = useState("");
+  const [showPopUp, setShowPopUp] = useState("type");
 
   const closeDropdown = () => {
     setShowDropdown(false);
   };
 
-  const [summarizedContent, setSummarizedContent] = useState(null);
-  const [wordInfo, setWordInfo] = useState(null);
-  const [highlightedText, setHighlightedText] = useState("");
+  const closePopUp = () => {
+    setShowPopUp("type")
+
+    // clean up all the selected text and the api results
+    setSummarizedContent(null)
+    setHighlightedText('')
+  }
 
   useEffect(() => {
     // add event listener to the document
     const saveSelection = () => {
-      setHighlightedText(window.getSelection().toString());
-    };
-
+      setHighlightedText(window.getSelection().toString())
+    }
+    
     document.addEventListener("mousedown", saveSelection);
 
     // remove event listener when component unmounts
@@ -81,17 +91,18 @@ export default function ToolBar() {
     };
   }, []);
 
-  async function fetchSummarize(e) {
-    e.preventDefault();
+  async function fetchSummarize(e){
+    e.preventDefault()
 
     try {
-      const res = await mainHandler.handleSummarize(highlightedText); // call handler for axios call
-      if (res) {
-        console.log(res);
-        setSummarizedContent(res.data.summary);
+      const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
+      if(res){
+          console.log(res)
+          setSummarizedContent(res.data.summary)
+          setShowPopUp("summarize")
       }
     } catch (error) {
-      console.log(error);
+        console.log(error)
     }
   }
 
@@ -114,16 +125,24 @@ export default function ToolBar() {
     }
   }
 
+
   return (
     <ToolBarCont>
       <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
-        handleClick={(e) => fetchDictionary(e)}
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
-      ></Icon>
-      {wordInfo && <Dictionary word={highlightedText} wordDefinition={wordInfo[1]} />}
+      ></Icon> 
+            {
+        wordInfo && showPopUp === "dictionary" && (
+          <Dictionary
+            word={highlightedText}
+            wordDefinition={wordInfo[1]}
+            onClose={closePopUp}
+          ></Dictionary>
+        )
+      }
       <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
@@ -138,12 +157,15 @@ export default function ToolBar() {
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
       ></Icon>
-      {summarizedContent && (
-        <>
-          <h2>Summarize</h2>
-          <p>{summarizedContent}</p>
-        </>
-      )}
+      {
+        summarizedContent && showPopUp === "summarize" && (
+          <Summary
+            originalContent={highlightedText}
+            summarizedContent={summarizedContent}
+            onClose={closePopUp}
+          ></Summary>
+        )
+      }
       <Icon
         faIconName={faHighlighter}
         text="Highlighter"
@@ -169,9 +191,9 @@ export default function ToolBar() {
         text="Download"
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
-      ></Icon>
-    </ToolBarCont>
-  );
+      ></Icon> 
+      </ToolBarCont>
+  )
 
   // return (
   //   <ToolBarCont>
@@ -196,4 +218,4 @@ export default function ToolBar() {
   //     }
   //   </ToolBarCont>
   // );
-}
+};

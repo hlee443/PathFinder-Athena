@@ -37,9 +37,6 @@ export default function Button({
   faIconName = faLink,
   fontWeight = "normal",
 }) {
-  // const handleClick = () => {
-  //   console.log("hi!");
-  // };
 
   return (
     <StyledButton

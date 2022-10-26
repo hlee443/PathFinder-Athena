@@ -1,4 +1,5 @@
 import { colors } from "../../styles/globals";
+import { faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const btnData = {
   width: "21rem",
@@ -18,3 +19,18 @@ export const btnData = {
     },
   },
 };
+
+export const btnArr = [
+  {
+    text: "Assignments",
+    icon: faFolder,
+  },
+  {
+    text: "Quizzes",
+    icon: faFolder,
+  },
+  {
+    text: "Create New",
+    icon: faFolderPlus,
+  }
+];

@@ -8,7 +8,7 @@ const InputCont = styled.input`
   width: ${(props) => props.width || "100%"};
   height: 100%;
   padding: 1rem;
-  background-color: ${(props) => props.bgColor || `${colors.backgroundWhite}`};
+  background-color: ${(props) => props.bgColor || `${colors.backgroundWhite}`}
 `;
 
 const OptionCont = styled.select`
@@ -26,7 +26,7 @@ export default function Input({
   borderRadius = "3.125rem",
   placeholder = "placeholder",
   border = "",
-  bgColor = "none",
+  bgColor = "none"
 }) {
 
   const [inputValue, setInputValue] = useState(value);

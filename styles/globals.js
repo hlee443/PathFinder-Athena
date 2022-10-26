@@ -1,3 +1,4 @@
+import { BLOCKED_PAGES } from "next/constants";
 import styled from "styled-components";
 
 export const textData = {
@@ -5,6 +6,7 @@ export const textData = {
   letterSpacing: "0.35em",
   h1: {
     size: "2.375rem",
+    fontWeight: "700",
   },
   h2: {
     size: "1.5rem",
@@ -38,6 +40,8 @@ export const Wrapper = styled(Flexbox)`
   padding: 6rem;
   justify-content: space-between;
   align-items: center;
+  max-width: 75rem;
+  min-height: 85vh;
 `;
 
 export const BodyText = styled.p`
@@ -54,5 +58,6 @@ export const Container = styled(Flexbox)`
   border: 0.125rem solid ${colors.darkGray};
   background-color: ${colors.backgroundWhite};
   border-radius: 2rem;
+  white-space: pre-line;
   align-items: ${(props) => props.alignItems || "flex-start"}
 `;

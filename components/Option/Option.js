@@ -24,25 +24,24 @@ export default function Option({
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleClick = () => {},
+  handleOption = () => { },
   width = "100%",
-  src = null,
+  onClose = () => {}
 }) {
-  return (
-    <OptionCont onClick={handleClick} dir="row" bgColor={bgColor}>
-      <OptionName dir="row">
-        <Icon faIconName={faIconName} src={src}></Icon>
-        <BodyText>{text}</BodyText>
-        {inputType !== null && (
-          <Input
-            width={width}
-            type={inputType}
-            placeholder={placeholder}
-          ></Input>
-        )}
-        {unit !== null && <BodyText>{unit}</BodyText>}
-      </OptionName>
-      {faIconNameRight !== null && <Icon faIconName={faIconNameRight} />}
-    </OptionCont>
-  );
+
+  return <OptionCont onClick={handleOption} dir="row" bgColor={bgColor}>
+    <OptionName dir="row">
+      <Icon faIconName={faIconName}></Icon>
+      <BodyText>{text}</BodyText>
+      {
+        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder}></Input>
+      }
+      {
+        unit !== null && <BodyText>{unit}</BodyText>
+      }
+    </OptionName>
+    {
+      faIconNameRight !== null && <Icon faIconName={faIconNameRight} handleClick={onClose} />
+    }
+  </OptionCont>
 }

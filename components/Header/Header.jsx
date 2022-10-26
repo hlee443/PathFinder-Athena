@@ -6,6 +6,7 @@ const HeaderCont = styled.h1`
   color: ${(props) => props.color};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
+  font-weight: ${textData.h1.fontWeight};
 `;
 
 export default function Header({ text = "Header text" }) {

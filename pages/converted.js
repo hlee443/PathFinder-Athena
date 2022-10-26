@@ -11,7 +11,9 @@ import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
 import { useRouter } from "next/router";
 import { useState } from 'react';
 
-const Title = styled(Flexbox)``;
+const Title = styled(Flexbox)`
+  align-self: flex-start;
+`;
 
 export default function Converted() {
   const [dictionary, setDictionary] = useState(null)
@@ -30,10 +32,7 @@ export default function Converted() {
           <Icon faIconName={faPencil}></Icon>
         </Title>
         <ToolBar></ToolBar>
-        <Container
-          width="100%"
-          height="100%"
-        >
+        <Container width="100%" height="100%">
           {router.query.fileContent}
           {/* FUTURE: content component, props passed into will be the fiile 
             info and file settings (text size, container bg-colour, etc) 

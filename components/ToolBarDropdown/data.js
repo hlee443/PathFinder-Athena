@@ -1,4 +1,3 @@
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { colors } from "../../styles/globals";
 import {
   faBook,
@@ -9,8 +8,40 @@ import {
   faLineHeight,
   faTextWidth,
   faClose,
+  faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 import { iconSvgs } from "../Icon/data";
+
+export const dropdownArr = [
+  {
+    type: "library",
+    faIconName: faFolder,
+    labelText: "Assignments",
+    faIconNameRight: faChevronRight,
+  },
+  {
+    type: ""
+  }
+]
+
+
+// export const dropdownArr = [
+//   [
+//     {
+//       type: "library",
+//       faIconName: faFolder,
+//       labelText: "Assignments",
+//       faIconNameRight: faChevronRight,
+//     },
+//     {
+//       type: "library",
+//       faIconName: faFolder,
+//       labelText: "Assignments",
+//       faIconNameRight: faChevronRight,
+//     },
+//   ]
+// ]
+
 
 export const dropdownData = {
   library: [
@@ -25,21 +56,21 @@ export const dropdownData = {
       faIconName: faFolder,
       labelBg: "transparent",
       labelText: "Assignments",
-      faIconNameRight: "faChevronRight",
-      handleClick: "setShowBubble",
+      faIconNameRight: faChevronRight,
+      // handleClick: "setShowBubble",
     },
     {
       faIconName: faFolder,
       labelBg: "transparent",
       labelText: "Folder 2",
-      faIconNameRight: "faChevronRight",
+      faIconNameRight: faChevronRight,
       handleClick: "setShowBubble",
     },
     {
       faIconName: faFolder,
       labelBg: "transparent",
       labelText: "New Folder",
-      faIconNameRight: "faChevronRight",
+      faIconNameRight: faChevronRight,
       handleClick: "setShowBubble",
     },
   ],
@@ -65,6 +96,7 @@ export const dropdownData = {
       width: "12rem",
     },
     {
+      faIconName: "",
       labelBg: "transparent",
       labelText: "Font Size",
       inputType: "text",
@@ -83,6 +115,7 @@ export const dropdownData = {
       src: iconSvgs.lineSpacing,
     },
     {
+      faIconName: faTextWidth,
       labelBg: "transparent",
       labelText: "Letter Spacing",
       inputType: "text",
