@@ -74,6 +74,7 @@ export default function ToolBar() {
 
     // clean up all the selected text and the api results
     setSummarizedContent(null)
+    setWordInfo(null)
     setHighlightedText('')
   }
 
@@ -93,7 +94,6 @@ export default function ToolBar() {
 
   async function fetchSummarize(e){
     e.preventDefault()
-
     try {
       const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
       if(res){
@@ -119,6 +119,7 @@ export default function ToolBar() {
         const newDefinition = definition.split(/1. |2. |3. /);
 
         setWordInfo(newDefinition);
+        setShowPopUp("definition")
       });
     } catch (err) {
       console.error(err);
@@ -131,11 +132,12 @@ export default function ToolBar() {
       <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
+        handleClick={(e) => fetchDictionary(e)}
         hoverColor={colors.backgroundYellow}
         paddingTop="1rem"
       ></Icon> 
-            {
-        wordInfo && showPopUp === "dictionary" && (
+      {
+        wordInfo && showPopUp === "definition" && (
           <Dictionary
             word={highlightedText}
             wordDefinition={wordInfo[1]}
