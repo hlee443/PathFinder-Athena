@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleDictionary(word) {
+export async function handleDictionary(word, callback) {
     try {
         return await axios({
             method: "POST",
@@ -10,7 +10,8 @@ export async function handleDictionary(word) {
         })
             .then((response) => {
                 //console.log(response)
-                return response
+                // return response
+                callback(response)
             })
             .catch((error) => {
                 console.error(error);

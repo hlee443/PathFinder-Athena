@@ -11,8 +11,10 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
+import Summary from '../Summary/Summary';
 import { colors } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
+import Dictionary from "../Dictionary/Dictionary";
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -23,55 +25,65 @@ const ToolBarCont = styled.div`
   margin: 1rem;
 `;
 
-export const iconArr = [
-  {
-    name: "Text-to-Speech",
-    icon: faVolumeHigh,
-  },
-  {
-    name: "Dictionary",
-    icon: faMagnifyingGlass,
-  },
-  {
-    name: "Summarize",
-    icon: faFileLines,
-  },
-  {
-    name: "Highlighter",
-    icon: faHighlighter,
-  },
-  {
-    name: "Typeface",
-    icon: faFont,
-  },
-  {
-    name: "Save to library",
-    icon: faBookmark,
-  },
-  {
-    name: "Download",
-    icon: faDownload,
-  }
-];
+// export const iconArr = [
+//   {
+//     name: "Text-to-Speech",
+//     icon: faVolumeHigh,
+//   },
+//   {
+//     name: "Dictionary",
+//     icon: faMagnifyingGlass,
+//   },
+//   {
+//     name: "Summarize",
+//     icon: faFileLines,
+//   },
+//   {
+//     name: "Highlighter",
+//     icon: faHighlighter,
+//   },
+//   {
+//     name: "Typeface",
+//     icon: faFont,
+//   },
+//   {
+//     name: "Save to library",
+//     icon: faBookmark,
+//   },
+//   {
+//     name: "Download",
+//     icon: faDownload,
+//   }
+// ];
 
 export default function ToolBar() {
 
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [summarizedContent, setSummarizedContent] = useState(null);
+  const [wordInfo, setWordInfo] = useState(null);
+  const [highlightedText, setHighlightedText] = useState("");
+  const [showPopUp, setShowPopUp] = useState("type");
 
   const closeDropdown = () => {
     setShowDropdown(false);
   };
-  
-  const [summarizedContent, setSummarizedContent] = useState(null);
-  const [highlightedText, setHighlightedText] = useState("");
+
+  const closePopUp = () => {
+    setShowPopUp("type")
+
+    // clean up all the selected text and the api results
+    setSummarizedContent(null)
+    setWordInfo(null)
+    setHighlightedText('')
+  }
 
   useEffect(() => {
     // add event listener to the document
     const saveSelection = () => {
       setHighlightedText(window.getSelection().toString())
     }
-    
+
     document.addEventListener("mousedown", saveSelection);
 
     // remove event listener when component unmounts
@@ -80,98 +92,135 @@ export default function ToolBar() {
     };
   }, []);
 
-  async function fetchSummarize(e){
+  async function fetchSummarize(e) {
     e.preventDefault()
-
     try {
       const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
       if(res){
           console.log(res)
           setSummarizedContent(res.data.summary)
+          setShowPopUp("summarize")
       }
     } catch (error) {
-        console.log(error)
+      console.log(error)
+    }
+  }
+
+
+  function fetchDictionary(e) {
+    e.preventDefault();
+    try {
+      // callback
+      mainHandler.handleDictionary(highlightedText, (res) => {
+        const { data } = res;
+        const { definition } = data;
+        console.log("RES", res);
+        // split the response string into an array using regex
+        const newDefinition = definition.split(/1. |2. |3. /);
+
+        setWordInfo(newDefinition);
+        setShowPopUp("definition")
+      });
+    } catch (err) {
+      console.error(err);
     }
   }
 
   return (
     <ToolBarCont>
-      {
-        iconArr.map((o, i) => <Icon
-          key={i}
-          hoverColor={
-            (sel === i)
-              ? colors.backgroundYellow
-              : "transparent"
-          }
-          faIconName={o.icon}
-          text={o.name}
-          onClose ={closeDropdown}
-          handleClick={() => { setSel(i), setShowDropdown(o.name) }}>
-        </Icon>)
-      }
-      {showDropdown !== false && <ToolBarDropdown
-        type={showDropdown}
-        onClose={closeDropdown}
-      ></ToolBarDropdown>
-      }
-    </ToolBarCont>
-  );
-};
-
-{/* <Icon
+      <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
+        handleClick={(e) => fetchDictionary(e)}
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
-      ></Icon> */}
-{/* <Icon
+      ></Icon> 
+      {
+        wordInfo && showPopUp === "definition" && (
+          <Dictionary
+            word={highlightedText}
+            wordDefinition={wordInfo[1]}
+            onClose={closePopUp}
+          ></Dictionary>
+        )
+      }
+      <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
-
       <Icon
         faIconName={faFileLines}
         text="Summarize"
         handleClick={(e) => fetchSummarize(e)}
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       {
-        summarizedContent && (
-          <>
-            <h2>Summarize</h2>
-            <p>
-              {summarizedContent}
-            </p>
-          </>
+        summarizedContent && showPopUp === "summarize" && (
+          <Summary
+            originalContent={highlightedText}
+            summarizedContent={summarizedContent}
+            onClose={closePopUp}
+          ></Summary>
         )
       }
       <Icon
         faIconName={faHighlighter}
         text="Highlighter"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faFont}
-        handleClick={setShowDropdown}
+        handleClick={()=>setShowDropdown("typeface")}
         text="Typeface"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faBookmark}
-        handleClick={setShowDropdown}
+        handleClick={()=>setShowDropdown("library")}
         text="Save to Library"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
       ></Icon>
       <Icon
         faIconName={faDownload}
         text="Download"
         hoverColor={colors.backgroundYellow}
-        paddingTop="1rem"
-      ></Icon> */}
+      ></Icon>
+      {
+        showDropdown === "library" && <ToolBarDropdown
+          type="Library"
+          onClose={closeDropdown}
+        ></ToolBarDropdown>
+      }
+      {
+        showDropdown === "typeface" && <ToolBarDropdown
+          type="Typeface"
+          onClose={closeDropdown}
+        ></ToolBarDropdown>
+      }
+    </ToolBarCont>
+  )
+
+  // return (
+  //   <ToolBarCont>
+  //     {
+  //       iconArr.map((o, i) => <Icon
+  //         key={i}
+  //         hoverColor={
+  //           (sel === i)
+  //             ? colors.backgroundYellow
+  //             : "transparent"
+  //         }
+  //         faIconName={o.icon}
+  //         text={o.name}
+  //         onClose ={closeDropdown}
+  //         handleClick={() => { setSel(i), setShowDropdown(o.name) }}>
+  //       </Icon>)
+  //     }
+  //     {showDropdown !== false && <ToolBarDropdown
+  //       type={showDropdown}
+  //       onClose={closeDropdown}
+  //     ></ToolBarDropdown>
+  //     }
+  //   </ToolBarCont>
+  // );
+};
