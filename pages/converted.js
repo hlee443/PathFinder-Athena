@@ -9,12 +9,14 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../components/ToolBarDropdown/ToolBarDropdown";
 import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
 import { useRouter } from "next/router";
+import { useState } from 'react';
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
 `;
 
 export default function Converted() {
+  const [dictionary, setDictionary] = useState(null)
   // props: file settings, -- probably -- file info, and url
   const router = useRouter();
   // MVP - get response of the handler.
@@ -37,6 +39,34 @@ export default function Converted() {
           */}
           {/* component in itself will render the content itself */}
         </Container>
+
+        {/* {dictionary && console.log("HELLO") && ( // if wordInfo is not null, render the table
+      <table>
+              <thead>
+                <tr>
+                  <th>
+                    <span>{window.getSelection().toString()}</span>
+                  </th>
+                  <th>
+                    <span>Definition</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1.</td>
+                  <td>{wordInfo[1]}</td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>{wordInfo[2]}</td>
+                </tr>
+              </tbody>
+            </table>)
+            }
+ */}
+
+        
       </Wrapper>
     </Flexbox>
   );

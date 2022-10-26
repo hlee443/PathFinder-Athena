@@ -14,6 +14,7 @@ import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
 import Summary from '../Summary/Summary';
 import { colors } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
+import Dictionary from "../Dictionary/Dictionary";
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -60,6 +61,7 @@ export default function ToolBar() {
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
+  const [wordInfo, setWordInfo] = useState(null);
   const [highlightedText, setHighlightedText] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
 
@@ -72,6 +74,7 @@ export default function ToolBar() {
 
     // clean up all the selected text and the api results
     setSummarizedContent(null)
+    setWordInfo(null)
     setHighlightedText('')
   }
 
@@ -91,7 +94,6 @@ export default function ToolBar() {
 
   async function fetchSummarize(e) {
     e.preventDefault()
-
     try {
       const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
       if(res){
@@ -104,13 +106,43 @@ export default function ToolBar() {
     }
   }
 
+
+  function fetchDictionary(e) {
+    e.preventDefault();
+    try {
+      // callback
+      mainHandler.handleDictionary(highlightedText, (res) => {
+        const { data } = res;
+        const { definition } = data;
+        console.log("RES", res);
+        // split the response string into an array using regex
+        const newDefinition = definition.split(/1. |2. |3. /);
+
+        setWordInfo(newDefinition);
+        setShowPopUp("definition")
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <ToolBarCont>
       <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
+        handleClick={(e) => fetchDictionary(e)}
         hoverColor={colors.backgroundYellow}
-      ></Icon>
+      ></Icon> 
+      {
+        wordInfo && showPopUp === "definition" && (
+          <Dictionary
+            word={highlightedText}
+            wordDefinition={wordInfo[1]}
+            onClose={closePopUp}
+          ></Dictionary>
+        )
+      }
       <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
