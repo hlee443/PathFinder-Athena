@@ -35,7 +35,9 @@ export default function Input({
         <option value="Open Sans" >
           Open Sans
         </option>
-        <option value="Arial">Arial</option>
+        <option value="Arial">
+          Arial
+        </option>
       </OptionCont>
     );
   } else {

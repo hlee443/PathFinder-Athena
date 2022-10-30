@@ -27,6 +27,13 @@ export default function Converted() {
 
   const [fileData, setFileData] = useState({})
   const [settingData, setSettingData] = useState({})
+  const [libValueArr, setLibValueArr] = useState([])
+  const [typeValueArr, setTypeValueArr] = useState([])
+
+  function handleChange(e) {
+    e.preventDefault()
+    console.log(e.target.value)
+  }
 
   useEffect(() => {
     setFileData(JSON.parse(router.query.fileData))
@@ -41,43 +48,11 @@ export default function Converted() {
           <Header text={fileData.file_name}></Header>
           <Icon faIconName={faPencil}></Icon>
         </Title>
-        <ToolBar></ToolBar>
+        <ToolBar onChange={handleChange} libValueArr={libValueArr} typeValueArr={typeValueArr}></ToolBar>
         <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
-          {/* FUTURE: content component, props passed into will be the fiile 
-            info and file settings (text size, container bg-colour, etc) 
-          */}
-          {/* component in itself will render the content itself */}
           <Content fileData={fileData} settingData={settingData}>
           </Content>
-        </Container>
-
-        {/* {dictionary && console.log("HELLO") && ( // if wordInfo is not null, render the table
-      <table>
-              <thead>
-                <tr>
-                  <th>
-                    <span>{window.getSelection().toString()}</span>
-                  </th>
-                  <th>
-                    <span>Definition</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1.</td>
-                  <td>{wordInfo[1]}</td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>{wordInfo[2]}</td>
-                </tr>
-              </tbody>
-            </table>)
-            }
- */}
-
-        
+        </Container>        
       </Wrapper>
     </Flexbox>
   );

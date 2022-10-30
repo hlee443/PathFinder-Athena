@@ -24,8 +24,8 @@ import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
 
 const CustomizeInputBox = styled(Flexbox)`
-  background: ${colors.Background_White};
-  border: 2px solid ${colors.DarkGrey};
+  background: ${colors.backgroundWhite};
+  border: 2px solid ${colors.darkGray};
   border-radius: 50px;
   width: 100%;
   justify-content: start;
@@ -59,9 +59,9 @@ export default function Home() {
   const [uploadSetting, setUploadSetting] = useState({
     backgroundColour: "#FFFFFC",
     typeface: "Open Sans",
-    fontSize: 16,
-    lineSpace: 150,
-    letterSpace: 0.35
+    fontSize: "16",
+    lineSpace: "150",
+    letterSpace: "0.35"
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
@@ -243,15 +243,15 @@ export default function Home() {
               text="Font Size"
               inputType="text"
               unit="pt"
-              placeholder="##"
+              placeholder="Choose your font size"
               onChange={handleFontSize}
               value={uploadSetting.fontSize}
             ></Option>
             <Option
               faIconName={faTextHeight}
-              text="Line Spacing"
+              text="Line Height"
               inputType="text"
-              placeholder="##"
+              placeholder="Choose your line height"
               unit="%"
               onChange={handleLineSpace}
               value={uploadSetting.lineSpace}
@@ -260,8 +260,8 @@ export default function Home() {
               faIconName={faFont}
               text="Letter Spacing"
               inputType="text"
-              unit="%"
-              placeholder="##"
+              unit="pt"
+              placeholder="Choose your letter spacing"
               onChange={handleLetterSpace}
               value={uploadSetting.letterSpace}
             ></Option>
