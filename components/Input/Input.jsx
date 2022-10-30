@@ -26,18 +26,16 @@ export default function Input({
   borderRadius = "3.125rem",
   placeholder = "placeholder",
   border = "",
-  bgColor = "none"
+  bgColor = "none",
+  onChange = () => {}
 }) {
-
-  const [inputValue, setInputValue] = useState(value);
-
   if (type === "dropdown") {
     return (
-      <OptionCont type="option" width={width}>
-        <option value="" selected>
-          Placeholder
+      <OptionCont type="option" width={width} value={value} onChange={onChange}>
+        <option value="Open Sans" >
+          Open Sans
         </option>
-        <option value=""></option>
+        <option value="Arial">Arial</option>
       </OptionCont>
     );
   } else {
@@ -47,8 +45,8 @@ export default function Input({
         type={type}
         placeholder={placeholder}
         width={width}
-        onChange={(e) => setInputValue(e.target.value)}
-        defaultValue={inputValue}
+        onChange={onChange}
+        defaultValue={value}
         border={border}
         bgColor={bgColor}
       ></InputCont>

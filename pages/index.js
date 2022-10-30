@@ -56,15 +56,21 @@ export default function Home() {
     fileType: "",
     fileContent: "",
   });
+  const [uploadSetting, setUploadSetting] = useState({
+    backgroundColour: "#FFFFFC",
+    typeface: "Open Sans",
+    fontSize: 16,
+    lineSpace: 150,
+    letterSpace: 0.35
+  });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
 
   function handleChange(e) {
     e.preventDefault();
-
     setUploadedFile({
       ...uploadedFile,
-      [e.target.name]: e.target.value,
+      fileName: e.target.value,
     });
   }
 
@@ -83,20 +89,71 @@ export default function Home() {
   function onFileUpload(e) {
     e.preventDefault();
 
-    mainHandler.handleUpload(uploadedFile, (res) => {
+    let uploadData = {
+      uploadedFile,
+      uploadSetting
+    }
 
+    mainHandler.handleUpload(uploadData, (res) => {
+      let { fileData, settingData } = res.data
       router.push(
         {
-          pathname: "/converted",
+          pathname: `/converted`,
           query: {
-            fileContent: res.data.file_content,
-            fileName: res.data.file_name,
-            settingId: res.data.setting_id
+            fileData: JSON.stringify(fileData),
+            settingData: JSON.stringify(settingData)
           },
         },
         "/converted"
       );
     });
+  }
+
+  function handleBGColor(e) {
+    setUploadSetting({
+      ...uploadSetting,
+      backgroundColour: e.target.value
+    })
+  };
+
+  function handleTypeface(e) {
+    setUploadSetting({
+      ...uploadSetting,
+      typeface: e.target.value
+    })
+  };
+
+  function handleFontSize(e) {
+    setUploadSetting({
+      ...uploadSetting,
+      fontSize: e.target.value
+    })
+  };
+
+  function handleLineSpace(e) {
+    setUploadSetting({
+      ...uploadSetting,
+      lineSpace: e.target.value
+    })
+  };
+
+  function handleLetterSpace(e) {
+    setUploadSetting({
+      ...uploadSetting,
+      letterSpace: e.target.value
+    })
+  };
+
+  function handleClear() {
+
+    setUploadSetting({
+      ...uploadSetting,
+      backgroundColour: "#FFFFFC",
+      typeface: "Open Sans",
+      fontSize: 16,
+      lineSpace: 9,
+      letterSpace: 150
+    })
   }
 
   function resetPageStates() {
@@ -123,6 +180,8 @@ export default function Home() {
               borderRadius="3.125rem 0 0 3.125rem;"
               width="100%"
               placeholder="Paste your URL here.."
+
+
             ></Input>
             <Button
               handleClick={setActive}
@@ -166,6 +225,8 @@ export default function Home() {
               text="Background Colour"
               inputType="color"
               type="color"
+              onChange={handleBGColor}
+              value={uploadSetting.backgroundColour}
             ></Option>
             <Option
               faIconName={faFont}
@@ -174,6 +235,8 @@ export default function Home() {
               placeholder="Choose your typeface"
               type="option"
               width="100%"
+              onChange={handleTypeface}
+              value={uploadSetting.typeface}
             ></Option>
             <Option
               faIconName={faFont}
@@ -181,6 +244,8 @@ export default function Home() {
               inputType="text"
               unit="pt"
               placeholder="##"
+              onChange={handleFontSize}
+              value={uploadSetting.fontSize}
             ></Option>
             <Option
               faIconName={faTextHeight}
@@ -188,6 +253,8 @@ export default function Home() {
               inputType="text"
               placeholder="##"
               unit="%"
+              onChange={handleLineSpace}
+              value={uploadSetting.lineSpace}
             ></Option>
             <Option
               faIconName={faFont}
@@ -195,6 +262,8 @@ export default function Home() {
               inputType="text"
               unit="%"
               placeholder="##"
+              onChange={handleLetterSpace}
+              value={uploadSetting.letterSpace}
             ></Option>
             <ClearButton>
               <Button
@@ -202,6 +271,7 @@ export default function Home() {
                 backgroundColor={colors.buttonPrimaryBlue}
                 width={btnData.size.small.width}
                 height={btnData.size.small.height}
+                handleClick={handleClear}
               ></Button>
             </ClearButton>
           </Container>
