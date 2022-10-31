@@ -10,10 +10,17 @@ import ToolBarDropdown from "../components/ToolBarDropdown/ToolBarDropdown";
 import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
 import { useRouter } from "next/router";
 import { useState } from 'react';
+import Tutorial from "../components/Tutorial/Tutorial";
+import { TutorialData } from "../components/Tutorial/data";
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
 `;
+
+const TutorialCont = styled.div`
+  position: absolute;
+  top: 10rem;
+`
 
 export default function Converted() {
   const [dictionary, setDictionary] = useState(null)
@@ -68,6 +75,7 @@ export default function Converted() {
 
         
       </Wrapper>
+      <TutorialCont> <Tutorial slides={TutorialData}/> </TutorialCont>
     </Flexbox>
   );
 }
