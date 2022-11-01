@@ -23,7 +23,7 @@ justify-content: space-between;
 `
 
 export default function File({
-  text = "Title",
+  fileName = "Title",
   type = "default",
   fileId = 0,
   handleClick = () => {}
@@ -37,10 +37,20 @@ export default function File({
       fileId={fileId}
       onClick={() => handleClick(fileId)}>
       <Preview>
-        <Icon handleClick={() => {}} faIconName={faPlus} size="2x" />
+        {
+          fileId ?
+          (
+          <p> file #{fileId} preview</p>
+          )
+          :
+          (
+          <Icon handleClick={() => {}} faIconName={faPlus} size="2x" />
+          )
+        }
+        
       </Preview>
       <BottomCont dir="row">
-        <div>{text}</div>
+        <div>{fileName}</div>
         <Icon faIconName={faEllipsisVertical} />
       </BottomCont>
     </FileCont>

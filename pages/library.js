@@ -11,13 +11,17 @@ import { faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import * as mainHandler from '../handlers/main';
 
 const FileDisplay = styled(Flexbox)`
-width: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(20px, auto);
+  grid-gap: 2rem;
 `
 
 const TopCont = styled(Flexbox)`
-justify-content: space-between;
-width: 100%;
-`
+  justify-content: space-between;
+  width: 100%;
+  `
 
 export default function library() {
   const [folders, setFolders] = useState([])
@@ -73,10 +77,13 @@ export default function library() {
           buttonClick={onSelectFolder}
         ></TabBar>
         <FileDisplay dir="row">
+          <File
+            fileName="New File"
+          ></File>
           { files ?
             files.map(file => (
               <File
-                text={file.file_name}
+                fileName={file.file_name}
                 fileId= {file.file_id}
                 handleClick={onSelectFile}
               ></File>
@@ -84,7 +91,6 @@ export default function library() {
             :
             (
               <>
-              <File></File>
               <BodyText>Your library is currently empty, add a document to get started.</BodyText>
               </>
             )
