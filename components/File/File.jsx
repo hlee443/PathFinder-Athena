@@ -25,14 +25,19 @@ justify-content: space-between;
 export default function File({
   text = "Title",
   type = "default",
+  fileId = 0,
+  handleClick = () => {}
 }) {
   const r = useRouter();
   const [isFileSaved, setIsFileSaved] = useState(false);
 
   return (
-    <FileCont>
+    <FileCont 
+      key={fileId}
+      fileId={fileId}
+      onClick={() => handleClick(fileId)}>
       <Preview>
-        <Icon handleClick={() => { r.push("/") }} faIconName={faPlus} size="2x" />
+        <Icon handleClick={() => {}} faIconName={faPlus} size="2x" />
       </Preview>
       <BottomCont dir="row">
         <div>{text}</div>

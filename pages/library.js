@@ -6,7 +6,9 @@ import File from "../components/File/File";
 import Header from "../components/Header/Header";
 import FeatureExplain from "../components/FeatureExplain/FeatureExplain";
 import SearchBar from "../components/SearchBar/SearchBar";
-import { btnArr } from "../components/TabBar/data";
+import { useEffect, useState } from 'react';
+import { faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import * as mainHandler from '../handlers/main';
 
 const FileDisplay = styled(Flexbox)`
 width: 100%;
@@ -18,6 +20,46 @@ width: 100%;
 `
 
 export default function library() {
+  const [folders, setFolders] = useState([])
+  const [files, setFiles] = useState([])
+
+  useEffect(() => {
+     
+      const getFolders = async (cb) => {
+         const folderData = await mainHandler.handleGetFoldersByUserId(9)
+
+
+         folderData.data.map(folder => {
+              folder.icon = faFolder
+          })
+    
+          folderData.data.push({ text: "Create New", icon: faFolderPlus })
+
+          setFolders(folderData.data)
+          // console.log("FOLDERDATA", folders)
+          cb(folderData.data[0])
+
+      }
+
+      getFolders((folder) => {
+        onSelectFolder(folder.folder_id)
+      })
+
+    
+  }, []);
+
+  async function onSelectFolder(folderId){
+      const fileData = await mainHandler.handleGetFilesByFolderId(folderId)
+      
+      setFiles(fileData.data)
+     
+  }
+
+  function onSelectFile(fileId){
+    console.log("file Id", fileId)
+  }
+
+
   return (
     <Flexbox>
       <NavBar></NavBar>
@@ -27,11 +69,27 @@ export default function library() {
           <SearchBar></SearchBar>
         </TopCont>
         <TabBar
-          btnArr={btnArr}
+          btnArr={folders}
+          buttonClick={onSelectFolder}
         ></TabBar>
         <FileDisplay dir="row">
-          <File></File>
-          <BodyText>Your library is currently empty, add a document to get started.</BodyText>
+          { files ?
+            files.map(file => (
+              <File
+                text={file.file_name}
+                fileId= {file.file_id}
+                handleClick={onSelectFile}
+              ></File>
+            ))
+            :
+            (
+              <>
+              <File></File>
+              <BodyText>Your library is currently empty, add a document to get started.</BodyText>
+              </>
+            )
+          }
+          
         </FileDisplay>
       </Wrapper>
     </Flexbox>);
