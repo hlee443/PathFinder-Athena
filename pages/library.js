@@ -60,7 +60,7 @@ export default function library() {
   }
 
   function onSelectFile(fileId){
-    console.log("file Id", fileId)
+    console.log("file Id", fileId) // should successfully pass from the file.jsx prop
   }
 
 

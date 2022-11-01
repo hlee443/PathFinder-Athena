@@ -25,7 +25,7 @@ justify-content: space-between;
 export default function File({
   fileName = "Title",
   type = "default",
-  fileId = 0,
+  fileId = null,
   handleClick = () => {}
 }) {
   const r = useRouter();
@@ -44,15 +44,22 @@ export default function File({
           )
           :
           (
-          <Icon handleClick={() => {}} faIconName={faPlus} size="2x" />
+          <Icon handleClick={() => { r.push("/") }} faIconName={faPlus} size="2x" />
           )
         }
         
       </Preview>
-      <BottomCont dir="row">
-        <div>{fileName}</div>
-        <Icon faIconName={faEllipsisVertical} />
-      </BottomCont>
+
+          <BottomCont dir="row">
+            <div>{fileName}</div>
+            {fileId &&
+            (
+              <Icon faIconName={faEllipsisVertical} />
+            )
+            }
+          </BottomCont>
+       
+      
     </FileCont>
   );
 };
