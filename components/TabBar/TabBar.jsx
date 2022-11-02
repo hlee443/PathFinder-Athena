@@ -36,10 +36,7 @@ export default function TabBar({
           width={btnData.width}
           handleClick={() => {
             setSel(i), changePage();
-           
-            console.log("FUCK")
-            buttonClick(o.folder_id)
-            
+            buttonClick(o.folder_id);
           }}
         ></Button>
       ))}

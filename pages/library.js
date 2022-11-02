@@ -40,7 +40,7 @@ export default function Library() {
           folderData.data.push({ text: "Create New", icon: faFolderPlus })
 
           setFolders(folderData.data)
-          // console.log("FOLDERDATA", folders)
+          
           cb(folderData.data[0])
 
       }
