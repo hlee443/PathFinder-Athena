@@ -42,24 +42,28 @@ export const libraryDataArr = [
 export const typefaceDataArr = [
   {
     bgColor: colors.primaryBlue,
+    id: "header",
     text: "Typeface",
     faIconName: faFont,
     faIconNameRight: faClose,
   },
   {
     faIconName: faFillDrip,
+    id: "BackgroundColor",
     text: "Background Color",
     width: "6rem",
     inputType: "color",
   },
   {
     faIconName: faFont,
+    id: "Typeface",
     text: "Typeface",
     inputType: "dropdown",
     width: "12rem",
   },
   {
     text: "Font Size",
+    id: "FontSize",
     width: "5rem",
     unit: "pt",
     inputType: "text",
@@ -67,6 +71,7 @@ export const typefaceDataArr = [
   },
   {
     text: "Line Height",
+    id: "LineSpace",
     width: "5rem",
     unit: "%",
     inputType: "text",
@@ -74,6 +79,7 @@ export const typefaceDataArr = [
   },
   {
     faIconName: faTextWidth,
+    id: "LetterSpace",
     text: "Letter Spacing",
     width: "5rem",
     unit: "pt",

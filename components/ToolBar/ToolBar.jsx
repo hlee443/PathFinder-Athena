@@ -15,6 +15,7 @@ import Summary from '../Summary/Summary';
 import { colors } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
 import Dictionary from "../Dictionary/Dictionary";
+import { libraryDataArr } from "../ToolBarDropdown/data";
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -58,8 +59,8 @@ const ToolBarCont = styled.div`
 
 export default function ToolBar({
   onChange = () => {},
-  typeValueArr,
-  libValueArr
+  typeValueArray = [],
+  libraryFolderArray = []
 }) {
 
   const [sel, setSel] = useState(0);
@@ -178,33 +179,33 @@ export default function ToolBar({
         text="Typeface"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      {
+        showDropdown === "library" && <ToolBarDropdown
+          type="Library"
+          libraryFolderArray={libraryFolderArray}
+          onClose={closeDropdown}
+          onChange={onChange}
+        ></ToolBarDropdown>
+      }
       <Icon
         faIconName={faBookmark}
         handleClick={()=>setShowDropdown("library")}
         text="Save to Library"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      {
+        showDropdown === "typeface" && <ToolBarDropdown
+          type="Typeface"
+          onClose={closeDropdown}
+          typeValueArray={typeValueArray}
+          onChange={onChange}
+        ></ToolBarDropdown>
+      }
       <Icon
         faIconName={faDownload}
         text="Download"
         hoverColor={colors.backgroundYellow}
       ></Icon>
-      {
-        showDropdown === "library" && <ToolBarDropdown
-          type="Library"
-          onClose={closeDropdown}
-          libValueArr={libValueArr}
-          onChange={onChange}
-        ></ToolBarDropdown>
-      }
-      {
-        showDropdown === "typeface" && <ToolBarDropdown
-          type="Typeface"
-          onClose={closeDropdown}
-          typeValueArr={typeValueArr}
-          onChange={onChange}
-        ></ToolBarDropdown>
-      }
     </ToolBarCont>
   )
 

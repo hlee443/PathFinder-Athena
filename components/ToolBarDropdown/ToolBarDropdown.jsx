@@ -31,10 +31,11 @@ export default function ToolBarDropdown({
   onExpand = () => { },
   onClose = () => { },
   type ="",
-  libValueArr = [],
-  typeValueArr = ["", "#FFFFFC", "Open Sans", "16", "150", "0.35"],
-  onChange = () => { }
+  onChange = () => { },
+  libraryFolderArray = [],
+  typeValueArray = []
 }) {
+
   const [sel, setSel] = useState(0);
 
   return (
@@ -44,15 +45,16 @@ export default function ToolBarDropdown({
           key={i}
           bgColor={o.bgColor}
           faIconName={o.faIconName}
-          text={o.text}
+          text={libraryFolderArray[i].folder_name || o.text}
           faIconNameRight={o.faIconNameRight}
           handleOption={sel === i ? onClose : onExpand}
-          onChange={onChange} 
-          value={libValueArr[i]}
+          onClick={onChange}
+          id={libraryFolderArray[i].folder_id}
         ></Option>
       ))}
       {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
         key={i}
+        id={o.id}
         bgColor={o.bgColor|| "transparent"}
         faIconName={o.faIconName}
         text={o.text}
@@ -64,7 +66,7 @@ export default function ToolBarDropdown({
         placeholder={o.placeholder || "#"}
         src={o.src}
         onChange={onChange} 
-        value={typeValueArr[i]}
+        value={typeValueArray[i]}
       ></Option>))
       }
       <ButtonCont>

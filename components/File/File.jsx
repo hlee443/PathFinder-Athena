@@ -31,6 +31,12 @@ export default function File({
   const r = useRouter();
   const [isFileSaved, setIsFileSaved] = useState(false);
 
+  const [compFileName, setCompFileName] = useState(fileName);
+
+  function saveFilename() {
+    setCompFileName()
+  }
+
   return (
     <FileCont 
       fileId={fileId}>
@@ -49,7 +55,7 @@ export default function File({
       </Preview>
 
           <BottomCont dir="row">
-            <div>{fileName}</div>
+            <div>{compFileName}</div>
             {fileId &&
             (
               <Icon faIconName={faEllipsisVertical} />

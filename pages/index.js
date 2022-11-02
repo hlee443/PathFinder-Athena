@@ -95,13 +95,14 @@ export default function Home() {
     }
 
     mainHandler.handleUpload(uploadData, (res) => {
-      let { fileData, settingData } = res.data
+      let { fileData, settingData, folderArray } = res.data
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
-            settingData: JSON.stringify(settingData)
+            settingData: JSON.stringify(settingData),
+            folderArray: JSON.stringify(folderArray)
           },
         },
         "/converted"
