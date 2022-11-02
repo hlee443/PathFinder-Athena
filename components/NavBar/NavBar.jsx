@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
+import Label from "../Label/Label";
 import { useRouter } from "next/router";
 import { colors, Flexbox } from "../../styles/globals";
 
@@ -57,7 +58,7 @@ const Overlay = styled.div`
 
 export default function NavBar({ type = "loggedIn" }) {
   const r = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
   const [label, setLabel] = useState(false);
   const [hover, setHover] = useState(false);
@@ -70,7 +71,7 @@ export default function NavBar({ type = "loggedIn" }) {
     <NavBarCont type={type}>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {!isLoggedIn ? (
+        {isLoggedIn ? (
           <IconContainer>
             <Icon
               size="2x"
@@ -133,7 +134,9 @@ export default function NavBar({ type = "loggedIn" }) {
             <Bubble
               type="login"
               onClose={closeBubble}
-              handleBubble={() => setShowBubble("success")}
+              handleBubble={() => {
+                setShowBubble("success") 
+                setIsLoggedIn(true)}}
             ></Bubble>
           </Overlay>
         )}
