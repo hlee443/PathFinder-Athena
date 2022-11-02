@@ -1,13 +1,12 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { colors } from "../../styles/globals";
+import { BodyText, colors, Flexbox } from "../../styles/globals";
 import Label from "../Label/Label";
 
-const IconCont = styled.div`
-  display: flex;
-  flex-direction: column;
+const IconCont = styled(Flexbox)`
   align-items: center;
+  justify-content: center;
   padding-top: ${(props) => props.paddingTop};
   :hover {
     background-color: ${(props) => props.hoverColor};
@@ -42,7 +41,7 @@ export default function Icon({
         ></FontAwesomeIcon>
       )}
       {src !== null && <Img src={src}></Img>}
-      {text && <Label text={text} backgroundColor="transparent"></Label>}
+      {text && <BodyText>{text}</BodyText>}
     </IconCont>
   );
 }
