@@ -30,9 +30,9 @@ export default function File({
   type = "default",
   fileId = null,
   handleClick = () => {},
+  handleDelete = () => {}
 }) {
   const r = useRouter();
-  const [isFileSaved, setIsFileSaved] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState(fileName);
 
@@ -45,16 +45,24 @@ export default function File({
   };
 
   const saveFilename = () => {
-    setIsFileSaved(true);
     setIsEditing(false);
     mainHandler.handleUpdateFile({
-          "fileData": {
-              "fileId": fileId,
-              "fileName": newFileName
-          }
-      });
+      fileData: {
+        fileId: fileId,
+        fileName: newFileName,
+      },
+    });
   };
 
+  const deleteFile = () => {
+    handleDelete(fileId);
+    setIsEditing(false);
+  };
+
+  const getFilenameValue = (e) => {
+    setNewFileName(e.target.value);
+    console.log(e.target.value);
+  };
 
   return (
     <FileCont fileId={fileId}>
@@ -82,10 +90,23 @@ export default function File({
       )}
       {isEditing && (
         <BottomCont dir="row">
-          <Input value={newFileName} onChange={(e)=>setNewFileName(e.target.value)} width="7rem" borderRadius="1rem"/>
+          <Input
+            value={newFileName}
+            onChange={(e) => {
+              getFilenameValue(e);
+            }}
+            width="7rem"
+            borderRadius="1rem"
+          />
           <Button
             handleClick={saveFilename}
             text="Save"
+            width="5rem"
+            height="2rem"
+          />
+          <Button
+            handleClick={deleteFile}
+            text="Delete File"
             width="5rem"
             height="2rem"
           />
