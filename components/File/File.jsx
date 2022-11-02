@@ -33,7 +33,6 @@ export default function File({
 
   return (
     <FileCont 
-      key={fileId}
       fileId={fileId}
       onClick={() => handleClick(fileId)}>
       <Preview>

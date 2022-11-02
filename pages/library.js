@@ -23,7 +23,7 @@ const TopCont = styled(Flexbox)`
   width: 100%;
   `
 
-export default function library() {
+export default function Library() {
   const [folders, setFolders] = useState([])
   const [files, setFiles] = useState([])
 
@@ -83,6 +83,7 @@ export default function library() {
           { files ?
             files.map(file => (
               <File
+                key={file.file_id}
                 fileName={file.file_name}
                 fileId= {file.file_id}
                 handleClick={onSelectFile}
