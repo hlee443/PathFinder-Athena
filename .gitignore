@@ -40,5 +40,6 @@ next-env.d.ts
 .DS_Store
 
 # dev
-/pages/test
+/pages/test.js
+/pages/sandbox.js
 /styles
