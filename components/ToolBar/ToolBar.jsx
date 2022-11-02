@@ -20,7 +20,11 @@ const Divider = styled.div`
 
 `
 
-export default function ToolBar() {
+export default function ToolBar({
+  onChange = () => {},
+  typeValueArr,
+  libValueArr
+}) {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
@@ -153,12 +157,16 @@ export default function ToolBar() {
         showDropdown === "library" && <ToolBarDropdown
           type="Library"
           onClose={closeDropdown}
+          libValueArr={libValueArr}
+          onChange={onChange}
         ></ToolBarDropdown>
       }
       {
         showDropdown === "typeface" && <ToolBarDropdown
           type="Typeface"
           onClose={closeDropdown}
+          typeValueArr={typeValueArr}
+          onChange={onChange}
         ></ToolBarDropdown>
       }
     </ToolBarCont>
