@@ -25,7 +25,7 @@ export default function Summary({
   onClose = () => {}
 }) {
   return <SummarizeCont>
-    <Container bgColor ={colors.backgroundYellow}>
+    <Container backgroundColor ={colors.backgroundYellow}>
       <CloseButton>
         <Icon handleClick={onClose} faIconName={faClose} />
       </CloseButton>

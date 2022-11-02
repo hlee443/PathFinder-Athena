@@ -68,7 +68,7 @@ export const typefaceDataArr = [
   {
     text: "Line Height",
     width: "5rem",
-    unit: "pt",
+    unit: "%",
     inputType: "text",
     src: iconSvgs.lineSpacing,
   },
@@ -78,7 +78,6 @@ export const typefaceDataArr = [
     width: "5rem",
     unit: "pt",
     inputType: "text",
-    placeholder: "#",
     src: iconSvgs.letterSpacing,
   },
 ];

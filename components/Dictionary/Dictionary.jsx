@@ -38,7 +38,7 @@ export default function Dictionary({
 }) {
   return (
     <DictionaryCont>
-      <Container bgColor={colors.backgroundYellow}>
+      <Container backgroundColor={colors.backgroundYellow}>
         <TopSection>
           <TopSectionLeft>
             <Word>{word}</Word>

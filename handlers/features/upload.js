@@ -7,7 +7,9 @@
 import axios from "axios";
 import * as mainHandler from '../main';
 
-export function handleUpload(uploadedFile, callback){
+export function handleUpload(uploadData, callback){
+    let { uploadedFile, uploadSetting } = uploadData;
+
     const fileReader = new FileReader()
     
     switch (uploadedFile.fileType){
@@ -32,13 +34,7 @@ export function handleUpload(uploadedFile, callback){
                         fileContent: uploadedFile.fileContent,
                         fileName: uploadedFile.fileName
                     },
-                    settingData: {
-                        backgroundColour: '#FFFFFC',
-                        typeface: 'Open Sans',
-                        fontSize: 16,
-                        lineSpace: 7.5,
-                        letterSpace: 150
-                    }
+                    settingData: uploadSetting
                 }
 
                 mainHandler.handleAddFile(postFileObj, (res) => {
