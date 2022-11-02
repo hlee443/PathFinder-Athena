@@ -33,9 +33,8 @@ export default function File({
 
   return (
     <FileCont 
-      fileId={fileId}
-      onClick={() => handleClick(fileId)}>
-      <Preview>
+      fileId={fileId}>
+      <Preview onClick={() => handleClick(fileId)}>
         {
           fileId ?
           (
@@ -57,7 +56,6 @@ export default function File({
             )
             }
           </BottomCont>
-       
       
     </FileCont>
   );
