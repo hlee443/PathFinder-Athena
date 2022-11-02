@@ -17,6 +17,7 @@ const Preview = styled(Flexbox)`
   border-radius: 3.125rem;
   background-color: ${(props) => props.color || colors.backgroundWhite};
   border: 0.188rem dashed ${colors.darkGray};
+  cursor: pointer;
 `;
 
 const BottomCont = styled(Flexbox)`
@@ -81,7 +82,7 @@ export default function File({
 
       {!isEditing && (
         <BottomCont dir="row">
-          <div>{fileName}</div>
+          <div>{newFileName}</div>
           {fileId && (
             <Icon handleClick={editFilename} faIconName={faEllipsisVertical} />
           )}
@@ -90,7 +91,7 @@ export default function File({
       {isEditing && (
         <BottomCont dir="row">
           <Input
-            value={fileName}
+            value={newFileName}
             onChange={(e) => {
               getFilenameValue(e);
             }}
