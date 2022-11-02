@@ -14,6 +14,7 @@ export default function TabBar({
   changePage = () => {},
   inputType = "url",
   btnArr = [],
+  buttonClick = () => {}
 }) {
   const [sel, setSel] = useState(0);
 
@@ -21,7 +22,7 @@ export default function TabBar({
     <TabBarCont inputType={inputType} dir="row">
       {btnArr.map((o, i) => (
         <Button
-          key={o.text}
+          key={o.folder_id || o.text}
           borderBottom={
             sel === i
               ? btnData.state.clicked.borderBottom
@@ -31,10 +32,11 @@ export default function TabBar({
           backgroundColor="transparent"
           borderRadius="0"
           type="IconButton"
-          text={o.text}
+          text={o.folder_name || o.text}
           width={btnData.width}
           handleClick={() => {
             setSel(i), changePage();
+            buttonClick(o.folder_id);
           }}
         ></Button>
       ))}

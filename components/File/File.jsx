@@ -23,21 +23,42 @@ justify-content: space-between;
 `
 
 export default function File({
-  text = "Title",
+  fileName = "Title",
   type = "default",
+  fileId = null,
+  handleClick = () => {}
 }) {
   const r = useRouter();
   const [isFileSaved, setIsFileSaved] = useState(false);
 
   return (
-    <FileCont>
+    <FileCont 
+      fileId={fileId}
+      onClick={() => handleClick(fileId)}>
       <Preview>
-        <Icon handleClick={() => { r.push("/") }} faIconName={faPlus} size="2x" />
+        {
+          fileId ?
+          (
+          <p> file #{fileId} preview</p>
+          )
+          :
+          (
+          <Icon handleClick={() => { r.push("/") }} faIconName={faPlus} size="2x" />
+          )
+        }
+        
       </Preview>
-      <BottomCont dir="row">
-        <div>{text}</div>
-        <Icon faIconName={faEllipsisVertical} />
-      </BottomCont>
+
+          <BottomCont dir="row">
+            <div>{fileName}</div>
+            {fileId &&
+            (
+              <Icon faIconName={faEllipsisVertical} />
+            )
+            }
+          </BottomCont>
+       
+      
     </FileCont>
   );
 };
