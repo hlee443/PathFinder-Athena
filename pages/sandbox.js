@@ -6,7 +6,7 @@ import { colors, Flexbox, Wrapper } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const URLbox = styled(Flexbox)`
   background: ${colors.Background_White};
@@ -19,7 +19,7 @@ const URLbox = styled(Flexbox)`
 export default function Sandbox() {
   return (
     <Flexbox>
-      <NavBar></NavBar>
+      <NavBar type="loggedIn"></NavBar>
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
         <SubHeader text="Enter URL or upload files, we will make it easier to understand for you."></SubHeader>

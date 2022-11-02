@@ -56,8 +56,8 @@ export default function Bubble({
       <Header text={bubbleData[type].header} />
       {(type == "login" || type === "signup") && (
         <InputCont>
-          <Input width="100%" />
-          <Input width="100%" />
+          <Input width="100%" placeholder="email" type="email" />
+          <Input width="100%" placeholder="password" type="password" />
         </InputCont>
       )}
       <SubHeaderCont dir="row">

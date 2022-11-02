@@ -36,8 +36,9 @@ export default function Button({
   width = "15rem",
   faIconName = faLink,
   fontWeight = "normal",
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
 }) {
-
   return (
     <StyledButton
       onClick={handleClick}
@@ -51,6 +52,8 @@ export default function Button({
       type="btn type"
       width={width}
       fontWeight={fontWeight}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {text}
       {type === "IconButton" && <Icon faIconName={faIconName} />}
