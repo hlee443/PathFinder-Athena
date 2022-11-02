@@ -30,9 +30,9 @@ export default function File({
   type = "default",
   fileId = null,
   handleClick = () => {},
+  handleDelete = () => {}
 }) {
   const r = useRouter();
-  const [isFileSaved, setIsFileSaved] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState(fileName);
 
@@ -45,7 +45,6 @@ export default function File({
   };
 
   const saveFilename = () => {
-    setIsFileSaved(true);
     setIsEditing(false);
     mainHandler.handleUpdateFile({
       fileData: {
@@ -56,7 +55,8 @@ export default function File({
   };
 
   const deleteFile = () => {
-    mainHandler.handleDeleteFile(fileId);
+    handleDelete(fileId);
+    setIsEditing(false);
   };
 
   const getFilenameValue = (e) => {
