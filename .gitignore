@@ -38,3 +38,7 @@ next-env.d.ts
 #history
 .history
 .DS_Store
+
+# dev
+/pages/test
+/styles
