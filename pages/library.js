@@ -28,40 +28,56 @@ export default function Library() {
   const [files, setFiles] = useState([])
 
   useEffect(() => {
-     
-      const getFolders = async (cb) => {
-         const folderData = await mainHandler.handleGetFoldersByUserId(9)
+
+    const getFolders = async (cb) => {
+      const folderData = await mainHandler.handleGetFoldersByUserId(9)
 
 
-         folderData.data.map(folder => {
-              folder.icon = faFolder
-          })
-    
-          folderData.data.push({ text: "Create New", icon: faFolderPlus })
-
-          setFolders(folderData.data)
-          
-          cb(folderData.data[0])
-
-      }
-
-      getFolders((folder) => {
-        onSelectFolder(folder.folder_id)
+      folderData.data.map(folder => {
+        folder.icon = faFolder
       })
 
-    
+      folderData.data.push({ text: "Create New", icon: faFolderPlus })
+
+      setFolders(folderData.data)
+
+      cb(folderData.data[0])
+
+    }
+
+    getFolders((folder) => {
+      onSelectFolder(folder.folder_id)
+    })
+
+
   }, []);
 
-  async function onSelectFolder(folderId){
-      const fileData = await mainHandler.handleGetFilesByFolderId(folderId)
-      
-      setFiles(fileData.data)
-     
+  async function onSelectFolder(folderId) {
+    const fileData = await mainHandler.handleGetFilesByFolderId(folderId)
+
+    setFiles(fileData.data)
+
   }
 
-  function onSelectFile(fileId){
+  function onSelectFile(fileId) {
     console.log("file Id", fileId) // should successfully pass from the file.jsx prop
   }
+
+  function handleDelete(fileId) {
+    mainHandler.handleDeleteFile(fileId);
+    setFiles(files.filter(files => files.file_id !== fileId));
+  };
+
+  let fileList = files.map(file => {
+    return <File
+      {...file}
+      key={file.file_id}
+      fileName={file.file_name}
+      fileId={file.file_id}
+      handleClick={onSelectFile}
+      handleDelete={handleDelete}
+    ></File>
+  })
 
 
   return (
@@ -80,40 +96,31 @@ export default function Library() {
           <File
             fileName="New File"
           ></File>
-          { files ?
-            files.map(file => (
-              <File
-                key={file.file_id}
-                fileName={file.file_name}
-                fileId= {file.file_id}
-                handleClick={onSelectFile}
-              ></File>
-            ))
-            :
+          {files ? fileList :
             (
               <>
-              <BodyText>Your library is currently empty, add a document to get started.</BodyText>
+                <BodyText>Your library is currently empty, add a document to get started.</BodyText>
               </>
             )
           }
-          
+
         </FileDisplay>
       </Wrapper>
     </Flexbox>);
 };
 
-  // const FeatureExplainText = styled(Flexbox)`
-  // padding: 6rem;
-  // `
+// const FeatureExplainText = styled(Flexbox)`
+// padding: 6rem;
+// `
 
-  // const FeatureExplainCont = styled(Flexbox)`
-  // flex-direction:row;
-  // justify-content: space-between;
-  // padding: 6rem;
-  // flex-wrap: wrap;
-  // align-self: flex-start;
-  // margin-top: -5rem;
-  // `
+// const FeatureExplainCont = styled(Flexbox)`
+// flex-direction:row;
+// justify-content: space-between;
+// padding: 6rem;
+// flex-wrap: wrap;
+// align-self: flex-start;
+// margin-top: -5rem;
+// `
 
 {/* <FeatureExplainText>
         <Header text="Customize your documents to your needs" />
