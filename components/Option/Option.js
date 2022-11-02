@@ -26,7 +26,9 @@ export default function Option({
   faIconNameRight = null,
   handleOption = () => { },
   width = "100%",
-  onClose = () => {}
+  onClose = () => {},
+  onChange = () => {},
+  value = ""
 }) {
 
   return <OptionCont onClick={handleOption} dir="row" bgColor={bgColor}>
@@ -34,7 +36,7 @@ export default function Option({
       <Icon faIconName={faIconName}></Icon>
       <BodyText>{text}</BodyText>
       {
-        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder}></Input>
+        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder} onChange={onChange} value={value}></Input>
       }
       {
         unit !== null && <BodyText>{unit}</BodyText>

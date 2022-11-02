@@ -56,7 +56,7 @@ export const Container = styled(Flexbox)`
   height: ${(props) => props.height};
   padding: 2em;
   border: 0.125rem solid ${colors.darkGray};
-  background-color: ${colors.backgroundWhite};
+  background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
   border-radius: 2rem;
   white-space: pre-line;
   align-items: ${(props) => props.alignItems || "flex-start"}

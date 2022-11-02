@@ -18,8 +18,8 @@ Guest.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const loginButton = await canvas.getByRole(Button, { name: /Log In/i });
   await userEvent.click(loginButton);
-  const signUpButton = await canvas.getByRole(Button, { name: /Sign Up/i });
-  await userEvent.click(signUpButton);
+  // const signUpButton = await canvas.getByRole(Button, { name: /Sign Up/i });
+  // await userEvent.click(signUpButton);
 };
 Guest.args = {
   type: "guest",
