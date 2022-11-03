@@ -152,8 +152,8 @@ export default function Home() {
       backgroundColour: "#FFFFFC",
       typeface: "Open Sans",
       fontSize: 16,
-      lineSpace: 9,
-      letterSpace: 150
+      lineSpace: 150,
+      letterSpace: 0.35
     })
   }
 

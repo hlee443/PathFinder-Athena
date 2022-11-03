@@ -39,7 +39,9 @@ export default function Converted() {
       ...settingData,
       background_colour: e.target.value
     })
+    console.log(settingData)
     updateTypeArray()
+    console.log(typeArray)
   };
 
   function handleTypeface(e) {
@@ -74,7 +76,7 @@ export default function Converted() {
     updateTypeArray()
   };
 
-  function handleSaveSetting() {
+  async function handleSaveSetting() {
     let uploadSettingData = {
       settingData: {
         settingId: settingData.setting_id,
@@ -86,7 +88,7 @@ export default function Converted() {
       }
     }
     console.log(uploadSettingData)
-    setSettingData(mainHandler.handleUpdateSetting(uploadSettingData))
+    setSettingData(await mainHandler.handleUpdateSetting(uploadSettingData))
   }
 
   async function handleNewFolder(newFolderName) {
@@ -97,7 +99,7 @@ export default function Converted() {
       }
     }
     await mainHandler.handleAddFolder(uploadFolderData)
-    setFolderArray(mainHandler.handleGetFoldersByUserId("9"))
+    setFolderArray(await mainHandler.handleGetFoldersByUserId("9"))
     updateLibraryArray()
   }
 
@@ -114,7 +116,7 @@ export default function Converted() {
   function updateLibraryArray() {
     for (let i = 0; i < folderArray.length; i++) {
       setLibraryArray(arr => [...arr, {
-        folder_name: folderArray[i].folder_name, handleClick: () => {
+        folder_name: folderArray[i].folder_name, handleClick: async () => {
           let uploadFileData = {
             fileData: {
               fileId: fileData.file_id,
@@ -122,7 +124,7 @@ export default function Converted() {
               folderId: folderArray[i].folder_id
             }
           }
-          setFileData(mainHandler.handleUpdateFile(uploadFileData))
+          setFileData(await mainHandler.handleUpdateFile(uploadFileData))
         }
       }])
     }
