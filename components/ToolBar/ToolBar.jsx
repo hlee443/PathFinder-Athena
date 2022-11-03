@@ -59,8 +59,10 @@ const ToolBarCont = styled.div`
 
 export default function ToolBar({
   onChange = () => {},
-  typeValueArray = [],
-  libraryFolderArray = []
+  typeArray = [],
+  libraryArray = [],
+  handleNewFolder = () => {},
+  handleSaveSetting = () => {}
 }) {
 
   const [sel, setSel] = useState(0);
@@ -182,9 +184,9 @@ export default function ToolBar({
       {
         showDropdown === "library" && <ToolBarDropdown
           type="Library"
-          libraryFolderArray={libraryFolderArray}
+          libraryArray={libraryArray}
           onClose={closeDropdown}
-          onChange={onChange}
+          handleNewFolder={handleNewFolder}
         ></ToolBarDropdown>
       }
       <Icon
@@ -197,8 +199,8 @@ export default function ToolBar({
         showDropdown === "typeface" && <ToolBarDropdown
           type="Typeface"
           onClose={closeDropdown}
-          typeValueArray={typeValueArray}
-          onChange={onChange}
+          typeArray={typeArray}
+          handleSaveSetting={handleSaveSetting}
         ></ToolBarDropdown>
       }
       <Icon

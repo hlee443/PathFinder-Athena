@@ -11,6 +11,7 @@ import ToolBarDropdown from "../components/ToolBarDropdown/ToolBarDropdown";
 import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
 import { useRouter } from "next/router";
 import { useEffect, useState } from 'react';
+import * as mainHandler from "../handlers/main"
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
@@ -27,66 +28,66 @@ export default function Converted() {
 
   const [fileData, setFileData] = useState({})
   const [settingData, setSettingData] = useState({})
-  const [libraryFolderArray, setLibraryFolderArray] = useState([])
-  const [typeValueArray, setTypeValueArray] = useState([])
+  const [libraryArray, setLibraryArray] = useState([])
+  const [typeArray, setTypeArray] = useState([])
+  const [folderArray, setFolderArray] = useState([])
 
-  function handleChange(e) {
-    e.preventDefault()
-    switch (e.target.id) {
-      case 'BackgroundColor':
-        setTypeValueArray([
-          {folder_name: "Header", folder_id: "Header"},
-          e.target.value,
-          typeValueArray[2],
-          typeValueArray[3],
-          typeValueArray[4],
-          typeValueArray[5]
-        ])
-        break;
-      case 'Typeface':
-        setTypeValueArray([
-          {folder_name: "Header", folder_id: "Header"},
-          typeValueArray[1],
-          e.target.value,
-          typeValueArray[3],
-          typeValueArray[4],
-          typeValueArray[5]
-        ])
-        break;
-      case 'FontSize':
-        setTypeValueArray([
-          {folder_name: "Header", folder_id: "Header"},
-          typeValueArray[1],
-          typeValueArray[2],
-          e.target.value,
-          typeValueArray[4],
-          typeValueArray[5]
-        ])
-        break;
-      case 'LineSpace':
-        setTypeValueArray([
-          {folder_name: "Header", folder_id: "Header"},
-          typeValueArray[1],
-          typeValueArray[2],
-          typeValueArray[3],
-          e.target.value,
-          typeValueArray[5]
-        ])
-        break;
-      case 'LineSpace':
-        setTypeValueArray([
-          {folder_name: "Header", folder_id: "Header"},
-          typeValueArray[1],
-          typeValueArray[2],
-          typeValueArray[3],
-          typeValueArray[4],
-          e.target.value
-        ])
-        break;
+
+  function handleBGColor(e) {
+    setSettingData({
+      ...settingData,
+      background_colour: e.target.value
+    })
+  };
+
+  function handleTypeface(e) {
+    setSettingData({
+      ...settingData,
+      typeface: e.target.value
+    })
+  };
+
+  function handleFontSize(e) {
+    setSettingData({
+      ...settingData,
+      font_size: e.target.value
+    })
+  };
+
+  function handleLineSpace(e) {
+    setSettingData({
+      ...settingData,
+      line_space: e.target.value
+    })
+  };
+
+  function handleLetterSpace(e) {
+    setSettingData({
+      ...settingData,
+      letter_space: e.target.value
+    })
+  };
+
+  function handleSaveSetting() {
+    let uploadSettingData = {
+      settingId: settingData.setting_id,
+      backgroundColour: settingData.background_colour,
+      typeface: settingData.typeface,
+      fontSize: settingData.font_size,
+      lineSpace: settingData.line_sace,
+      letterSpace: settingData.letter_space
     }
+    setSettingData(mainHandler.handleUpdateSetting(uploadSettingData))
   }
 
-
+  function handleNewFolder(newFolderName) {
+    let uploadFolderData = {
+      userId: "9",
+      folderName: newFolderName
+    }
+    mainHandler.handleAddFolder(uploadFolderData)
+    setFolderArray(mainHandler.handleGetFoldersByUserId("9"))
+  }
 
   useEffect(() => {
     if (!router.query.fileData) {
@@ -97,21 +98,34 @@ export default function Converted() {
       return
     }
     setFileData(JSON.parse(router.query.fileData))
-    let folderArray = JSON.parse(router.query.folderArray)
+    setFolderArray(JSON.parse(router.query.folderArray))
     setSettingData(JSON.parse(router.query.settingData))
 
-    setTypeValueArray([
-      "Header",
-      settingData.background_colour,
-      settingData.typeface,
-      settingData.font_size,
-      settingData.line_space,
-      settingData.letter_space
+    setTypeArray([
+      { value: "Header", handleChange: () => { } },
+      { value: settingData.background_colour, handleChange: handleBGColor },
+      { value: settingData.typeface, handleChange: handleTypeface },
+      { value: settingData.font_size, handleChange: handleFontSize },
+      { value: settingData.line_space, handleChange: handleLineSpace },
+      { value: settingData.letter_space, handleChange: handleLetterSpace },
     ])
 
-    setLibraryFolderArray([{folder_name: "Header", folder_id: "Header"}])
+    setLibraryArray([
+      { folder_name: "Header", folder_id: "", handleClick: () => { } }
+    ])
     for (let i = 0; i < folderArray.length; i++) {
-      setLibraryFolderArray(arr => [...arr, folderArray[i]])
+      setLibraryArray(arr => [...arr,
+      {
+        folder_name: folderArray[i].folder_name, handleClick: () => {
+          let uploadFileData = {
+            fileId: fileData.file_id,
+            fileName: fileData.file_name,
+            folderId: folderArray[i].folder_id
+          }
+          setFileData(mainHandler.handleUpdateFile(uploadFileData))
+        }
+      }
+      ])
     }
 
   }, []);
@@ -124,7 +138,7 @@ export default function Converted() {
           <Header text={fileData.file_name}></Header>
           <Icon faIconName={faPencil}></Icon>
         </Title>
-        <ToolBar onChange={handleChange} typeValueArray={typeValueArray} libraryFolderArray={libraryFolderArray}></ToolBar>
+        <ToolBar onChange={handleChange} typeArray={typeArray} libraryArray={libraryArray} handleNewFolder={handleNewFolder} handleSaveSetting={handleSaveSetting}></ToolBar>
         <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
           <Content fileData={fileData} settingData={settingData}>
           </Content>

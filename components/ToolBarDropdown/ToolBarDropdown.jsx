@@ -30,10 +30,11 @@ export default function ToolBarDropdown({
   top = "",
   onExpand = () => { },
   onClose = () => { },
-  type ="",
-  onChange = () => { },
+  handleSaveSetting = () => {},
+  handleNewFolder = () => {},
+  type = "",
   libraryFolderArray = [],
-  typeValueArray = []
+  typeArray = []
 }) {
 
   const [sel, setSel] = useState(0);
@@ -48,14 +49,23 @@ export default function ToolBarDropdown({
           text={libraryFolderArray[i].folder_name || o.text}
           faIconNameRight={o.faIconNameRight}
           handleOption={sel === i ? onClose : onExpand}
-          onClick={onChange}
-          id={libraryFolderArray[i].folder_id}
+          onClick={libraryArray[i].handleClick}
+          value={libraryArray[i].folder_id}
         ></Option>
-      ))}
+      ))
+        && <ButtonCont>
+          <Button
+            text="New Folder"
+            backgroundColor="transparent"
+            type="IconButton"
+            faIconName={faFolderPlus}
+            handleClick={handleNewFolder}
+          ></Button>
+        </ButtonCont>
+      }
       {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
         key={i}
-        id={o.id}
-        bgColor={o.bgColor|| "transparent"}
+        bgColor={o.bgColor || "transparent"}
         faIconName={o.faIconName}
         text={o.text}
         faIconNameRight={o.faIconNameRight}
@@ -65,18 +75,21 @@ export default function ToolBarDropdown({
         unit={o.unit}
         placeholder={o.placeholder || "#"}
         src={o.src}
-        onChange={onChange} 
-        value={typeValueArray[i]}
+        onChange={typeArray[i].handleChange}
+        value={typeArray[i].value}
       ></Option>))
+        && <ButtonCont>
+          <Button
+            text="Save Settings"
+            backgroundColor="transparent"
+            type="IconButton"
+            faIconName={faFolderPlus}
+            handleClick={handleSaveSetting}
+          ></Button>
+          
+        </ButtonCont>
       }
-      <ButtonCont>
-        <Button
-          text="New Folder"
-          backgroundColor="transparent"
-          type="IconButton"
-          faIconName={faFolderPlus}
-        ></Button>
-      </ButtonCont>
+
     </DropdownCont >
   );
 };
