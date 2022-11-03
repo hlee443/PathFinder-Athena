@@ -58,7 +58,6 @@ const ToolBarCont = styled.div`
 // ];
 
 export default function ToolBar({
-  onChange = () => {},
   typeArray = [],
   libraryArray = [],
   handleNewFolder = () => {},

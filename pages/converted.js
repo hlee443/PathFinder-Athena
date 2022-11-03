@@ -18,6 +18,7 @@ const Title = styled(Flexbox)`
 `;
 
 export default function Converted() {
+
   const [dictionary, setDictionary] = useState(null)
   // props: file settings, -- probably -- file info, and url
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function Converted() {
       ...settingData,
       background_colour: e.target.value
     })
+    updateTypeArray()
   };
 
   function handleTypeface(e) {
@@ -45,6 +47,7 @@ export default function Converted() {
       ...settingData,
       typeface: e.target.value
     })
+    updateTypeArray()
   };
 
   function handleFontSize(e) {
@@ -52,6 +55,7 @@ export default function Converted() {
       ...settingData,
       font_size: e.target.value
     })
+    updateTypeArray()
   };
 
   function handleLineSpace(e) {
@@ -59,6 +63,7 @@ export default function Converted() {
       ...settingData,
       line_space: e.target.value
     })
+    updateTypeArray()
   };
 
   function handleLetterSpace(e) {
@@ -66,28 +71,63 @@ export default function Converted() {
       ...settingData,
       letter_space: e.target.value
     })
+    updateTypeArray()
   };
 
   function handleSaveSetting() {
     let uploadSettingData = {
-      settingId: settingData.setting_id,
-      backgroundColour: settingData.background_colour,
-      typeface: settingData.typeface,
-      fontSize: settingData.font_size,
-      lineSpace: settingData.line_sace,
-      letterSpace: settingData.letter_space
+      settingData: {
+        settingId: settingData.setting_id,
+        backgroundColour: settingData.background_colour,
+        typeface: settingData.typeface,
+        fontSize: settingData.font_size,
+        lineSpace: settingData.line_space,
+        letterSpace: settingData.letter_space
+      }
     }
+    console.log(uploadSettingData)
     setSettingData(mainHandler.handleUpdateSetting(uploadSettingData))
   }
 
-  function handleNewFolder(newFolderName) {
+  async function handleNewFolder(newFolderName) {
     let uploadFolderData = {
-      userId: "9",
-      folderName: newFolderName
+      folderData: {
+        userId: "9",
+        folderName: newFolderName
+      }
     }
-    mainHandler.handleAddFolder(uploadFolderData)
+    await mainHandler.handleAddFolder(uploadFolderData)
     setFolderArray(mainHandler.handleGetFoldersByUserId("9"))
+    updateLibraryArray()
   }
+
+  function updateTypeArray() {
+    setTypeArray([
+      { value: settingData.background_colour, handleChange: handleBGColor },
+      { value: settingData.typeface, handleChange: handleTypeface },
+      { value: settingData.font_size, handleChange: handleFontSize },
+      { value: settingData.line_space, handleChange: handleLineSpace },
+      { value: settingData.letter_space, handleChange: handleLetterSpace },
+    ])
+  }
+
+  function updateLibraryArray() {
+    for (let i = 0; i < folderArray.length; i++) {
+      setLibraryArray(arr => [...arr, {
+        folder_name: folderArray[i].folder_name, handleClick: () => {
+          let uploadFileData = {
+            fileData: {
+              fileId: fileData.file_id,
+              fileName: fileData.file_name,
+              folderId: folderArray[i].folder_id
+            }
+          }
+          setFileData(mainHandler.handleUpdateFile(uploadFileData))
+        }
+      }])
+    }
+  }
+
 
   useEffect(() => {
     if (!router.query.fileData) {
@@ -101,32 +141,8 @@ export default function Converted() {
     setFolderArray(JSON.parse(router.query.folderArray))
     setSettingData(JSON.parse(router.query.settingData))
 
-    setTypeArray([
-      { value: "Header", handleChange: () => { } },
-      { value: settingData.background_colour, handleChange: handleBGColor },
-      { value: settingData.typeface, handleChange: handleTypeface },
-      { value: settingData.font_size, handleChange: handleFontSize },
-      { value: settingData.line_space, handleChange: handleLineSpace },
-      { value: settingData.letter_space, handleChange: handleLetterSpace },
-    ])
-
-    setLibraryArray([
-      { folder_name: "Header", folder_id: "", handleClick: () => { } }
-    ])
-    for (let i = 0; i < folderArray.length; i++) {
-      setLibraryArray(arr => [...arr,
-      {
-        folder_name: folderArray[i].folder_name, handleClick: () => {
-          let uploadFileData = {
-            fileId: fileData.file_id,
-            fileName: fileData.file_name,
-            folderId: folderArray[i].folder_id
-          }
-          setFileData(mainHandler.handleUpdateFile(uploadFileData))
-        }
-      }
-      ])
-    }
+    updateTypeArray()
+    updateLibraryArray()
 
   }, []);
 
@@ -138,7 +154,7 @@ export default function Converted() {
           <Header text={fileData.file_name}></Header>
           <Icon faIconName={faPencil}></Icon>
         </Title>
-        <ToolBar onChange={handleChange} typeArray={typeArray} libraryArray={libraryArray} handleNewFolder={handleNewFolder} handleSaveSetting={handleSaveSetting}></ToolBar>
+        <ToolBar typeArray={typeArray} libraryArray={libraryArray} handleNewFolder={handleNewFolder} handleSaveSetting={handleSaveSetting}></ToolBar>
         <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
           <Content fileData={fileData} settingData={settingData}>
           </Content>

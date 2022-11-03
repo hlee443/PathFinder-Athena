@@ -1,35 +1,68 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { colors, Flexbox, BodyText } from '../../styles/globals';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { colors, Flexbox, BodyText } from "../../styles/globals";
 import Icon from "../Icon/Icon";
-import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/router';
+import { faEllipsisVertical, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
+import Input from "../Input/Input";
+import Button from "../Button/Button";
+import * as mainHandler from "../../handlers/main";
 
-const FileCont = styled.div``
+const FileCont = styled.div``;
 
 const Preview = styled(Flexbox)`
-font-size: ${props => props.size};
-min-width: 12.813rem;
-min-height: 15.625rem;
-border-radius: 3.125rem;
-background-color: ${props => props.color || colors.backgroundWhite};
-border: 0.188rem dashed ${colors.darkGray};
+  font-size: ${(props) => props.size};
+  min-width: 12.813rem;
+  min-height: 15.625rem;
+  border-radius: 3.125rem;
+  background-color: ${(props) => props.color || colors.backgroundWhite};
+  border: 0.188rem dashed ${colors.darkGray};
+  cursor: pointer;
 `;
 
-
 const BottomCont = styled(Flexbox)`
-min-width: 100%;
-justify-content: space-between;
-`
+  min-width: 100%;
+  justify-content: space-between;
+`;
 
 export default function File({
   fileName = "Title",
   type = "default",
   fileId = null,
-  handleClick = () => {}
+  handleClick = () => {},
+  handleDelete = () => {}
 }) {
   const r = useRouter();
-  const [isFileSaved, setIsFileSaved] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newFileName, setNewFileName] = useState(fileName);
+
+  const editFilename = () => {
+    if (!isEditing) {
+      setIsEditing(true);
+    } else {
+      setIsEditing(false);
+    }
+  };
+
+  const saveFilename = () => {
+    setIsEditing(false);
+    mainHandler.handleUpdateFile({
+      fileData: {
+        fileId: fileId,
+        fileName: newFileName,
+      },
+    });
+  };
+
+  const deleteFile = () => {
+    handleDelete(fileId);
+    setIsEditing(false);
+  };
+
+  const getFilenameValue = (e) => {
+    setNewFileName(e.target.value);
+    console.log(e.target.value);
+  };
 
   const [compFileName, setCompFileName] = useState(fileName);
 
@@ -38,31 +71,53 @@ export default function File({
   }
 
   return (
-    <FileCont 
-      fileId={fileId}>
+    <FileCont fileId={fileId}>
       <Preview onClick={() => handleClick(fileId)}>
-        {
-          fileId ?
-          (
+        {fileId ? (
           <p> file #{fileId} preview</p>
-          )
-          :
-          (
-          <Icon handleClick={() => { r.push("/") }} faIconName={faPlus} size="2x" />
-          )
-        }
-        
+        ) : (
+          <Icon
+            handleClick={() => {
+              r.push("/");
+            }}
+            faIconName={faPlus}
+            size="2x"
+          />
+        )}
       </Preview>
 
-          <BottomCont dir="row">
-            <div>{compFileName}</div>
-            {fileId &&
-            (
-              <Icon faIconName={faEllipsisVertical} />
-            )
-            }
-          </BottomCont>
-      
+      {!isEditing && (
+        <BottomCont dir="row">
+          <div>{newFileName}</div>
+          {fileId && (
+            <Icon handleClick={editFilename} faIconName={faEllipsisVertical} />
+          )}
+        </BottomCont>
+      )}
+      {isEditing && (
+        <BottomCont dir="row">
+          <Input
+            value={newFileName}
+            onChange={(e) => {
+              getFilenameValue(e);
+            }}
+            width="7rem"
+            borderRadius="1rem"
+          />
+          <Button
+            handleClick={saveFilename}
+            text="Save"
+            width="5rem"
+            height="2rem"
+          />
+          <Button
+            handleClick={deleteFile}
+            text="Delete File"
+            width="5rem"
+            height="2rem"
+          />
+        </BottomCont>
+      )}
     </FileCont>
   );
-};
+}

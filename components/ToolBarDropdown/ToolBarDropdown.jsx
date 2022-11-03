@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option";
-import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus, faBook, faFolder, faClose, faChevronRight, faFont } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { libraryDataArr, typefaceDataArr, dataArr } from "./data";
 import { iconSvgs } from "../Icon/data";
@@ -30,10 +30,10 @@ export default function ToolBarDropdown({
   top = "",
   onExpand = () => { },
   onClose = () => { },
-  handleSaveSetting = () => {},
-  handleNewFolder = () => {},
+  handleSaveSetting = () => { },
+  handleNewFolder = () => { },
   type = "",
-  libraryFolderArray = [],
+  libraryArray = [],
   typeArray = []
 }) {
 
@@ -41,35 +41,51 @@ export default function ToolBarDropdown({
 
   return (
     <DropdownCont type={type} left={left} top={top}>
-      {type === "Library" && libraryDataArr.map((o, i) => (
+      {type === "Library" && 
+        <Option
+          bgColor={colors.primaryBlue}
+          faIconName={faBook}
+          text="Library"
+          faIconNameRight={faClose}
+          handleOption={onClose}
+        ></Option>
+      }
+      {type === "Library" && libraryArray.map((o, i) => (
         <Option
           key={i}
-          bgColor={o.bgColor}
-          faIconName={o.faIconName}
-          text={libraryFolderArray[i].folder_name || o.text}
-          faIconNameRight={o.faIconNameRight}
-          handleOption={sel === i ? onClose : onExpand}
-          onClick={libraryArray[i].handleClick}
-          value={libraryArray[i].folder_id}
+          faIconName={faFolder}
+          text={o.folder_name}
+          faIconNameRight={faChevronRight}
+          onClick={o.handleClick}
+          value={o.folder_id}
         ></Option>
       ))
-        && <ButtonCont>
+      }
+      {type === "Library" &&
+        <ButtonCont>
           <Button
             text="New Folder"
             backgroundColor="transparent"
             type="IconButton"
             faIconName={faFolderPlus}
-            handleClick={handleNewFolder}
+            handleClick={() => handleNewFolder("Assignments")}
           ></Button>
         </ButtonCont>
       }
+      {type === "Typeface" && 
+        <Option
+          bgColor={colors.primaryBlue}
+          faIconName={faFont}
+          text="Typeface"
+          faIconNameRight={faClose}
+          handleOption={onClose}
+        ></Option>
+      }
       {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
         key={i}
-        bgColor={o.bgColor || "transparent"}
+        bgColor={"transparent"}
         faIconName={o.faIconName}
         text={o.text}
-        faIconNameRight={o.faIconNameRight}
-        handleOption={sel === i ? onClose : onExpand}
         inputType={o.inputType}
         width={o.width}
         unit={o.unit}
@@ -78,7 +94,9 @@ export default function ToolBarDropdown({
         onChange={typeArray[i].handleChange}
         value={typeArray[i].value}
       ></Option>))
-        && <ButtonCont>
+      }
+      {type === "Typeface" &&
+        <ButtonCont>
           <Button
             text="Save Settings"
             backgroundColor="transparent"
@@ -86,10 +104,8 @@ export default function ToolBarDropdown({
             faIconName={faFolderPlus}
             handleClick={handleSaveSetting}
           ></Button>
-          
         </ButtonCont>
       }
-
     </DropdownCont >
   );
 };
