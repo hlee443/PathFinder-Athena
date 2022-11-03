@@ -64,12 +64,6 @@ export default function File({
     console.log(e.target.value);
   };
 
-  const [compFileName, setCompFileName] = useState(fileName);
-
-  function saveFilename() {
-    setCompFileName()
-  }
-
   return (
     <FileCont fileId={fileId}>
       <Preview onClick={() => handleClick(fileId)}>
