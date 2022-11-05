@@ -43,12 +43,12 @@ export default function Converted() {
   return (
     <Flexbox>
       <NavBar></NavBar>
+      <ToolBar onChange={handleChange} libValueArr={libValueArr} typeValueArr={typeValueArr}></ToolBar>
       <Wrapper>
         <Title dir="row">
           <Header text={fileData.file_name}></Header>
           <Icon faIconName={faPencil}></Icon>
         </Title>
-        <ToolBar onChange={handleChange} libValueArr={libValueArr} typeValueArr={typeValueArr}></ToolBar>
         <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
           <Content fileData={fileData} settingData={settingData}>
           </Content>
