@@ -1,67 +1,33 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { useState, useEffect } from "react";
-import {
-  faVolumeHigh,
-  faMagnifyingGlass,
-  faFileLines,
-  faHighlighter,
-  faFont,
-  faBookmark,
-  faDownload,
-} from "@fortawesome/free-solid-svg-icons";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
 import Summary from '../Summary/Summary';
-import { colors } from "../../styles/globals";
+import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
 import Dictionary from "../Dictionary/Dictionary";
-import { libraryDataArr } from "../ToolBarDropdown/data";
+import { toolBarData, toolbarNum } from "./data";
 
-const ToolBarCont = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border: none;
-  width: 53rem;
-  position: relative;
-  margin: 1rem;
+const ToolBarCont = styled(Flexbox)`
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 6px 40px;
+  border-bottom: 1px solid ${colors.grey};
+  background: ${colors.backgroundWhite};
 `;
 
-// export const iconArr = [
-//   {
-//     name: "Text-to-Speech",
-//     icon: faVolumeHigh,
-//   },
-//   {
-//     name: "Dictionary",
-//     icon: faMagnifyingGlass,
-//   },
-//   {
-//     name: "Summarize",
-//     icon: faFileLines,
-//   },
-//   {
-//     name: "Highlighter",
-//     icon: faHighlighter,
-//   },
-//   {
-//     name: "Typeface",
-//     icon: faFont,
-//   },
-//   {
-//     name: "Save to library",
-//     icon: faBookmark,
-//   },
-//   {
-//     name: "Download",
-//     icon: faDownload,
-//   }
-// ];
+const Divider = styled.div`
+  height: 50px;
+  border: 0.5px solid #CACACA;
+  margin: auto 1.5rem;
+`;
 
 export default function ToolBar({
   typeArray = [],
   libraryArray = [],
-  handleNewFolder = () => {},
-  handleSaveSetting = () => {}
+  handleNewFolder = () => { },
+  handleSaveSetting = () => { }
 }) {
 
   const [sel, setSel] = useState(0);
@@ -102,16 +68,15 @@ export default function ToolBar({
     e.preventDefault()
     try {
       const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
-      if(res){
-          console.log(res)
-          setSummarizedContent(res.data.summary)
-          setShowPopUp("summarize")
+      if (res) {
+        console.log(res)
+        setSummarizedContent(res.data.summary)
+        setShowPopUp("summarize")
       }
     } catch (error) {
       console.log(error)
     }
-  }
-
+  };
 
   function fetchDictionary(e) {
     e.preventDefault();
@@ -130,16 +95,26 @@ export default function ToolBar({
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
-    <ToolBarCont>
+    <ToolBarCont dir="row">
+      {/* TTS */}
+      {/* <Icon
+        faIconName={toolBarData[toolbarNum].icon}
+        text={toolBarData[toolbarNum].name}
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider /> */}
+
+      {/* DICTIONARY */}
       <Icon
-        faIconName={faMagnifyingGlass}
-        text="Dictionary"
+        faIconName={toolBarData[toolbarNum + 1].icon}
+        text={toolBarData[toolbarNum + 1].name}
         handleClick={(e) => fetchDictionary(e)}
-        hoverColor={colors.backgroundYellow}
-      ></Icon> 
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider />
       {
         wordInfo && showPopUp === "definition" && (
           <Dictionary
@@ -149,17 +124,15 @@ export default function ToolBar({
           ></Dictionary>
         )
       }
+
+      {/* SUMMARIZE */}
       <Icon
-        faIconName={faVolumeHigh}
-        text="Text-to-Speech"
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      <Icon
-        faIconName={faFileLines}
-        text="Summarize"
+        faIconName={toolBarData[toolbarNum + 2].icon}
+        text={toolBarData[toolbarNum + 2].name}
         handleClick={(e) => fetchSummarize(e)}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider />
       {
         summarizedContent && showPopUp === "summarize" && (
           <Summary
@@ -169,68 +142,61 @@ export default function ToolBar({
           ></Summary>
         )
       }
+
+      {/* HIGHLIGHT */}
       <Icon
-        faIconName={faHighlighter}
-        text="Highlighter"
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
+        faIconName={toolBarData[toolbarNum + 3].icon}
+        text={toolBarData[toolbarNum + 3].name}
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider />
+
+      {/* TYPEFACE SETTING */}
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 4].icon}
+          handleClick={() => setShowDropdown("typeface")}
+          text={toolBarData[toolbarNum + 4].name}
+          hoverColor={colors.buttonLightGrey}
+        />
+        {
+          showDropdown === "typeface" && <ToolBarDropdown
+            type="Typeface"
+            onClose={closeDropdown}
+            typeArray={typeArray}
+            handleSaveSetting={handleSaveSetting}
+          ></ToolBarDropdown>
+        }
+      </div>
+      <Divider />
+
+      {/* SAVE TO LIBRARY */}
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 5].icon}
+          handleClick={() => setShowDropdown("library")}
+          text={toolBarData[toolbarNum + 5].name}
+          hoverColor={colors.buttonLightGrey}
+        />
+
+        {
+          showDropdown === "library" && <ToolBarDropdown
+            type="Library"
+            libraryArray={libraryArray}
+            onClose={closeDropdown}
+            handleNewFolder={handleNewFolder}
+          />
+        }
+
+      </div>
+      <Divider />
+
+      {/* DOWNLOAD */}
       <Icon
-        faIconName={faFont}
-        handleClick={()=>setShowDropdown("typeface")}
-        text="Typeface"
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      {
-        showDropdown === "library" && <ToolBarDropdown
-          type="Library"
-          libraryArray={libraryArray}
-          onClose={closeDropdown}
-          handleNewFolder={handleNewFolder}
-        ></ToolBarDropdown>
-      }
-      <Icon
-        faIconName={faBookmark}
-        handleClick={()=>setShowDropdown("library")}
-        text="Save to Library"
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      {
-        showDropdown === "typeface" && <ToolBarDropdown
-          type="Typeface"
-          onClose={closeDropdown}
-          typeArray={typeArray}
-          handleSaveSetting={handleSaveSetting}
-        ></ToolBarDropdown>
-      }
-      <Icon
-        faIconName={faDownload}
-        text="Download"
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
+        faIconName={toolBarData[toolbarNum + 6].icon}
+        text={toolBarData[toolbarNum + 6].name}
+        hoverColor={colors.buttonLightGrey}
+      />
     </ToolBarCont>
   )
-
-  // return (
-  //   <ToolBarCont>
-  //     {
-  //       iconArr.map((o, i) => <Icon
-  //         key={i}
-  //         hoverColor={
-  //           (sel === i)
-  //             ? colors.backgroundYellow
-  //             : "transparent"
-  //         }
-  //         faIconName={o.icon}
-  //         text={o.name}
-  //         onClose ={closeDropdown}
-  //         handleClick={() => { setSel(i), setShowDropdown(o.name) }}>
-  //       </Icon>)
-  //     }
-  //     {showDropdown !== false && <ToolBarDropdown
-  //       type={showDropdown}
-  //       onClose={closeDropdown}
-  //     ></ToolBarDropdown>
-  //     }
-  //   </ToolBarCont>
-  // );
 };

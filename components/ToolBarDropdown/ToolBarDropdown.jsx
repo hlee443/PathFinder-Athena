@@ -10,15 +10,12 @@ import { iconSvgs } from "../Icon/data";
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
   background-color: ${colors.backgroundCream};
-  border: 0.15rem solid black;
+  border: 0.15rem solid ${colors.darkGrey};
   width: 25rem;
   max-width: 25rem;
-  //   padding: 1rem;
   overflow: hidden;
   position: absolute;
   z-index: 1;
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
 `;
 
 const ButtonCont = styled(Flexbox)`
@@ -26,8 +23,6 @@ const ButtonCont = styled(Flexbox)`
 `;
 
 export default function ToolBarDropdown({
-  left = "",
-  top = "",
   onExpand = () => { },
   onClose = () => { },
   handleSaveSetting = () => { },
@@ -40,7 +35,8 @@ export default function ToolBarDropdown({
   const [sel, setSel] = useState(0);
 
   return (
-    <DropdownCont type={type} left={left} top={top}>
+
+    <DropdownCont type={type}>
       {type === "Library" && 
         <Option
           bgColor={colors.primaryBlue}

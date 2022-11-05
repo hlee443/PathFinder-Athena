@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const textData = {
   lineHeight: "150%",
-  letterSpacing: "0.35em",
+  letterSpacing: "0.22em",
   h1: {
     size: "2.375rem",
     fontWeight: "700",
@@ -22,11 +22,13 @@ export const colors = {
   buttonPrimaryBlue: "#C3D1FF",
   buttonSecondaryBlue: "#96ADFC",
   buttonLightBlue: "#E5EbFF",
-  buttonGray: "#CACACA",
+  buttonGrey: "#CACACA",
   buttonTextGrey: "#9F9F9F",
   textBlack: "#000000",
-  darkGray: "#3E3E3E",
-  lightGray: "#E1E1E1",
+  darkGrey: "#3E3E3E",
+  lightGrey: "#E1E1E1",
+  buttonLightGrey: "#F5F5F5",
+  grey: "#D9D9D9"
 };
 
 export const Flexbox = styled.div`
@@ -37,7 +39,6 @@ export const Flexbox = styled.div`
 `;
 
 export const Wrapper = styled(Flexbox)`
-  padding: 6rem;
   justify-content: space-between;
   align-items: center;
   max-width: 75rem;
@@ -46,7 +47,7 @@ export const Wrapper = styled(Flexbox)`
 
 export const BodyText = styled.p`
   font-size: 1em;
-  margin: 1em;
+  margin: 0;
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
 `;

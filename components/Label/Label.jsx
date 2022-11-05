@@ -1,23 +1,20 @@
 import styled from "styled-components";
+import { Flexbox, textData } from "../../styles/globals";
 
-const LabelCont = styled.p`
+const LabelCont = styled(Flexbox)`
   background-color: ${(props) => props.backgroundColor};
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
   border-radius: 2rem;
   width: fit-content;
-  cursor: pointer;
+  letter-spacing: ${textData.letterSpacing};
 `;
 
 export default function Label({
-  text = "placeholder",
-  backgroundColor = "#FFFEF6",
-  handleClick = () => {},
+  text = "label text",
+  backgroundColor = "transparent",
 }) {
   return (
-    <LabelCont backgroundColor={backgroundColor} onClick={handleClick}>
+    <LabelCont backgroundColor={backgroundColor}>
       {text}
     </LabelCont>
   );
-}
+};
