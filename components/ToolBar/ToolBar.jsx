@@ -6,22 +6,25 @@ import Summary from '../Summary/Summary';
 import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
 import Dictionary from "../Dictionary/Dictionary";
-import { toolBarData, toolbarnum } from "./data";
+import { toolBarData, toolbarNum } from "./data";
 
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
   padding: 6px 40px;
-  border-bottom: 1px solid #CACACA;
+  border-bottom: 1px solid ${colors.grey};
+  background: ${colors.backgroundWhite};
 `;
 
 const Divider = styled.div`
-
-`
+  height: 50px;
+  border: 0.5px solid #CACACA;
+  margin: auto 1.5rem;
+`;
 
 export default function ToolBar({
-  onChange = () => {},
+  onChange = () => { },
   typeValueArr,
   libValueArr
 }) {
@@ -71,7 +74,7 @@ export default function ToolBar({
     } catch (error) {
       console.log(error)
     }
-  }
+  };
 
   function fetchDictionary(e) {
     e.preventDefault();
@@ -90,23 +93,26 @@ export default function ToolBar({
     } catch (err) {
       console.error(err);
     }
-  }
-
- 
+  };
 
   return (
     <ToolBarCont dir="row">
+      {/* TTS */}
+      {/* <Icon
+        faIconName={toolBarData[toolbarNum].icon}
+        text={toolBarData[toolbarNum].name}
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider /> */}
+
+      {/* DICTIONARY */}
       <Icon
-        faIconName={toolBarData[toolbarnum].icon}
-        text={toolBarData[toolbarnum].name}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      <Icon
-        faIconName={toolBarData[toolbarnum+1].icon}
-        text={toolBarData[toolbarnum+1].name}
+        faIconName={toolBarData[toolbarNum + 1].icon}
+        text={toolBarData[toolbarNum + 1].name}
         handleClick={(e) => fetchDictionary(e)}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider />
       {
         wordInfo && showPopUp === "definition" && (
           <Dictionary
@@ -116,12 +122,15 @@ export default function ToolBar({
           ></Dictionary>
         )
       }
+
+      {/* SUMMARIZE */}
       <Icon
-        faIconName={toolBarData[toolbarnum+2].icon}
-        text={toolBarData[toolbarnum+2].name}
+        faIconName={toolBarData[toolbarNum + 2].icon}
+        text={toolBarData[toolbarNum + 2].name}
         handleClick={(e) => fetchSummarize(e)}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider />
       {
         summarizedContent && showPopUp === "summarize" && (
           <Summary
@@ -131,44 +140,60 @@ export default function ToolBar({
           ></Summary>
         )
       }
+
+      {/* HIGHLIGHT */}
       <Icon
-        faIconName={toolBarData[toolbarnum+3].icon}
-        text={toolBarData[toolbarnum+3].name}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
+        faIconName={toolBarData[toolbarNum + 3].icon}
+        text={toolBarData[toolbarNum + 3].name}
+        hoverColor={colors.buttonLightGrey}
+      />
+      <Divider />
+
+      {/* TYPEFACE SETTING */}
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 4].icon}
+          handleClick={() => setShowDropdown("typeface")}
+          text={toolBarData[toolbarNum + 4].name}
+          hoverColor={colors.buttonLightGrey}
+        />
+        {
+          showDropdown === "typeface" && <ToolBarDropdown
+            type="Typeface"
+            onClose={closeDropdown}
+            typeValueArr={typeValueArr}
+            onChange={onChange}
+          />
+        }
+      </div>
+      <Divider />
+
+      {/* SAVE TO LIBRARY */}
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 5].icon}
+          handleClick={() => setShowDropdown("library")}
+          text={toolBarData[toolbarNum + 5].name}
+          hoverColor={colors.buttonLightGrey}
+        />
+
+        {
+          showDropdown === "library" && <ToolBarDropdown
+            type="Library"
+            onClose={closeDropdown}
+            libValueArr={libValueArr}
+            onChange={onChange}
+          />
+        }
+      </div>
+      <Divider />
+
+      {/* DOWNLOAD */}
       <Icon
-        faIconName={toolBarData[toolbarnum+4].icon}
-        handleClick={() => setShowDropdown("typeface")}
-        text={toolBarData[toolbarnum+4].name}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      <Icon
-        faIconName={toolBarData[toolbarnum+5].icon}
-        handleClick={() => setShowDropdown("library")}
-        text={toolBarData[toolbarnum+5].name}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      <Icon
-        faIconName={toolBarData[toolbarnum+6].icon}
-        text={toolBarData[toolbarnum+6].name}
-        hoverColor={colors.backgroundYellow}
-      ></Icon>
-      {
-        showDropdown === "library" && <ToolBarDropdown
-          type="Library"
-          onClose={closeDropdown}
-          libValueArr={libValueArr}
-          onChange={onChange}
-        ></ToolBarDropdown>
-      }
-      {
-        showDropdown === "typeface" && <ToolBarDropdown
-          type="Typeface"
-          onClose={closeDropdown}
-          typeValueArr={typeValueArr}
-          onChange={onChange}
-        ></ToolBarDropdown>
-      }
+        faIconName={toolBarData[toolbarNum + 6].icon}
+        text={toolBarData[toolbarNum + 6].name}
+        hoverColor={colors.buttonLightGrey}
+      />
     </ToolBarCont>
   )
 };
