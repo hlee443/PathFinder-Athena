@@ -8,7 +8,7 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
-export var toolbarnum = 1;
+export var toolbarNum = 1;
 
 export const toolBarData = {
   1: {
