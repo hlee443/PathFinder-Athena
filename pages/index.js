@@ -170,7 +170,7 @@ export default function Home() {
       <NavBar></NavBar>
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
-        <SubHeader text="Let us make your websites and documents easier to understand."></SubHeader>
+        <SubHeader text="Let us make your documents easier to understand."></SubHeader>
         <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
