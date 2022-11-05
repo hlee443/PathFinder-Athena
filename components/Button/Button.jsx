@@ -10,7 +10,7 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor || btnData.state.active};
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
   max-width: 15rem;
@@ -21,6 +21,10 @@ const StyledButton = styled.button`
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
+  :hover {
+    background-color: ${(props) => props.hoverColor || btnData.state.hover};
+    font-weight: bolder;
+  }
 `;
 
 export default function Button({
@@ -36,8 +40,7 @@ export default function Button({
   width = "15rem",
   faIconName = faLink,
   fontWeight = "normal",
-  handleMouseEnter = () => {},
-  handleMouseLeave = () => {},
+  hoverColor = btnData.state.hover,
 }) {
   return (
     <StyledButton
@@ -52,8 +55,7 @@ export default function Button({
       type="btn type"
       width={width}
       fontWeight={fontWeight}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      hoverColor={hoverColor}
     >
       {text}
       {type === "IconButton" && <Icon faIconName={faIconName} />}
