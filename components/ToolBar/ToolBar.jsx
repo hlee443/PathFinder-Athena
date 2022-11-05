@@ -24,11 +24,13 @@ const Divider = styled.div`
 `;
 
 export default function ToolBar({
-  onChange = () => { },
-  typeValueArr,
-  libValueArr
+  typeArray = [],
+  libraryArray = [],
+  handleNewFolder = () => { },
+  handleSaveSetting = () => { }
 }) {
 
+  const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
@@ -161,9 +163,9 @@ export default function ToolBar({
           showDropdown === "typeface" && <ToolBarDropdown
             type="Typeface"
             onClose={closeDropdown}
-            typeValueArr={typeValueArr}
-            onChange={onChange}
-          />
+            typeArray={typeArray}
+            handleSaveSetting={handleSaveSetting}
+          ></ToolBarDropdown>
         }
       </div>
       <Divider />
@@ -180,11 +182,12 @@ export default function ToolBar({
         {
           showDropdown === "library" && <ToolBarDropdown
             type="Library"
+            libraryArray={libraryArray}
             onClose={closeDropdown}
-            libValueArr={libValueArr}
-            onChange={onChange}
+            handleNewFolder={handleNewFolder}
           />
         }
+
       </div>
       <Divider />
 
