@@ -7,7 +7,6 @@ import Bubble from "../Bubble/Bubble";
 import Label from "../Label/Label";
 import { useRouter } from "next/router";
 import { colors, Flexbox } from "../../styles/globals";
-import Label from "../Label/Label";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -131,8 +130,9 @@ export default function NavBar({ type = "loggedIn" }) {
               type="login"
               onClose={closeBubble}
               handleBubble={() => {
-                setShowBubble("success") 
-                setIsLoggedIn(true)}}
+                setShowBubble("success");
+                setIsLoggedIn(true);
+              }}
             ></Bubble>
           </Overlay>
         )}
