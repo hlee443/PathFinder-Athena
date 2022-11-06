@@ -6,6 +6,7 @@ const SubHeaderCont = styled.h2`
   color: ${(props) => props.color};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
+  margin: 0;
 `;
 
 export default function SubHeader({ text = "SubHeader text" }) {
