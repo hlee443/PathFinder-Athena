@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { colors, Flexbox, textData } from "../../styles/globals";
-import { btnData } from "./data";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 const StyledButton = styled.button`
@@ -14,13 +13,15 @@ const StyledButton = styled.button`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
   max-width: 15rem;
+  max-height: 3.875rem;
   width: ${(props) => props.width || "15rem"};
-  height: ${(props) => props.height || "3.875rem"};
+  min-height: ${(props) => props.height || "3.875rem"};
   font-size: ${(props) => props.fontSize};
   border-color: ${(props) => props.borderColor};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
+  color: ${colors.textBlack}
 `;
 
 export default function Button({
@@ -28,7 +29,6 @@ export default function Button({
   text = "button text",
   height = "3.875rem",
   fontSize = "1rem",
-  textColor = "black",
   borderBottom = "none",
   borderRadius = "3.125rem",
   type = "btn type",
@@ -36,6 +36,7 @@ export default function Button({
   width = "15rem",
   faIconName = faLink,
   fontWeight = "normal",
+  iconSize = "2x"
 }) {
 
   return (
@@ -45,12 +46,12 @@ export default function Button({
       text="button text"
       height={height}
       fontSize={fontSize}
-      textColor={textColor}
       borderBottom={borderBottom}
       borderRadius={borderRadius}
       type="btn type"
       width={width}
       fontWeight={fontWeight}
+      iconSize={iconSize}
     >
       {text}
       {type === "IconButton" && <Icon faIconName={faIconName} />}
