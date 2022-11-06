@@ -8,6 +8,7 @@ import { colors, Flexbox, BodyText } from "../../styles/globals";
 import { faClose, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { bubbleData } from "./data";
+import { motion } from "framer-motion";
 
 const BubbleCont = styled(Flexbox)`
   max-width: 50rem;
@@ -49,33 +50,39 @@ export default function Bubble({
   handleBubble = () => {},
 }) {
   return (
-    <BubbleCont type={type}>
-      <CloseButton>
-        <Icon handleClick={onClose} faIconName={faClose} />
-      </CloseButton>
-      <Header text={bubbleData[type].header} />
-      {(type == "login" || type === "signup") && (
-        <InputCont>
-          <Input width="100%" placeholder="Email" type="email" />
-          <Input width="100%" placeholder="Password" type="password" />
-        </InputCont>
-      )}
-      <SubHeaderCont dir="row">
-        {type === "signup" && <Icon faIconName={faSquare} />}
-        <SubHeader text={bubbleData[type].subHeader1} />
-      </SubHeaderCont>
-      <BtnCont dir="row">
-        <Button
-          text={bubbleData[type].btnTextLeft}
-          handleClick={onClose}
-          backgroundColor={colors.buttonPrimaryBlue}
-        />
-        <Button
-          text={bubbleData[type].btnTextRight}
-          handleClick={handleBubble}
-        />
-      </BtnCont>
-      {type === "signup" && <SubHeader text={bubbleData[type].subHeader2} />}
-    </BubbleCont>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
+    >
+      <BubbleCont type={type}>
+        <CloseButton>
+          <Icon handleClick={onClose} faIconName={faClose} />
+        </CloseButton>
+        <Header text={bubbleData[type].header} />
+        {(type == "login" || type === "signup") && (
+          <InputCont>
+            <Input width="100%" placeholder="Email" type="email" />
+            <Input width="100%" placeholder="Password" type="password" />
+          </InputCont>
+        )}
+        <SubHeaderCont dir="row">
+          {type === "signup" && <Icon faIconName={faSquare} />}
+          <SubHeader text={bubbleData[type].subHeader1} />
+        </SubHeaderCont>
+        <BtnCont dir="row">
+          <Button
+            text={bubbleData[type].btnTextLeft}
+            handleClick={onClose}
+            backgroundColor={colors.buttonPrimaryBlue}
+          />
+          <Button
+            text={bubbleData[type].btnTextRight}
+            handleClick={handleBubble}
+          />
+        </BtnCont>
+        {type === "signup" && <SubHeader text={bubbleData[type].subHeader2} />}
+      </BubbleCont>
+    </motion.div>
   );
 }
