@@ -97,10 +97,8 @@ export default function NavBar({ type = "loggedIn" }) {
             <Icon
               size="2x"
               color={colors.backgroundWhite}
-              faIconName={faUser}
               handleClick={() => setShowDropdown(true)}
               src="Profile.svg"
-              handleClick={{}}
               handleMouseEnter={() => setLabel("profile")}
               handleMouseLeave={() => setLabel(false)}
             ></Icon>

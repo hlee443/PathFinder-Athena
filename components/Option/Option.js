@@ -11,7 +11,7 @@ const OptionCont = styled(Flexbox)`
   padding: 0.5rem 2rem 0.5rem 2rem;
   width: 100%;
   cursor: pointer;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const OptionName = styled(Flexbox)``;
@@ -20,30 +20,35 @@ export default function Option({
   bgColor = "transparent",
   text = "text",
   unit = null,
-  faIconName = faIconName,
+  faIconName = null,
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleOption = () => { },
+  handleOption = () => {},
   width = "100%",
   onClose = () => {},
   onChange = () => {},
-  value = ""
+  value = "",
 }) {
-
-  return <OptionCont onClick={handleOption} dir="row" bgColor={bgColor}>
-    <OptionName dir="row">
-      <Icon faIconName={faIconName}></Icon>
-      <BodyText>{text}</BodyText>
-      {
-        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder} onChange={onChange} value={value}></Input>
-      }
-      {
-        unit !== null && <BodyText>{unit}</BodyText>
-      }
-    </OptionName>
-    {
-      faIconNameRight !== null && <Icon faIconName={faIconNameRight} handleClick={onClose} />
-    }
-  </OptionCont>
+  return (
+    <OptionCont onClick={handleOption} dir="row" bgColor={bgColor}>
+      <OptionName dir="row">
+        {faIconName !== null && <Icon faIconName={faIconName}></Icon>}
+        <BodyText>{text}</BodyText>
+        {inputType !== null && (
+          <Input
+            width={width}
+            type={inputType}
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+          ></Input>
+        )}
+        {unit !== null && <BodyText>{unit}</BodyText>}
+      </OptionName>
+      {faIconNameRight !== null && (
+        <Icon faIconName={faIconNameRight} handleClick={onClose} />
+      )}
+    </OptionCont>
+  );
 }

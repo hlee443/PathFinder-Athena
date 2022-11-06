@@ -8,17 +8,17 @@ const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
   background-color: ${colors.backgroundCream};
   border: 0.15rem solid black;
-  width: 25rem;
-  max-width: 25rem;
+  width: 15rem;
+  max-width: 18rem;
   //   padding: 1rem;
   overflow: hidden;
   position: absolute;
   z-index: 1;
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
+  top: 5rem;
+  right: 1rem;
 `;
 
-export default function ToolBarDropdown({ left = "", top = "" }) {
+export default function MiniDropdown({ left = "", top = "", type = "" }) {
   const [sel, setSel] = useState(0);
 
   return (
@@ -28,7 +28,6 @@ export default function ToolBarDropdown({ left = "", top = "" }) {
           <Option
             key={i}
             bgColor={o.bgColor}
-            faIconName={o.faIconName}
             text={o.text}
             faIconNameRight={o.faIconNameRight}
             // handleOption={sel === i ? onClose : onExpand}
