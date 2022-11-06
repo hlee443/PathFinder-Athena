@@ -37,7 +37,7 @@ const IconContainer = styled(Flexbox)`
   height: 100%;
   justify-content: space-between;
   flex-direction: row;
-  flex-wrap: wrap;
+  position: relative;
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -82,7 +82,7 @@ export default function NavBar({ type = "loggedIn" }) {
               handleMouseEnter={() => setLabel("home")}
               handleMouseLeave={() => setLabel(false)}
             ></Icon>
-
+            {label === "home" && <Label text="Home" top="2rem"></Label>}
             <Icon
               size="2x"
               color={colors.backgroundWhite}
@@ -91,7 +91,7 @@ export default function NavBar({ type = "loggedIn" }) {
               handleMouseEnter={() => setLabel("library")}
               handleMouseLeave={() => setLabel(false)}
             ></Icon>
-
+            {label === "library" && <Label text="Library" top="2rem"></Label>}
             <Icon
               size="2x"
               color={colors.backgroundWhite}
@@ -100,9 +100,7 @@ export default function NavBar({ type = "loggedIn" }) {
               handleMouseEnter={() => setLabel("profile")}
               handleMouseLeave={() => setLabel(false)}
             ></Icon>
-            {label === "home" && <Label text="Home"></Label>}
-            {label === "library" && <Label text="Library"></Label>}
-            {label === "profile" && <Label text="Profile"></Label>}
+            {label === "profile" && <Label text="Profile" top="2rem"></Label>}
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">
