@@ -2,9 +2,9 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { useState, useEffect } from "react";
 import ToolBarDropdown from "../ToolBarDropdown/ToolBarDropdown";
-import Summary from '../Summary/Summary';
+import Summary from "../Summary/Summary";
 import { colors, Flexbox } from "../../styles/globals";
-import * as mainHandler from '../../handlers/main'
+import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
 
@@ -19,17 +19,16 @@ const ToolBarCont = styled(Flexbox)`
 
 const Divider = styled.div`
   height: 50px;
-  border: 0.5px solid #CACACA;
+  border: 0.5px solid #cacaca;
   margin: auto 1.5rem;
 `;
 
 export default function ToolBar({
   typeArray = [],
   libraryArray = [],
-  handleNewFolder = () => { },
-  handleSaveSetting = () => { }
+  handleNewFolder = () => {},
+  handleSaveSetting = () => {},
 }) {
-
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
@@ -42,19 +41,19 @@ export default function ToolBar({
   };
 
   const closePopUp = () => {
-    setShowPopUp("type")
+    setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null)
-    setWordInfo(null)
-    setHighlightedText('')
-  }
+    setSummarizedContent(null);
+    setWordInfo(null);
+    setHighlightedText("");
+  };
 
   useEffect(() => {
     // add event listener to the document
     const saveSelection = () => {
-      setHighlightedText(window.getSelection().toString())
-    }
+      setHighlightedText(window.getSelection().toString());
+    };
 
     document.addEventListener("mousedown", saveSelection);
 
@@ -65,18 +64,18 @@ export default function ToolBar({
   }, []);
 
   async function fetchSummarize(e) {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
+      const res = await mainHandler.handleSummarize(highlightedText); // call handler for axios call
       if (res) {
-        console.log(res)
-        setSummarizedContent(res.data.summary)
-        setShowPopUp("summarize")
+        console.log(res);
+        setSummarizedContent(res.data.summary);
+        setShowPopUp("summarize");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  };
+  }
 
   function fetchDictionary(e) {
     e.preventDefault();
@@ -85,17 +84,19 @@ export default function ToolBar({
       mainHandler.handleDictionary(highlightedText, (res) => {
         const { data } = res;
         const { definition } = data;
-        console.log("RES", res);
+        // console.log("RES", res);
+        // console.log("definition", data[0].meta.stems);
+
         // split the response string into an array using regex
-        const newDefinition = definition.split(/1. |2. |3. /);
+        const newDefinition = data[0].shortdef[0];
 
         setWordInfo(newDefinition);
-        setShowPopUp("definition")
+        setShowPopUp("definition");
       });
     } catch (err) {
       console.error(err);
     }
-  };
+  }
 
   return (
     <ToolBarCont dir="row">
@@ -115,15 +116,13 @@ export default function ToolBar({
         hoverColor={colors.buttonLightGrey}
       />
       <Divider />
-      {
-        wordInfo && showPopUp === "definition" && (
-          <Dictionary
-            word={highlightedText}
-            wordDefinition={wordInfo[1]}
-            onClose={closePopUp}
-          ></Dictionary>
-        )
-      }
+      {wordInfo && showPopUp === "definition" && (
+        <Dictionary
+          word={highlightedText}
+          wordDefinition={wordInfo[1]}
+          onClose={closePopUp}
+        ></Dictionary>
+      )}
 
       {/* SUMMARIZE */}
       <Icon
@@ -133,15 +132,13 @@ export default function ToolBar({
         hoverColor={colors.buttonLightGrey}
       />
       <Divider />
-      {
-        summarizedContent && showPopUp === "summarize" && (
-          <Summary
-            originalContent={highlightedText}
-            summarizedContent={summarizedContent}
-            onClose={closePopUp}
-          ></Summary>
-        )
-      }
+      {summarizedContent && showPopUp === "summarize" && (
+        <Summary
+          originalContent={highlightedText}
+          summarizedContent={summarizedContent}
+          onClose={closePopUp}
+        ></Summary>
+      )}
 
       {/* HIGHLIGHT */}
       <Icon
@@ -159,14 +156,14 @@ export default function ToolBar({
           text={toolBarData[toolbarNum + 4].name}
           hoverColor={colors.buttonLightGrey}
         />
-        {
-          showDropdown === "typeface" && <ToolBarDropdown
+        {showDropdown === "typeface" && (
+          <ToolBarDropdown
             type="Typeface"
             onClose={closeDropdown}
             typeArray={typeArray}
             handleSaveSetting={handleSaveSetting}
           ></ToolBarDropdown>
-        }
+        )}
       </div>
       <Divider />
 
@@ -179,15 +176,14 @@ export default function ToolBar({
           hoverColor={colors.buttonLightGrey}
         />
 
-        {
-          showDropdown === "library" && <ToolBarDropdown
+        {showDropdown === "library" && (
+          <ToolBarDropdown
             type="Library"
             libraryArray={libraryArray}
             onClose={closeDropdown}
             handleNewFolder={handleNewFolder}
           />
-        }
-
+        )}
       </div>
       <Divider />
 
@@ -198,5 +194,5 @@ export default function ToolBar({
         hoverColor={colors.buttonLightGrey}
       />
     </ToolBarCont>
-  )
-};
+  );
+}
