@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
+import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
@@ -64,6 +65,7 @@ export default function NavBar({ type = "loggedIn" }) {
   const r = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showBubble, setShowBubble] = useState("type");
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const closeBubble = () => {
     setShowBubble(false);
@@ -73,7 +75,7 @@ export default function NavBar({ type = "loggedIn" }) {
     <NavBarCont type={type}>
       <TopBar backgroundColor="#96ADFC">
         <Logo src="" />
-        {!isLoggedIn ? (
+        {isLoggedIn ? (
           <IconContainer>
             <Icon
               size="2x"
@@ -91,7 +93,7 @@ export default function NavBar({ type = "loggedIn" }) {
               size="2x"
               color={colors.backgroundWhite}
               faIconName={faUser}
-              handleClick={{}}
+              handleClick={() => setShowDropdown(true)}
             ></Icon>
           </IconContainer>
         ) : (
@@ -112,6 +114,7 @@ export default function NavBar({ type = "loggedIn" }) {
             ></Button>
           </ButtonContainer>
         )}
+        {showDropdown && <MiniDropdown type="profile"></MiniDropdown>}
         {showBubble === "login" && (
           <Overlay>
             <Bubble
