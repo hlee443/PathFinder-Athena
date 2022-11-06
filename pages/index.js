@@ -61,7 +61,7 @@ export default function Home() {
     typeface: "Open Sans",
     fontSize: "16",
     lineSpace: "150",
-    letterSpace: "0.35"
+    letterSpace: "0.35",
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
@@ -91,17 +91,17 @@ export default function Home() {
 
     let uploadData = {
       uploadedFile,
-      uploadSetting
-    }
+      uploadSetting,
+    };
 
     mainHandler.handleUpload(uploadData, (res) => {
-      let { fileData, settingData } = res.data
+      let { fileData, settingData } = res.data;
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
-            settingData: JSON.stringify(settingData)
+            settingData: JSON.stringify(settingData),
           },
         },
         "/converted"
@@ -112,48 +112,47 @@ export default function Home() {
   function handleBGColor(e) {
     setUploadSetting({
       ...uploadSetting,
-      backgroundColour: e.target.value
-    })
-  };
+      backgroundColour: e.target.value,
+    });
+  }
 
   function handleTypeface(e) {
     setUploadSetting({
       ...uploadSetting,
-      typeface: e.target.value
-    })
-  };
+      typeface: e.target.value,
+    });
+  }
 
   function handleFontSize(e) {
     setUploadSetting({
       ...uploadSetting,
-      fontSize: e.target.value
-    })
-  };
+      fontSize: e.target.value,
+    });
+  }
 
   function handleLineSpace(e) {
     setUploadSetting({
       ...uploadSetting,
-      lineSpace: e.target.value
-    })
-  };
+      lineSpace: e.target.value,
+    });
+  }
 
   function handleLetterSpace(e) {
     setUploadSetting({
       ...uploadSetting,
-      letterSpace: e.target.value
-    })
-  };
+      letterSpace: e.target.value,
+    });
+  }
 
   function handleClear() {
-
     setUploadSetting({
       ...uploadSetting,
       backgroundColour: "#FFFFFC",
       typeface: "Open Sans",
       fontSize: 16,
       lineSpace: 9,
-      letterSpace: 150
-    })
+      letterSpace: 150,
+    });
   }
 
   function resetPageStates() {
@@ -171,7 +170,7 @@ export default function Home() {
       <NavBar></NavBar>
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
-        <SubHeader text="Let us make your websites and documents easier to understand."></SubHeader>
+        <SubHeader text="Let us make your documents easier to understand."></SubHeader>
         <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
@@ -180,8 +179,6 @@ export default function Home() {
               borderRadius="3.125rem 0 0 3.125rem;"
               width="100%"
               placeholder="Paste your URL here.."
-
-
             ></Input>
             <Button
               handleClick={setActive}
@@ -268,7 +265,6 @@ export default function Home() {
             <ClearButton>
               <Button
                 text="Clear"
-                backgroundColor={colors.buttonPrimaryBlue}
                 width={btnData.size.small.width}
                 height={btnData.size.small.height}
                 handleClick={handleClear}

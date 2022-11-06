@@ -5,11 +5,7 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
-import {
-  faBookBookmark,
-  faHome,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import Label from "../Label/Label";
 import { useRouter } from "next/router";
 import { colors, Flexbox } from "../../styles/globals";
 
@@ -41,6 +37,8 @@ const IconContainer = styled(Flexbox)`
   min-width: 12rem;
   height: 100%;
   justify-content: space-between;
+  flex-direction: row;
+  position: relative;
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -63,9 +61,10 @@ const Overlay = styled.div`
 
 export default function NavBar({ type = "loggedIn" }) {
   const r = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [label, setLabel] = useState(false);
 
   const closeBubble = () => {
     setShowBubble(false);
@@ -80,21 +79,32 @@ export default function NavBar({ type = "loggedIn" }) {
             <Icon
               size="2x"
               color={colors.backgroundWhite}
-              faIconName={faHome}
+              src="Home.svg"
               handleClick={() => r.push("/")}
+              handleMouseEnter={() => setLabel("home")}
+              handleMouseLeave={() => setLabel(false)}
             ></Icon>
+            {label === "home" && <Label text="Home" top="2rem"></Label>}
             <Icon
               size="2x"
               color={colors.backgroundWhite}
-              faIconName={faBookBookmark}
+              src="Library.svg"
               handleClick={() => r.push("/library")}
+              handleMouseEnter={() => setLabel("library")}
+              handleMouseLeave={() => setLabel(false)}
             ></Icon>
+            {label === "library" && <Label text="Library" top="2rem"></Label>}
             <Icon
               size="2x"
               color={colors.backgroundWhite}
               faIconName={faUser}
               handleClick={() => setShowDropdown(true)}
+              src="Profile.svg"
+              handleClick={{}}
+              handleMouseEnter={() => setLabel("profile")}
+              handleMouseLeave={() => setLabel(false)}
             ></Icon>
+            {label === "profile" && <Label text="Profile" top="2rem"></Label>}
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">
@@ -102,14 +112,16 @@ export default function NavBar({ type = "loggedIn" }) {
               handleClick={() => setShowBubble("login")}
               width={btnData.width}
               height={btnData.height}
-              backgroundColor={btnData.state.default.backgroundColor}
+              backgroundColor={colors.backgroundCream}
+              hoverColor={colors.buttonLightBlue}
               text="Log In"
             ></Button>
             <Button
               handleClick={() => setShowBubble("signup")}
               width={btnData.width}
               height={btnData.height}
-              backgroundColor={btnData.state.default.backgroundColor}
+              backgroundColor={colors.backgroundCream}
+              hoverColor={colors.buttonLightBlue}
               text="Sign Up"
             ></Button>
           </ButtonContainer>
@@ -120,7 +132,10 @@ export default function NavBar({ type = "loggedIn" }) {
             <Bubble
               type="login"
               onClose={closeBubble}
-              handleBubble={() => setShowBubble("success")}
+              handleBubble={() => {
+                setShowBubble("success");
+                setIsLoggedIn(true);
+              }}
             ></Bubble>
           </Overlay>
         )}

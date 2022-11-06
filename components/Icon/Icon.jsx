@@ -1,5 +1,6 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../styles/globals";
 import Label from "../Label/Label";
@@ -26,6 +27,8 @@ export default function Icon({
   hoverColor = "transparent",
   paddingTop = "",
   src = null,
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
 }) {
   return (
     <IconCont
@@ -33,6 +36,8 @@ export default function Icon({
       onClick={handleClick}
       hoverColor={hoverColor}
       paddingTop={paddingTop}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {src === null && (
         <FontAwesomeIcon
