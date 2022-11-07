@@ -64,6 +64,7 @@ export default function Home() {
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
+  const [isActiveDrag, setIsActiveDrag] = useState(false)
 
   function handleChange(e) {
     e.preventDefault();
@@ -73,8 +74,10 @@ export default function Home() {
     });
   }
 
-  function onFileSelect(e) {
-    const selectedFile = e.target.files[0];
+  function onFileSelect(selectedFile) {
+    // const selectedFile = e.target.files[0] === undefined? e.target.files[0] : e.dataTransfer.items[0];
+
+    console.log("SELECTED FILE", selectedFile)
 
     uploadedFile.fileName = selectedFile.name.split(".")[0];
     uploadedFile.fileType = selectedFile.name.slice(
@@ -290,23 +293,65 @@ export default function Home() {
             </BtnCont>
           </Container>
         )}
-        <BtnCont align="center">
-          {displayFileNameForm && inputType === "upload" && (
-            <Button
-              backgroundColor={colors.buttonPrimaryBlue}
-              text="Upload"
-              type="default"
-              handleClick={(e) => onFileUpload(e)}
-            />
-          )}
-          {inputType === "url" && (
-            <Button
-              backgroundColor={colors.buttonPrimaryBlue}
-              text="Upload"
-              type="default"
-            />
-          )}
-        </BtnCont>
+        {displayFileNameForm === false && inputType === "upload" && (
+          <Container
+            onDrop={(e) => 
+              {
+                e.preventDefault()
+                const file = e.dataTransfer.items[0].getAsFile()
+                onFileSelect(file)
+              }}
+            onDragOver={(e) => {
+                e.preventDefault()
+                setIsActiveDrag(true)
+              }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              setIsActiveDrag(false)
+            }}
+            width="100%"
+            alignItems="center"
+          >
+            <Icon faIconName={faUpload}></Icon>
+            {isActiveDrag ? (
+              <SubHeader text="Release to drop the file here"></SubHeader>
+            ) : (
+                <SubHeader text="Drag and drop a file here"></SubHeader>
+            )}
+            <p>or</p>
+                <Button
+                  handleClick={() => fileInput.current.click()}
+                  text="Choose a file"
+                ></Button>
+                <input
+                  id="fileInput"
+                  type="file"
+                  name="file"
+                  onChange={(e) => {
+                    e.preventDefault()
+                    onFileSelect(e.target.files[0])
+                  }}
+                  accept=".txt"
+                  ref={fileInput}
+                  style={{ display: "none" }}
+                />
+          </Container>
+        )}
+        {displayFileNameForm && inputType === "upload" && (
+          <Button
+            backgroundColor={colors.buttonPrimaryBlue}
+            text="Upload"
+            type="default"
+            handleClick={(e) => onFileUpload(e)}
+          />
+        )}
+        {inputType === "url" && (
+          <Button
+            backgroundColor={colors.buttonPrimaryBlue}
+            text="Upload"
+            type="default"
+          />
+        )}
       </Wrapper>
     </Flexbox>
   );
