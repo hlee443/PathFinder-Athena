@@ -7,6 +7,7 @@ import Bubble from "../Bubble/Bubble";
 import Label from "../Label/Label";
 import { useRouter } from "next/router";
 import { colors, Flexbox } from "../../styles/globals";
+import { motion } from "framer-motion";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -106,6 +107,11 @@ export default function NavBar({ type = "loggedIn" }) {
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">
+            <motion.div
+                whileHover={{
+                scale:1.1,
+              }}
+            >
             <Button
               handleClick={() => setShowBubble("login")}
               width={btnData.width}
@@ -114,6 +120,12 @@ export default function NavBar({ type = "loggedIn" }) {
               hoverColor={colors.buttonLightBlue}
               text="Log In"
             ></Button>
+            </motion.div>
+            <motion.div
+                whileHover={{
+                scale:1.1,
+              }}
+            >            
             <Button
               handleClick={() => setShowBubble("signup")}
               width={btnData.width}
@@ -122,6 +134,7 @@ export default function NavBar({ type = "loggedIn" }) {
               hoverColor={colors.buttonLightBlue}
               text="Sign Up"
             ></Button>
+            </motion.div>
           </ButtonContainer>
         )}
         {showBubble === "login" && (
