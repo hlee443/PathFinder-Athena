@@ -15,6 +15,7 @@ import Summary from '../Summary/Summary';
 import { colors } from "../../styles/globals";
 import * as mainHandler from '../../handlers/main'
 import Dictionary from "../Dictionary/Dictionary";
+import { motion } from "framer-motion";
 
 const ToolBarCont = styled.div`
   display: flex;
@@ -132,12 +133,16 @@ export default function ToolBar({
 
   return (
     <ToolBarCont>
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >
       <Icon
         faIconName={faMagnifyingGlass}
         text="Dictionary"
         handleClick={(e) => fetchDictionary(e)}
         hoverColor={colors.backgroundYellow}
       ></Icon> 
+      </motion.div>
       {
         wordInfo && showPopUp === "definition" && (
           <Dictionary
@@ -147,17 +152,25 @@ export default function ToolBar({
           ></Dictionary>
         )
       }
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >      
       <Icon
         faIconName={faVolumeHigh}
         text="Text-to-Speech"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      </motion.div>
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >
       <Icon
         faIconName={faFileLines}
         text="Summarize"
         handleClick={(e) => fetchSummarize(e)}
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      </motion.div>
       {
         summarizedContent && showPopUp === "summarize" && (
           <Summary
@@ -167,28 +180,44 @@ export default function ToolBar({
           ></Summary>
         )
       }
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >
       <Icon
         faIconName={faHighlighter}
         text="Highlighter"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      </motion.div>
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >
       <Icon
         faIconName={faFont}
         handleClick={()=>setShowDropdown("typeface")}
         text="Typeface"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      </motion.div>
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >
       <Icon
         faIconName={faBookmark}
         handleClick={()=>setShowDropdown("library")}
         text="Save to Library"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      </motion.div>
+      <motion.div
+        whileHover={{ scale:1.3 }}
+      >
       <Icon
         faIconName={faDownload}
         text="Download"
         hoverColor={colors.backgroundYellow}
       ></Icon>
+      </motion.div>
       {
         showDropdown === "library" && <ToolBarDropdown
           type="Library"
