@@ -194,26 +194,6 @@ export default function Home() {
             />
           </CustomizeInputBox>
         )}
-        {displayFileNameForm === false && inputType === "upload" && (
-          <Container gap="1.5625rem">
-            <Icon size="2x" faIconName={faUpload}></Icon>
-            <SubHeader text="Drag and drop a file here"></SubHeader>
-            <BodyText>or</BodyText>
-            <Button
-              handleClick={() => fileInput.current.click()}
-              text="Choose a file"
-            ></Button>
-            <input
-              id="fileInput"
-              type="file"
-              name="file"
-              onChange={(e) => onFileSelect(e)}
-              accept=".txt"
-              ref={fileInput}
-              style={{ display: "none" }}
-            />
-          </Container>
-        )}
         {displayFileNameForm && inputType === "upload" && (
           <>
             <CustomizeInputBox dir="row">
