@@ -230,13 +230,13 @@ export default function Home() {
               src={iconSvgs.typeface}
               text="Typeface"
               inputType="dropdown"
-              inputWidth ="10rem"
+              inputWidth="10rem"
               placeholder="Choose your typeface"
               onChange={handleTypeface}
               value={uploadSetting.typeface}
             ></Option>
             <Option
-              src = {iconSvgs.fontSize}
+              src={iconSvgs.fontSize}
               text="Font Size"
               inputType="text"
               unit="pt"
@@ -275,16 +275,15 @@ export default function Home() {
         )}
         {displayFileNameForm === false && inputType === "upload" && (
           <Container
-            onDrop={(e) => 
-              {
-                e.preventDefault()
-                const file = e.dataTransfer.items[0].getAsFile()
-                onFileSelect(file)
-              }}
+            onDrop={(e) => {
+              e.preventDefault()
+              const file = e.dataTransfer.items[0].getAsFile()
+              onFileSelect(file)
+            }}
             onDragOver={(e) => {
-                e.preventDefault()
-                setIsActiveDrag(true)
-              }}
+              e.preventDefault()
+              setIsActiveDrag(true)
+            }}
             onDragLeave={(e) => {
               e.preventDefault()
               setIsActiveDrag(false)
@@ -296,42 +295,44 @@ export default function Home() {
             {isActiveDrag ? (
               <SubHeader text="Release to drop the file here"></SubHeader>
             ) : (
-                <SubHeader text="Drag and drop a file here"></SubHeader>
+              <SubHeader text="Drag and drop a file here"></SubHeader>
             )}
             <p>or</p>
-                <Button
-                  handleClick={() => fileInput.current.click()}
-                  text="Choose a file"
-                ></Button>
-                <input
-                  id="fileInput"
-                  type="file"
-                  name="file"
-                  onChange={(e) => {
-                    e.preventDefault()
-                    onFileSelect(e.target.files[0])
-                  }}
-                  accept=".txt"
-                  ref={fileInput}
-                  style={{ display: "none" }}
-                />
+            <Button
+              handleClick={() => fileInput.current.click()}
+              text="Choose a file"
+            ></Button>
+            <input
+              id="fileInput"
+              type="file"
+              name="file"
+              onChange={(e) => {
+                e.preventDefault()
+                onFileSelect(e.target.files[0])
+              }}
+              accept=".txt"
+              ref={fileInput}
+              style={{ display: "none" }}
+            />
           </Container>
         )}
-        {displayFileNameForm && inputType === "upload" && (
-          <Button
-            backgroundColor={colors.buttonPrimaryBlue}
-            text="Upload"
-            type="default"
-            handleClick={(e) => onFileUpload(e)}
-          />
-        )}
-        {inputType === "url" && (
-          <Button
-            backgroundColor={colors.buttonPrimaryBlue}
-            text="Upload"
-            type="default"
-          />
-        )}
+        <BtnCont align="center">
+          {displayFileNameForm && inputType === "upload" && (
+            <Button
+              backgroundColor={colors.buttonPrimaryBlue}
+              text="Upload"
+              type="default"
+              handleClick={(e) => onFileUpload(e)}
+            />
+          )}
+          {inputType === "url" && (
+            <Button
+              backgroundColor={colors.buttonPrimaryBlue}
+              text="Upload"
+              type="default"
+            />
+          )}
+        </BtnCont>
       </Wrapper>
     </Flexbox>
   );
