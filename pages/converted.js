@@ -47,11 +47,9 @@ export default function Converted() {
       <Wrapper>
         <Title dir="row">
           <Header text={fileData.file_name}></Header>
-          <Icon faIconName={faPencil}></Icon>
         </Title>
-        <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
-          <Content fileData={fileData} settingData={settingData}>
-          </Content>
+        <Container width="100%" backgroundColor={settingData.background_colour}>
+          <Content fileData={fileData} settingData={settingData}></Content>
         </Container>        
       </Wrapper>
     </Flexbox>
