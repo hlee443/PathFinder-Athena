@@ -19,13 +19,15 @@ export default function MiniDropdown({
   left = "",
   top = "",
   arr = [],
+  handleOption = () => {}
 }) {
   const [sel, setSel] = useState(0);
 
   return (
     <DropdownCont left={left} top={top}>
       {arr.map((o, i) => (
-          <Option
+        <Option
+            handleOption={handleOption}
             key={i}
             bgColor={o.bgColor}
             text={o.text}
