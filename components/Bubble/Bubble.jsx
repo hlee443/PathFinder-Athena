@@ -38,7 +38,7 @@ const TextCont = styled(Flexbox)`
   justify-content: start;
   align-items: start;
   width: 100%;
-  gap: 0.5rem;  
+  gap: 0.5rem;
   cursor: pointer;
 `;
 
@@ -55,14 +55,14 @@ const TextLink = styled.button`
   color: ${colors.buttonSecondaryBlue};
   font-weight: bold;
   text-decoration: underline;
-`
+`;
 
 export default function Bubble({
   type = "login",
-  onClose = () => { },
-  handleBubble = () => { },
-  onSignUp = () => { },
-  onSignIn = () => { }
+  onClose = () => {},
+  handleBubble = () => {},
+  onSignUp = () => {},
+  onSignIn = () => {},
 }) {
   return (
     <BubbleCont type={type}>
@@ -77,22 +77,25 @@ export default function Bubble({
         </InputCont>
       )}
 
-      {type === "signup" && <TextCont dir="row">
-        <Icon faIconName={faSquare} />
-        <div>
-          <SubHeader text={bubbleData[type].subHeader1} />
-          <TextLink>Terms & Conditions</TextLink>
-        </div>
-      </TextCont>}
+      {type === "signup" && (
+        <TextCont dir="row">
+          <Icon faIconName={faSquare} />
+          <div>
+            <SubHeader text={bubbleData[type].subHeader1} />
+            <TextLink>Terms & Conditions</TextLink>
+          </div>
+        </TextCont>
+      )}
 
-      {type === "login" && <TextCont>
-        <SubHeader text={bubbleData[type].subHeader1} />
-        <Flexbox dir="row">
-          <SubHeader text={bubbleData[type].subHeader2} />
-          <TextLink onClick={onSignUp}> Sign Up!</TextLink>
-        </Flexbox>
-      </TextCont>
-      }
+      {type === "login" && (
+        <TextCont>
+          <SubHeader text={bubbleData[type].subHeader1} />
+          <Flexbox dir="row">
+            <SubHeader text={bubbleData[type].subHeader2} />
+            <TextLink onClick={onSignUp}> Sign Up!</TextLink>
+          </Flexbox>
+        </TextCont>
+      )}
 
       <BtnCont dir="row">
         <Button
@@ -105,10 +108,12 @@ export default function Bubble({
           handleClick={handleBubble}
         />
       </BtnCont>
-      {type === "signup" && <TextCont dir="row">
-        <SubHeader text={bubbleData[type].subHeader2} />
-        <TextLink onClick={onSignIn} >Sign In!</TextLink>
-      </TextCont>}
+      {type === "signup" && (
+        <TextCont dir="row">
+          <SubHeader text={bubbleData[type].subHeader2} />
+          <TextLink onClick={onSignIn}>Sign In!</TextLink>
+        </TextCont>
+      )}
     </BubbleCont>
   );
 }

@@ -2,7 +2,13 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper, Container, BodyText } from "../styles/globals";
+import {
+  colors,
+  Flexbox,
+  Wrapper,
+  Container,
+  BodyText,
+} from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
 import {
@@ -42,7 +48,7 @@ export const tabBarBtns = [
   {
     text: "Import a URL",
     icon: faLink,
-  }
+  },
 ];
 
 export default function Home() {
@@ -60,11 +66,11 @@ export default function Home() {
     typeface: "Open Sans",
     fontSize: "16",
     lineSpace: "150",
-    letterSpace: "0.35"
+    letterSpace: "0.35",
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
-  const [isActiveDrag, setIsActiveDrag] = useState(false)
+  const [isActiveDrag, setIsActiveDrag] = useState(false);
 
   function handleChange(e) {
     e.preventDefault();
@@ -77,7 +83,7 @@ export default function Home() {
   function onFileSelect(selectedFile) {
     // const selectedFile = e.target.files[0] === undefined? e.target.files[0] : e.dataTransfer.items[0];
 
-    console.log("SELECTED FILE", selectedFile)
+    console.log("SELECTED FILE", selectedFile);
 
     uploadedFile.fileName = selectedFile.name.split(".")[0];
     uploadedFile.fileType = selectedFile.name.slice(
@@ -93,17 +99,17 @@ export default function Home() {
 
     let uploadData = {
       uploadedFile,
-      uploadSetting
-    }
+      uploadSetting,
+    };
 
     mainHandler.handleUpload(uploadData, (res) => {
-      let { fileData, settingData } = res.data
+      let { fileData, settingData } = res.data;
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
-            settingData: JSON.stringify(settingData)
+            settingData: JSON.stringify(settingData),
           },
         },
         "/converted"
@@ -114,49 +120,48 @@ export default function Home() {
   function handleBGColor(e) {
     setUploadSetting({
       ...uploadSetting,
-      backgroundColour: e.target.value
-    })
-  };
+      backgroundColour: e.target.value,
+    });
+  }
 
   function handleTypeface(e) {
     setUploadSetting({
       ...uploadSetting,
-      typeface: e.target.value
-    })
-  };
+      typeface: e.target.value,
+    });
+  }
 
   function handleFontSize(e) {
     setUploadSetting({
       ...uploadSetting,
-      fontSize: e.target.value
-    })
-  };
+      fontSize: e.target.value,
+    });
+  }
 
   function handleLineSpace(e) {
     setUploadSetting({
       ...uploadSetting,
-      lineSpace: e.target.value
-    })
-  };
+      lineSpace: e.target.value,
+    });
+  }
 
   function handleLetterSpace(e) {
     setUploadSetting({
       ...uploadSetting,
-      letterSpace: e.target.value
-    })
-  };
+      letterSpace: e.target.value,
+    });
+  }
 
   function handleClear() {
-
     setUploadSetting({
       ...uploadSetting,
       backgroundColour: "#FFFFFC",
       typeface: "Open Sans",
       fontSize: 16,
       lineSpace: 9,
-      letterSpace: 150
-    })
-  };
+      letterSpace: 150,
+    });
+  }
 
   function resetPageStates() {
     setActive(false);
@@ -166,15 +171,15 @@ export default function Home() {
     uploadedFile.fileType = "";
     uploadedFile.fileObj = {};
     inputType === "url" ? setInputType("upload") : setInputType("url");
-  };
+  }
 
   return (
     <Flexbox>
       <NavBar />
       <Wrapper>
-        <Header text="Upload your study materials!" />
-        <SubHeader text="Let us make your websites and documents easier to understand." />
-        <TabBar btnArr={tabBarBtns} changePage={resetPageStates} />
+        <Header text="Upload your study materials!"></Header>
+        <SubHeader text="Let us make your documents easier to understand."></SubHeader>
+        <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
             <Input
@@ -265,7 +270,6 @@ export default function Home() {
             <BtnCont align="end">
               <Button
                 text="Clear"
-                backgroundColor={colors.buttonPrimaryBlue}
                 width={btnData.size.small.width}
                 height={btnData.size.small.height}
                 handleClick={handleClear}
@@ -274,24 +278,25 @@ export default function Home() {
           </Container>
         )}
         {displayFileNameForm === false && inputType === "upload" && (
-          <Container gap = "2rem"
+          <Container
+            gap="2rem"
             onDrop={(e) => {
-              e.preventDefault()
-              const file = e.dataTransfer.items[0].getAsFile()
-              onFileSelect(file)
+              e.preventDefault();
+              const file = e.dataTransfer.items[0].getAsFile();
+              onFileSelect(file);
             }}
             onDragOver={(e) => {
-              e.preventDefault()
-              setIsActiveDrag(true)
+              e.preventDefault();
+              setIsActiveDrag(true);
             }}
             onDragLeave={(e) => {
-              e.preventDefault()
-              setIsActiveDrag(false)
+              e.preventDefault();
+              setIsActiveDrag(false);
             }}
             width="100%"
             alignItems="center"
           >
-            <Icon faIconName={faUpload} size ="2x" />
+            <Icon faIconName={faUpload} size="2x" />
             {isActiveDrag ? (
               <SubHeader text="Release to drop the file here" />
             ) : (
@@ -307,8 +312,8 @@ export default function Home() {
               type="file"
               name="file"
               onChange={(e) => {
-                e.preventDefault()
-                onFileSelect(e.target.files[0])
+                e.preventDefault();
+                onFileSelect(e.target.files[0]);
               }}
               accept=".txt"
               ref={fileInput}
@@ -336,4 +341,4 @@ export default function Home() {
       </Wrapper>
     </Flexbox>
   );
-};
+}

@@ -4,11 +4,7 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
-import {
-  faBookBookmark,
-  faHome,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import Label from "../Label/Label";
 import { useRouter } from "next/router";
 import { colors, Flexbox, logoData } from "../../styles/globals";
 
@@ -44,6 +40,8 @@ const IconContainer = styled(Flexbox)`
   min-width: 12rem;
   height: 100%;
   justify-content: space-between;
+  flex-direction: row;
+  position: relative;
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -66,8 +64,9 @@ const Overlay = styled.div`
 
 export default function NavBar() {
   const r = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
+  const [label, setLabel] = useState(false);
 
   const closeBubble = () => {
     setShowBubble(false);
@@ -75,28 +74,37 @@ export default function NavBar() {
 
   return (
     <NavBarCont>
-      <TopBar dir= "row" backgroundColor="#96ADFC">
+      <TopBar dir="row" backgroundColor="#96ADFC">
         <Logo src={logoData.logoHorizontal} />
         {!isLoggedIn ? (
           <IconContainer>
             <Icon
               size="2x"
               color={colors.backgroundWhite}
-              faIconName={faHome}
+              src="Home.svg"
               handleClick={() => r.push("/")}
+              handleMouseEnter={() => setLabel("home")}
+              handleMouseLeave={() => setLabel(false)}
             ></Icon>
+            {label === "home" && <Label text="Home" top="2rem"></Label>}
             <Icon
               size="2x"
               color={colors.backgroundWhite}
-              faIconName={faBookBookmark}
+              src="Library.svg"
               handleClick={() => r.push("/library")}
+              handleMouseEnter={() => setLabel("library")}
+              handleMouseLeave={() => setLabel(false)}
             ></Icon>
+            {label === "library" && <Label text="Library" top="2rem"></Label>}
             <Icon
               size="2x"
               color={colors.backgroundWhite}
-              faIconName={faUser}
+              src="Profile.svg"
               handleClick={{}}
+              handleMouseEnter={() => setLabel("profile")}
+              handleMouseLeave={() => setLabel(false)}
             ></Icon>
+            {label === "profile" && <Label text="Profile" top="2rem"></Label>}
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">
@@ -104,14 +112,16 @@ export default function NavBar() {
               handleClick={() => setShowBubble("login")}
               width={btnData.width}
               height={btnData.height}
-              backgroundColor={btnData.state.default.backgroundColor}
+              backgroundColor={colors.backgroundCream}
+              hoverColor={colors.buttonLightBlue}
               text="Log In"
             ></Button>
             <Button
               handleClick={() => setShowBubble("signup")}
               width={btnData.width}
               height={btnData.height}
-              backgroundColor={btnData.state.default.backgroundColor}
+              backgroundColor={colors.backgroundCream}
+              hoverColor={colors.buttonLightBlue}
               text="Sign Up"
             ></Button>
           </ButtonContainer>
@@ -128,7 +138,11 @@ export default function NavBar() {
         )}
         {showBubble === "signup" && (
           <Overlay>
-            <Bubble onSignIn={() => setShowBubble("login")} type="signup" onClose={closeBubble}/>
+            <Bubble
+              onSignIn={() => setShowBubble("login")}
+              type="signup"
+              onClose={closeBubble}
+            />
           </Overlay>
         )}
         {showBubble === "success" && (
@@ -141,8 +155,8 @@ export default function NavBar() {
           </Overlay>
         )}
       </TopBar>
-      <Bar backgroundColor="#A8BCFF"/>
-      <Bar backgroundColor="#C3D1FF"/>
+      <Bar backgroundColor="#A8BCFF" />
+      <Bar backgroundColor="#C3D1FF" />
     </NavBarCont>
   );
 }
