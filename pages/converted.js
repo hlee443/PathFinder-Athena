@@ -1,19 +1,19 @@
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
-import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
+import { Flexbox, Wrapper, Container } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
 import Content from "../components/Content/Content";
 import styled from "styled-components";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import ToolBarDropdown from "../components/ToolBarDropdown/ToolBarDropdown";
-import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from 'react';
+import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
+import { editFileDataArr } from "../components/MiniDropdown/data"
 
 const Title = styled(Flexbox)`
-  align-self: flex-start;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export default function Converted() {
@@ -23,12 +23,12 @@ export default function Converted() {
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
-  
 
   const [fileData, setFileData] = useState({})
   const [settingData, setSettingData] = useState({})
   const [libValueArr, setLibValueArr] = useState([])
   const [typeValueArr, setTypeValueArr] = useState([])
+  const [dropdown, showDropdown] = useState(false);
 
   function handleChange(e) {
     e.preventDefault()
@@ -42,15 +42,22 @@ export default function Converted() {
 
   return (
     <Flexbox>
-      <NavBar></NavBar>
+      <NavBar />
       <ToolBar onChange={handleChange} libValueArr={libValueArr} typeValueArr={typeValueArr}></ToolBar>
       <Wrapper>
         <Title dir="row">
-          <Header text={fileData.file_name}></Header>
+          <Header text={fileData.file_name} />
+          <Icon
+            faIconName={faEllipsis}
+            handleClick={showDropdown}
+          />
+          {
+            dropdown && <MiniDropdown arr={editFileDataArr} />
+          }
         </Title>
-        <Container width="100%" backgroundColor={settingData.background_colour}>
-          <Content fileData={fileData} settingData={settingData}></Content>
-        </Container>        
+        <Container backgroundColor={settingData.background_colour}>
+          <Content fileData={fileData} settingData={settingData} />
+        </Container>
       </Wrapper>
     </Flexbox>
   );
