@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
+  user-select: none;
 `;
 
 export default function Converted() {

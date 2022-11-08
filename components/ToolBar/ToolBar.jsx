@@ -15,6 +15,7 @@ const ToolBarCont = styled(Flexbox)`
   padding: 6px 40px;
   border-bottom: 1px solid ${colors.grey};
   background: ${colors.backgroundWhite};
+  user-select: none;
 `;
 
 const Divider = styled.div`
@@ -34,8 +35,10 @@ export default function ToolBar({
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
-  const [highlightedText, setHighlightedText] = useState("");
+  const [highlightedNode, setHighlightedNode] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
+
+  const [activateHighlight, setActivateHighlight] = useState(false)
 
   const closeDropdown = () => {
     setShowDropdown(false);
@@ -47,30 +50,53 @@ export default function ToolBar({
     // clean up all the selected text and the api results
     setSummarizedContent(null)
     setWordInfo(null)
-    setHighlightedText('')
+    setHighlightedNode('')
   }
 
   useEffect(() => {
     // add event listener to the document
-    const saveSelection = () => {
-      setHighlightedText(window.getSelection().toString())
-    }
 
-    document.addEventListener("mousedown", saveSelection);
+    console.log("Highlight State", activateHighlight)
+      
+      if(activateHighlight){
 
-    // remove event listener when component unmounts
-    return () => {
-      document.removeEventListener("mousedown", saveSelection);
-    };
-  }, []);
+        const saveSelection = () => {
+          const selected = window.getSelection()
+          
+          const rangeCount = selected.rangeCount
+
+          if(rangeCount !== 0){
+            const range = selected.getRangeAt(0)
+
+            const highlightedNode = document.createElement("span")
+            highlightedNode.className = "highlighted"
+            range.surroundContents(highlightedNode)
+            
+            setHighlightedNode(highlightedNode)
+            console.log('highlighted Node', highlightedNode)
+
+          }
+        }
+
+        document.addEventListener("mousedown", saveSelection);
+
+        // remove event listener when component unmounts
+        return () => {
+          document.removeEventListener("mousedown", saveSelection);
+        };
+
+      } 
+  });
 
   async function fetchSummarize(e) {
     e.preventDefault()
     try {
-      const res = await mainHandler.handleSummarize(highlightedText) // call handler for axios call
+      const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
       if (res) {
         console.log(res)
         setSummarizedContent(res.data.summary)
+        
+       
         setShowPopUp("summarize")
       }
     } catch (error) {
@@ -82,7 +108,7 @@ export default function ToolBar({
     e.preventDefault();
     try {
       // callback
-      mainHandler.handleDictionary(highlightedText, (res) => {
+      mainHandler.handleDictionary(highlightedNode, (res) => {
         const { data } = res;
         const { definition } = data;
         console.log("RES", res);
@@ -118,7 +144,7 @@ export default function ToolBar({
       {
         wordInfo && showPopUp === "definition" && (
           <Dictionary
-            word={highlightedText}
+            word={highlightedNode.textContent}
             wordDefinition={wordInfo[1]}
             onClose={closePopUp}
           ></Dictionary>
@@ -136,7 +162,7 @@ export default function ToolBar({
       {
         summarizedContent && showPopUp === "summarize" && (
           <Summary
-            originalContent={highlightedText}
+            originalContent={highlightedNode}
             summarizedContent={summarizedContent}
             onClose={closePopUp}
           ></Summary>
@@ -148,6 +174,7 @@ export default function ToolBar({
         faIconName={toolBarData[toolbarNum + 3].icon}
         text={toolBarData[toolbarNum + 3].name}
         hoverColor={colors.buttonLightGrey}
+        handleClick={()=> activateHighlight? setActivateHighlight(false) : setActivateHighlight(true)}
       />
       <Divider />
 
