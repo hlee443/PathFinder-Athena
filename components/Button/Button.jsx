@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { colors, Flexbox, textData } from "../../styles/globals";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { btnData } from "./data";
 
 const StyledButton = styled.button`
   font-weight: ${(props) => props.fontWeight};
