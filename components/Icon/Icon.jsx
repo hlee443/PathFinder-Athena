@@ -5,22 +5,17 @@ import { colors, Flexbox } from "../../styles/globals";
 import Label from "../Label/Label";
 
 const IconCont = styled(Flexbox)`
-  justify-content: space-evenly;
-  width: ${(props) => props.width || "fit-content"};
-  height: ${(props) => props.height || "fit-content"};
+  padding: 0.5rem;
+  gap: 0.5rem;
   pointer: cursor;
   :hover {
     background-color: ${(props) => props.hoverColor};
     border-radius: 1.25rem;
   };
-  padding: 0.5rem;
-  aspect-ratio: 1;
 `;
 
 const IconImg = styled.img`
-width: 100%;
-height: 100%;
-aspect-ratio: 1;
+  aspect-ratio: 1;
 `
 
 export default function Icon({
