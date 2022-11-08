@@ -225,7 +225,7 @@ export default function Home() {
               inputType="color"
               onChange={handleBGColor}
               value={uploadSetting.backgroundColour}
-            ></Option>
+            />
             <Option
               src={iconSvgs.typeface}
               text="Typeface"
@@ -234,7 +234,7 @@ export default function Home() {
               placeholder="Choose your typeface"
               onChange={handleTypeface}
               value={uploadSetting.typeface}
-            ></Option>
+            />
             <Option
               src={iconSvgs.fontSize}
               text="Font Size"
@@ -243,7 +243,7 @@ export default function Home() {
               placeholder="Choose your font size"
               onChange={handleFontSize}
               value={uploadSetting.fontSize}
-            ></Option>
+            />
             <Option
               src={iconSvgs.lineSpacing}
               text="Line Height"
@@ -252,7 +252,7 @@ export default function Home() {
               unit="%"
               onChange={handleLineSpace}
               value={uploadSetting.lineSpace}
-            ></Option>
+            />
             <Option
               src={iconSvgs.letterSpacing}
               text="Letter Spacing"
@@ -261,7 +261,7 @@ export default function Home() {
               placeholder="Choose your letter spacing"
               onChange={handleLetterSpace}
               value={uploadSetting.letterSpace}
-            ></Option>
+            />
             <BtnCont align="end">
               <Button
                 text="Clear"
@@ -269,12 +269,12 @@ export default function Home() {
                 width={btnData.size.small.width}
                 height={btnData.size.small.height}
                 handleClick={handleClear}
-              ></Button>
+              />
             </BtnCont>
           </Container>
         )}
         {displayFileNameForm === false && inputType === "upload" && (
-          <Container
+          <Container gap = "2rem"
             onDrop={(e) => {
               e.preventDefault()
               const file = e.dataTransfer.items[0].getAsFile()
@@ -291,17 +291,17 @@ export default function Home() {
             width="100%"
             alignItems="center"
           >
-            <Icon faIconName={faUpload}></Icon>
+            <Icon faIconName={faUpload} size ="2x" />
             {isActiveDrag ? (
-              <SubHeader text="Release to drop the file here"></SubHeader>
+              <SubHeader text="Release to drop the file here" />
             ) : (
-              <SubHeader text="Drag and drop a file here"></SubHeader>
+              <SubHeader text="Drag and drop a file here" />
             )}
             <p>or</p>
             <Button
               handleClick={() => fileInput.current.click()}
               text="Choose a file"
-            ></Button>
+            />
             <input
               id="fileInput"
               type="file"
