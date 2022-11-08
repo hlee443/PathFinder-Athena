@@ -5,7 +5,7 @@ import Input from "../Input/Input";
 
 const OptionCont = styled(Flexbox)`
   justify-content: flex-start;
-  background-color: ${(props) => props.bgColor || colors.backgroundLightYellow};
+  background-color: ${(props) => props.bgColor || "transparent"};
   width: 100%;
   cursor: pointer;
   gap: 1.875rem;
@@ -17,7 +17,7 @@ const OptionText = styled.p`
 `
 
 export default function Option({
-  bgColor = colors.backgroundLightYellow,
+  bgColor = "transparent",
   text = "text",
   unit = null,
   faIconName = null,
