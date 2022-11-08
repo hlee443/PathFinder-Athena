@@ -18,6 +18,7 @@ export const colors = {
   secondaryBlue: "#C3D1FF",
   backgroundWhite: "#FFFFFC",
   backgroundYellow: "#F3F0E1",
+  backgroundLightYellow: "#FFFDF2",
   backgroundCream: "#FFFEF7",
   buttonPrimaryBlue: "#C3D1FF",
   buttonSecondaryBlue: "#96ADFC",
