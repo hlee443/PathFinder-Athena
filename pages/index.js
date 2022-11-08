@@ -20,6 +20,7 @@ import { useRef } from "react";
 import { iconSvgs } from "../components/Icon/data";
 import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
+import { motion } from "framer-motion"
 
 const CustomizeInputBox = styled(Flexbox)`
   background: ${colors.backgroundWhite};
@@ -176,6 +177,11 @@ export default function Home() {
         <SubHeader text="Let us make your websites and documents easier to understand." />
         <TabBar btnArr={tabBarBtns} changePage={resetPageStates} />
         {inputType === "url" && (
+          <motion.div
+            initial={{ x:'-100vw'}}
+            animate={{ x: 0 }}
+            style={{width: "80vw"}}
+          >
           <CustomizeInputBox dir="row">
             <Input
               border="none"
@@ -193,6 +199,7 @@ export default function Home() {
               faIconName={active ? faChevronUp : faChevronDown}
             />
           </CustomizeInputBox>
+          </motion.div>
         )}
         {displayFileNameForm && inputType === "upload" && (
           <>
@@ -218,6 +225,11 @@ export default function Home() {
           </>
         )}
         {active && (
+          <motion.div
+            initial={{opacity:0,y:"-50%"}}
+            animate={{opacity:1,y:"0%"}}
+            style={{width: "80vw"}}
+          >
           <Container gap="1rem">
             <Option
               src={iconSvgs.backgroundColor}
@@ -272,8 +284,14 @@ export default function Home() {
               />
             </BtnCont>
           </Container>
+          </motion.div>
         )}
         {displayFileNameForm === false && inputType === "upload" && (
+          <motion.div
+            initial={{ x:'-100vw'}}
+            animate={{ x: 0 }}
+            style={{width: "80vw"}}
+          >
           <Container gap = "2rem"
             onDrop={(e) => {
               e.preventDefault()
@@ -315,6 +333,7 @@ export default function Home() {
               style={{ display: "none" }}
             />
           </Container>
+          </motion.div>
         )}
         <BtnCont align="center">
           {displayFileNameForm && inputType === "upload" && (
