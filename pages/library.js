@@ -11,16 +11,21 @@ import * as mainHandler from '../handlers/main';
 
 const FileDisplay = styled(Flexbox)`
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(20px, auto);
-  grid-gap: 2rem;
+  height: 100%;
+  flex-wrap: wrap;
+  justify-content: start;
+  column-gap: 4rem;
+  row-gap: 8rem;
+  // display: grid;
+  // grid-template-columns: repeat(4, 1fr);
+  // grid-auto-rows: minmax(20px, auto);
+  // grid-gap: 3rem;
 `
 
 const TopCont = styled(Flexbox)`
   justify-content: space-between;
   width: 100%;
-  `
+`
 
 export default function Library() {
   const [folders, setFolders] = useState([])
@@ -77,7 +82,6 @@ export default function Library() {
       handleDelete={handleDelete}
     ></File>
   })
-
 
   return (
     <Flexbox>
