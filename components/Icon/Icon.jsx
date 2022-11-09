@@ -1,42 +1,45 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import styled from "styled-components";
 import { colors, Flexbox } from "../../styles/globals";
 import Label from "../Label/Label";
 
 const IconCont = styled(Flexbox)`
-  justify-content: space-evenly;
-  width: ${(props) => props.width || "fit-content"};
-  height: ${(props) => props.height || "fit-content"};
-  pointer: cursor;
-  :hover {
-    background-color: ${(props) => props.hoverColor};
-    border-radius: 1.25rem;
-  };
   padding: 0.5rem;
+  gap: 0.5rem;
+  cursor: pointer;
+`;
+
+// :hover {
+//   background-color: ${(props) => props.hoverColor};
+//   border-radius: 1.25rem;
+// }
+
+const IconImg = styled.img`
   aspect-ratio: 1;
 `;
 
-const IconImg = styled.img`
-width: 100%;
-height: 100%;
-aspect-ratio: 1;
-`
-
 export default function Icon({
   faIconName = faLink,
-  handleClick = () => { },
+  handleClick = () => {},
   size = "lg",
   color = colors.textBlack,
   hoverColor = "transparent",
   src = null,
   text = "",
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
 }) {
+  // onMouseEnter={handleMouseEnter}
+  // onMouseLeave={handleMouseLeave}
   return (
     <IconCont
       onClick={handleClick}
       hoverColor={hoverColor}
+      
     >
+      
       {src === null && (
         <FontAwesomeIcon
           size={size}
@@ -48,4 +51,4 @@ export default function Icon({
       {text && <Label text={text}></Label>}
     </IconCont>
   );
-};
+}

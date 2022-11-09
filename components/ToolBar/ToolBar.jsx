@@ -11,17 +11,28 @@ import { toolBarData, toolbarNum } from "./data";
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
   align-items: center;
+  height: 6rem;
   width: 100%;
-  padding: 6px 40px;
+  padding: 0 1.875rem;
   border-bottom: 1px solid ${colors.grey};
   background: ${colors.backgroundWhite};
+  gap: 1.5rem;
 `;
 
+const ToolbarIcon = styled(Icon)`
+  justify-content: space-around;
+  width: fit-content;
+  height: 6rem;
+`
+
 const Divider = styled.div`
-  height: 50px;
-  border: 0.5px solid #cacaca;
-  margin: auto 1.5rem;
+  height: 3.75rem;
+  border: 0.5px solid ${colors.lightGrey};
 `;
+  // height: 50px;
+  // border: 0.5px solid #cacaca;
+  // margin: auto 1.5rem;
+
 
 export default function ToolBar({
   typeArray = [],
@@ -102,7 +113,7 @@ export default function ToolBar({
   return (
     <ToolBarCont dir="row">
       {/* TTS */}
-      {/* <Icon
+      {/* <ToolbarIcon
         faIconName={toolBarData[toolbarNum].icon}
         text={toolBarData[toolbarNum].name}
         hoverColor={colors.buttonLightGrey}
@@ -110,7 +121,7 @@ export default function ToolBar({
       <Divider /> */}
 
       {/* DICTIONARY */}
-      <Icon
+      <ToolbarIcon
         faIconName={toolBarData[toolbarNum + 1].icon}
         text={toolBarData[toolbarNum + 1].name}
         handleClick={(e) => fetchDictionary(e)}
@@ -126,7 +137,7 @@ export default function ToolBar({
       )}
 
       {/* SUMMARIZE */}
-      <Icon
+      <ToolbarIcon
         faIconName={toolBarData[toolbarNum + 2].icon}
         text={toolBarData[toolbarNum + 2].name}
         handleClick={(e) => fetchSummarize(e)}
@@ -142,7 +153,7 @@ export default function ToolBar({
       )}
 
       {/* HIGHLIGHT */}
-      <Icon
+      <ToolbarIcon
         faIconName={toolBarData[toolbarNum + 3].icon}
         text={toolBarData[toolbarNum + 3].name}
         hoverColor={colors.buttonLightGrey}
@@ -151,7 +162,7 @@ export default function ToolBar({
 
       {/* TYPEFACE SETTING */}
       <div>
-        <Icon
+        <ToolbarIcon
           faIconName={toolBarData[toolbarNum + 4].icon}
           handleClick={() => setShowDropdown("typeface")}
           text={toolBarData[toolbarNum + 4].name}
@@ -170,7 +181,7 @@ export default function ToolBar({
 
       {/* SAVE TO LIBRARY */}
       <div>
-        <Icon
+        <ToolbarIcon
           faIconName={toolBarData[toolbarNum + 5].icon}
           handleClick={() => setShowDropdown("library")}
           text={toolBarData[toolbarNum + 5].name}
@@ -189,7 +200,7 @@ export default function ToolBar({
       <Divider />
 
       {/* DOWNLOAD */}
-      <Icon
+      <ToolbarIcon
         faIconName={toolBarData[toolbarNum + 6].icon}
         text={toolBarData[toolbarNum + 6].name}
         hoverColor={colors.buttonLightGrey}

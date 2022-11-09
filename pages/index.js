@@ -2,7 +2,13 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper, Container, BodyText } from "../styles/globals";
+import {
+  colors,
+  Flexbox,
+  Wrapper,
+  Container,
+  BodyText,
+} from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
 import {
@@ -42,7 +48,7 @@ export const tabBarBtns = [
   {
     text: "Import a URL",
     icon: faLink,
-  }
+  },
 ];
 
 export default function Home() {
@@ -60,11 +66,11 @@ export default function Home() {
     typeface: "Open Sans",
     fontSize: "16",
     lineSpace: "150",
-    letterSpace: "0.35"
+    letterSpace: "0.35",
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
-  const [isActiveDrag, setIsActiveDrag] = useState(false)
+  const [isActiveDrag, setIsActiveDrag] = useState(false);
 
   function handleChange(e) {
     e.preventDefault();
@@ -77,7 +83,7 @@ export default function Home() {
   function onFileSelect(selectedFile) {
     // const selectedFile = e.target.files[0] === undefined? e.target.files[0] : e.dataTransfer.items[0];
 
-    console.log("SELECTED FILE", selectedFile)
+    console.log("SELECTED FILE", selectedFile);
 
     uploadedFile.fileName = selectedFile.name.split(".")[0];
     uploadedFile.fileType = selectedFile.name.slice(
@@ -93,8 +99,8 @@ export default function Home() {
 
     let uploadData = {
       uploadedFile,
-      uploadSetting
-    }
+      uploadSetting,
+    };
 
     mainHandler.handleUpload(uploadData, (res) => {
       let { fileData, settingData, folderArray } = res.data
@@ -115,40 +121,39 @@ export default function Home() {
   function handleBGColor(e) {
     setUploadSetting({
       ...uploadSetting,
-      backgroundColour: e.target.value
-    })
-  };
+      backgroundColour: e.target.value,
+    });
+  }
 
   function handleTypeface(e) {
     setUploadSetting({
       ...uploadSetting,
-      typeface: e.target.value
-    })
-  };
+      typeface: e.target.value,
+    });
+  }
 
   function handleFontSize(e) {
     setUploadSetting({
       ...uploadSetting,
-      fontSize: e.target.value
-    })
-  };
+      fontSize: e.target.value,
+    });
+  }
 
   function handleLineSpace(e) {
     setUploadSetting({
       ...uploadSetting,
-      lineSpace: e.target.value
-    })
-  };
+      lineSpace: e.target.value,
+    });
+  }
 
   function handleLetterSpace(e) {
     setUploadSetting({
       ...uploadSetting,
-      letterSpace: e.target.value
-    })
-  };
+      letterSpace: e.target.value,
+    });
+  }
 
   function handleClear() {
-
     setUploadSetting({
       ...uploadSetting,
       backgroundColour: "#FFFFFC",
@@ -157,7 +162,7 @@ export default function Home() {
       lineSpace: 150,
       letterSpace: 0.35
     })
-  };
+  }
 
   function resetPageStates() {
     setActive(false);
@@ -167,15 +172,15 @@ export default function Home() {
     uploadedFile.fileType = "";
     uploadedFile.fileObj = {};
     inputType === "url" ? setInputType("upload") : setInputType("url");
-  };
+  }
 
   return (
     <Flexbox>
       <NavBar />
       <Wrapper>
-        <Header text="Upload your study materials!" />
-        <SubHeader text="Let us make your websites and documents easier to understand." />
-        <TabBar btnArr={tabBarBtns} changePage={resetPageStates} />
+        <Header text="Upload your study materials!"></Header>
+        <SubHeader text="Let us make your documents easier to understand."></SubHeader>
+        <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
             <Input
@@ -194,50 +199,6 @@ export default function Home() {
               faIconName={active ? faChevronUp : faChevronDown}
             />
           </CustomizeInputBox>
-        )}
-        {displayFileNameForm === false && inputType === "upload" && (
-          <Container
-            gap="1.5625rem"
-            onDrop={(e) => {
-              e.preventDefault()
-              const file = e.dataTransfer.items[0].getAsFile()
-              onFileSelect(file)
-            }}
-            onDragOver={(e) => {
-              e.preventDefault()
-              setIsActiveDrag(true)
-            }}
-            onDragLeave={(e) => {
-              e.preventDefault()
-              setIsActiveDrag(false)
-            }}
-            width="100%"
-            alignItems="center"
-          >
-            <Icon size="2x" faIconName={faUpload}></Icon>
-            {isActiveDrag ? (
-              <SubHeader text="Release to drop the file here"></SubHeader>
-            ) : (
-              <SubHeader text="Drag and drop a file here"></SubHeader>
-            )}
-            <BodyText>or</BodyText>
-            <Button
-              handleClick={() => fileInput.current.click()}
-              text="Choose a file"
-            ></Button>
-            <input
-              id="fileInput"
-              type="file"
-              name="file"
-              onChange={(e) => {
-                e.preventDefault()
-                onFileSelect(e.target.files[0])
-              }}
-              accept=".txt"
-              ref={fileInput}
-              style={{ display: "none" }}
-            />
-          </Container>
         )}
         {displayFileNameForm && inputType === "upload" && (
           <>
@@ -270,7 +231,7 @@ export default function Home() {
               inputType="color"
               onChange={handleBGColor}
               value={uploadSetting.backgroundColour}
-            ></Option>
+            />
             <Option
               src={iconSvgs.typeface}
               text="Typeface"
@@ -279,7 +240,7 @@ export default function Home() {
               placeholder="Choose your typeface"
               onChange={handleTypeface}
               value={uploadSetting.typeface}
-            ></Option>
+            />
             <Option
               src={iconSvgs.fontSize}
               text="Font Size"
@@ -288,7 +249,7 @@ export default function Home() {
               placeholder="Choose your font size"
               onChange={handleFontSize}
               value={uploadSetting.fontSize}
-            ></Option>
+            />
             <Option
               src={iconSvgs.lineSpacing}
               text="Line Height"
@@ -297,7 +258,7 @@ export default function Home() {
               unit="%"
               onChange={handleLineSpace}
               value={uploadSetting.lineSpace}
-            ></Option>
+            />
             <Option
               src={iconSvgs.letterSpacing}
               text="Letter Spacing"
@@ -306,16 +267,59 @@ export default function Home() {
               placeholder="Choose your letter spacing"
               onChange={handleLetterSpace}
               value={uploadSetting.letterSpace}
-            ></Option>
+            />
             <BtnCont align="end">
               <Button
                 text="Clear"
-                backgroundColor={colors.buttonPrimaryBlue}
                 width={btnData.size.small.width}
                 height={btnData.size.small.height}
                 handleClick={handleClear}
-              ></Button>
+              />
             </BtnCont>
+          </Container>
+        )}
+        {displayFileNameForm === false && inputType === "upload" && (
+          <Container
+            gap="2rem"
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.items[0].getAsFile();
+              onFileSelect(file);
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setIsActiveDrag(true);
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              setIsActiveDrag(false);
+            }}
+            width="100%"
+            alignItems="center"
+          >
+            <Icon faIconName={faUpload} size="2x" />
+            {isActiveDrag ? (
+              <SubHeader text="Release to drop the file here" />
+            ) : (
+              <SubHeader text="Drag and drop a file here" />
+            )}
+            <p>or</p>
+            <Button
+              handleClick={() => fileInput.current.click()}
+              text="Choose a file"
+            />
+            <input
+              id="fileInput"
+              type="file"
+              name="file"
+              onChange={(e) => {
+                e.preventDefault();
+                onFileSelect(e.target.files[0]);
+              }}
+              accept=".txt"
+              ref={fileInput}
+              style={{ display: "none" }}
+            />
           </Container>
         )}
         <BtnCont align="center">
@@ -338,4 +342,4 @@ export default function Home() {
       </Wrapper>
     </Flexbox>
   );
-};
+}

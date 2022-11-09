@@ -1,20 +1,21 @@
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
-import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
+import { Flexbox, Wrapper, Container } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
 import Content from "../components/Content/Content";
 import styled from "styled-components";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import ToolBarDropdown from "../components/ToolBarDropdown/ToolBarDropdown";
-import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from 'react';
+import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
+import { editFileDataArr } from "../components/MiniDropdown/data"
 import * as mainHandler from "../handlers/main"
 
+
 const Title = styled(Flexbox)`
-  align-self: flex-start;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export default function Converted() {
@@ -32,6 +33,7 @@ export default function Converted() {
   const [libraryArray, setLibraryArray] = useState([])
   const [typeArray, setTypeArray] = useState([])
   const [folderArray, setFolderArray] = useState([])
+  const [dropdown, showDropdown] = useState(false);
 
 
   function handleBGColor(e) {
@@ -75,6 +77,10 @@ export default function Converted() {
     })
     updateTypeArray()
   };
+
+  function handleMiniDropdown() {
+    dropdown === false ? showDropdown(true) : showDropdown(false)
+  }
 
   async function handleSaveSetting() {
     let uploadSettingData = {
@@ -150,12 +156,18 @@ export default function Converted() {
 
   return (
     <Flexbox>
-      <NavBar></NavBar>
+      <NavBar />
       <ToolBar typeArray={typeArray} libraryArray={libraryArray} handleNewFolder={handleNewFolder} handleSaveSetting={handleSaveSetting}></ToolBar>
       <Wrapper>
         <Title dir="row">
-          <Header text={fileData.file_name}></Header>
-          <Icon faIconName={faPencil}></Icon>
+          <Header text={fileData.file_name} />
+          <Icon
+            faIconName={faEllipsis}
+            handleClick={handleMiniDropdown}
+          />
+          {
+            dropdown && <MiniDropdown arr={editFileDataArr} />
+          }
         </Title>
         <Container width="100%" backgroundColor={settingData.background_colour}>
           <Content fileData={fileData} settingData={settingData}>

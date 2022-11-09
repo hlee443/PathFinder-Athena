@@ -13,11 +13,20 @@ export const textData = {
   },
 };
 
+export const logoData = {
+  favicon: "../images/icon.svg",
+  logoHorizontal: "../images/logo-horizontal.svg",
+  logoVertical: "../images/logo-vertical.svg",
+  logoIcon: "../images/logo-icon.svg",
+  logoTypeface: "../images/logo-typeface.svg"
+};
+
 export const colors = {
   primaryBlue: "#96ADFC",
   secondaryBlue: "#C3D1FF",
   backgroundWhite: "#FFFFFC",
   backgroundYellow: "#F3F0E1",
+  backgroundLightYellow: "#FFFDF2",
   backgroundCream: "#FFFEF7",
   buttonPrimaryBlue: "#C3D1FF",
   buttonSecondaryBlue: "#96ADFC",
