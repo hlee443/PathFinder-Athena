@@ -7,6 +7,7 @@ const HeaderCont = styled.h1`
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
   font-weight: ${textData.h1.fontWeight};
+  margin: 0;
 `;
 
 export default function Header({ text = "Header text" }) {

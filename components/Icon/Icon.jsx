@@ -1,39 +1,45 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import styled from "styled-components";
-import { colors } from "../../styles/globals";
+import { colors, Flexbox } from "../../styles/globals";
 import Label from "../Label/Label";
 
-const IconCont = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: ${(props) => props.paddingTop};
-  :hover {
-    background-color: ${(props) => props.hoverColor};
-    border-radius: 2rem;
-  }
+const IconCont = styled(Flexbox)`
+  padding: 0.5rem;
+  gap: 0.5rem;
+  cursor: pointer;
 `;
 
-const Img = styled.img``;
+// :hover {
+//   background-color: ${(props) => props.hoverColor};
+//   border-radius: 1.25rem;
+// }
+
+const IconImg = styled.img`
+  aspect-ratio: 1;
+`;
 
 export default function Icon({
   faIconName = faLink,
   handleClick = () => {},
   size = "lg",
-  color = "black",
-  text = "",
+  color = colors.textBlack,
   hoverColor = "transparent",
-  paddingTop = "",
   src = null,
+  text = "",
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
 }) {
+  // onMouseEnter={handleMouseEnter}
+  // onMouseLeave={handleMouseLeave}
   return (
     <IconCont
-      text={text}
       onClick={handleClick}
       hoverColor={hoverColor}
-      paddingTop={paddingTop}
+      
     >
+      
       {src === null && (
         <FontAwesomeIcon
           size={size}
@@ -41,8 +47,8 @@ export default function Icon({
           icon={faIconName}
         ></FontAwesomeIcon>
       )}
-      {src !== null && <Img src={src}></Img>}
-      {text && <Label text={text} backgroundColor="transparent"></Label>}
+      {src !== null && <IconImg src={src} />}
+      {text && <Label text={text}></Label>}
     </IconCont>
   );
 }

@@ -27,7 +27,7 @@ export const btnData = {
       textColor: colors.buttonTextGrey,
     },
     hover: {
-      backgroundColor: colors.buttonSecondaryBlue,
+      backgroundColor: colors.buttonLightBlue,
       fontWeight: "bolder",
     },
   },

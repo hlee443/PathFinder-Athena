@@ -41,12 +41,6 @@ export const libraryDataArr = [
   
 export const typefaceDataArr = [
   {
-    bgColor: colors.primaryBlue,
-    text: "Typeface",
-    faIconName: faFont,
-    faIconNameRight: faClose,
-  },
-  {
     faIconName: faFillDrip,
     text: "Background Color",
     width: "6rem",
@@ -64,6 +58,7 @@ export const typefaceDataArr = [
     unit: "pt",
     inputType: "text",
     src: iconSvgs.fontSize,
+    placeholder: "16"
   },
   {
     text: "Line Height",
@@ -71,6 +66,7 @@ export const typefaceDataArr = [
     unit: "%",
     inputType: "text",
     src: iconSvgs.lineSpacing,
+    placeholder: "150"
   },
   {
     faIconName: faTextWidth,
@@ -79,6 +75,7 @@ export const typefaceDataArr = [
     unit: "pt",
     inputType: "text",
     src: iconSvgs.letterSpacing,
+    placeholder: "0.35"
   },
 ];
 
