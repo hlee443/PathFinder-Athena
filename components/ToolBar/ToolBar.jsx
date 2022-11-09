@@ -30,10 +30,6 @@ const Divider = styled.div`
   height: 3.75rem;
   border: 0.5px solid ${colors.lightGrey};
 `;
-  // height: 50px;
-  // border: 0.5px solid #cacaca;
-  // margin: auto 1.5rem;
-
 
 export default function ToolBar({
   typeArray = [],
@@ -119,6 +115,7 @@ export default function ToolBar({
     try {
       // callback
       mainHandler.handleDictionary(highlightedNode, (res) => {
+        console.log(res)
         const { data } = res;
         const { definition } = data;
         // console.log("RES", res);
@@ -173,7 +170,6 @@ export default function ToolBar({
       {
         summarizedContent && showPopUp === "summarize" && (
           <Summary
-            originalContent={highlightedNode}
             summarizedContent={summarizedContent}
             onClose={closePopUp}
           ></Summary>

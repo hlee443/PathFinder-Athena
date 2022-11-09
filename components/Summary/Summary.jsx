@@ -11,6 +11,8 @@ const KeywordCont = styled(Flexbox)`
 
 // TEMPORARY STUFF??
 const SummarizeCont = styled(Flexbox)`
+  top: 12rem;
+  right: 12rem;
   position: absolute;
 `
 
@@ -20,7 +22,6 @@ const CloseButton = styled.div`
 `;
 
 export default function Summary({
-  originalContent="Original Content here",
   summarizedContent="Summarization here",
   onClose = () => {}
 }) {
@@ -38,10 +39,6 @@ export default function Summary({
       <KeywordCont dir="row">
         <Label text="keyword"></Label>
       </KeywordCont>
-      <Header text="Original Content"></Header>
-      <BodyText>
-        {originalContent}
-      </BodyText>
       <Header text="Summary"></Header>
       <BodyText>
         {summarizedContent}
