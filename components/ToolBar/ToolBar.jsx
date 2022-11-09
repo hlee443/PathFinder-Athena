@@ -82,6 +82,7 @@ export default function ToolBar({
     try {
       // callback
       mainHandler.handleDictionary(highlightedText, (res) => {
+        console.log(res)
         const { data } = res;
         const { definition } = data;
         // console.log("RES", res);
