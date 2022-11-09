@@ -157,7 +157,7 @@ export default function Converted() {
           <Header text={fileData.file_name}></Header>
           <Icon faIconName={faPencil}></Icon>
         </Title>
-        <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
+        <Container width="100%" backgroundColor={settingData.background_colour}>
           <Content fileData={fileData} settingData={settingData}>
           </Content>
         </Container>

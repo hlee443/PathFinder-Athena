@@ -2,16 +2,14 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
-import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
+import { colors, Flexbox, Wrapper, Container, BodyText } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
 import {
   faLink,
   faChevronDown,
   faUpload,
-  faPaintRoller,
-  faFont,
-  faTextHeight,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 import Icon from "../components/Icon/Icon";
 import { useRouter } from "next/router";
@@ -19,7 +17,7 @@ import { useState } from "react";
 import Input from "../components/Input/Input";
 import * as mainHandler from "../handlers/main";
 import { useRef } from "react";
-
+import { iconSvgs } from "../components/Icon/data";
 import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
 
@@ -29,26 +27,27 @@ const CustomizeInputBox = styled(Flexbox)`
   border-radius: 50px;
   width: 100%;
   justify-content: start;
+  height: fit-content;
 `;
 
-const ClearButton = styled(Flexbox)`
-  align-self: end;
+const BtnCont = styled(Flexbox)`
+  align-self: ${(props) => props.align};
 `;
 
 export const tabBarBtns = [
   {
-    text: "Import a URL",
-    icon: faLink,
-  },
-  {
     text: "Upload a file",
     icon: faUpload,
   },
+  {
+    text: "Import a URL",
+    icon: faLink,
+  }
 ];
 
 export default function Home() {
   const router = useRouter();
-  const [inputType, setInputType] = useState("url");
+  const [inputType, setInputType] = useState("upload");
   const [active, setActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState({
     fileObj: {},
@@ -158,7 +157,7 @@ export default function Home() {
       lineSpace: 150,
       letterSpace: 0.35
     })
-  }
+  };
 
   function resetPageStates() {
     setActive(false);
@@ -168,15 +167,15 @@ export default function Home() {
     uploadedFile.fileType = "";
     uploadedFile.fileObj = {};
     inputType === "url" ? setInputType("upload") : setInputType("url");
-  }
+  };
 
   return (
     <Flexbox>
-      <NavBar></NavBar>
+      <NavBar />
       <Wrapper>
-        <Header text="Upload your study materials!"></Header>
-        <SubHeader text="Let us make your websites and documents easier to understand."></SubHeader>
-        <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
+        <Header text="Upload your study materials!" />
+        <SubHeader text="Let us make your websites and documents easier to understand." />
+        <TabBar btnArr={tabBarBtns} changePage={resetPageStates} />
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
             <Input
@@ -191,57 +190,98 @@ export default function Home() {
               borderRadius="0 3.125rem 3.125rem 0;"
               text="Customize"
               type="IconButton"
-              ButtonFaIconName={faChevronDown}
+              iconSize="1x"
+              faIconName={active ? faChevronUp : faChevronDown}
             />
           </CustomizeInputBox>
         )}
-
+        {displayFileNameForm === false && inputType === "upload" && (
+          <Container
+            gap="1.5625rem"
+            onDrop={(e) => {
+              e.preventDefault()
+              const file = e.dataTransfer.items[0].getAsFile()
+              onFileSelect(file)
+            }}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setIsActiveDrag(true)
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              setIsActiveDrag(false)
+            }}
+            width="100%"
+            alignItems="center"
+          >
+            <Icon size="2x" faIconName={faUpload}></Icon>
+            {isActiveDrag ? (
+              <SubHeader text="Release to drop the file here"></SubHeader>
+            ) : (
+              <SubHeader text="Drag and drop a file here"></SubHeader>
+            )}
+            <BodyText>or</BodyText>
+            <Button
+              handleClick={() => fileInput.current.click()}
+              text="Choose a file"
+            ></Button>
+            <input
+              id="fileInput"
+              type="file"
+              name="file"
+              onChange={(e) => {
+                e.preventDefault()
+                onFileSelect(e.target.files[0])
+              }}
+              accept=".txt"
+              ref={fileInput}
+              style={{ display: "none" }}
+            />
+          </Container>
+        )}
         {displayFileNameForm && inputType === "upload" && (
           <>
             <CustomizeInputBox dir="row">
               <Input
                 border="none"
-                borderRadius="3.125rem 0 0 3.125rem;"
-                width="100%"
                 placeholder="Enter file name"
                 type="text"
                 name="fileName"
                 value={uploadedFile.fileName}
                 onChange={handleChange}
-              ></Input>
+                width="100%"
+              />
               <Button
                 handleClick={setActive}
                 backgroundColor={colors.buttonPrimaryBlue}
                 borderRadius="0 3.125rem 3.125rem 0;"
                 text="Customize"
                 type="IconButton"
-                ButtonFaIconName={faChevronDown}
+                faIconName={active ? faChevronUp : faChevronDown}
               />
             </CustomizeInputBox>
           </>
         )}
         {active && (
-          <Container width="100%">
+          <Container gap="1rem">
             <Option
-              faIconName={faPaintRoller}
+              src={iconSvgs.backgroundColor}
               text="Background Colour"
               inputType="color"
-              type="color"
               onChange={handleBGColor}
               value={uploadSetting.backgroundColour}
             ></Option>
             <Option
-              faIconName={faFont}
+              src={iconSvgs.typeface}
               text="Typeface"
               inputType="dropdown"
+              inputWidth="10rem"
               placeholder="Choose your typeface"
-              type="option"
-              width="100%"
               onChange={handleTypeface}
               value={uploadSetting.typeface}
             ></Option>
             <Option
-              faIconName={faFont}
+              src={iconSvgs.fontSize}
               text="Font Size"
               inputType="text"
               unit="pt"
@@ -250,7 +290,7 @@ export default function Home() {
               value={uploadSetting.fontSize}
             ></Option>
             <Option
-              faIconName={faTextHeight}
+              src={iconSvgs.lineSpacing}
               text="Line Height"
               inputType="text"
               placeholder="Choose your line height"
@@ -259,7 +299,7 @@ export default function Home() {
               value={uploadSetting.lineSpace}
             ></Option>
             <Option
-              faIconName={faFont}
+              src={iconSvgs.letterSpacing}
               text="Letter Spacing"
               inputType="text"
               unit="pt"
@@ -267,7 +307,7 @@ export default function Home() {
               onChange={handleLetterSpace}
               value={uploadSetting.letterSpace}
             ></Option>
-            <ClearButton>
+            <BtnCont align="end">
               <Button
                 text="Clear"
                 backgroundColor={colors.buttonPrimaryBlue}
@@ -275,69 +315,27 @@ export default function Home() {
                 height={btnData.size.small.height}
                 handleClick={handleClear}
               ></Button>
-            </ClearButton>
+            </BtnCont>
           </Container>
         )}
-        {displayFileNameForm === false && inputType === "upload" && (
-          <Container
-            onDrop={(e) => 
-              {
-                e.preventDefault()
-                const file = e.dataTransfer.items[0].getAsFile()
-                onFileSelect(file)
-              }}
-            onDragOver={(e) => {
-                e.preventDefault()
-                setIsActiveDrag(true)
-              }}
-            onDragLeave={(e) => {
-              e.preventDefault()
-              setIsActiveDrag(false)
-            }}
-            width="100%"
-            alignItems="center"
-          >
-            <Icon faIconName={faUpload}></Icon>
-            {isActiveDrag ? (
-              <SubHeader text="Release to drop the file here"></SubHeader>
-            ) : (
-                <SubHeader text="Drag and drop a file here"></SubHeader>
-            )}
-            <p>or</p>
-                <Button
-                  handleClick={() => fileInput.current.click()}
-                  text="Choose a file"
-                ></Button>
-                <input
-                  id="fileInput"
-                  type="file"
-                  name="file"
-                  onChange={(e) => {
-                    e.preventDefault()
-                    onFileSelect(e.target.files[0])
-                  }}
-                  accept=".txt"
-                  ref={fileInput}
-                  style={{ display: "none" }}
-                />
-          </Container>
-        )}
-        {displayFileNameForm && inputType === "upload" && (
-          <Button
-            backgroundColor={colors.buttonPrimaryBlue}
-            text="Upload"
-            type="default"
-            handleClick={(e) => onFileUpload(e)}
-          />
-        )}
-        {inputType === "url" && (
-          <Button
-            backgroundColor={colors.buttonPrimaryBlue}
-            text="Upload"
-            type="default"
-          />
-        )}
+        <BtnCont align="center">
+          {displayFileNameForm && inputType === "upload" && (
+            <Button
+              backgroundColor={colors.buttonPrimaryBlue}
+              text="Upload"
+              type="default"
+              handleClick={(e) => onFileUpload(e)}
+            />
+          )}
+          {inputType === "url" && (
+            <Button
+              backgroundColor={colors.buttonPrimaryBlue}
+              text="Upload"
+              type="default"
+            />
+          )}
+        </BtnCont>
       </Wrapper>
     </Flexbox>
   );
-}
+};
