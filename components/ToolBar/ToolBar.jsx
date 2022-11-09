@@ -16,6 +16,7 @@ const ToolBarCont = styled(Flexbox)`
   padding: 0 1.875rem;
   border-bottom: 1px solid ${colors.grey};
   background: ${colors.backgroundWhite};
+  user-select: none;
   gap: 1.5rem;
 `;
 
@@ -44,8 +45,10 @@ export default function ToolBar({
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
-  const [highlightedText, setHighlightedText] = useState("");
+  const [highlightedNode, setHighlightedNode] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
+
+  const [activateHighlight, setActivateHighlight] = useState(false)
 
   const closeDropdown = () => {
     setShowDropdown(false);
@@ -55,33 +58,56 @@ export default function ToolBar({
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null);
-    setWordInfo(null);
-    setHighlightedText("");
-  };
+    setSummarizedContent(null)
+    setWordInfo(null)
+    setHighlightedNode('')
+  }
 
   useEffect(() => {
     // add event listener to the document
-    const saveSelection = () => {
-      setHighlightedText(window.getSelection().toString());
-    };
 
-    document.addEventListener("mousedown", saveSelection);
+    console.log("Highlight State", activateHighlight)
+      
+      if(activateHighlight){
 
-    // remove event listener when component unmounts
-    return () => {
-      document.removeEventListener("mousedown", saveSelection);
-    };
-  }, []);
+        const saveSelection = () => {
+          const selected = window.getSelection()
+          
+          const rangeCount = selected.rangeCount
+
+          if(rangeCount !== 0){
+            const range = selected.getRangeAt(0)
+
+            const highlightedNode = document.createElement("span")
+            highlightedNode.className = "highlighted"
+            range.surroundContents(highlightedNode)
+            
+            setHighlightedNode(highlightedNode)
+            console.log('highlighted Node', highlightedNode)
+
+          }
+        }
+
+        document.addEventListener("mousedown", saveSelection);
+
+        // remove event listener when component unmounts
+        return () => {
+          document.removeEventListener("mousedown", saveSelection);
+        };
+
+      } 
+  });
 
   async function fetchSummarize(e) {
     e.preventDefault();
     try {
-      const res = await mainHandler.handleSummarize(highlightedText); // call handler for axios call
+      const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
       if (res) {
-        console.log(res);
-        setSummarizedContent(res.data.summary);
-        setShowPopUp("summarize");
+        console.log(res)
+        setSummarizedContent(res.data.summary)
+        
+       
+        setShowPopUp("summarize")
       }
     } catch (error) {
       console.log(error);
@@ -92,8 +118,7 @@ export default function ToolBar({
     e.preventDefault();
     try {
       // callback
-      mainHandler.handleDictionary(highlightedText, (res) => {
-        console.log(res)
+      mainHandler.handleDictionary(highlightedNode, (res) => {
         const { data } = res;
         const { definition } = data;
         // console.log("RES", res);
@@ -128,14 +153,15 @@ export default function ToolBar({
         hoverColor={colors.buttonLightGrey}
       />
       <Divider />
-      {wordInfo && showPopUp === "definition" && (
-        <Dictionary
-          word={highlightedText}
-          wordDefinition={wordInfo[1]}
-          onClose={closePopUp}
-        ></Dictionary>
-      )}
-
+      {
+        wordInfo && showPopUp === "definition" && (
+          <Dictionary
+            word={highlightedNode.textContent}
+            wordDefinition={wordInfo[1]}
+            onClose={closePopUp}
+          ></Dictionary>
+        )
+      }
       {/* SUMMARIZE */}
       <ToolbarIcon
         faIconName={toolBarData[toolbarNum + 2].icon}
@@ -144,19 +170,22 @@ export default function ToolBar({
         hoverColor={colors.buttonLightGrey}
       />
       <Divider />
-      {summarizedContent && showPopUp === "summarize" && (
-        <Summary
-          originalContent={highlightedText}
-          summarizedContent={summarizedContent}
-          onClose={closePopUp}
-        ></Summary>
-      )}
+      {
+        summarizedContent && showPopUp === "summarize" && (
+          <Summary
+            originalContent={highlightedNode}
+            summarizedContent={summarizedContent}
+            onClose={closePopUp}
+          ></Summary>
+        )
+      }
 
       {/* HIGHLIGHT */}
       <ToolbarIcon
         faIconName={toolBarData[toolbarNum + 3].icon}
         text={toolBarData[toolbarNum + 3].name}
         hoverColor={colors.buttonLightGrey}
+        handleClick={()=> activateHighlight? setActivateHighlight(false) : setActivateHighlight(true)}
       />
       <Divider />
 

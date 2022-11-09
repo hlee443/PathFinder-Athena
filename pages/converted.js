@@ -14,6 +14,8 @@ import * as mainHandler from "../handlers/main"
 
 
 const Title = styled(Flexbox)`
+  align-self: flex-start;
+  user-select: none;
   justify-content: space-between;
   width: 100%;
 `;
