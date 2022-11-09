@@ -165,7 +165,7 @@ export default function Converted() {
             dropdown && <MiniDropdown arr={editFileDataArr} />
           }
         </Title>
-        <Container width="100%" height="100%" backgroundColor={settingData.background_colour}>
+        <Container width="100%" backgroundColor={settingData.background_colour}>
           <Content fileData={fileData} settingData={settingData}>
           </Content>
         </Container>
