@@ -44,6 +44,15 @@ const IconContainer = styled(Flexbox)`
   position: relative;
 `;
 
+const MiniIconContainer = styled(Flexbox)`
+  flex-direction: row;
+  :hover {
+    background-color: ${(props) => props.hoverColor};
+    border-radius: 1.25rem;
+  }
+  cursor: pointer;
+`;
+
 const ButtonContainer = styled(Flexbox)`
   min-width: 23.75rem;
   height: fit-content;
@@ -78,33 +87,45 @@ export default function NavBar() {
         <Logo src={logoData.logoHorizontal} />
         {!isLoggedIn ? (
           <IconContainer>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              src="Home.svg"
-              handleClick={() => r.push("/")}
-              handleMouseEnter={() => setLabel("home")}
-              handleMouseLeave={() => setLabel(false)}
-            ></Icon>
-            {label === "home" && <Label text="Home" top="2rem"></Label>}
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              src="Library.svg"
-              handleClick={() => r.push("/library")}
-              handleMouseEnter={() => setLabel("library")}
-              handleMouseLeave={() => setLabel(false)}
-            ></Icon>
-            {label === "library" && <Label text="Library" top="2rem"></Label>}
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              src="Profile.svg"
-              handleClick={{}}
-              handleMouseEnter={() => setLabel("profile")}
-              handleMouseLeave={() => setLabel(false)}
-            ></Icon>
-            {label === "profile" && <Label text="Profile" top="2rem"></Label>}
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("home")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Home.svg"
+              ></Icon>
+              {label === "home" && <Label text="Home" top="2rem"></Label>}
+            </MiniIconContainer>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("library")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/library")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Library.svg"
+              ></Icon>
+              {label === "library" && <Label text="Library" top="2rem"></Label>}
+            </MiniIconContainer>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("profile")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/library")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Profile.svg"
+              ></Icon>
+              {label === "profile" && <Label text="Profile" top="2rem"></Label>}
+            </MiniIconContainer>
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">

@@ -8,12 +8,13 @@ import Label from "../Label/Label";
 const IconCont = styled(Flexbox)`
   padding: 0.5rem;
   gap: 0.5rem;
-  pointer: cursor;
-  :hover {
-    background-color: ${(props) => props.hoverColor};
-    border-radius: 1.25rem;
-  }
+  cursor: pointer;
 `;
+
+// :hover {
+//   background-color: ${(props) => props.hoverColor};
+//   border-radius: 1.25rem;
+// }
 
 const IconImg = styled.img`
   aspect-ratio: 1;
@@ -30,13 +31,15 @@ export default function Icon({
   handleMouseEnter = () => {},
   handleMouseLeave = () => {},
 }) {
+  // onMouseEnter={handleMouseEnter}
+  // onMouseLeave={handleMouseLeave}
   return (
     <IconCont
       onClick={handleClick}
       hoverColor={hoverColor}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      
     >
+      
       {src === null && (
         <FontAwesomeIcon
           size={size}
