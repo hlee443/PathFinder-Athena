@@ -114,7 +114,8 @@ export default function ToolBar({
     e.preventDefault();
     try {
       // callback
-      mainHandler.handleDictionary(highlightedNode, (res) => {
+      // console.log(highlightedNode.textContent)
+      mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
         console.log(res)
         const { data } = res;
         const { definition } = data;
@@ -123,6 +124,7 @@ export default function ToolBar({
 
         // split the response string into an array using regex
         const newDefinition = data[0].shortdef[0];
+        // console.log(newDefinition)
 
         setWordInfo(newDefinition);
         setShowPopUp("definition");
@@ -154,7 +156,7 @@ export default function ToolBar({
         wordInfo && showPopUp === "definition" && (
           <Dictionary
             word={highlightedNode.textContent}
-            wordDefinition={wordInfo[1]}
+            wordDefinition={wordInfo}
             onClose={closePopUp}
           ></Dictionary>
         )
