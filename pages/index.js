@@ -64,6 +64,7 @@ export default function Home() {
   });
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
+  const [isActiveDrag, setIsActiveDrag] = useState(false)
 
   function handleChange(e) {
     e.preventDefault();
@@ -73,8 +74,10 @@ export default function Home() {
     });
   }
 
-  function onFileSelect(e) {
-    const selectedFile = e.target.files[0];
+  function onFileSelect(selectedFile) {
+    // const selectedFile = e.target.files[0] === undefined? e.target.files[0] : e.dataTransfer.items[0];
+
+    console.log("SELECTED FILE", selectedFile)
 
     uploadedFile.fileName = selectedFile.name.split(".")[0];
     uploadedFile.fileType = selectedFile.name.slice(
@@ -94,13 +97,14 @@ export default function Home() {
     }
 
     mainHandler.handleUpload(uploadData, (res) => {
-      let { fileData, settingData } = res.data
+      let { fileData, settingData, folderArray } = res.data
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
-            settingData: JSON.stringify(settingData)
+            settingData: JSON.stringify(settingData),
+            folderArray: JSON.stringify(folderArray)
           },
         },
         "/converted"
@@ -150,8 +154,8 @@ export default function Home() {
       backgroundColour: "#FFFFFC",
       typeface: "Open Sans",
       fontSize: 16,
-      lineSpace: 9,
-      letterSpace: 150
+      lineSpace: 150,
+      letterSpace: 0.35
     })
   };
 
@@ -192,9 +196,30 @@ export default function Home() {
           </CustomizeInputBox>
         )}
         {displayFileNameForm === false && inputType === "upload" && (
-          <Container gap="1.5625rem">
+          <Container
+            gap="1.5625rem"
+            onDrop={(e) => {
+              e.preventDefault()
+              const file = e.dataTransfer.items[0].getAsFile()
+              onFileSelect(file)
+            }}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setIsActiveDrag(true)
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              setIsActiveDrag(false)
+            }}
+            width="100%"
+            alignItems="center"
+          >
             <Icon size="2x" faIconName={faUpload}></Icon>
-            <SubHeader text="Drag and drop a file here"></SubHeader>
+            {isActiveDrag ? (
+              <SubHeader text="Release to drop the file here"></SubHeader>
+            ) : (
+              <SubHeader text="Drag and drop a file here"></SubHeader>
+            )}
             <BodyText>or</BodyText>
             <Button
               handleClick={() => fileInput.current.click()}
@@ -204,7 +229,10 @@ export default function Home() {
               id="fileInput"
               type="file"
               name="file"
-              onChange={(e) => onFileSelect(e)}
+              onChange={(e) => {
+                e.preventDefault()
+                onFileSelect(e.target.files[0])
+              }}
               accept=".txt"
               ref={fileInput}
               style={{ display: "none" }}
@@ -247,13 +275,13 @@ export default function Home() {
               src={iconSvgs.typeface}
               text="Typeface"
               inputType="dropdown"
-              inputWidth ="10rem"
+              inputWidth="10rem"
               placeholder="Choose your typeface"
               onChange={handleTypeface}
               value={uploadSetting.typeface}
             ></Option>
             <Option
-              src = {iconSvgs.fontSize}
+              src={iconSvgs.fontSize}
               text="Font Size"
               inputType="text"
               unit="pt"
