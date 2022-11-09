@@ -1,49 +1,63 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { Flexbox, BodyText } from "../../styles/globals";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
+import { Flexbox, BodyText, colors } from "../../styles/globals";
 import Input from "../Input/Input";
-import { useState } from "react";
 
 const OptionCont = styled(Flexbox)`
-  justify-content: space-between;
+  justify-content: flex-start;
   background-color: ${(props) => props.bgColor || "transparent"};
-  padding: 0.5rem 2rem 0.5rem 2rem;
   width: 100%;
   cursor: pointer;
-  align-items: flex-start;
+  gap: 1.875rem;
+  padding: 1rem 1.5rem;
 `;
 
-const OptionName = styled(Flexbox)``;
+const OptionText = styled.p`
+  width: 100%;
+`
 
 export default function Option({
   bgColor = "transparent",
   text = "text",
   unit = null,
-  faIconName = faIconName,
+  faIconName = null,
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
   handleOption = () => { },
-  width = "100%",
-  onClose = () => {},
-  onChange = () => {},
-  value = ""
+  onClose = () => { },
+  onChange = () => { },
+  value = "",
+  src = null,
+  inputWidth ="4rem"
 }) {
 
-  return <OptionCont onClick={handleOption} dir="row" bgColor={bgColor}>
-    <OptionName dir="row">
-      <Icon faIconName={faIconName}></Icon>
-      <BodyText>{text}</BodyText>
-      {
-        inputType !== null && <Input width={width} type={inputType} placeholder={placeholder} onChange={onChange} value={value}></Input>
-      }
-      {
-        unit !== null && <BodyText>{unit}</BodyText>
-      }
-    </OptionName>
+  return <OptionCont
+    onClick={handleOption}
+    dir="row"
+    bgColor={bgColor}
+  >
+    {faIconName !== null && <Icon faIconName={faIconName}/>}
+    {src !== null && <img src={src} />}
+
+    <OptionText>{text}</OptionText>
     {
-      faIconNameRight !== null && <Icon faIconName={faIconNameRight} handleClick={onClose} />
+      inputType !== null && <Input
+        type={inputType}
+        placeholder={placeholder} onChange={onChange}
+        value={value}
+        height="2.875rem"
+        width={inputWidth}
+      />
+    }
+    {
+      unit !== null && <BodyText>{unit}</BodyText>
+    }
+    {
+      faIconNameRight !== null && <Icon
+        size="1x"
+        faIconName={faIconNameRight}
+        handleClick={onClose} />
     }
   </OptionCont>
 }
