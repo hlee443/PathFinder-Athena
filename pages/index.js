@@ -103,13 +103,14 @@ export default function Home() {
     };
 
     mainHandler.handleUpload(uploadData, (res) => {
-      let { fileData, settingData } = res.data;
+      let { fileData, settingData, folderArray } = res.data
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
             settingData: JSON.stringify(settingData),
+            folderArray: JSON.stringify(folderArray)
           },
         },
         "/converted"
@@ -158,9 +159,9 @@ export default function Home() {
       backgroundColour: "#FFFFFC",
       typeface: "Open Sans",
       fontSize: 16,
-      lineSpace: 9,
-      letterSpace: 150,
-    });
+      lineSpace: 150,
+      letterSpace: 0.35
+    })
   }
 
   function resetPageStates() {

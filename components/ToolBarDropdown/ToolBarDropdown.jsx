@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "../Button/Button";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option";
-import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus, faBook, faFolder, faClose, faChevronRight, faFont } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { libraryDataArr, typefaceDataArr, dataArr } from "./data";
 import { iconSvgs } from "../Icon/data";
@@ -25,51 +25,83 @@ const ButtonCont = styled(Flexbox)`
 export default function ToolBarDropdown({
   onExpand = () => { },
   onClose = () => { },
-  type ="",
-  libValueArr = [],
-  typeValueArr = ["", "#FFFFFC", "Open Sans", "16", "150", "0.35"],
-  onChange = () => { }
+  handleSaveSetting = () => { },
+  handleNewFolder = () => { },
+  type = "",
+  libraryArray = [],
+  typeArray = []
 }) {
+
   const [sel, setSel] = useState(0);
 
   return (
+
     <DropdownCont type={type}>
-      {type === "Library" && libraryDataArr.map((o, i) => (
+      {type === "Library" && 
+        <Option
+          bgColor={colors.primaryBlue}
+          faIconName={faBook}
+          text="Library"
+          faIconNameRight={faClose}
+          handleOption={onClose}
+        ></Option>
+      }
+      {type === "Library" && libraryArray.map((o, i) => (
         <Option
           key={i}
-          bgColor={o.bgColor}
-          faIconName={o.faIconName}
-          text={o.text}
-          faIconNameRight={o.faIconNameRight}
-          handleOption={sel === i ? onClose : onExpand}
-          onChange={onChange} 
-          value={libValueArr[i]}
+          faIconName={faFolder}
+          text={o.folder_name}
+          faIconNameRight={faChevronRight}
+          onClick={o.handleClick}
+          value={o.folder_id}
         ></Option>
-      ))}
+      ))
+      }
+      {type === "Library" &&
+        <ButtonCont>
+          <Button
+            text="New Folder"
+            backgroundColor="transparent"
+            type="IconButton"
+            faIconName={faFolderPlus}
+            handleClick={() => handleNewFolder("Assignments")}
+          ></Button>
+        </ButtonCont>
+      }
+      {type === "Typeface" && 
+        <Option
+          bgColor={colors.primaryBlue}
+          faIconName={faFont}
+          text="Typeface"
+          faIconNameRight={faClose}
+          handleOption={onClose}
+        ></Option>
+      }
       {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
         key={i}
-        bgColor={o.bgColor|| "transparent"}
+        bgColor={"transparent"}
         faIconName={o.faIconName}
         text={o.text}
-        faIconNameRight={o.faIconNameRight}
-        handleOption={sel === i ? onClose : onExpand}
         inputType={o.inputType}
         width={o.width}
         unit={o.unit}
         placeholder={o.placeholder || "#"}
         src={o.src}
-        onChange={onChange} 
-        value={typeValueArr[i]}
+        onChange={typeArray[i].handleChange}
+        value={typeArray[i].value}
       ></Option>))
       }
-      <ButtonCont>
-        <Button
-          text="New Folder"
-          backgroundColor="transparent"
-          type="IconButton"
-          faIconName={faFolderPlus}
-        ></Button>
-      </ButtonCont>
+      {type === "Typeface" &&
+        <ButtonCont>
+          <Button
+            text="Save Settings"
+            backgroundColor="transparent"
+            type="IconButton"
+            faIconName={faFolderPlus}
+            handleClick={handleSaveSetting}
+          ></Button>
+        </ButtonCont>
+      }
     </DropdownCont >
   );
 };
