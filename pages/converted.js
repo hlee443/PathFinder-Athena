@@ -78,6 +78,10 @@ export default function Converted() {
     updateTypeArray()
   };
 
+  function handleMiniDropdown() {
+    dropdown === false ? showDropdown(true) : showDropdown(false)
+  }
+
   async function handleSaveSetting() {
     let uploadSettingData = {
       settingData: {
@@ -159,7 +163,7 @@ export default function Converted() {
           <Header text={fileData.file_name} />
           <Icon
             faIconName={faEllipsis}
-            handleClick={showDropdown}
+            handleClick={handleMiniDropdown}
           />
           {
             dropdown && <MiniDropdown arr={editFileDataArr} />
