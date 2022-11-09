@@ -59,6 +59,5 @@ export const Container = styled(Flexbox)`
   border: 0.125rem solid ${colors.darkGray};
   background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
   border-radius: 2rem;
-  white-space: pre-line;
   align-items: ${(props) => props.alignItems || "flex-start"}
 `;

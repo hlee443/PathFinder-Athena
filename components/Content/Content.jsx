@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 
 
 const ContentSpan = styled.span`
@@ -12,14 +13,23 @@ export default function Content({
     fileData = {},
     settingData = {}
 }) {
+
+    useEffect(() => {
+        
+        const fileBody = document.querySelector(".file__body")
+        fileBody.innerText = fileData.file_content
+
+    }, [])
+
+
     return (
         <ContentSpan
+            className="file__body"
             fontSize={settingData.font_size}
             typeface={settingData.typeface}
             lineSpace={settingData.line_space}
             letterSpace={settingData.letter_space}
         >
-            {fileData.file_content}
         </ContentSpan>
     );
 }
