@@ -114,7 +114,7 @@ export default function ToolBar({
     e.preventDefault();
     try {
       // callback
-      mainHandler.handleDictionary(highlightedNode, (res) => {
+      mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
         console.log(res)
         const { data } = res;
         const { definition } = data;
@@ -154,7 +154,7 @@ export default function ToolBar({
         wordInfo && showPopUp === "definition" && (
           <Dictionary
             word={highlightedNode.textContent}
-            wordDefinition={wordInfo[1]}
+            wordDefinition={wordInfo}
             onClose={closePopUp}
           ></Dictionary>
         )
