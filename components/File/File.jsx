@@ -8,7 +8,14 @@ import Input from "../Input/Input";
 import Button from "../Button/Button";
 import * as mainHandler from "../../handlers/main";
 
-const FileCont = styled.div``;
+const FileCont = styled.div`
+  width: 13.75rem;
+  max-height: 15.625rem;
+`;
+
+const Title = styled.p`
+  font-weight: bold;
+`
 
 const Preview = styled(Flexbox)`
   font-size: ${(props) => props.size};
@@ -21,7 +28,7 @@ const Preview = styled(Flexbox)`
 `;
 
 const BottomCont = styled(Flexbox)`
-  min-width: 100%;
+  max-width: 100%;
   justify-content: space-between;
 `;
 

@@ -7,10 +7,12 @@
 import axios from "axios";
 import * as mainHandler from '../main';
 
-export function handleUpload(uploadData, callback){
+export async function handleUpload(uploadData, callback){
     let { uploadedFile, uploadSetting } = uploadData;
 
     const fileReader = new FileReader()
+
+    const folderData = await mainHandler.handleGetFoldersByUserId(9)
     
     switch (uploadedFile.fileType){
         case 'txt':
@@ -30,7 +32,7 @@ export function handleUpload(uploadData, callback){
                 const postFileObj = {
                     fileData: {
                         userId: 9,
-                        fileLink: "im crying",
+                        fileLink: "S3 Bucket Link",
                         fileContent: uploadedFile.fileContent,
                         fileName: uploadedFile.fileName
                     },
@@ -38,6 +40,7 @@ export function handleUpload(uploadData, callback){
                 }
 
                 mainHandler.handleAddFile(postFileObj, (res) => {
+                    res.data.folderArray = folderData.data
                     callback(res)
                 });
 

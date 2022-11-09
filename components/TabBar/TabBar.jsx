@@ -8,18 +8,18 @@ const TabBarCont = styled(Flexbox)`
   border-bottom: 0.25rem solid #e1e1e1;
   justify-content: start;
   width: 100%;
+  height: fit-content;
 `;
 
 export default function TabBar({
   changePage = () => {},
-  inputType = "url",
   btnArr = [],
   buttonClick = () => {}
 }) {
   const [sel, setSel] = useState(0);
 
   return (
-    <TabBarCont inputType={inputType} dir="row">
+    <TabBarCont dir="row">
       {btnArr.map((o, i) => (
         <Button
           key={o.folder_id || o.text}

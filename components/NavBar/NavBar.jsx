@@ -4,30 +4,30 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
-import {
-  faBookBookmark,
-  faHome,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import Label from "../Label/Label";
 import { useRouter } from "next/router";
-import { colors, Flexbox } from "../../styles/globals";
+import { colors, Flexbox, logoData } from "../../styles/globals";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
   max-height: 6.438rem;
   backdrop-filter: blur(0.125rem);
   z-index: 100;
+  justify-content: space-between;
+  height: 100%;
 `;
 
-const Logo = styled.img``;
+const Logo = styled.img`
+  width: 14.5rem;
+`;
 
 const TopBar = styled(Flexbox)`
   background-color: ${(props) => props.backgroundColor};
   width: 100%;
   height: 4.688rem;
-  justify-content: flex-end;
-  align-items: end;
-  padding: 2rem;
+  align-items: center;
+  padding: 1rem;
+  justify-content: space-between;
 `;
 
 const Bar = styled.div`
@@ -40,11 +40,22 @@ const IconContainer = styled(Flexbox)`
   min-width: 12rem;
   height: 100%;
   justify-content: space-between;
+  flex-direction: row;
+  position: relative;
+`;
+
+const MiniIconContainer = styled(Flexbox)`
+  flex-direction: row;
+  :hover {
+    background-color: ${(props) => props.hoverColor};
+    border-radius: 1.25rem;
+  }
+  cursor: pointer;
 `;
 
 const ButtonContainer = styled(Flexbox)`
   min-width: 23.75rem;
-  height: 100%;
+  height: fit-content;
   justify-content: space-around;
 `;
 
@@ -60,39 +71,61 @@ const Overlay = styled.div`
   justify-content: center;
 `;
 
-export default function NavBar({ type = "loggedIn" }) {
+export default function NavBar() {
   const r = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
+  const [label, setLabel] = useState(false);
 
   const closeBubble = () => {
     setShowBubble(false);
   };
 
   return (
-    <NavBarCont type={type}>
-      <TopBar backgroundColor="#96ADFC">
-        <Logo src="" />
+    <NavBarCont>
+      <TopBar dir="row" backgroundColor="#96ADFC">
+        <Logo src={logoData.logoHorizontal} />
         {!isLoggedIn ? (
           <IconContainer>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              faIconName={faHome}
-              handleClick={() => r.push("/")}
-            ></Icon>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              faIconName={faBookBookmark}
-              handleClick={() => r.push("/library")}
-            ></Icon>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              faIconName={faUser}
-              handleClick={{}}
-            ></Icon>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("home")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Home.svg"
+              ></Icon>
+              {label === "home" && <Label text="Home" top="2rem"></Label>}
+            </MiniIconContainer>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("library")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/library")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Library.svg"
+              ></Icon>
+              {label === "library" && <Label text="Library" top="2rem"></Label>}
+            </MiniIconContainer>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("profile")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/library")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Profile.svg"
+              ></Icon>
+              {label === "profile" && <Label text="Profile" top="2rem"></Label>}
+            </MiniIconContainer>
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">
@@ -100,14 +133,16 @@ export default function NavBar({ type = "loggedIn" }) {
               handleClick={() => setShowBubble("login")}
               width={btnData.width}
               height={btnData.height}
-              backgroundColor={btnData.state.default.backgroundColor}
+              backgroundColor={colors.backgroundCream}
+              hoverColor={colors.buttonLightBlue}
               text="Log In"
             ></Button>
             <Button
               handleClick={() => setShowBubble("signup")}
               width={btnData.width}
               height={btnData.height}
-              backgroundColor={btnData.state.default.backgroundColor}
+              backgroundColor={colors.backgroundCream}
+              hoverColor={colors.buttonLightBlue}
               text="Sign Up"
             ></Button>
           </ButtonContainer>
@@ -117,13 +152,18 @@ export default function NavBar({ type = "loggedIn" }) {
             <Bubble
               type="login"
               onClose={closeBubble}
+              onSignUp={() => setShowBubble("signup")}
               handleBubble={() => setShowBubble("success")}
-            ></Bubble>
+            />
           </Overlay>
         )}
         {showBubble === "signup" && (
           <Overlay>
-            <Bubble type="signup" onClose={closeBubble}></Bubble>
+            <Bubble
+              onSignIn={() => setShowBubble("login")}
+              type="signup"
+              onClose={closeBubble}
+            />
           </Overlay>
         )}
         {showBubble === "success" && (
@@ -132,12 +172,12 @@ export default function NavBar({ type = "loggedIn" }) {
               type="success"
               onClose={closeBubble}
               handleBubble={() => r.push("/library")}
-            ></Bubble>
+            />
           </Overlay>
         )}
       </TopBar>
-      <Bar backgroundColor="#A8BCFF"></Bar>
-      <Bar backgroundColor="#C3D1FF"></Bar>
+      <Bar backgroundColor="#A8BCFF" />
+      <Bar backgroundColor="#C3D1FF" />
     </NavBarCont>
   );
 }

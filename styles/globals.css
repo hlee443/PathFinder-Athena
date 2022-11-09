@@ -6,6 +6,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: #fffef7;
+  letter-spacing: 0.22em;
 }
 
 div {
@@ -38,6 +39,38 @@ form {
 
 * {
   box-sizing: border-box;
+}
+
+input::placeholder {
+  letter-spacing: 0.22rem;
+}
+input[type="text"] {
+  padding: 1rem;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border: 1px solid;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50px;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 50px;
+}
+
+p {
+  margin: 0;
 }
 
 /* @media (prefers-color-scheme: dark) {
