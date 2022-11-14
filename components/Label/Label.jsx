@@ -6,8 +6,6 @@ const LabelCont = styled(Flexbox)`
   width: fit-content;
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
-  top: ${(props) => props.top};
-  right: ${(props) => props.right};
 `;
 
 // background-color: ${(props) => props.backgroundColor};
@@ -17,15 +15,11 @@ export default function Label({
   text = "placeholder",
   backgroundColor = "#FFFEF6",
   handleClick = () => {},
-  top = null,
-  right = null,
 }) {
   return (
     <LabelCont
       backgroundColor={backgroundColor}
       onClick={handleClick}
-      top={top}
-      right={right}
     >
       {text}
     </LabelCont>
