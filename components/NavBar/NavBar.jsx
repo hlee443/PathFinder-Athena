@@ -4,7 +4,6 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
-import Label from "../Label/Label";
 import { useRouter } from "next/router";
 import { colors, Flexbox, logoData } from "../../styles/globals";
 
@@ -19,6 +18,7 @@ const NavBarCont = styled(Flexbox)`
 
 const Logo = styled.img`
   width: 14.5rem;
+  cursor: pointer;
 `;
 
 const TopBar = styled(Flexbox)`
@@ -38,19 +38,11 @@ const Bar = styled.div`
 
 const IconContainer = styled(Flexbox)`
   min-width: 12rem;
-  height: 100%;
+  width: 18rem;
   justify-content: space-between;
   flex-direction: row;
   position: relative;
-`;
-
-const MiniIconContainer = styled(Flexbox)`
-  flex-direction: row;
-  :hover {
-    background-color: ${(props) => props.hoverColor};
-    border-radius: 1.25rem;
-  }
-  cursor: pointer;
+  padding: 1rem;
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -75,7 +67,7 @@ export default function NavBar() {
   const r = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
-  const [label, setLabel] = useState(false);
+  const [text, setText] = useState(false);
 
   const closeBubble = () => {
     setShowBubble(false);
@@ -84,48 +76,31 @@ export default function NavBar() {
   return (
     <NavBarCont>
       <TopBar dir="row" backgroundColor="#96ADFC">
-        <Logo src={logoData.logoHorizontal} />
+        <Logo src={logoData.logoHorizontal} onClick={() => r.push("/")} />
         {!isLoggedIn ? (
           <IconContainer>
-            <MiniIconContainer
-              hoverColor={colors.backgroundCream}
-              onMouseEnter={() => setLabel("home")}
-              onMouseLeave={() => setLabel(false)}
-              onClick={() => r.push("/")}
-            >
-              <Icon
-                size="2x"
-                color={colors.backgroundWhite}
-                src="Home.svg"
-              ></Icon>
-              {label === "home" && <Label text="Home" top="2rem"></Label>}
-            </MiniIconContainer>
-            <MiniIconContainer
-              hoverColor={colors.backgroundCream}
-              onMouseEnter={() => setLabel("library")}
-              onMouseLeave={() => setLabel(false)}
-              onClick={() => r.push("/library")}
-            >
-              <Icon
-                size="2x"
-                color={colors.backgroundWhite}
-                src="Library.svg"
-              ></Icon>
-              {label === "library" && <Label text="Library" top="2rem"></Label>}
-            </MiniIconContainer>
-            <MiniIconContainer
-              hoverColor={colors.backgroundCream}
-              onMouseEnter={() => setLabel("profile")}
-              onMouseLeave={() => setLabel(false)}
-              onClick={() => r.push("/library")}
-            >
-              <Icon
-                size="2x"
-                color={colors.backgroundWhite}
-                src="Profile.svg"
-              ></Icon>
-              {label === "profile" && <Label text="Profile" top="2rem"></Label>}
-            </MiniIconContainer>
+            <Icon
+              size="2x"
+              color={colors.backgroundWhite}
+              src="Home.svg"
+              text="Home"
+              handleClick={() => r.push("/")}
+            />
+            <Icon
+              size="2x"
+              color={colors.backgroundWhite}
+              src="Library.svg"
+              text="Library"
+              handleClick={() => r.push("/library")}
+            />
+            <Icon
+              size="2x"
+              color={colors.backgroundWhite}
+              src="Profile.svg"
+              text="Profile"
+              handleClick={() => r.push("/")}
+
+            />
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">
@@ -136,7 +111,7 @@ export default function NavBar() {
               backgroundColor={colors.backgroundCream}
               hoverColor={colors.buttonLightBlue}
               text="Log In"
-            ></Button>
+            />
             <Button
               handleClick={() => setShowBubble("signup")}
               width={btnData.width}
@@ -144,7 +119,7 @@ export default function NavBar() {
               backgroundColor={colors.backgroundCream}
               hoverColor={colors.buttonLightBlue}
               text="Sign Up"
-            ></Button>
+            />
           </ButtonContainer>
         )}
         {showBubble === "login" && (
