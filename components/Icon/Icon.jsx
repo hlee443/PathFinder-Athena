@@ -9,12 +9,16 @@ const IconCont = styled(Flexbox)`
   padding: 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
+  position: relative;
+  height: 100%;
+  width: ${(props) => props.width};
+  :hover {
+  background-color: ${(props) => props.hoverColor};
+  border-radius: 1.25rem;
+}
 `;
 
-// :hover {
-//   background-color: ${(props) => props.hoverColor};
-//   border-radius: 1.25rem;
-// }
+
 
 const IconImg = styled.img`
   aspect-ratio: 1;
@@ -28,6 +32,7 @@ export default function Icon({
   hoverColor = "transparent",
   src = null,
   text = "",
+  width= "",
   handleMouseEnter = () => {},
   handleMouseLeave = () => {},
 }) {
@@ -37,9 +42,8 @@ export default function Icon({
     <IconCont
       onClick={handleClick}
       hoverColor={hoverColor}
-      
+      width={width}
     >
-      
       {src === null && (
         <FontAwesomeIcon
           size={size}
@@ -48,7 +52,7 @@ export default function Icon({
         ></FontAwesomeIcon>
       )}
       {src !== null && <IconImg src={src} />}
-      {text && <Label text={text}></Label>}
+      {text && <div>{text}</div>}
     </IconCont>
   );
-}
+};
