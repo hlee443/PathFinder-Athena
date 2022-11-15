@@ -115,6 +115,7 @@ export default function ToolBar({
 
         // split the response string into an array using regex
         const newDefinition = data[0].shortdef[0];
+        // console.log(newDefinition)
 
         setWordInfo(newDefinition);
         setShowPopUp("definition");
