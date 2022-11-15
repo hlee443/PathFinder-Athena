@@ -15,6 +15,7 @@ const NavBarCont = styled(Flexbox)`
   z-index: 100;
   justify-content: space-between;
   height: 100%;
+
 `;
 
 const Logo = styled.img`
@@ -28,6 +29,7 @@ const TopBar = styled(Flexbox)`
   align-items: center;
   padding: 1rem;
   justify-content: space-between;
+
 `;
 
 const Bar = styled.div`
@@ -37,20 +39,16 @@ const Bar = styled.div`
 `;
 
 const IconContainer = styled(Flexbox)`
-  min-width: 12rem;
+  min-width: 20rem;
   height: 100%;
   justify-content: space-between;
   flex-direction: row;
-  position: relative;
+  padding: 2rem;
 `;
 
 const MiniIconContainer = styled(Flexbox)`
-  flex-direction: row;
-  :hover {
-    background-color: ${(props) => props.hoverColor};
-    border-radius: 1.25rem;
-  }
   cursor: pointer;
+
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -58,6 +56,9 @@ const ButtonContainer = styled(Flexbox)`
   height: fit-content;
   justify-content: space-around;
 `;
+
+
+
 
 const Overlay = styled.div`
   position: fixed;
@@ -88,7 +89,6 @@ export default function NavBar() {
         {!isLoggedIn ? (
           <IconContainer>
             <MiniIconContainer
-              hoverColor={colors.backgroundCream}
               onMouseEnter={() => setLabel("home")}
               onMouseLeave={() => setLabel(false)}
               onClick={() => r.push("/")}
@@ -97,8 +97,8 @@ export default function NavBar() {
                 size="2x"
                 color={colors.backgroundWhite}
                 src="Home.svg"
-              ></Icon>
-              {label === "home" && <Label text="Home" top="2rem"></Label>}
+              />
+              {label === "home" && <Label text="Home"></Label>}
             </MiniIconContainer>
             <MiniIconContainer
               hoverColor={colors.backgroundCream}
@@ -110,8 +110,8 @@ export default function NavBar() {
                 size="2x"
                 color={colors.backgroundWhite}
                 src="Library.svg"
-              ></Icon>
-              {label === "library" && <Label text="Library" top="2rem"></Label>}
+              />
+              {label === "library" && <Label text="Library"></Label>}
             </MiniIconContainer>
             <MiniIconContainer
               hoverColor={colors.backgroundCream}
@@ -123,8 +123,8 @@ export default function NavBar() {
                 size="2x"
                 color={colors.backgroundWhite}
                 src="Profile.svg"
-              ></Icon>
-              {label === "profile" && <Label text="Profile" top="2rem"></Label>}
+              />
+              {label === "profile" && <Label text="Profile"></Label>}
             </MiniIconContainer>
           </IconContainer>
         ) : (
@@ -136,7 +136,7 @@ export default function NavBar() {
               backgroundColor={colors.backgroundCream}
               hoverColor={colors.buttonLightBlue}
               text="Log In"
-            ></Button>
+            />
             <Button
               handleClick={() => setShowBubble("signup")}
               width={btnData.width}
@@ -144,7 +144,7 @@ export default function NavBar() {
               backgroundColor={colors.backgroundCream}
               hoverColor={colors.buttonLightBlue}
               text="Sign Up"
-            ></Button>
+            />
           </ButtonContainer>
         )}
         {showBubble === "login" && (
