@@ -6,6 +6,7 @@ import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
 import { useRouter } from "next/router";
 import { colors, Flexbox, logoData } from "../../styles/globals";
+import Label from "../Label/Label";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -28,6 +29,7 @@ const TopBar = styled(Flexbox)`
   align-items: center;
   padding: 1rem;
   justify-content: space-between;
+
 `;
 
 const Bar = styled.div`
@@ -37,12 +39,16 @@ const Bar = styled.div`
 `;
 
 const IconContainer = styled(Flexbox)`
-  min-width: 12rem;
-  width: 18rem;
+  min-width: 20rem;
+  height: 100%;
   justify-content: space-between;
   flex-direction: row;
-  position: relative;
-  padding: 1rem;
+  padding: 2rem;
+`;
+
+const MiniIconContainer = styled(Flexbox)`
+  cursor: pointer;
+
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -50,6 +56,9 @@ const ButtonContainer = styled(Flexbox)`
   height: fit-content;
   justify-content: space-around;
 `;
+
+
+
 
 const Overlay = styled.div`
   position: fixed;
@@ -68,6 +77,7 @@ export default function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
   const [text, setText] = useState(false);
+  const [label, setLabel] = useState(false);
 
   const closeBubble = () => {
     setShowBubble(false);
@@ -79,28 +89,44 @@ export default function NavBar() {
         <Logo src={logoData.logoHorizontal} onClick={() => r.push("/")} />
         {!isLoggedIn ? (
           <IconContainer>
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              src="Home.svg"
-              text="Home"
-              handleClick={() => r.push("/")}
-            />
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              src="Library.svg"
-              text="Library"
-              handleClick={() => r.push("/library")}
-            />
-            <Icon
-              size="2x"
-              color={colors.backgroundWhite}
-              src="Profile.svg"
-              text="Profile"
-              handleClick={() => r.push("/")}
-
-            />
+            <MiniIconContainer
+              onMouseEnter={() => setLabel("home")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Home.svg"
+              />
+              {label === "home" && <Label text="Home"></Label>}
+            </MiniIconContainer>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("library")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/library")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Library.svg"
+              />
+              {label === "library" && <Label text="Library"></Label>}
+            </MiniIconContainer>
+            <MiniIconContainer
+              hoverColor={colors.backgroundCream}
+              onMouseEnter={() => setLabel("profile")}
+              onMouseLeave={() => setLabel(false)}
+              onClick={() => r.push("/library")}
+            >
+              <Icon
+                size="2x"
+                color={colors.backgroundWhite}
+                src="Profile.svg"
+              />
+              {label === "profile" && <Label text="Profile"></Label>}
+            </MiniIconContainer>
           </IconContainer>
         ) : (
           <ButtonContainer dir="row">

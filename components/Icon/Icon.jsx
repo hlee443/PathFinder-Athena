@@ -8,25 +8,16 @@ const IconCont = styled(Flexbox)`
   padding: 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
+  position: relative;
+  height: 100%;
+  width: ${(props) => props.width};
+  :hover {
+  background-color: ${(props) => props.hoverColor};
   border-radius: 1.25rem;
+}
 `;
 
-const IconLabel = styled(Flexbox)`
-  border-radius: 2rem;
-  width: fit-content;
-  height: fit-content;
-  padding: 0.3rem 0.5rem;
-  letter-spacing: ${textData.letterSpacing};
-  cursor: pointer;
-  background-color: ${colors.backgroundWhite};
-  position: absolute;
-  bottom: 0;
-  margin-bottom: -1rem;
-`;
 
-// :hover {
-//   background-color: ${(props) => props.hoverColor};
-// }
 
 const IconImg = styled.img`
   aspect-ratio: 1;
@@ -37,9 +28,12 @@ export default function Icon({
   handleClick = () => { },
   size = "lg",
   color = colors.textBlack,
-  // hoverColor = "transparent",
+  hoverColor = "transparent",
   src = null,
   text = "",
+  width= "",
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
 }) {
 
   const [label, setLabel] = useState(false);
@@ -48,9 +42,8 @@ export default function Icon({
   return (
     <IconCont
       onClick={handleClick}
-      // hoverColor={hoverColor}
-      onMouseEnter={() => { setLabel(true) }}
-      onMouseLeave={() => { setLabel(false) }}
+      hoverColor={hoverColor}
+      width={width}
     >
       {src === null && (
         <FontAwesomeIcon
@@ -60,7 +53,7 @@ export default function Icon({
         />
       )}
       {src !== null && <IconImg src={src} />}
-      {label && <IconLabel>{text}</IconLabel>}
+      {text && <div>{text}</div>}
     </IconCont>
   );
-}
+};

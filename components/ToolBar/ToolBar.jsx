@@ -20,12 +20,6 @@ const ToolBarCont = styled(Flexbox)`
   gap: 1.5rem;
 `;
 
-const ToolbarIcon = styled(Icon)`
-  justify-content: space-around;
-  width: fit-content;
-  height: 6rem;
-`
-
 const Divider = styled.div`
   height: 3.75rem;
   border: 0.5px solid ${colors.lightGrey};
@@ -34,8 +28,8 @@ const Divider = styled.div`
 export default function ToolBar({
   typeArray = [],
   libraryArray = [],
-  handleNewFolder = () => {},
-  handleSaveSetting = () => {},
+  handleNewFolder = () => { },
+  handleSaveSetting = () => { },
 }) {
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -63,35 +57,35 @@ export default function ToolBar({
     // add event listener to the document
 
     console.log("Highlight State", activateHighlight)
-      
-      if(activateHighlight){
 
-        const saveSelection = () => {
-          const selected = window.getSelection()
-          
-          const rangeCount = selected.rangeCount
+    if (activateHighlight) {
 
-          if(rangeCount !== 0){
-            const range = selected.getRangeAt(0)
+      const saveSelection = () => {
+        const selected = window.getSelection()
 
-            const highlightedNode = document.createElement("span")
-            highlightedNode.className = "highlighted"
-            range.surroundContents(highlightedNode)
-            
-            setHighlightedNode(highlightedNode)
-            console.log('highlighted Node', highlightedNode)
+        const rangeCount = selected.rangeCount
 
-          }
+        if (rangeCount !== 0) {
+          const range = selected.getRangeAt(0)
+
+          const highlightedNode = document.createElement("span")
+          highlightedNode.className = "highlighted"
+          range.surroundContents(highlightedNode)
+
+          setHighlightedNode(highlightedNode)
+          console.log('highlighted Node', highlightedNode)
+
         }
+      }
 
-        document.addEventListener("mousedown", saveSelection);
+      document.addEventListener("mousedown", saveSelection);
 
-        // remove event listener when component unmounts
-        return () => {
-          document.removeEventListener("mousedown", saveSelection);
-        };
+      // remove event listener when component unmounts
+      return () => {
+        document.removeEventListener("mousedown", saveSelection);
+      };
 
-      } 
+    }
   });
 
   async function fetchSummarize(e) {
@@ -101,8 +95,6 @@ export default function ToolBar({
       if (res) {
         console.log(res)
         setSummarizedContent(res.data.summary)
-        
-       
         setShowPopUp("summarize")
       }
     } catch (error) {
@@ -135,7 +127,7 @@ export default function ToolBar({
   return (
     <ToolBarCont dir="row">
       {/* TTS */}
-      {/* <ToolbarIcon
+      {/* <Icon
         faIconName={toolBarData[toolbarNum].icon}
         text={toolBarData[toolbarNum].name}
         hoverColor={colors.buttonLightGrey}
@@ -143,13 +135,14 @@ export default function ToolBar({
       <Divider /> */}
 
       {/* DICTIONARY */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 1].icon}
-        text={toolBarData[toolbarNum + 1].name}
-        handleClick={(e) => fetchDictionary(e)}
-        hoverColor={colors.buttonLightGrey}
-      />
-      <Divider />
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 1].icon}
+          text={toolBarData[toolbarNum + 1].name}
+          handleClick={(e) => fetchDictionary(e)}
+          hoverColor={colors.buttonLightGrey}
+        />
+      </div>
       {
         wordInfo && showPopUp === "definition" && (
           <Dictionary
@@ -159,14 +152,16 @@ export default function ToolBar({
           ></Dictionary>
         )
       }
-      {/* SUMMARIZE */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 2].icon}
-        text={toolBarData[toolbarNum + 2].name}
-        handleClick={(e) => fetchSummarize(e)}
-        hoverColor={colors.buttonLightGrey}
-      />
       <Divider />
+      {/* SUMMARIZE */}
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 2].icon}
+          text={toolBarData[toolbarNum + 2].name}
+          handleClick={(e) => fetchSummarize(e)}
+          hoverColor={colors.buttonLightGrey}
+        />
+      </div>
       {
         summarizedContent && showPopUp === "summarize" && (
           <Summary
@@ -175,19 +170,22 @@ export default function ToolBar({
           ></Summary>
         )
       }
+      <Divider />
 
       {/* HIGHLIGHT */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 3].icon}
-        text={toolBarData[toolbarNum + 3].name}
-        hoverColor={colors.buttonLightGrey}
-        handleClick={()=> activateHighlight? setActivateHighlight(false) : setActivateHighlight(true)}
-      />
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 3].icon}
+          text={toolBarData[toolbarNum + 3].name}
+          hoverColor={colors.buttonLightGrey}
+          handleClick={() => activateHighlight ? setActivateHighlight(false) : setActivateHighlight(true)}
+        />
+      </div>
       <Divider />
 
       {/* TYPEFACE SETTING */}
       <div>
-        <ToolbarIcon
+        <Icon
           faIconName={toolBarData[toolbarNum + 4].icon}
           handleClick={() => setShowDropdown("typeface")}
           text={toolBarData[toolbarNum + 4].name}
@@ -199,20 +197,19 @@ export default function ToolBar({
             onClose={closeDropdown}
             typeArray={typeArray}
             handleSaveSetting={handleSaveSetting}
-          ></ToolBarDropdown>
+          />
         )}
       </div>
       <Divider />
 
       {/* SAVE TO LIBRARY */}
       <div>
-        <ToolbarIcon
+        <Icon
           faIconName={toolBarData[toolbarNum + 5].icon}
           handleClick={() => setShowDropdown("library")}
           text={toolBarData[toolbarNum + 5].name}
           hoverColor={colors.buttonLightGrey}
         />
-
         {showDropdown === "library" && (
           <ToolBarDropdown
             type="Library"
@@ -225,11 +222,13 @@ export default function ToolBar({
       <Divider />
 
       {/* DOWNLOAD */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 6].icon}
-        text={toolBarData[toolbarNum + 6].name}
-        hoverColor={colors.buttonLightGrey}
-      />
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 6].icon}
+          text={toolBarData[toolbarNum + 6].name}
+          hoverColor={colors.buttonLightGrey}
+        />
+      </div>
     </ToolBarCont>
   );
-}
+};
