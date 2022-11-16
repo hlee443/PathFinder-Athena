@@ -78,7 +78,8 @@ export const Container = styled(Flexbox)`
   max-width: 100%;
   height: ${(props) => props.height || "fit-content"};
   padding: 2em;
-  border: 0.125rem solid ${colors.darkGray};
+  border: 0.125rem solid;
+  border-color: ${(props) => props.borderColor || colors.darkGray};
   background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
   border-radius: 2rem;
   gap: ${(props) => props.gap};
