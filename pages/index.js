@@ -281,6 +281,8 @@ export default function Home() {
         )}
         {displayFileNameForm === false && inputType === "upload" && (
           <Container
+            backgroundColor={isActiveDrag && `rgba(240, 240, 240, .5)`}
+            borderColor={isActiveDrag && colors.primaryBlue} 
             gap="2rem"
             onDrop={(e) => {
               e.preventDefault();
