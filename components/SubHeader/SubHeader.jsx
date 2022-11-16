@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { textData } from "../../styles/globals";
+import { mediaQuery } from "../../MediaQuery/data";
+
 
 const SubHeaderCont = styled.h2`
   font-size: ${textData.h2.size};
@@ -7,8 +9,13 @@ const SubHeaderCont = styled.h2`
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
   margin: 0;
-`;
+  font-weight: 400;
+
+  @media ${mediaQuery.minWidth.mobile} {
+    font-size: 1.125rem;
+  };
+  `
 
 export default function SubHeader({ text = "SubHeader text" }) {
   return <SubHeaderCont>{text}</SubHeaderCont>;
-}
+};

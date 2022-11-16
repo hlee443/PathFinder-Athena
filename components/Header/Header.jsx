@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { textData } from "../../styles/globals";
+import { mediaQuery } from "../../MediaQuery/data";
+
 
 const HeaderCont = styled.h1`
   font-size: ${textData.h1.size};
@@ -8,6 +10,10 @@ const HeaderCont = styled.h1`
   letter-spacing: ${textData.letterSpacing};
   font-weight: ${textData.h1.fontWeight};
   margin: 0;
+
+  @media ${mediaQuery.minWidth.mobile} {
+    font-size: 2rem;
+  };
 `;
 
 export default function Header({ text = "Header text" }) {
