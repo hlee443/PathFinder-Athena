@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import { btnData } from "./data";
 import Bubble from "../Bubble/Bubble";
 import { useRouter } from "next/router";
 import { colors, Flexbox, logoData } from "../../styles/globals";
 import Label from "../Label/Label";
+import MiniDropDown from "../MiniDropdown/MiniDropdown";
+import { ProfileDataArr } from "../MiniDropdown/data";
+import useMediaQuery from "../../MediaQuery/MediaQuery";
+import { mediaQuery } from "../../MediaQuery/data";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -14,41 +18,52 @@ const NavBarCont = styled(Flexbox)`
   backdrop-filter: blur(0.125rem);
   z-index: 100;
   justify-content: space-between;
-  height: 100%;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+   position: fixed;
+   bottom: 0;
+  };
 `;
 
 const Logo = styled.img`
   width: 14.5rem;
   cursor: pointer;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    display: none;
+  };
 `;
 
 const TopBar = styled(Flexbox)`
   background-color: ${(props) => props.backgroundColor};
-  width: 100%;
-  height: 4.688rem;
-  align-items: center;
-  padding: 1rem;
+  width: 100vw;
+  max-height: 4.688rem;
+  height: 100%;
+  padding: 2rem;
   justify-content: space-between;
-
 `;
 
 const Bar = styled.div`
   background-color: ${(props) => props.backgroundColor};
   width: 100%;
-  height: 0.875rem;
+  min-height: 0.875rem;
 `;
 
 const IconContainer = styled(Flexbox)`
-  min-width: 20rem;
   height: 100%;
   justify-content: space-between;
   flex-direction: row;
-  padding: 2rem;
-`;
+  width: 20rem;
+  max-width: 100vw;
+  align-items: center;
 
-const MiniIconContainer = styled(Flexbox)`
-  cursor: pointer;
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: 100vw;
+  }
 
+  @media ${mediaQuery.minWidth.tablet} {
+    width: 20rem;
+  }
 `;
 
 const ButtonContainer = styled(Flexbox)`
@@ -56,9 +71,6 @@ const ButtonContainer = styled(Flexbox)`
   height: fit-content;
   justify-content: space-around;
 `;
-
-
-
 
 const Overlay = styled.div`
   position: fixed;
@@ -76,8 +88,9 @@ export default function NavBar() {
   const r = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showBubble, setShowBubble] = useState("type");
-  const [text, setText] = useState(false);
   const [label, setLabel] = useState(false);
+  const [showMiniDropDown, setShowMiniDropDown] = useState(false);
+  const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
 
   const closeBubble = () => {
     setShowBubble(false);
@@ -85,49 +98,51 @@ export default function NavBar() {
 
   return (
     <NavBarCont>
+      {isMobile && <>
+        <Bar backgroundColor="#C3D1FF" />
+        <Bar backgroundColor="#A8BCFF" />
+      </>}
       <TopBar dir="row" backgroundColor="#96ADFC">
         <Logo src={logoData.logoHorizontal} onClick={() => r.push("/")} />
         {!isLoggedIn ? (
           <IconContainer>
-            <MiniIconContainer
-              onMouseEnter={() => setLabel("home")}
-              onMouseLeave={() => setLabel(false)}
-              onClick={() => r.push("/")}
-            >
+            <Flexbox>
               <Icon
                 size="2x"
-                color={colors.backgroundWhite}
                 src="Home.svg"
+                handleMouseEnter={() => setLabel("home")}
+                handleMouseLeave={() => setLabel(false)}
+                handleClick={() => r.push("/")}
               />
-              {label === "home" && <Label text="Home"></Label>}
-            </MiniIconContainer>
-            <MiniIconContainer
-              hoverColor={colors.backgroundCream}
-              onMouseEnter={() => setLabel("library")}
-              onMouseLeave={() => setLabel(false)}
-              onClick={() => r.push("/library")}
-            >
+              {label === "home" && <Label position="absolute" text="Home" />}
+              {isMobile && <Label backgroundColor="transparent" text="Home" />}
+            </Flexbox>
+            <Flexbox>
               <Icon
                 size="2x"
-                color={colors.backgroundWhite}
                 src="Library.svg"
+                handleMouseEnter={() => setLabel("library")}
+                handleMouseLeave={() => setLabel(false)}
+                handleClick={() => r.push("/library")}
               />
-              {label === "library" && <Label text="Library"></Label>}
-            </MiniIconContainer>
-            <MiniIconContainer
-              hoverColor={colors.backgroundCream}
-              onMouseEnter={() => setLabel("profile")}
-              onMouseLeave={() => setLabel(false)}
-              onClick={() => r.push("/library")}
-            >
+              {label === "library" && <Label position="absolute" text="Library" />}
+              {isMobile && <Label backgroundColor="transparent" text="Library" />}
+            </Flexbox>
+            <Flexbox>
               <Icon
                 size="2x"
-                color={colors.backgroundWhite}
                 src="Profile.svg"
+                handleMouseEnter={() => setLabel("profile")}
+                handleMouseLeave={() => setLabel(false)}
+                handleClick={setShowMiniDropDown}
               />
-              {label === "profile" && <Label text="Profile"></Label>}
-            </MiniIconContainer>
+              {label === "profile" && <Label position="absolute" text="Profile" />}
+              {isMobile && <Label backgroundColor="transparent" text="Profile" />}
+
+              {showMiniDropDown && <MiniDropDown arr={ProfileDataArr}></MiniDropDown>}
+            </Flexbox>
           </IconContainer>
+
         ) : (
           <ButtonContainer dir="row">
             <Button
@@ -177,8 +192,10 @@ export default function NavBar() {
           </Overlay>
         )}
       </TopBar>
-      <Bar backgroundColor="#A8BCFF" />
-      <Bar backgroundColor="#C3D1FF" />
+      {!isMobile && <>
+        <Bar backgroundColor="#A8BCFF" />
+        <Bar backgroundColor="#C3D1FF" />
+      </>}
     </NavBarCont>
   );
 }
