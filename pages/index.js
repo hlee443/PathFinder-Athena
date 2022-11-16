@@ -2,12 +2,12 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
+import LogoBar from "../components/LogoBar/LogoBar";
 import {
   colors,
   Flexbox,
   Wrapper,
   Container,
-  BodyText,
 } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
@@ -176,6 +176,7 @@ export default function Home() {
 
   return (
     <Flexbox>
+      <LogoBar />
       <NavBar />
       <Wrapper>
         <Header text="Upload your study materials!"></Header>
