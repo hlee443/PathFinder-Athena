@@ -53,8 +53,8 @@ const IconContainer = styled(Flexbox)`
   height: 100%;
   justify-content: space-between;
   flex-direction: row;
-  width: 20rem;
-  max-width: 100vw;
+  width: 14rem;
+
   align-items: center;
 
   @media ${mediaQuery.maxWidth.mobile} {
@@ -62,7 +62,7 @@ const IconContainer = styled(Flexbox)`
   }
 
   @media ${mediaQuery.minWidth.tablet} {
-    width: 20rem;
+    width: 16rem;
   }
 `;
 
@@ -108,7 +108,6 @@ export default function NavBar() {
           <IconContainer>
             <Flexbox>
               <Icon
-                size="2x"
                 src="Home.svg"
                 handleMouseEnter={() => setLabel("home")}
                 handleMouseLeave={() => setLabel(false)}
@@ -119,7 +118,6 @@ export default function NavBar() {
             </Flexbox>
             <Flexbox>
               <Icon
-                size="2x"
                 src="Library.svg"
                 handleMouseEnter={() => setLabel("library")}
                 handleMouseLeave={() => setLabel(false)}
@@ -130,7 +128,6 @@ export default function NavBar() {
             </Flexbox>
             <Flexbox>
               <Icon
-                size="2x"
                 src="Profile.svg"
                 handleMouseEnter={() => setLabel("profile")}
                 handleMouseLeave={() => setLabel(false)}
