@@ -42,6 +42,7 @@ export default function Icon({
 
   const [bg, setBg] = useState("transparent");
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
+  const isTablet = useMediaQuery(mediaQuery.maxWidth.tablet);
 
   return (
     <IconCont
@@ -58,7 +59,7 @@ export default function Icon({
           icon={faIconName}
         />
       )}
-      {src !== null && <IconImg size={isMobile ? "2rem" : size} src={src} />}
+      {src !== null && <IconImg size={(isMobile || isTablet) && "2rem" || size} src={src} />}
       {text && <div>{text}</div>}
     </IconCont>
   );
