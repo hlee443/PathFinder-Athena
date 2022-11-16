@@ -1,5 +1,5 @@
-import { BLOCKED_PAGES } from "next/constants";
 import styled from "styled-components";
+import {mediaQuery} from "../MediaQuery/data"
 
 export const textData = {
   lineHeight: "150%",
@@ -55,6 +55,14 @@ export const Wrapper = styled(Flexbox)`
   margin: 0 auto;
   gap: 2.5rem;
   padding: 8rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    padding: 3rem;
+  };
+
+  @media ${mediaQuery.maxWidth.tablet} {
+    padding: 5rem;
+  };
 `;
 
 export const BodyText = styled.p`
