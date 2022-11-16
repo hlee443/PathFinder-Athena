@@ -30,7 +30,7 @@ const IconImg = styled.img`
 export default function Icon({
   faIconName = faLink,
   handleClick = () => { },
-  size = "",
+  size = "lg",
   color = colors.textBlack,
   hoverColor = "transparent",
   src = null,
