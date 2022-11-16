@@ -8,9 +8,8 @@ const LabelCont = styled(Flexbox)`
   cursor: pointer;
   padding: 0.3rem 0.5rem;
   background-color: ${(props) => props.backgroundColor};
-  position: ${(props) => props.position || "absolute"};
+  position: ${(props) => props.position};
   bottom: ${(props) => props.bottom || "0"};
-
 `;
 
 // background-color: ${(props) => props.backgroundColor};
@@ -19,7 +18,8 @@ const LabelCont = styled(Flexbox)`
 export default function Label({
   text = "placeholder",
   backgroundColor = "#FFFEF6",
-  handleClick = () => {},
+  handleClick = () => { },
+  position = ""
   // top = null,
   // right = null,
 }) {
@@ -27,6 +27,7 @@ export default function Label({
     <LabelCont
       backgroundColor={backgroundColor}
       onClick={handleClick}
+      position={position}
       // top={top}
       // right={right}
     >
