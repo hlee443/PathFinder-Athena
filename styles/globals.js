@@ -55,6 +55,7 @@ export const Wrapper = styled(Flexbox)`
   margin: 0 auto;
   gap: 2.5rem;
   padding: 8rem;
+  overflow-y: scroll;
 
   @media ${mediaQuery.maxWidth.mobile} {
     padding: 3rem;
