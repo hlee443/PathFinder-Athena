@@ -11,7 +11,7 @@ const HeaderCont = styled.h1`
   font-weight: ${textData.h1.fontWeight};
   margin: 0;
 
-  @media ${mediaQuery.minWidth.mobile} {
+  @media ${mediaQuery.maxWidth.mobile} {
     font-size: 2rem;
   };
 `;

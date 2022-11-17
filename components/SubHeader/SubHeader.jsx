@@ -11,7 +11,7 @@ const SubHeaderCont = styled.h2`
   margin: 0;
   font-weight: 400;
 
-  @media ${mediaQuery.minWidth.mobile} {
+  @media ${mediaQuery.maxWidth.mobile} {
     font-size: 1.125rem;
   };
   `
