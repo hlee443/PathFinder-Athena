@@ -62,7 +62,7 @@ export const Wrapper = styled(Flexbox)`
   };
 
   @media ${mediaQuery.maxWidth.tablet} {
-    padding: 5rem;
+    padding: 4rem;
   };
 `;
 
