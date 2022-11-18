@@ -7,43 +7,75 @@ import { useRouter } from "next/router";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import * as mainHandler from "../../handlers/main";
+import { mediaQuery } from "../../MediaQuery/data";
+import MiniDropdown from "../MiniDropdown/MiniDropdown";
+import { editFileDataArr } from "../MiniDropdown/data";
 
-const FileCont = styled.div`
-  width: 13.75rem;
-  max-height: 15.625rem;
+const FileCont = styled(Flexbox)`
+  align-items: start;
+  width: 9rem;
+  position: relative;
+
+  @media ${mediaQuery.minWidth.tablet} {
+    width: 12rem;
+  };
 `;
 
 const Title = styled.p`
-  font-weight: bold;
+  font-weight: bold;  
+  word-break: break-word;
+  white-space: normal;
 `
 
 const Preview = styled(Flexbox)`
-  font-size: ${(props) => props.size};
-  min-width: 12.813rem;
-  min-height: 15.625rem;
-  border-radius: 3.125rem;
-  background-color: ${(props) => props.color || colors.backgroundWhite};
-  border: 0.188rem dashed ${colors.darkGray};
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
+  border: 0.188rem ${(props) => props.border || "dashed"} ${colors.darkGray};
   cursor: pointer;
+  width: 100%;
+  min-height: 10rem;
+
+  :hover {
+    background-color: ${colors.opacity};
+    border: 0.188rem solid ${colors.primaryBlue}
+  }
+
+  @media ${mediaQuery.minWidth.mobile} {
+    height: 10rem;
+  };
+
+  @media ${mediaQuery.minWidth.tablet} {
+    height: 14rem;
+  };
+
 `;
 
 const BottomCont = styled(Flexbox)`
-  max-width: 100%;
+  width: 100%;
+  min-width: 100%;
   justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 0.5rem;
 `;
 
 export default function File({
   fileName = "Title",
-  type = "default",
+  // type = "default",
   fileId = null,
-  handleClick = () => {},
-  handleDelete = () => {}
+  handleClick = () => { },
+  handleDelete = () => { }
 }) {
   const r = useRouter();
+
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState(fileName);
+  const [isHover, setIsHover] = useState(false);
+  const [showMiniDropdown, setShowMiniDropdown] = useState(false);
 
   const editFilename = () => {
+    setShowMiniDropdown(false);
     if (!isEditing) {
       setIsEditing(true);
     } else {
@@ -53,6 +85,7 @@ export default function File({
 
   const saveFilename = () => {
     setIsEditing(false);
+    setShowMiniDropdown(false);
     mainHandler.handleUpdateFile({
       fileData: {
         fileId: fileId,
@@ -71,54 +104,65 @@ export default function File({
     console.log(e.target.value);
   };
 
+  const moveFolder = () => { };
+
   return (
     <FileCont fileId={fileId}>
-      <Preview onClick={() => handleClick(fileId)}>
+      <Preview
+        border={fileId ? "solid" : "dashed"}
+        onMouseEnter={setIsHover}
+        onMouseLeave={() => setIsHover(false)}
+        onClick={() => handleClick(fileId)}>
         {fileId ? (
           <p> file #{fileId} preview</p>
         ) : (
           <Icon
-            handleClick={() => {
-              r.push("/");
-            }}
             faIconName={faPlus}
             size="2x"
+            color={isHover ? colors.primaryBlue : colors}
           />
         )}
       </Preview>
 
       {!isEditing && (
         <BottomCont dir="row">
-          <div>{newFileName}</div>
-          {fileId && (
-            <Icon handleClick={editFilename} faIconName={faEllipsisVertical} />
-          )}
+          <Title>{newFileName}</Title>
+          {
+            fileId && (
+              <Icon
+                handleClick={setShowMiniDropdown}
+                // handleClick={editFilename}
+                faIconName={faEllipsisVertical} />
+            )
+          }
+          {
+            showMiniDropdown && <MiniDropdown
+              handleMouseLeave={() => setShowMiniDropdown(false)}
+              position="absolute"
+              onEdit={editFilename}
+              onDelete={deleteFile}
+              onMoveFolder={moveFolder}
+              arr={editFileDataArr} />
+          }
         </BottomCont>
       )}
       {isEditing && (
         <BottomCont dir="row">
           <Input
             value={newFileName}
+            // width="fit-content"
             onChange={(e) => {
               getFilenameValue(e);
             }}
-            width="7rem"
-            borderRadius="1rem"
           />
           <Button
             handleClick={saveFilename}
             text="Save"
-            width="5rem"
-            height="2rem"
-          />
-          <Button
-            handleClick={deleteFile}
-            text="Delete File"
-            width="5rem"
-            height="2rem"
+            width="fit-content"
+            height="100%"
           />
         </BottomCont>
       )}
     </FileCont>
   );
-}
+};
