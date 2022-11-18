@@ -37,7 +37,8 @@ export const colors = {
   darkGrey: "#3E3E3E",
   lightGrey: "#E1E1E1",
   buttonLightGrey: "#F5F5F5",
-  grey: "#D9D9D9"
+  grey: "#D9D9D9",
+  opacity: "rgba(240, 240, 240, .7)"
 };
 
 export const Flexbox = styled.div`
@@ -58,11 +59,12 @@ export const Wrapper = styled(Flexbox)`
   overflow-y: scroll;
 
   @media ${mediaQuery.maxWidth.mobile} {
-    padding: 3rem;
+    padding: 1rem;
+    gap: 1rem;
   };
 
   @media ${mediaQuery.maxWidth.tablet} {
-    padding: 4rem;
+    padding: 3rem; 
   };
 `;
 
