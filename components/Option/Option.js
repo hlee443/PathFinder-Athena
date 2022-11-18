@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { Flexbox, BodyText, colors } from "../../styles/globals";
 import Input from "../Input/Input";
+import { useState } from "react";
 
 const OptionCont = styled(Flexbox)`
   justify-content: flex-start;
@@ -10,6 +11,11 @@ const OptionCont = styled(Flexbox)`
   cursor: pointer;
   gap: 1.875rem;
   padding: 1rem 1.5rem;
+
+  :hover {
+    font-weight: bold;
+    background-color: ${(props) => props.hoverColor || colors.secondaryBlue};
+  }
 `;
 
 const OptionText = styled.p`
@@ -29,15 +35,19 @@ export default function Option({
   onChange = () => { },
   value = "",
   src = null,
-  inputWidth ="4rem"
+  inputWidth = "4rem",
+  hoverColor = "",
+  height= ""
+  // num = 1
 }) {
 
   return <OptionCont
+    hoverColor={hoverColor}
     onClick={handleOption}
     dir="row"
     bgColor={bgColor}
   >
-    {faIconName !== null && <Icon faIconName={faIconName}/>}
+    {faIconName !== null && <Icon faIconName={faIconName} />}
     {src !== null && <img src={src} />}
 
     <OptionText>{text}</OptionText>
@@ -46,7 +56,7 @@ export default function Option({
         type={inputType}
         placeholder={placeholder} onChange={onChange}
         value={value}
-        height="2.875rem"
+        height={height}
         width={inputWidth}
       />
     }
