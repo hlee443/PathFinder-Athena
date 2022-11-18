@@ -15,6 +15,8 @@ const FileCont = styled(Flexbox)`
   align-items: start;
   width: 9rem;
   position: relative;
+  justify-content: space-between;
+  height: auto;
 
   @media ${mediaQuery.minWidth.tablet} {
     width: 12rem;
@@ -49,7 +51,6 @@ const Preview = styled(Flexbox)`
   @media ${mediaQuery.minWidth.tablet} {
     height: 14rem;
   };
-
 `;
 
 const BottomCont = styled(Flexbox)`
