@@ -11,6 +11,7 @@ import MiniDropDown from "../MiniDropdown/MiniDropdown";
 import { ProfileDataArr } from "../MiniDropdown/data";
 import useMediaQuery from "../../MediaQuery/MediaQuery";
 import { mediaQuery } from "../../MediaQuery/data";
+import { menus, btns } from "./data";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -18,10 +19,12 @@ const NavBarCont = styled(Flexbox)`
   backdrop-filter: blur(0.125rem);
   z-index: 100;
   justify-content: space-between;
+  display: ${(props) => props.display} ;
 
   @media ${mediaQuery.maxWidth.mobile} {
    position: fixed;
    bottom: 0;
+
   };
 `;
 
@@ -54,7 +57,6 @@ const IconContainer = styled(Flexbox)`
   justify-content: space-between;
   flex-direction: row;
   width: 14rem;
-
   align-items: center;
 
   @media ${mediaQuery.maxWidth.mobile} {
@@ -86,80 +88,66 @@ const Overlay = styled.div`
 
 export default function NavBar() {
   const r = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showBubble, setShowBubble] = useState("type");
   const [label, setLabel] = useState(false);
   const [showMiniDropDown, setShowMiniDropDown] = useState(false);
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
+  const [sel, setSel] = useState(0);
 
   const closeBubble = () => {
     setShowBubble(false);
   };
 
+  if (isMobile && !isLoggedIn) {
+    return <NavBarCont display ="none" />
+  }
+
   return (
     <NavBarCont>
-      {isMobile && <>
-        <Bar backgroundColor="#C3D1FF" />
-        <Bar backgroundColor="#A8BCFF" />
-      </>}
+      {
+        isMobile && <>
+          <Bar backgroundColor="#C3D1FF" />
+          <Bar backgroundColor="#A8BCFF" />
+        </>
+      }
       <TopBar dir="row" backgroundColor="#96ADFC">
         <Logo src={logoData.logoHorizontal} onClick={() => r.push("/")} />
-        {!isLoggedIn ? (
-          <IconContainer>
-            <Flexbox>
-              <Icon
-                src="Home.svg"
-                handleMouseEnter={() => setLabel("home")}
-                handleMouseLeave={() => setLabel(false)}
-                handleClick={() => r.push("/")}
-              />
-              {label === "home" && <Label position="absolute" text="Home" />}
-              {isMobile && <Label backgroundColor="transparent" text="Home" />}
-            </Flexbox>
-            <Flexbox>
-              <Icon
-                src="Library.svg"
-                handleMouseEnter={() => setLabel("library")}
-                handleMouseLeave={() => setLabel(false)}
-                handleClick={() => r.push("/library")}
-              />
-              {label === "library" && <Label position="absolute" text="Library" />}
-              {isMobile && <Label backgroundColor="transparent" text="Library" />}
-            </Flexbox>
-            <Flexbox>
-              <Icon
-                src="Profile.svg"
-                handleMouseEnter={() => setLabel("profile")}
-                handleMouseLeave={() => setLabel(false)}
-                handleClick={setShowMiniDropDown}
-              />
-              {label === "profile" && <Label position="absolute" text="Profile" />}
-              {isMobile && <Label backgroundColor="transparent" text="Profile" />}
-
-              {showMiniDropDown && <MiniDropDown arr={ProfileDataArr}></MiniDropDown>}
-            </Flexbox>
-          </IconContainer>
-
-        ) : (
-          <ButtonContainer dir="row">
-            <Button
-              handleClick={() => setShowBubble("login")}
-              width={btnData.width}
-              height={btnData.height}
-              backgroundColor={colors.backgroundCream}
-              hoverColor={colors.buttonLightBlue}
-              text="Log In"
-            />
-            <Button
-              handleClick={() => setShowBubble("signup")}
-              width={btnData.width}
-              height={btnData.height}
-              backgroundColor={colors.backgroundCream}
-              hoverColor={colors.buttonLightBlue}
-              text="Sign Up"
-            />
-          </ButtonContainer>
-        )}
+        {
+          isLoggedIn ? (
+            <IconContainer>
+              {
+                menus.map((o, i) => (
+                  <Flexbox key={i}>
+                    <Icon
+                      src={o.src}
+                      handleMouseEnter={() => { setLabel(true), setSel(i) }}
+                      handleMouseLeave={() => { setLabel(false), setSel(i) }}
+                      handleClick={() => { r.push(o.page), setSel(i) }}
+                    />
+                    {sel === i && label && <Label position="absolute" text={o.text} />}
+                    {/* {sel === "dropdown" && showMiniDropDown && <MiniDropDown arr={ProfileDataArr}></MiniDropDown>} */}
+                    {isMobile && <Label backgroundColor="transparent" text={o.text} />}
+                  </Flexbox>
+                ))
+              }
+            </IconContainer>
+          ) : (
+            <ButtonContainer dir="row">
+              {
+                btns.map((o, i) => (
+                  <Button
+                    handleClick={() => setShowBubble(o.type)}
+                    width={btnData.width}
+                    height={btnData.height}
+                    backgroundColor={colors.backgroundCream}
+                    hoverColor={colors.buttonLightBlue}
+                    text={o.text}
+                  />
+                ))
+              }
+            </ButtonContainer>
+          )}
         {showBubble === "login" && (
           <Overlay>
             <Bubble
@@ -196,3 +184,4 @@ export default function NavBar() {
     </NavBarCont>
   );
 }
+
