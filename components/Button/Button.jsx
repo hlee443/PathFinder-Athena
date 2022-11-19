@@ -25,7 +25,7 @@ const StyledButton = styled.button`
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
   color: ${(props) => props.color || colors.textBlack};
-  padding: 0.5rem;
+  padding: 1rem;
 
   :hover {
     background-color: ${(props) => props.hoverColor || btnData.state.hover};
