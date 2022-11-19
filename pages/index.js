@@ -2,12 +2,12 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
+import LogoBar from "../components/LogoBar/LogoBar";
 import {
   colors,
   Flexbox,
   Wrapper,
   Container,
-  BodyText,
 } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
@@ -177,6 +177,7 @@ export default function Home() {
 
   return (
     <Flexbox>
+      <LogoBar />
       <NavBar />
       <Wrapper>
         <motion.div
@@ -288,6 +289,8 @@ export default function Home() {
         )}
         {displayFileNameForm === false && inputType === "upload" && (
           <Container
+            backgroundColor={isActiveDrag && `rgba(240, 240, 240, .5)`}
+            borderColor={isActiveDrag && colors.primaryBlue} 
             gap="2rem"
             onDrop={(e) => {
               e.preventDefault();

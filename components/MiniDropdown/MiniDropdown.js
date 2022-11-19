@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option";
 import { useState } from "react";
+import { faBedPulse, faLaptopHouse } from "@fortawesome/free-solid-svg-icons";
 
 const DropdownCont = styled(Flexbox)`
   background-color: ${colors.backgroundYellow};
@@ -9,34 +10,43 @@ const DropdownCont = styled(Flexbox)`
   border-radius: 20px;
   overflow: hidden;
   z-index: 1;
-  position: absolute;
-  right: 0;
+  position: ${(props) => props.position || ''};
+  // right: 0;
   width: fit-content;
   height: fit-content;
 `;
 
 export default function MiniDropdown({
-  left = "",
-  top = "",
+  // left = "",
+  // top = "",
+  position ="",
   arr = [],
-  handleOption = () => {}
+  handleOption = () => { },
+  onEdit = () => { },
+  onDelete = () => { },
+  onMoveFolder = () => { },
+  handleMouseLeave = () => { },
 }) {
-  const [sel, setSel] = useState(0);
 
   return (
-    <DropdownCont left={left} top={top}>
-      {arr.map((o, i) => (
-        <Option
-            handleOption={handleOption}
+    <DropdownCont
+      onMouseLeave={handleMouseLeave}
+      position={position}>
+      {
+        arr.map((o, i) => (
+          <Option
+            handleOption={() => {
+              o.text === "Rename" && onEdit(),
+              o.text === "Delete" && onDelete(),
+              o.text === "Move" && onMoveFolder()
+            }}
             key={i}
             bgColor={o.bgColor}
             text={o.text}
             faIconNameRight={o.faIconNameRight}
-            // handleOption={sel === i ? onClose : onExpand}
-            // onChange={onChange}
-            // value={libValueArr[i]}
-        ></Option>
-        ))}
+          />
+        ))
+      }
     </DropdownCont>
   );
 };
