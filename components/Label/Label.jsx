@@ -14,7 +14,7 @@ const LabelCont = styled(Flexbox)`
 
 `;
 
-const animationStyle = {display: 'flex', justifyContent: 'center'}
+const animationStyle = {display: 'flex', justifyContent: 'center'};
 
 // background-color: ${(props) => props.backgroundColor};
 // position: absolute;

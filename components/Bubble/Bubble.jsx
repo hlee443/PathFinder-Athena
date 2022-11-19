@@ -8,6 +8,7 @@ import { colors, Flexbox, BodyText, textData } from "../../styles/globals";
 import { faClose, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { bubbleData } from "./data";
+import { motion } from "framer-motion";
 
 const BubbleCont = styled(Flexbox)`
   position: relative;
@@ -57,6 +58,8 @@ const TextLink = styled.button`
   text-decoration: underline;
 `;
 
+const animationStyle = {display: 'flex', justifyContent: 'center'}
+
 export default function Bubble({
   type = "login",
   onClose = () => {},
@@ -65,6 +68,13 @@ export default function Bubble({
   onSignIn = () => {},
 }) {
   return (
+    <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    style={animationStyle}
+    >
+
     <BubbleCont type={type}>
       <CloseButton>
         <Icon handleClick={onClose} size="xl" faIconName={faClose} />
@@ -115,5 +125,7 @@ export default function Bubble({
         </TextCont>
       )}
     </BubbleCont>
+
+    </motion.div>
   );
 }
