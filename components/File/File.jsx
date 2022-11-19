@@ -159,6 +159,7 @@ export default function File({
           <Button
             handleClick={saveFilename}
             text="Save"
+            backgroundColor={colors.primaryBlue}
             width="fit-content"
             height="100%"
           />
