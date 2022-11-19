@@ -52,7 +52,7 @@ export const Wrapper = styled(Flexbox)`
   align-items: start;
   justify-content: start;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   gap: 2.5rem;
   padding: 8rem;
