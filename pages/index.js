@@ -26,6 +26,7 @@ import { useRef } from "react";
 import { iconSvgs } from "../components/Icon/data";
 import Option from "../components/Option/Option";
 import { btnData } from "../components/Button/data";
+import { motion } from "framer-motion";
 
 const CustomizeInputBox = styled(Flexbox)`
   background: ${colors.backgroundWhite};
@@ -178,8 +179,15 @@ export default function Home() {
     <Flexbox>
       <NavBar />
       <Wrapper>
+        <motion.div
+        initial={{ opacity: 0, scale: 1.1}}
+        animate={{ opacity: 1, scale:1}}
+        transition={{ duration: 0.5 }}
+        >
         <Header text="Upload your study materials!"></Header>
         <SubHeader text="Let us make your documents easier to understand."></SubHeader>
+        </motion.div>
+
         <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
         {inputType === "url" && (
           <CustomizeInputBox dir="row">
