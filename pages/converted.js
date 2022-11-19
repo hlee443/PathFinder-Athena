@@ -3,15 +3,15 @@ import Header from "../components/Header/Header";
 import { Flexbox, Wrapper, Container } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
+import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import styled from "styled-components";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
-import { editFileDataArr } from "../components/MiniDropdown/data"
-import * as mainHandler from "../handlers/main"
-
+import { editFileDataArr } from "../components/MiniDropdown/data";
+import * as mainHandler from "../handlers/main";
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
@@ -21,67 +21,67 @@ const Title = styled(Flexbox)`
 `;
 
 export default function Converted() {
-
-  const [dictionary, setDictionary] = useState(null)
+  const [dictionary, setDictionary] = useState(null);
   // props: file settings, -- probably -- file info, and url
   const router = useRouter();
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
 
-
-  const [fileData, setFileData] = useState({})
-  const [settingData, setSettingData] = useState({})
-  const [libraryArray, setLibraryArray] = useState([])
-  const [typeArray, setTypeArray] = useState([])
-  const [folderArray, setFolderArray] = useState([])
+  const [fileData, setFileData] = useState({});
+  const [settingData, setSettingData] = useState({});
+  const [libraryArray, setLibraryArray] = useState([]);
+  const [typeArray, setTypeArray] = useState([]);
+  const [folderArray, setFolderArray] = useState([]);
   const [dropdown, showDropdown] = useState(false);
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [newFileName, setNewFileName] = useState("");
+  const [test, setTest] = useState(0);
 
   function handleBGColor(e) {
     setSettingData({
       ...settingData,
-      background_colour: e.target.value
-    })
-    console.log(settingData)
-    updateTypeArray()
-    console.log(typeArray)
-  };
+      background_colour: e.target.value,
+    });
+    console.log(settingData);
+    updateTypeArray();
+    console.log(typeArray);
+  }
 
   function handleTypeface(e) {
     setSettingData({
       ...settingData,
-      typeface: e.target.value
-    })
-    updateTypeArray()
-  };
+      typeface: e.target.value,
+    });
+    updateTypeArray();
+  }
 
   function handleFontSize(e) {
     setSettingData({
       ...settingData,
-      font_size: e.target.value
-    })
-    updateTypeArray()
-  };
+      font_size: e.target.value,
+    });
+    updateTypeArray();
+  }
 
   function handleLineSpace(e) {
     setSettingData({
       ...settingData,
-      line_space: e.target.value
-    })
-    updateTypeArray()
-  };
+      line_space: e.target.value,
+    });
+    updateTypeArray();
+  }
 
   function handleLetterSpace(e) {
     setSettingData({
       ...settingData,
-      letter_space: e.target.value
-    })
-    updateTypeArray()
-  };
+      letter_space: e.target.value,
+    });
+    updateTypeArray();
+  }
 
   function handleMiniDropdown() {
-    dropdown === false ? showDropdown(true) : showDropdown(false)
+    dropdown === false ? showDropdown(true) : showDropdown(false);
   }
 
   async function handleSaveSetting() {
@@ -92,23 +92,23 @@ export default function Converted() {
         typeface: settingData.typeface,
         fontSize: settingData.font_size,
         lineSpace: settingData.line_space,
-        letterSpace: settingData.letter_space
-      }
-    }
-    console.log(uploadSettingData)
-    setSettingData(await mainHandler.handleUpdateSetting(uploadSettingData))
+        letterSpace: settingData.letter_space,
+      },
+    };
+    console.log(uploadSettingData);
+    setSettingData(await mainHandler.handleUpdateSetting(uploadSettingData));
   }
 
   async function handleNewFolder(newFolderName) {
     let uploadFolderData = {
       folderData: {
         userId: "9",
-        folderName: newFolderName
-      }
-    }
-    await mainHandler.handleAddFolder(uploadFolderData)
-    setFolderArray(await mainHandler.handleGetFoldersByUserId("9"))
-    updateLibraryArray()
+        folderName: newFolderName,
+      },
+    };
+    await mainHandler.handleAddFolder(uploadFolderData);
+    setFolderArray(await mainHandler.handleGetFoldersByUserId("9"));
+    updateLibraryArray();
   }
 
   function updateTypeArray() {
@@ -118,62 +118,134 @@ export default function Converted() {
       { value: settingData.font_size, handleChange: handleFontSize },
       { value: settingData.line_space, handleChange: handleLineSpace },
       { value: settingData.letter_space, handleChange: handleLetterSpace },
-    ])
+    ]);
   }
 
   function updateLibraryArray() {
     for (let i = 0; i < folderArray.length; i++) {
-      setLibraryArray(arr => [...arr, {
-        folder_name: folderArray[i].folder_name, handleClick: async () => {
-          let uploadFileData = {
-            fileData: {
-              fileId: fileData.file_id,
-              fileName: fileData.file_name,
-              folderId: folderArray[i].folder_id
-            }
-          }
-          setFileData(await mainHandler.handleUpdateFile(uploadFileData))
-        }
-      }])
+      setLibraryArray((arr) => [
+        ...arr,
+        {
+          folder_name: folderArray[i].folder_name,
+          handleClick: async () => {
+            let uploadFileData = {
+              fileData: {
+                fileId: fileData.file_id,
+                fileName: fileData.file_name,
+                folderId: folderArray[i].folder_id,
+              },
+            };
+            setFileData(await mainHandler.handleUpdateFile(uploadFileData));
+          },
+        },
+      ]);
     }
   }
 
+  function handleEdit() {
+    if (isEditing) {
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
+  }
+  const getFilenameValue = (e) => {
+    setNewFileName(e.target.value);
+    console.log("new file name", newFileName);
+    console.log(e.target.value);
+  };
+
+  function t() {
+    console.log("BEFORE SETTEST", test);
+    setTest(1);
+    console.log("AFTER SETTEST", test);
+  }
+
+  function handleSaveFileName() {
+    // console.log(isEditing);
+    // console.log("before setisediting");
+    setIsEditing(false);
+    console.log("newFileName", newFileName);
+    const fileObject = {
+      fileData: {
+        "fileId": fileData.file_id,
+        "fileName": newFileName,
+        "folderId": fileData.folder_id,
+      },
+    };
+    console.log(typeof newFileName)
+    mainHandler.handleUpdateFile(fileObject);
+    // console.log("after handleupdatefile");
+  }
+  function handleDelete() {
+      mainHandler.handleDeleteFile(fileData.file_id);
+      setIsEditing(false);
+      router.push("/");
+  }
+  // function handleMoveFolder() {
+  //   console.log("move folder");
+  // }
 
   useEffect(() => {
     if (!router.query.fileData) {
-      return
+      return;
     } else if (!router.query.settingData) {
-      return
+      return;
     } else if (!router.query.folderArray) {
-      return
+      return;
     }
-    setFileData(JSON.parse(router.query.fileData))
-    setFolderArray(JSON.parse(router.query.folderArray))
-    setSettingData(JSON.parse(router.query.settingData))
+    setFileData(JSON.parse(router.query.fileData));
+    setFolderArray(JSON.parse(router.query.folderArray));
+    setSettingData(JSON.parse(router.query.settingData));
+    setNewFileName(JSON.parse(router.query.fileData).file_name);
 
-    updateTypeArray()
-    updateLibraryArray()
-
+    updateTypeArray();
+    updateLibraryArray();
   }, []);
 
   return (
     <Flexbox>
       <NavBar />
-      <ToolBar typeArray={typeArray} libraryArray={libraryArray} handleNewFolder={handleNewFolder} handleSaveSetting={handleSaveSetting}></ToolBar>
+      <ToolBar
+        typeArray={typeArray}
+        libraryArray={libraryArray}
+        handleNewFolder={handleNewFolder}
+        handleSaveSetting={handleSaveSetting}
+      ></ToolBar>
       <Wrapper>
-        <Title dir="row">
-          <Header text={fileData.file_name} />
-          <Icon
-            faIconName={faEllipsis}
-            handleClick={handleMiniDropdown}
-          />
-          {
-            dropdown && <MiniDropdown arr={editFileDataArr} />
-          }
-        </Title>
+        {!isEditing && (
+          <Title dir="row">
+            <Header text={newFileName} />
+            <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+            {dropdown && (
+              <MiniDropdown
+                arr={editFileDataArr}
+                onEdit={() => {
+                  console.log("clicking edit");
+                  handleEdit();
+                }}
+                onDelete={() => {
+                  console.log("clicking delete");
+                  handleDelete();
+                }}
+                // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+              />
+            )}
+          </Title>
+        )}
+        {isEditing && (
+          <Title dir="row">
+            <Input
+              type="text"
+              value={newFileName}
+              onChange={(e) => getFilenameValue(e)}
+            />
+            <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
+          </Title>
+        )}
+
         <Container width="100%" backgroundColor={settingData.background_colour}>
-          <Content fileData={fileData} settingData={settingData}>
-          </Content>
+          <Content fileData={fileData} settingData={settingData}></Content>
         </Container>
       </Wrapper>
     </Flexbox>
