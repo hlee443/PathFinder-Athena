@@ -5,10 +5,9 @@ import styled from "styled-components";
 import { colors, Flexbox } from "../../styles/globals";
 import useMediaQuery from "../../MediaQuery/MediaQuery";
 import { mediaQuery } from "../../MediaQuery/data";
-import Label from "../Label/Label";
 
 const IconCont = styled(Flexbox)`
-  // padding: 0.5rem;
+  padding: 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
   // position: relative;
