@@ -32,10 +32,10 @@ form {
   white-space: pre-line; /* recognizes <br /> in the HTML and will line break it. Pretty coolllll*/
 }
 
-.highlighted{
+/* .selectedNode__highlighted{
   background-color: #89DBC7;
   color: black;
-}
+} */
 
 * {
   box-sizing: border-box;
@@ -73,6 +73,30 @@ p {
   margin: 0;
 }
 
+/* #selectedNode__container{
+
+} */
+
+/* #selectedNode__container > .selectedNode__highlighted{
+  box-shadow: 0px 2px 5px rgb(204, 204, 204);
+} */
+
+.selectedNode__highlighted{
+  /* display: flex; */
+  background-color: #3df9b4;
+  color: #000000;
+  /* transition: all .2s; */
+}
+
+/* :not(#selectedNode__container) > .selectedNode__highlighted:hover{
+  transform: translateY(-2px);
+  box-shadow: 0px 2px 5px rgb(204, 204, 204);
+} */
+
+
+
+
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -82,3 +106,5 @@ p {
     background: black;
   }
 } */
+
+

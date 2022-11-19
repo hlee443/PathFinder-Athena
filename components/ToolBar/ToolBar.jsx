@@ -7,6 +7,9 @@ import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
+import * as ReactDomClient from 'react-dom/client'
+import * as ReactDomServer from 'react-dom/server'
+
 
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
@@ -36,74 +39,83 @@ export default function ToolBar({
   libraryArray = [],
   handleNewFolder = () => {},
   handleSaveSetting = () => {},
+  highlightedNode = ""
 }) {
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
-  const [highlightedNode, setHighlightedNode] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
-
-  const [activateHighlight, setActivateHighlight] = useState(false)
 
   const closeDropdown = () => {
     setShowDropdown(false);
   };
 
+  const closeSummary = (e) => {
+    e.preventDefault()
+
+    console.log("CLICK")
+      const selectedSummaryComponent = window.getSelection().anchorNode.parentElement
+      console.log("event", selectedSummaryComponent)
+
+      // selectedSummaryComponent.animate(
+      //   [{ 
+      //     opacity: '1',
+      //     transform: "translateY(0px)"
+      //   },
+      //   {
+      //     opacity: '0',
+      //     transform: 'translateY(-60px)'
+      //   }],
+      //   {
+      //     duration: 300,
+      //     easing: 'ease-in-out',
+      //     fill: 'forwards'
+      //   }
+      // )
+      // setTimeout(() => {
+      //   selectedSummaryComponent.remove()
+      // }, 1000)
+  
+  }
+
   const closePopUp = () => {
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null)
     setWordInfo(null)
-    setHighlightedNode('')
   }
 
-  useEffect(() => {
-    // add event listener to the document
+  function renderSummaryComponent(summaryContent){
+    const summaryComponent = (<Summary  
+      summarizedContent={summaryContent}
+      onClose={(e) => closeSummary(e)}
+    />)
 
-    console.log("Highlight State", activateHighlight)
-      
-      if(activateHighlight){
+    console.log("summary", summaryComponent)
 
-        const saveSelection = () => {
-          const selected = window.getSelection()
-          
-          const rangeCount = selected.rangeCount
+    const container = document.querySelector('#selectedNode__container')
+    
+    const summaryWrapperContainer = document.createElement('div')
+    summaryWrapperContainer.className = 'summarize__wrapper-container'
 
-          if(rangeCount !== 0){
-            const range = selected.getRangeAt(0)
+    container.appendChild(summaryWrapperContainer)
 
-            const highlightedNode = document.createElement("span")
-            highlightedNode.className = "highlighted"
-            range.surroundContents(highlightedNode)
-            
-            setHighlightedNode(highlightedNode)
-            console.log('highlighted Node', highlightedNode)
+    const root = ReactDomClient.createRoot(document.querySelector('.summarize__wrapper-container'))
 
-          }
-        }
+    root.render(summaryComponent)
+  }
 
-        document.addEventListener("mousedown", saveSelection);
-
-        // remove event listener when component unmounts
-        return () => {
-          document.removeEventListener("mousedown", saveSelection);
-        };
-
-      } 
-  });
 
   async function fetchSummarize(e) {
     e.preventDefault();
     try {
+      
       const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
       if (res) {
         console.log(res)
-        setSummarizedContent(res.data.summary)
-        
+
+        renderSummaryComponent(res.data.summary)
        
-        setShowPopUp("summarize")
       }
     } catch (error) {
       console.log(error);
@@ -169,12 +181,12 @@ export default function ToolBar({
       />
       <Divider />
       {
-        summarizedContent && showPopUp === "summarize" && (
-          <Summary
-            summarizedContent={summarizedContent}
-            onClose={closePopUp}
-          ></Summary>
-        )
+        // summarizedContent && showPopUp === "summarize" && (
+        //   <Summary
+        //     summarizedContent={summarizedContent}
+        //     onClose={closePopUp}
+        //   ></Summary>
+        // )
       }
 
       {/* HIGHLIGHT */}
@@ -182,7 +194,7 @@ export default function ToolBar({
         faIconName={toolBarData[toolbarNum + 3].icon}
         text={toolBarData[toolbarNum + 3].name}
         hoverColor={colors.buttonLightGrey}
-        handleClick={()=> activateHighlight? setActivateHighlight(false) : setActivateHighlight(true)}
+        handleClick={()=> console.log("change highlighter color")}
       />
       <Divider />
 
