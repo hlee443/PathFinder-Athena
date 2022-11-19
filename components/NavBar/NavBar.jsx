@@ -7,6 +7,7 @@ import Bubble from "../Bubble/Bubble";
 import { useRouter } from "next/router";
 import { colors, Flexbox, logoData } from "../../styles/globals";
 import Label from "../Label/Label";
+import { motion } from "framer-motion";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -84,6 +85,12 @@ export default function NavBar() {
   };
 
   return (
+    <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    >
+
     <NavBarCont>
       <TopBar dir="row" backgroundColor="#96ADFC">
         <Logo src={logoData.logoHorizontal} onClick={() => r.push("/")} />
@@ -180,5 +187,7 @@ export default function NavBar() {
       <Bar backgroundColor="#A8BCFF" />
       <Bar backgroundColor="#C3D1FF" />
     </NavBarCont>
+
+    </motion.div>
   );
 }
