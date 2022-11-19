@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Flexbox, textData } from "../../styles/globals";
+import { motion } from "framer-motion";
 
 const LabelCont = styled(Flexbox)`
   border-radius: 2rem;
@@ -13,6 +14,8 @@ const LabelCont = styled(Flexbox)`
 
 `;
 
+const animationStyle = {display: 'flex', justifyContent: 'center'}
+
 // background-color: ${(props) => props.backgroundColor};
 // position: absolute;
 
@@ -24,6 +27,12 @@ export default function Label({
   // right = null,
 }) {
   return (
+    <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    style={animationStyle}
+    >
     <LabelCont
       backgroundColor={backgroundColor}
       onClick={handleClick}
@@ -32,5 +41,6 @@ export default function Label({
     >
       {text}
     </LabelCont>
+    </motion.div>
   );
 }
