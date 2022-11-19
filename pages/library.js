@@ -14,12 +14,11 @@ import { mediaQuery } from "../MediaQuery/data";
 
 const FileDisplay = styled(Flexbox)`
   width: 100%;
-  height: 100%;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: flex-start;
+  align-items: start;
   column-gap: 4rem;
   row-gap: 8rem;
-  flex: 2 1 auto;
 
   @media ${mediaQuery.maxWidth.mobile} {
     column-gap: 2rem;
@@ -50,7 +49,7 @@ export default function Library() {
 
 
       folderData.data.map(folder => {
-        folder.icon = faFolder
+        folder.icon = null
       })
 
       folderData.data.push({ text: "Create New", icon: faFolderPlus })
@@ -100,14 +99,15 @@ export default function Library() {
       <LogoBar />
       <NavBar />
       <Wrapper>
-        <TopCont dir="row">
+        {/* <TopCont dir="row">
           <Header text="Library" />
-          {/* <SearchBar /> */}
-        </TopCont>
+          <SearchBar />
+        </TopCont> */}
+        <Header text="Library" />
         <TabBar
           btnArr={folders}
           buttonClick={onSelectFolder}
-        ></TabBar>
+        />
         <FileDisplay dir="row">
           <File
             fileName="Add a new file"
