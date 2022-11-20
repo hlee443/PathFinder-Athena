@@ -28,8 +28,8 @@ export default function ToolBarDropdown({
   handleSaveSetting = () => { },
   handleNewFolder = () => { },
   type = "",
-  libraryArray = [],
-  typeArray = []
+  libraryArray,
+  typeArray
 }) {
 
   const [sel, setSel] = useState(0);

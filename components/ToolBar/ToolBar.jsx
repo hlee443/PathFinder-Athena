@@ -26,8 +26,8 @@ const Divider = styled.div`
 `;
 
 export default function ToolBar({
-  typeArray = [],
-  libraryArray = [],
+  typeArray,
+  libraryArray,
   handleNewFolder = () => { },
   handleSaveSetting = () => { },
 }) {

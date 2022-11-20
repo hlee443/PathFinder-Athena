@@ -39,79 +39,92 @@ export default function Converted() {
 
 
   function handleBGColor(e) {
-    setSettingData({
-      ...settingData,
-      background_colour: e.target.value
-    })
-    console.log(settingData)
-    updateTypeArray()
-    console.log(typeArray)
+    e.preventDefault();
+
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        background_colour: e.target.value
+      }
+    }
+
+    setSettingData(newSettingData)
   };
 
   function handleTypeface(e) {
-    setSettingData({
-      ...settingData,
-      typeface: e.target.value
-    })
-    updateTypeArray()
+    e.preventDefault();
+
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        typeface: e.target.value
+      }
+    }
+
+    setSettingData(newSettingData)
   };
 
   function handleFontSize(e) {
-    setSettingData({
-      ...settingData,
-      font_size: e.target.value
-    })
-    updateTypeArray()
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        font_size: e.target.value
+      }
+    }
+
+    setSettingData(newSettingData)
   };
 
   function handleLineSpace(e) {
-    setSettingData({
-      ...settingData,
-      line_space: e.target.value
-    })
-    updateTypeArray()
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        line_space: e.target.value
+      }
+    }
+
+    setSettingData(newSettingData)
   };
 
   function handleLetterSpace(e) {
-    setSettingData({
-      ...settingData,
-      letter_space: e.target.value
-    })
-    updateTypeArray()
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        letter_space: e.target.value
+      }
+    }
+
+    setSettingData(newSettingData)
   };
 
   function handleMiniDropdown() {
     dropdown === false ? showDropdown(true) : showDropdown(false)
-  }
+  };
 
-  async function handleSaveSetting() {
-    let uploadSettingData = {
-      settingData: {
-        settingId: settingData.setting_id,
-        backgroundColour: settingData.background_colour,
-        typeface: settingData.typeface,
-        fontSize: settingData.font_size,
-        lineSpace: settingData.line_space,
-        letterSpace: settingData.letter_space
-      }
+  function handleSaveSetting() {
+
+    const uploadSettingData = (settingData) => {
+      mainHandler.handleUpdateSetting({
+        settingData: {
+          settingId: settingData.setting_id,
+          backgroundColour: settingData.background_colour,
+          typeface: settingData.typeface,
+          fontSize: settingData.font_size,
+          lineSpace: settingData.line_space,
+          letterSpace: settingData.letter_space
+        }
+      })
+      return settingData
     }
-    console.log(uploadSettingData)
-    setSettingData(await mainHandler.handleUpdateSetting(uploadSettingData))
-  }
+    setSettingData(uploadSettingData)
+    //console.log(uploadSettingData)
+  };
 
-  async function handleNewFolder(newFolderName) {
-    let uploadFolderData = {
-      folderData: {
-        userId: "9",
-        folderName: newFolderName
-      }
-    }
-    await mainHandler.handleAddFolder(uploadFolderData)
-    setFolderArray(await mainHandler.handleGetFoldersByUserId("9"))
-    updateLibraryArray()
-  }
+  function updateTypeArray(settingData) {
 
-  function updateTypeArray() {
     setTypeArray([
       { value: settingData.background_colour, handleChange: handleBGColor },
       { value: settingData.typeface, handleChange: handleTypeface },
@@ -119,9 +132,29 @@ export default function Converted() {
       { value: settingData.line_space, handleChange: handleLineSpace },
       { value: settingData.letter_space, handleChange: handleLetterSpace },
     ])
-  }
+  };
 
-  function updateLibraryArray() {
+
+  function handleNewFolder(newFolderName) {
+    e.preventDefault();
+    const newFolderArray = (folderArray) => {
+      
+    }
+    setFolderArray(newFolderArray)
+    let uploadFolderData = {
+      folderData: {
+        userId: "9",
+        folderName: newFolderName
+      }
+    }
+    const uploadFolder = (folderArray) => {
+      mainHandler.handleAddFolder(uploadFolderData)
+      return folderArray
+    }
+    updateLibraryArray(uploadFolder)
+  };
+
+  function updateLibraryArray(folderArray) {
     for (let i = 0; i < folderArray.length; i++) {
       setLibraryArray(arr => [...arr, {
         folder_name: folderArray[i].folder_name, handleClick: async () => {
@@ -132,11 +165,14 @@ export default function Converted() {
               folderId: folderArray[i].folder_id
             }
           }
-          setFileData(await mainHandler.handleUpdateFile(uploadFileData))
+          const uploadFile = () => {
+            return mainHandler.handleUpdateFile(uploadFileData)
+          }
+          setFileData(uploadFile)
         }
       }])
     }
-  }
+  };
 
 
   useEffect(() => {
@@ -148,13 +184,22 @@ export default function Converted() {
       return
     }
     setFileData(JSON.parse(router.query.fileData))
-    setFolderArray(JSON.parse(router.query.folderArray))
-    setSettingData(JSON.parse(router.query.settingData))
-
-    updateTypeArray()
-    updateLibraryArray()
-
+    const folderArray = JSON.parse(router.query.folderArray)
+    setFolderArray(folderArray)
+    const settingData = JSON.parse(router.query.settingData)
+    setSettingData(settingData)
   }, []);
+
+  useEffect(() => {
+    updateTypeArray(settingData)
+  }, [settingData]);
+
+  useEffect(() => {
+    updateLibraryArray(folderArray)
+  }, [folderArray]);
+
+
+  console.log('on page', settingData)
 
   return (
     <Flexbox>
@@ -178,4 +223,4 @@ export default function Converted() {
       </Wrapper>
     </Flexbox>
   );
-}
+};
