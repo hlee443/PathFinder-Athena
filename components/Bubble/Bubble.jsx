@@ -8,6 +8,7 @@ import { colors, Flexbox, BodyText, textData } from "../../styles/globals";
 import { faClose, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { bubbleData } from "./data";
+import { motion } from "framer-motion";
 
 const BubbleCont = styled(Flexbox)`
   position: relative;
@@ -57,63 +58,72 @@ const TextLink = styled.button`
   text-decoration: underline;
 `;
 
+const animationStyle = {display: 'flex', justifyContent: 'center'}
+
 export default function Bubble({
-  type = "login",
+  type = "login", 
   onClose = () => {},
   handleBubble = () => {},
   onSignUp = () => {},
   onSignIn = () => {},
 }) {
   return (
-    <BubbleCont type={type}>
-      <CloseButton>
-        <Icon handleClick={onClose} size="xl" faIconName={faClose} />
-      </CloseButton>
-      <Header text={bubbleData[type].header} />
-      {(type == "login" || type === "signup") && (
-        <InputCont>
-          <Input placeholder="Enter your email" />
-          <Input placeholder="Enter your password" />
-        </InputCont>
-      )}
+    <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    style={animationStyle}
+    >
+      <BubbleCont type={type}>
+        <CloseButton>
+          <Icon handleClick={onClose} size="xl" faIconName={faClose} />
+        </CloseButton>
+        <Header text={bubbleData[type].header} />
+        {(type == "login" || type === "signup") && (
+          <InputCont>
+            <Input placeholder="Enter your email" />
+            <Input placeholder="Enter your password" />
+          </InputCont>
+        )}
 
-      {type === "signup" && (
-        <TextCont dir="row">
-          <Icon faIconName={faSquare} />
-          <div>
+        {type === "signup" && (
+          <TextCont dir="row">
+            <Icon faIconName={faSquare} />
+            <div>
+              <SubHeader text={bubbleData[type].subHeader1} />
+              <TextLink>Terms & Conditions</TextLink>
+            </div>
+          </TextCont>
+        )}
+
+        {type === "login" && (
+          <TextCont>
             <SubHeader text={bubbleData[type].subHeader1} />
-            <TextLink>Terms & Conditions</TextLink>
-          </div>
-        </TextCont>
-      )}
+            <Flexbox dir="row">
+              <SubHeader text={bubbleData[type].subHeader2} />
+              <TextLink onClick={onSignUp}> Sign Up!</TextLink>
+            </Flexbox>
+          </TextCont>
+        )}
 
-      {type === "login" && (
-        <TextCont>
-          <SubHeader text={bubbleData[type].subHeader1} />
-          <Flexbox dir="row">
+        <BtnCont dir="row">
+          <Button
+            text={bubbleData[type].btnTextLeft}
+            handleClick={onClose}
+            backgroundColor={colors.buttonPrimaryBlue}
+          />
+          <Button
+            text={bubbleData[type].btnTextRight}
+            handleClick={handleBubble}
+          />
+        </BtnCont>
+        {type === "signup" && (
+          <TextCont dir="row">
             <SubHeader text={bubbleData[type].subHeader2} />
-            <TextLink onClick={onSignUp}> Sign Up!</TextLink>
-          </Flexbox>
-        </TextCont>
-      )}
-
-      <BtnCont dir="row">
-        <Button
-          text={bubbleData[type].btnTextLeft}
-          handleClick={onClose}
-          backgroundColor={colors.buttonPrimaryBlue}
-        />
-        <Button
-          text={bubbleData[type].btnTextRight}
-          handleClick={handleBubble}
-        />
-      </BtnCont>
-      {type === "signup" && (
-        <TextCont dir="row">
-          <SubHeader text={bubbleData[type].subHeader2} />
-          <TextLink onClick={onSignIn}>Sign In!</TextLink>
-        </TextCont>
-      )}
-    </BubbleCont>
+            <TextLink onClick={onSignIn}>Sign In!</TextLink>
+          </TextCont>
+        )}
+      </BubbleCont>
+    </motion.div>
   );
 }
