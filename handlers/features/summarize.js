@@ -7,6 +7,7 @@ import axios from 'axios'
 
 export async function handleSummarize(postContent){
     try {
+        console.log('content', postContent)
         // axios call
         return await axios({
             method: "post",

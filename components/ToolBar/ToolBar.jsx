@@ -23,12 +23,6 @@ const ToolBarCont = styled(Flexbox)`
   gap: 1.5rem;
 `;
 
-const ToolbarIcon = styled(Icon)`
-  justify-content: space-around;
-  width: fit-content;
-  height: 6rem;
-`
-
 const Divider = styled.div`
   height: 3.75rem;
   border: 0.5px solid ${colors.lightGrey};
@@ -52,29 +46,48 @@ export default function ToolBar({
 
   const closeSummary = (e) => {
     e.preventDefault()
+    e.stopPropagation()
 
-    console.log("CLICK")
-      const selectedSummaryComponent = window.getSelection().anchorNode.parentElement
-      console.log("event", selectedSummaryComponent)
+      const selectedElement = e.target.parentElement
+      const selectedSummaryComponent = selectedElement.closest('.summarize__wrapper-container')
+      const grandParentElement = selectedElement.closest('#selectedNode__container') ? selectedElement.closest('#selectedNode__container') : selectedElement.closest('.selectedNode__highlighted')
+      
+      console.log("event 1", grandParentElement)
 
-      // selectedSummaryComponent.animate(
-      //   [{ 
-      //     opacity: '1',
-      //     transform: "translateY(0px)"
-      //   },
-      //   {
-      //     opacity: '0',
-      //     transform: 'translateY(-60px)'
-      //   }],
-      //   {
-      //     duration: 300,
-      //     easing: 'ease-in-out',
-      //     fill: 'forwards'
-      //   }
-      // )
-      // setTimeout(() => {
-      //   selectedSummaryComponent.remove()
-      // }, 1000)
+      selectedSummaryComponent.animate(
+        [{ 
+          opacity: '1',
+          transform: "translateY(0px)"
+        },
+        {
+          opacity: '0',
+          transform: 'translateY(-60px)'
+        }],
+        {
+          duration: 800,
+          easing: 'ease-in-out',
+          fill: 'forwards'
+        }
+      )
+      setTimeout(() => {
+        selectedSummaryComponent.remove()
+
+        const selectedHighlightedNode = grandParentElement.querySelector('.selectedNode__highlighted')
+        
+        // remove highlight node
+        selectedHighlightedNode.parentNode.insertBefore(selectedHighlightedNode.firstChild, selectedHighlightedNode)
+        selectedHighlightedNode.parentNode.removeChild(selectedHighlightedNode)
+
+        if(grandParentElement.id === "selectedNode__container"){
+
+          // remove selectedNode__container
+          grandParentElement.parentNode.insertBefore(grandParentElement.firstChild, grandParentElement)
+          grandParentElement.parentNode.removeChild(grandParentElement)
+        }
+
+      }, 500)
+
+      
   
   }
 
@@ -91,29 +104,29 @@ export default function ToolBar({
       onClose={(e) => closeSummary(e)}
     />)
 
-    console.log("summary", summaryComponent)
-
-    const container = document.querySelector('#selectedNode__container')
+    const container = document.querySelector('#selectedNode__container > .selectedNode__highlighted')
     
     const summaryWrapperContainer = document.createElement('div')
+
     summaryWrapperContainer.className = 'summarize__wrapper-container'
 
     container.appendChild(summaryWrapperContainer)
 
-    const root = ReactDomClient.createRoot(document.querySelector('.summarize__wrapper-container'))
+    const root = ReactDomClient.createRoot(document.querySelector('.selectedNode__highlighted > .summarize__wrapper-container'))
 
     root.render(summaryComponent)
+
+
   }
 
 
   async function fetchSummarize(e) {
     e.preventDefault();
     try {
-      
       const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
       if (res) {
         console.log(res)
-
+    
         renderSummaryComponent(res.data.summary)
        
       }
@@ -148,7 +161,7 @@ export default function ToolBar({
   return (
     <ToolBarCont dir="row">
       {/* TTS */}
-      {/* <ToolbarIcon
+      {/* <Icon
         faIconName={toolBarData[toolbarNum].icon}
         text={toolBarData[toolbarNum].name}
         hoverColor={colors.buttonLightGrey}
@@ -156,13 +169,14 @@ export default function ToolBar({
       <Divider /> */}
 
       {/* DICTIONARY */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 1].icon}
-        text={toolBarData[toolbarNum + 1].name}
-        handleClick={(e) => fetchDictionary(e)}
-        hoverColor={colors.buttonLightGrey}
-      />
-      <Divider />
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 1].icon}
+          text={toolBarData[toolbarNum + 1].name}
+          handleClick={(e) => fetchDictionary(e)}
+          hoverColor={colors.buttonLightGrey}
+        />
+      </div>
       {
         wordInfo && showPopUp === "definition" && (
           <Dictionary
@@ -172,14 +186,16 @@ export default function ToolBar({
           ></Dictionary>
         )
       }
-      {/* SUMMARIZE */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 2].icon}
-        text={toolBarData[toolbarNum + 2].name}
-        handleClick={(e) => fetchSummarize(e)}
-        hoverColor={colors.buttonLightGrey}
-      />
       <Divider />
+      {/* SUMMARIZE */}
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 2].icon}
+          text={toolBarData[toolbarNum + 2].name}
+          handleClick={(e) => fetchSummarize(e)}
+          hoverColor={colors.buttonLightGrey}
+        />
+      </div>
       {
         // summarizedContent && showPopUp === "summarize" && (
         //   <Summary
@@ -188,19 +204,22 @@ export default function ToolBar({
         //   ></Summary>
         // )
       }
+      <Divider />
 
       {/* HIGHLIGHT */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 3].icon}
-        text={toolBarData[toolbarNum + 3].name}
-        hoverColor={colors.buttonLightGrey}
-        handleClick={()=> console.log("change highlighter color")}
-      />
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 3].icon}
+          text={toolBarData[toolbarNum + 3].name}
+          hoverColor={colors.buttonLightGrey}
+          handleClick={()=> console.log("change highlighter color")}
+        />
+      </div>
       <Divider />
 
       {/* TYPEFACE SETTING */}
       <div>
-        <ToolbarIcon
+        <Icon
           faIconName={toolBarData[toolbarNum + 4].icon}
           handleClick={() => setShowDropdown("typeface")}
           text={toolBarData[toolbarNum + 4].name}
@@ -212,20 +231,19 @@ export default function ToolBar({
             onClose={closeDropdown}
             typeArray={typeArray}
             handleSaveSetting={handleSaveSetting}
-          ></ToolBarDropdown>
+          />
         )}
       </div>
       <Divider />
 
       {/* SAVE TO LIBRARY */}
       <div>
-        <ToolbarIcon
+        <Icon
           faIconName={toolBarData[toolbarNum + 5].icon}
           handleClick={() => setShowDropdown("library")}
           text={toolBarData[toolbarNum + 5].name}
           hoverColor={colors.buttonLightGrey}
         />
-
         {showDropdown === "library" && (
           <ToolBarDropdown
             type="Library"
@@ -238,11 +256,13 @@ export default function ToolBar({
       <Divider />
 
       {/* DOWNLOAD */}
-      <ToolbarIcon
-        faIconName={toolBarData[toolbarNum + 6].icon}
-        text={toolBarData[toolbarNum + 6].name}
-        hoverColor={colors.buttonLightGrey}
-      />
+      <div>
+        <Icon
+          faIconName={toolBarData[toolbarNum + 6].icon}
+          text={toolBarData[toolbarNum + 6].name}
+          hoverColor={colors.buttonLightGrey}
+        />
+      </div>
     </ToolBarCont>
   );
-}
+};

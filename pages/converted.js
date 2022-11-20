@@ -3,9 +3,10 @@ import Header from "../components/Header/Header";
 import { Flexbox, Wrapper, Container } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
+import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import styled from "styled-components";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
@@ -34,6 +35,9 @@ export default function Converted() {
   const [folderArray, setFolderArray] = useState([]);
   const [dropdown, showDropdown] = useState(false);
   const [highlightedNode, setHighlightedNode] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [newFileName, setNewFileName] = useState("");
+  const [test, setTest] = useState(0);
 
   function handleBGColor(e) {
     setSettingData({
@@ -139,8 +143,54 @@ export default function Converted() {
     }
   }
 
+
+  function handleEdit() {
+    if (isEditing) {
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
+  }
+  const getFilenameValue = (e) => {
+    setNewFileName(e.target.value);
+    console.log("new file name", newFileName);
+    console.log(e.target.value);
+  };
+
+  function t() {
+    console.log("BEFORE SETTEST", test);
+    setTest(1);
+    console.log("AFTER SETTEST", test);
+  }
+
+  function handleSaveFileName() {
+    // console.log(isEditing);
+    // console.log("before setisediting");
+    setIsEditing(false);
+    console.log("newFileName", newFileName);
+    const fileObject = {
+      fileData: {
+        "fileId": fileData.file_id,
+        "fileName": newFileName,
+        "folderId": fileData.folder_id,
+      },
+    };
+    console.log(typeof newFileName)
+    mainHandler.handleUpdateFile(fileObject);
+    // console.log("after handleupdatefile");
+  }
+  function handleDelete() {
+      mainHandler.handleDeleteFile(fileData.file_id);
+      setIsEditing(false);
+      router.push("/");
+  }
+  // function handleMoveFolder() {
+  //   console.log("move folder");
+  // }
+
   function moveSelectedHighlighted(){
     if(document.querySelector('#selectedNode__container')){
+      console.log("HELLO")
       const prevSelectContainer = document.querySelector('#selectedNode__container')
       const parentContainer = prevSelectContainer.parentNode
       while(prevSelectContainer.firstChild) {
@@ -166,53 +216,60 @@ export default function Converted() {
     updateTypeArray();
     updateLibraryArray();
 
+    setNewFileName(JSON.parse(router.query.fileData).file_name);
 
-    const saveSelection = () => {
+
+    const saveSelection = (e) => {
+      e.stopPropagration;
       const selected = window.getSelection()
 
-      console.log('window getSelection', selected)
-      
       const rangeCount = selected.rangeCount
 
-      if(rangeCount !== 0 && selected.toString() !== ""){
+      if(rangeCount !== 0 || selected.toString() !== ""){
         // const container = ReactDomClient.createRoot(document.createElement('div'))
         console.log('highlight!')
         moveSelectedHighlighted()
 
         const selectedNodeContainer = document.createElement('div')
+        const highlightedContainer = document.createElement("div")
         const highlightedNode = document.createElement("span")
 
         selectedNodeContainer.setAttribute('id', 'selectedNode__container')
-        highlightedNode.className = "selectedNode__highlighted"
+        highlightedContainer.className = "selectedNode__highlighted"
+        highlightedNode.className = "highlighted__container"
 
-        // highlightedNode.onclick((e) => { 
-        //   e.preventDefault()
-        //   moveSelectedHighlighted()
-        //   saveSelection()
-        // })
+        // selectedNode__container > selectedNode__highlighted > highlighted__container
+
 
         const range = selected.getRangeAt(0)
-        
 
         range.surroundContents(highlightedNode)
 
-        highlightedNode.parentNode.insertBefore(selectedNodeContainer, highlightedNode)
+        // THIS IS THE PART WHERE IT ALL GOES WRONG
 
-        selectedNodeContainer.appendChild(highlightedNode)
+        highlightedNode.parentNode.insertBefore(highlightedContainer, highlightedNode)
+        highlightedContainer.parentNode.insertBefore(selectedNodeContainer, highlightedContainer)
+        
+        selectedNodeContainer.appendChild(highlightedContainer)
 
-        setHighlightedNode(highlightedNode)
+        setHighlightedNode(highlightedNode) // save to useState and pass to prop
+
+      
     
       }
     }
 
-    
+    const file__content = document.querySelector('.file__content')
 
-    document.addEventListener("mousedown", saveSelection);
+    file__content.addEventListener("mouseup", saveSelection);
+   
 
     // remove event listener when component unmounts
-    return () => {
-      document.removeEventListener("mousedown", saveSelection);
-    };
+    // return () => {
+    //   file__content.removeEventListener("mouseup", saveSelection);
+    // };
+    
+
   }, []);
 
 
@@ -224,19 +281,42 @@ export default function Converted() {
         libraryArray={libraryArray}
         handleNewFolder={handleNewFolder}
         handleSaveSetting={handleSaveSetting}
-        highlightedNode = {highlightedNode}
+        highlightedNode={highlightedNode}
       ></ToolBar>
       <Wrapper>
-        <Title dir="row">
-          <Header text={fileData.file_name} />
-          <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
-          {dropdown && <MiniDropdown arr={editFileDataArr} />}
-        </Title>
-        <Container
-          width="100%"
-          backgroundColor={settingData.background_colour}
-        >
-          <Content  fileData={fileData} settingData={settingData}></Content>
+        {!isEditing && (
+          <Title dir="row">
+            <Header text={newFileName} />
+            <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+            {dropdown && (
+              <MiniDropdown
+                arr={editFileDataArr}
+                onEdit={() => {
+                  console.log("clicking edit");
+                  handleEdit();
+                }}
+                onDelete={() => {
+                  console.log("clicking delete");
+                  handleDelete();
+                }}
+                // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+              />
+            )}
+          </Title>
+        )}
+        {isEditing && (
+          <Title dir="row">
+            <Input
+              type="text"
+              value={newFileName}
+              onChange={(e) => getFilenameValue(e)}
+            />
+            <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
+          </Title>
+        )}
+
+        <Container width="100%" backgroundColor={settingData.background_colour}>
+          <Content className="file__content" fileData={fileData} settingData={settingData}></Content>
         </Container>
       </Wrapper>
     </Flexbox>

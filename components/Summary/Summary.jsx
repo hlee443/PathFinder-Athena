@@ -26,6 +26,11 @@ const SummarizeCont = styled(Flexbox)`
   animation: ${slideDown} .3s ease-in-out 1;
   user-select: none;
 `
+const TopSectionLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 
 
 export default function Summary({
@@ -36,7 +41,9 @@ export default function Summary({
   <SummarizeCont className="summarize__container">
     {/* <Container backgroundColor ={colors.backgroundYellow}> */}
       {/* <CloseButton> */}
+      <TopSectionLeft>
         <Icon handleClick={onClose} faIconName={faClose} />
+      </TopSectionLeft>
       {/* </CloseButton> */}
       {/* <>
       <SubHeader text="Keyword"></SubHeader> */}
