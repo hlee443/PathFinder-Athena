@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { textData } from "../../styles/globals";
 import { mediaQuery } from "../../MediaQuery/data";
+import { motion } from "framer-motion";
 
 
 const HeaderCont = styled.h1`
@@ -17,5 +18,15 @@ const HeaderCont = styled.h1`
 `;
 
 export default function Header({ text = "Header text" }) {
-  return <HeaderCont>{text}</HeaderCont>;
+  return <>
+      <motion.div
+    initial={{ opacity: 0, scale: 1.2 }}
+    animate={{ opacity: 1, scale:1 }}
+    transition={{ duration: 1 }}
+    >
+
+      <HeaderCont>{text}</HeaderCont>;
+
+    </motion.div>
+  </>
 }
