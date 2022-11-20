@@ -5,14 +5,13 @@ import styled from "styled-components";
 import { colors, Flexbox } from "../../styles/globals";
 import useMediaQuery from "../../MediaQuery/MediaQuery";
 import { mediaQuery } from "../../MediaQuery/data";
-import Label from "../Label/Label";
 
 const IconCont = styled(Flexbox)`
   padding: 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
   // position: relative;
-  height: 100%;
+  // height: 100%;
   width: ${(props) => props.width};
   border-radius: 1.25rem;
   justify-content: space-between;
@@ -54,7 +53,7 @@ export default function Icon({
     >
       {src === null && (
         <FontAwesomeIcon
-          size={size}
+          size={isMobile ? "xl" : size}
           color={color}
           icon={faIconName}
         />
