@@ -234,9 +234,9 @@ export default function Converted() {
         const highlightedContainer = document.createElement("div")
         const highlightedNode = document.createElement("span")
 
-        selectedNodeContainer.setAttribute('id', 'selectedNode__container')
-        highlightedContainer.className = "selectedNode__highlighted"
-        highlightedNode.className = "highlighted__container"
+        selectedNodeContainer.setAttribute('id', 'selectedNode__container') // 1
+        highlightedContainer.className = "selectedNode__highlighted" // 2
+        highlightedNode.className = "highlighted__container" // 3
 
         // selectedNode__container > selectedNode__highlighted > highlighted__container
 
@@ -246,11 +246,14 @@ export default function Converted() {
         range.surroundContents(highlightedNode)
 
         // THIS IS THE PART WHERE IT ALL GOES WRONG
+        // insertBefore(newNode, referenceNode)
+        // highlighted__container_parent (selectedNode__highlighted, highlighted__container)
 
         highlightedNode.parentNode.insertBefore(highlightedContainer, highlightedNode)
+        highlightedContainer.appendChild(highlightedNode)
         highlightedContainer.parentNode.insertBefore(selectedNodeContainer, highlightedContainer)
-        
         selectedNodeContainer.appendChild(highlightedContainer)
+        
 
         setHighlightedNode(highlightedNode) // save to useState and pass to prop
 
