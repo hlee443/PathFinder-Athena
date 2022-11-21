@@ -19,12 +19,12 @@ const NavBarCont = styled(Flexbox)`
   backdrop-filter: blur(0.125rem);
   z-index: 100;
   justify-content: space-between;
+  position: relative;
   display: ${(props) => props.display} ;
 
   @media ${mediaQuery.maxWidth.mobile} {
    position: fixed;
    bottom: 0;
-
   };
 `;
 
@@ -100,7 +100,7 @@ export default function NavBar() {
   };
 
   if (isMobile && !isLoggedIn) {
-    return <NavBarCont display ="none" />
+    return <NavBarCont display="none" />
   }
 
   return (
@@ -123,17 +123,22 @@ export default function NavBar() {
                       src={o.src}
                       handleMouseEnter={() => { setLabel(true), setSel(i) }}
                       handleMouseLeave={() => { setLabel(false), setSel(i) }}
-                      handleClick={() => { r.push(o.page), setSel(i) }}
+                      handleClick={() => {
+                        o.text === "Profile" ? setShowMiniDropDown(true) : r.push(o.page)
+                      }}
                     />
                     {sel === i && label && <Label position="absolute" text={o.text} />}
-                    {/* {sel === "dropdown" && showMiniDropDown && <MiniDropDown arr={ProfileDataArr}></MiniDropDown>} */}
                     {isMobile && <Label backgroundColor="transparent" text={o.text} />}
+                    {
+                      showMiniDropDown && <MiniDropDown
+                        handleMouseLeave={() => setShowMiniDropDown(false)}
+                        arr={ProfileDataArr} />
+                    }
                   </Flexbox>
                 ))
               }
             </IconContainer>
-          ) : (
-            <ButtonContainer dir="row">
+          ) : ( <ButtonContainer dir="row">
               {
                 btns.map((o, i) => (
                   <Button

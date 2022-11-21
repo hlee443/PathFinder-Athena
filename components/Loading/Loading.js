@@ -1,18 +1,18 @@
-import styled from "styled-components"
-import { BodyText, Container } from "../../styles/globals"
-import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
-import Header from "../Header/Header"
+import React from "react";
+import Lottie from "lottie-react";
+import LoadingAnimation from "../../public/lotties/loading.json";
+import { BodyText, Container } from "../../styles/globals";
+import styled from "styled-components";
 
-export function Loading() {
+const Heading = styled.div`
+font-size: 1.5rem
+`
+
+export default function Loading() {
+
   return <Container>
-    <Header text="Waiting for a web page to load..."></Header>
-    <Segment>
-      <Dimmer active>
-      <Loader active content='Loading' />
-      </Dimmer>
-
-      <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
-    </Segment>
-    <BodyText>Do not close your browser. Wait until it’s processed!</BodyText>
+    <Heading>"Waiting for a web page to load..."</Heading>
+    <Lottie style={{ width: 200 }} animationData={LoadingAnimation} loop={true} />
+    <BodyText>"Do not close your browser. Wait until it’s processed!"</BodyText>
   </Container>
-}
+};
