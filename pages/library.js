@@ -68,6 +68,7 @@ export default function Library() {
   }
 
   function onSelectFile(fileId) {
+    
     console.log("file Id", fileId) // should successfully pass from the file.jsx prop
   }
 

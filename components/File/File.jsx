@@ -65,6 +65,8 @@ export default function File({
   fileName = "Title",
   // type = "default",
   fileId = null,
+  folderId = null,
+  fileContent = null,
   handleClick = () => { },
   handleDelete = () => { }
 }) {
@@ -72,6 +74,7 @@ export default function File({
 
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState(fileName);
+  const [newFolderId, setNewFolderId] = useState(folderId);
   const [isHover, setIsHover] = useState(false);
   const [showMiniDropdown, setShowMiniDropdown] = useState(false);
 
@@ -91,6 +94,8 @@ export default function File({
       fileData: {
         fileId: fileId,
         fileName: newFileName,
+        fileContent: fileContent,
+        folderId: newFolderId
       },
     });
   };

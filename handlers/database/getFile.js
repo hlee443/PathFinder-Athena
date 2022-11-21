@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleGetFile(fileId) {
+export async function handleGetFile(fileId, cb) {
 
     try {
         return await axios({
@@ -9,7 +9,7 @@ export async function handleGetFile(fileId) {
         })
             .then((response) => {
                 console.log(response)
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);
