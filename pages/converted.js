@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../components/MiniDropdown/data"
 import * as mainHandler from "../handlers/main"
+import React from "react";
+import { useCallback } from "react";
 
 
 const Title = styled(Flexbox)`
@@ -36,7 +38,7 @@ export default function Converted() {
   const [typeArray, setTypeArray] = useState([])
   const [folderArray, setFolderArray] = useState([])
   const [dropdown, showDropdown] = useState(false);
-
+  const [folderName, setFolderName] = useState('');
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -120,11 +122,9 @@ export default function Converted() {
       return settingData
     }
     setSettingData(uploadSettingData)
-    //console.log(uploadSettingData)
   };
 
   function updateTypeArray(settingData) {
-
     setTypeArray([
       { value: settingData.background_colour, handleChange: handleBGColor },
       { value: settingData.typeface, handleChange: handleTypeface },
@@ -135,29 +135,16 @@ export default function Converted() {
   };
 
 
-  function handleNewFolder(newFolderName) {
-    e.preventDefault();
-    const newFolderArray = (folderArray) => {
-      
-    }
-    setFolderArray(newFolderArray)
-    let uploadFolderData = {
-      folderData: {
-        userId: "9",
-        folderName: newFolderName
-      }
-    }
-    const uploadFolder = (folderArray) => {
-      mainHandler.handleAddFolder(uploadFolderData)
-      return folderArray
-    }
-    updateLibraryArray(uploadFolder)
+  function handleNewFolder() {
+    fetchFolderArray()
   };
 
   function updateLibraryArray(folderArray) {
+    setLibraryArray([])
     for (let i = 0; i < folderArray.length; i++) {
       setLibraryArray(arr => [...arr, {
-        folder_name: folderArray[i].folder_name, handleClick: async () => {
+        folder_name: folderArray[i].folder_name,
+        handleClick: () => {
           let uploadFileData = {
             fileData: {
               fileId: fileData.file_id,
@@ -165,10 +152,11 @@ export default function Converted() {
               folderId: folderArray[i].folder_id
             }
           }
-          const uploadFile = () => {
-            return mainHandler.handleUpdateFile(uploadFileData)
-          }
-          setFileData(uploadFile)
+          console.log(uploadFileData)
+          // const uploadFile = () => {
+          //   return mainHandler.handleUpdateFile(uploadFileData)
+          // }
+          // setFileData(uploadFile)
         }
       }])
     }
@@ -198,8 +186,39 @@ export default function Converted() {
     updateLibraryArray(folderArray)
   }, [folderArray]);
 
+  // const fetchFolderArray = useCallback(async () => {
+  //   let uploadFolderData = {
+  //     folderData: {
+  //       userId: "9",
+  //       folderName: "Assigmnents4"
+  //     }
+  //   }
+  //   let newFolderArray = await mainHandler.handleAddFolder(uploadFolderData)
+  //   setFolderArray(newFolderArray)
+  // })
 
-  console.log('on page', settingData)
+  // useEffect(() => {
+  //   let isSubsccribed = true;
+  //   fetchFolderArray().catch(console.error)
+  // }, [fetchFolderArray])
+
+  // useEffect(() => {
+  //   const updateFolderArray = async () => {
+  //     let uploadFolderData = {
+  //       folderData: {
+  //         userId: "9",
+  //         folderName: folderName
+  //       }
+  //     }
+  //     let newFolderArray = await mainHandler.handleAddFolder(uploadFolderData)
+  //     setFolderArray(newFolderArray)
+  //   }
+  //   updateFolderArray().catch(console.error)
+  //   setLoadFolderUpdate(false)
+  // }, [loadFolderUpdate])
+
+
+  console.log('on page', folderArray)
 
   return (
     <Flexbox>

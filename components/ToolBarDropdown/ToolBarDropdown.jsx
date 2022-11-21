@@ -52,7 +52,7 @@ export default function ToolBarDropdown({
           faIconName={faFolder}
           text={o.folder_name}
           faIconNameRight={faChevronRight}
-          onClick={o.handleClick}
+          handleOption={o.handleClick}
           value={o.folder_id}
         ></Option>
       ))
@@ -64,7 +64,7 @@ export default function ToolBarDropdown({
             backgroundColor="transparent"
             type="IconButton"
             faIconName={faFolderPlus}
-            handleClick={() => handleNewFolder("Assignments")}
+            handleClick={() => handleNewFolder()}
           ></Button>
         </ButtonCont>
       }

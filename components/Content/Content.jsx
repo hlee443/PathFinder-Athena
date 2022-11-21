@@ -12,7 +12,6 @@ export default function Content({
     fileData = {},
     settingData = {}
 }) {
-    console.log(settingData)
     return (
         <ContentSpan
             fontSize={settingData.font_size}
