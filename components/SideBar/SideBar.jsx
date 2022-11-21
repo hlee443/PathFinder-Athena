@@ -4,7 +4,11 @@ import Dictionary from "../Dictionary/Dictionary";
 import { useState } from "react";
 import WordSaved from "../WordSaved/WordSaved";
 import Icon from "../Icon/Icon";
-import { faMagnifyingGlass, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faClose,
+  faFileLines,
+} from "@fortawesome/free-solid-svg-icons";
 
 const SideBarCont = styled.div`
   width: 25%;
@@ -15,10 +19,11 @@ const SideBarCont = styled.div`
   align-items: center;
   padding: 2rem;
 `;
-const WordHeading = styled.div`
+const Section = styled.div`
   display: flex;
   align-items: center;
   align-self: flex-start;
+  margin-top: 1rem;
 `;
 const Heading = styled.p``;
 const CloseIcon = styled.div`
@@ -43,12 +48,17 @@ export default function SideBar() {
       <CloseIcon>
         <Icon faIconName={faClose}></Icon>
       </CloseIcon>
-      <WordHeading>
+      <Section>
         <Icon faIconName={faMagnifyingGlass}></Icon>
         <Heading>Words</Heading>
-      </WordHeading>
+      </Section>
       <WordSaved></WordSaved>
       <WordSaved></WordSaved>
+      <Section>
+        <Icon faIconName={faFileLines}></Icon>
+        <Heading>Summary</Heading>
+      </Section>
+      <WordSaved type="summary"></WordSaved>
     </SideBarCont>
   );
 }

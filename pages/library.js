@@ -40,7 +40,7 @@ export default function Library() {
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
 
-  const r = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const getFolders = (cb) => {
@@ -68,7 +68,20 @@ export default function Library() {
   }
 
   function onSelectFile(fileId) {
-    console.log("file Id", fileId) // should successfully pass from the file.jsx prop
+    mainHandler.handleGetFile(fileId, res => {
+      let { fileData, settingData } = res.data
+      router.push(
+        {
+          pathname: `/converted`,
+          query: {
+            fileData: JSON.stringify(fileData),
+            settingData: JSON.stringify(settingData),
+            folderArray: JSON.stringify(folders)
+          },
+        },
+        "/converted"
+      );
+    })
   }
 
   function handleDelete(fileId) {
@@ -82,6 +95,8 @@ export default function Library() {
       key={file.file_id}
       fileName={file.file_name}
       fileId={file.file_id}
+      folderId={file.folder_id}
+      fileContent={file.file_content}
       handleClick={onSelectFile}
       handleDelete={handleDelete}
     ></File>
