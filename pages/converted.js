@@ -173,12 +173,15 @@ export default function Converted() {
         "fileId": fileData.file_id,
         "fileName": newFileName,
         "folderId": fileData.folder_id,
+        "fileContent": fileData.file_content
       },
     };
     console.log(typeof newFileName)
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
   }
+
+
   function handleDelete() {
       mainHandler.handleDeleteFile(fileData.file_id);
       setIsEditing(false);
@@ -188,9 +191,26 @@ export default function Converted() {
   //   console.log("move folder");
   // }
 
+  async function handleUpdateFileContent(){
+    const newFileContent = document.querySelector('.file__content').innerHTML
+
+
+    const fileObject = {
+      fileData: {
+        "fileId": fileData.file_id,
+        "fileName": newFileName,
+        "folderId": fileData.folder_id,
+        "fileContent": newFileContent
+      },
+    };
+
+    const updatedFileData = await mainHandler.handleUpdateFile(fileObject);
+    console.log("updatedFileData", updatedFileData)
+    setFileData(updatedFileData)
+  }
+
   function moveSelectedHighlighted(){
     if(document.querySelector('#selectedNode__container')){
-      console.log("HELLO")
       const prevSelectContainer = document.querySelector('#selectedNode__container')
       const parentContainer = prevSelectContainer.parentNode
       while(prevSelectContainer.firstChild) {
@@ -219,8 +239,7 @@ export default function Converted() {
     setNewFileName(JSON.parse(router.query.fileData).file_name);
 
 
-    const saveSelection = (e) => {
-      e.stopPropagration;
+    const saveSelection = () => {
       const selected = window.getSelection()
 
       const rangeCount = selected.rangeCount
@@ -238,6 +257,9 @@ export default function Converted() {
         highlightedContainer.className = "selectedNode__highlighted" // 2
         highlightedNode.className = "highlighted__container" // 3
 
+        highlightedNode.style.backgroundColor = "#3df9b4"
+        highlightedNode.style.color = "#000000"
+
         // selectedNode__container > selectedNode__highlighted > highlighted__container
 
 
@@ -245,33 +267,28 @@ export default function Converted() {
 
         range.surroundContents(highlightedNode)
 
-        // THIS IS THE PART WHERE IT ALL GOES WRONG
-        // insertBefore(newNode, referenceNode)
-        // highlighted__container_parent (selectedNode__highlighted, highlighted__container)
-
         highlightedNode.parentNode.insertBefore(highlightedContainer, highlightedNode)
         highlightedContainer.appendChild(highlightedNode)
+        
         highlightedContainer.parentNode.insertBefore(selectedNodeContainer, highlightedContainer)
         selectedNodeContainer.appendChild(highlightedContainer)
         
 
         setHighlightedNode(highlightedNode) // save to useState and pass to prop
 
-      
+
+        file__content.removeEventListener("mouseup", saveSelection, false);
     
       }
     }
 
     const file__content = document.querySelector('.file__content')
 
-    file__content.addEventListener("mouseup", saveSelection);
-   
+    file__content.addEventListener('mousedown', () => {
+      file__content.addEventListener("mouseup", saveSelection, false);
+    })
 
-    // remove event listener when component unmounts
-    // return () => {
-    //   file__content.removeEventListener("mouseup", saveSelection);
-    // };
-    
+
 
   }, []);
 
@@ -285,6 +302,7 @@ export default function Converted() {
         handleNewFolder={handleNewFolder}
         handleSaveSetting={handleSaveSetting}
         highlightedNode={highlightedNode}
+        handleUpdateFileContent={handleUpdateFileContent}
       ></ToolBar>
       <Wrapper>
         {!isEditing && (

@@ -7,7 +7,6 @@ const ContentSpan = styled.span`
   font-size: ${(props) => props.fontSize}px;
   line-height: ${(props) => props.lineSpace}%;
   letter-spacing: ${(props) => props.letterSpace}rem;
-  transition: all .2s;
 `;
 
 export default function Content({

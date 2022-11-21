@@ -8,7 +8,7 @@ import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
 import * as ReactDomClient from 'react-dom/client'
-import * as ReactDomServer from 'react-dom/server'
+
 
 
 const ToolBarCont = styled(Flexbox)`
@@ -33,6 +33,7 @@ export default function ToolBar({
   libraryArray = [],
   handleNewFolder = () => {},
   handleSaveSetting = () => {},
+  handleUpdateFileContent = () => {},
   highlightedNode = ""
 }) {
   const [sel, setSel] = useState(0);
@@ -49,45 +50,29 @@ export default function ToolBar({
     e.stopPropagation()
 
       const selectedElement = e.target.parentElement
+
       const selectedSummaryComponent = selectedElement.closest('.summarize__wrapper-container')
+
       const grandParentElement = selectedElement.closest('#selectedNode__container') ? selectedElement.closest('#selectedNode__container') : selectedElement.closest('.selectedNode__highlighted')
-      
-      console.log("event 1", grandParentElement)
+      const selectedHighlightedNode = selectedElement
+      while(!selectedHighlightedNode.classList.contains('selectedNode__highlighted')){
+        selectedHighlightedNode = selectedHighlightedNode.parentElement
+      }
 
-      selectedSummaryComponent.animate(
-        [{ 
-          opacity: '1',
-          transform: "translateY(0px)"
-        },
-        {
-          opacity: '0',
-          transform: 'translateY(-60px)'
-        }],
-        {
-          duration: 800,
-          easing: 'ease-in-out',
-          fill: 'forwards'
-        }
-      )
+      const highlightedContainer = selectedHighlightedNode.querySelector('.selectedNode__highlighted > .highlighted__container')
+
+      selectedSummaryComponent.classList.add('summary--close')
       setTimeout(() => {
-        selectedSummaryComponent.remove()
-
-        const selectedHighlightedNode = grandParentElement.querySelector('.selectedNode__highlighted')
-        
-        // remove highlight node
-        selectedHighlightedNode.parentNode.insertBefore(selectedHighlightedNode.firstChild, selectedHighlightedNode)
-        selectedHighlightedNode.parentNode.removeChild(selectedHighlightedNode)
-
-        if(grandParentElement.id === "selectedNode__container"){
-
-          // remove selectedNode__container
-          grandParentElement.parentNode.insertBefore(grandParentElement.firstChild, grandParentElement)
-          grandParentElement.parentNode.removeChild(grandParentElement)
-        }
-
-      }, 500)
-
       
+        selectedSummaryComponent.remove()
+        grandParentElement.parentElement.replaceChild(highlightedContainer.firstChild, grandParentElement)
+        grandParentElement.remove()
+
+        handleUpdateFileContent()
+
+      }, 600)
+
+     
   
   }
 
@@ -108,14 +93,15 @@ export default function ToolBar({
     
     const summaryWrapperContainer = document.createElement('div')
 
-    summaryWrapperContainer.className = 'summarize__wrapper-container'
+      summaryWrapperContainer.classList.add('summarize__wrapper-container')
 
     container.appendChild(summaryWrapperContainer)
 
-    const root = ReactDomClient.createRoot(document.querySelector('.selectedNode__highlighted > .summarize__wrapper-container'))
+    const root = ReactDomClient.createRoot(document.querySelector('#selectedNode__container .summarize__wrapper-container'))
 
     root.render(summaryComponent)
 
+    handleUpdateFileContent()
 
   }
 
