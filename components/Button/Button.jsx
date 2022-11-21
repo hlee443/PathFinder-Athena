@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { colors, textData } from "../../styles/globals";
 import { btnData } from "./data";
+import { mediaQuery } from "../../MediaQuery/data";
 
 const StyledButton = styled.button`
   font-weight: ${(props) => props.fontWeight};
@@ -9,7 +10,7 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${(props) => props.backgroundColor };
+  background-color: ${(props) => props.backgroundColor};
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
   width: 15rem;
@@ -33,7 +34,7 @@ const StyledButton = styled.button`
     width: 12rem;
     min-width: fit-content;
     height: fit-content;
-  };
+  }
 
   :hover {
     background-color: ${(props) => props.hoverColor || btnData.state.hover};
@@ -42,23 +43,22 @@ const StyledButton = styled.button`
 `;
 
 export default function Button({
-  color="",
+  color = "",
   backgroundColor = "",
   text = "button text",
   height = "",
   // fontSize = "1rem",
   borderBottom = "none",
   borderRadius = "3.125rem",
-  handleClick = () => { },
+  handleClick = () => {},
   width = "",
   faIconName = null,
   fontWeight = "normal",
   iconSize = "1x",
   iconColor = "",
-  handleMouseEnter = () => { },
-  handleMouseLeave = () => { },
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
 }) {
-
   return (
     <StyledButton
       color={color}
@@ -75,7 +75,9 @@ export default function Button({
       fontWeight={fontWeight}
     >
       {text}
-      {faIconName !== null && <Icon color={iconColor} size={iconSize} faIconName={faIconName} />}
+      {faIconName !== null && (
+        <Icon color={iconColor} size={iconSize} faIconName={faIconName} />
+      )}
     </StyledButton>
   );
 }
