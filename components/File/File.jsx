@@ -88,6 +88,7 @@ export default function File({
   };
 
   const saveFilename = () => {
+
     setIsEditing(false);
     setShowMiniDropdown(false);
     mainHandler.handleUpdateFile({
@@ -97,6 +98,8 @@ export default function File({
         fileContent: fileContent,
         folderId: newFolderId
       },
+    }, res => {
+      console.log(res)
     });
   };
 

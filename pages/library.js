@@ -95,6 +95,8 @@ export default function Library() {
       key={file.file_id}
       fileName={file.file_name}
       fileId={file.file_id}
+      folderId={file.folder_id}
+      fileContent={file.file_content}
       handleClick={onSelectFile}
       handleDelete={handleDelete}
     ></File>
