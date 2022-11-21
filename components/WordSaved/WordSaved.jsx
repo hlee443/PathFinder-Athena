@@ -30,15 +30,17 @@ const IconCont = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const Def = styled.p``;
+const Text = styled.p``;
 
-export default function WordSaved() {
+export default function WordSaved({ type = "" }) {
   const [open, setOpen] = useState(false);
   const [showDef, setShowDef] = useState(false);
   return (
     <Cont>
       <TopDiv>
-        <Word>Word</Word>
+        {(type !== "summary" && <Word>Word</Word>) || (
+          <Text>Summary preview</Text>
+        )}
         <IconCont>
           {(showDef && (
             <Icon
@@ -55,7 +57,7 @@ export default function WordSaved() {
           <Icon faIconName={faClose}></Icon>
         </IconCont>
       </TopDiv>
-      {showDef && <Def>Definition here</Def>}
+      {showDef && <Text>Definition here (or the rest of the summary..?)</Text>}
     </Cont>
   );
 }
