@@ -5,21 +5,25 @@ import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
 import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
+import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
 import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
-import { editFileDataArr } from "../components/MiniDropdown/data"
-import * as mainHandler from "../handlers/main"
-import { useCallback } from "react";
-
+import { editFileDataArr } from "../components/MiniDropdown/data";
+import * as mainHandler from "../handlers/main";
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
   user-select: none;
   justify-content: space-between;
   width: 100%;
+`;
+const DocCont = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
 `;
 
 export default function Converted() {
@@ -125,12 +129,7 @@ export default function Converted() {
       { value: settingData.line_space, handleChange: handleLineSpace },
       { value: settingData.letter_space, handleChange: handleLetterSpace },
     ]);
-  };
-
-  // function handleNewFolder() {
-  //   fetchFolderArray()
-  // };
-
+  }
 
   function handleNewFolder(newFolderName) {
     let uploadFolderData = {
@@ -167,7 +166,7 @@ export default function Converted() {
             console.log(fileData)
             setFileData(fileData);
           })
-          
+
           // const uploadFile = () => {
           //   return mainHandler.handleUpdateFile(uploadFileData)
           // }
@@ -184,6 +183,7 @@ export default function Converted() {
       setIsEditing(true);
     }
   }
+
   const getFilenameValue = (e) => {
     setNewFileName(e.target.value);
     console.log("new file name", newFileName);
@@ -213,6 +213,7 @@ export default function Converted() {
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
   }
+
   function handleDelete() {
     mainHandler.handleDeleteFile(fileData.file_id);
     setIsEditing(false);
@@ -247,40 +248,6 @@ export default function Converted() {
     updateLibraryArray(folderArray)
   }, [folderArray]);
 
-  // const fetchFolderArray = useCallback(async () => {
-  //   let uploadFolderData = {
-  //     folderData: {
-  //       userId: "9",
-  //       folderName: "Assigmnents4"
-  //     }
-  //   }
-  //   let newFolderArray = await mainHandler.handleAddFolder(uploadFolderData)
-  //   setFolderArray(newFolderArray)
-  // })
-
-  // useEffect(() => {
-  //   let isSubsccribed = true;
-  //   fetchFolderArray().catch(console.error)
-  // }, [fetchFolderArray])
-
-  // useEffect(() => {
-  //   const updateFolderArray = async () => {
-  //     let uploadFolderData = {
-  //       folderData: {
-  //         userId: "9",
-  //         folderName: folderName
-  //       }
-  //     }
-  //     let newFolderArray = await mainHandler.handleAddFolder(uploadFolderData)
-  //     setFolderArray(newFolderArray)
-  //   }
-  //   updateFolderArray().catch(console.error)
-  //   setLoadFolderUpdate(false)
-  // }, [loadFolderUpdate])
-
-
-  console.log('on page', folderArray)
-
   return (
     <Flexbox>
       <NavBar />
@@ -290,42 +257,63 @@ export default function Converted() {
         handleNewFolder={handleNewFolder}
         handleSaveSetting={handleSaveSetting}
       ></ToolBar>
-      <Wrapper>
-        {!isEditing && (
-          <Title dir="row">
-            <Header text={newFileName} />
-            <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
-            {dropdown && (
-              <MiniDropdown
-                arr={editFileDataArr}
-                onEdit={() => {
-                  console.log("clicking edit");
-                  handleEdit();
-                }}
-                onDelete={() => {
-                  console.log("clicking delete");
-                  handleDelete();
-                }}
-              // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+      <DocCont>
+        <Wrapper>
+          {!isEditing && (
+            <Title dir="row">
+              <Header text={newFileName} />
+              <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+              {dropdown && (
+                <MiniDropdown
+                  arr={editFileDataArr}
+                  onEdit={() => {
+                    console.log("clicking edit");
+                    handleEdit();
+                  }}
+                  onDelete={() => {
+                    console.log("clicking delete");
+                    handleDelete();
+                  }}
+                // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                />
+              )}
+            </Title>
+          )}
+          {isEditing && (
+            <Title dir="row">
+              <Input
+                type="text"
+                value={newFileName}
+                onChange={(e) => getFilenameValue(e)}
               />
-            )}
-          </Title>
-        )}
-        {isEditing && (
-          <Title dir="row">
-            <Input
-              type="text"
-              value={newFileName}
-              onChange={(e) => getFilenameValue(e)}
-            />
-            <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
-          </Title>
-        )}
+              <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
+            </Title>
+          )}
 
-        <Container width="100%" backgroundColor={settingData.background_colour}>
-          <Content fileData={fileData} settingData={settingData}></Content>
-        </Container>
-      </Wrapper>
+          <Container width="100%" backgroundColor={settingData.background_colour}>
+            <Content fileData={fileData} settingData={settingData}></Content>
+          </Container>
+        </Wrapper>
+        <SideBar></SideBar>
+      </DocCont>
+
+      {/* <DocCont>
+        <Wrapper>
+          <Title dir="row">
+            <Header text={fileData.file_name} />
+            <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+            {dropdown && <MiniDropdown arr={editFileDataArr} />}
+          </Title>
+          <Container
+            width="100%"
+            backgroundColor={settingData.background_colour}
+          >
+            <Content fileData={fileData} settingData={settingData}></Content>
+          </Container>
+        </Wrapper>
+        <SideBar></SideBar>
+      </DocCont> */}
+
     </Flexbox>
   );
 };

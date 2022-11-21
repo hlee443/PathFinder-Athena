@@ -6,6 +6,7 @@ const InputCont = styled.input`
   border: ${(props) => props.border || `0.05rem solid ${colors.darkGray}`};
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height};
+  padding: 0.5rem;
 `;
 
 const OptionCont = styled.select`
@@ -13,7 +14,7 @@ const OptionCont = styled.select`
   border: 0.05rem solid ${colors.darkGray};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  padding: 1rem;
+  padding: 0.5rem;
 `;
 
 export default function Input({

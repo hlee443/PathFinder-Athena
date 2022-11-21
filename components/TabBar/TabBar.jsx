@@ -8,34 +8,57 @@ const TabBarCont = styled(Flexbox)`
   border-bottom: 0.25rem solid #e1e1e1;
   justify-content: start;
   width: 100%;
+  overflow-x: scroll;
   height: fit-content;
+  gap: 0.5rem;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export default function TabBar({
-  changePage = () => {},
   btnArr = [],
-  buttonClick = () => {}
+  buttonClick = () => { },
+  changePage = () => { },
 }) {
   const [sel, setSel] = useState(0);
+  const [isHover, setIsHover] = useState();
+
+  const handleHover = () => {
+    if (isHover) {
+      setIsHover(true)
+    } else if (!isHover) {
+      setIsHover(false)
+    }
+  }
 
   return (
     <TabBarCont dir="row">
       {btnArr.map((o, i) => (
         <Button
+          width={btnData.width}
+          height={btnData.height}
           key={o.folder_id || o.text}
+          color={
+            sel === i ? btnData.state.default.color : btnData.state.inactive.color
+          }
           borderBottom={
-            sel === i
-              ? btnData.state.clicked.borderBottom
-              : btnData.state.default.borderBottom
+            sel === i && btnData.state.clicked.borderBottom
           }
           faIconName={o.icon}
-          backgroundColor="transparent"
-          borderRadius="0"
-          type="IconButton"
+          backgroundColor={btnData.backgroundColor}
+          iconSize="sm"
+          iconColor={btnData.iconColor}
+          borderRadius={btnData.borderRadius}
           text={o.folder_name || o.text}
-          width={btnData.width}
+          fontweight={
+            sel === i ? btnData.state.clicked.fontWeight : btnData.state.inactive.fontWeight
+          }
+          handleMouseEnter={handleHover}
+          handleMouseLeave={handleHover}
           handleClick={() => {
-            setSel(i), changePage();
+            setSel(i), changePage()
             buttonClick(o.folder_id);
           }}
         ></Button>
