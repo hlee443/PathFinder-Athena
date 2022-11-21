@@ -5,6 +5,7 @@ import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
 import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
+import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
 import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
@@ -18,6 +19,11 @@ const Title = styled(Flexbox)`
   user-select: none;
   justify-content: space-between;
   width: 100%;
+`;
+const DocCont = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
 `;
 
 export default function Converted() {
@@ -34,84 +40,88 @@ export default function Converted() {
   const [typeArray, setTypeArray] = useState([]);
   const [folderArray, setFolderArray] = useState([]);
   const [dropdown, showDropdown] = useState(false);
+  // const [folderName, setFolderName] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState("");
   const [test, setTest] = useState(0);
 
   function handleBGColor(e) {
-    setSettingData({
-      ...settingData,
-      background_colour: e.target.value,
-    });
-    console.log(settingData);
-    updateTypeArray();
-    console.log(typeArray);
-  }
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        background_colour: e.target.value
+      }
+    }
+    setSettingData(newSettingData)
+  };
 
   function handleTypeface(e) {
-    setSettingData({
-      ...settingData,
-      typeface: e.target.value,
-    });
-    updateTypeArray();
-  }
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        typeface: e.target.value
+      }
+    }
+    setSettingData(newSettingData)
+  };
 
   function handleFontSize(e) {
-    setSettingData({
-      ...settingData,
-      font_size: e.target.value,
-    });
-    updateTypeArray();
-  }
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        font_size: e.target.value
+      }
+    }
+    setSettingData(newSettingData)
+  };
 
   function handleLineSpace(e) {
-    setSettingData({
-      ...settingData,
-      line_space: e.target.value,
-    });
-    updateTypeArray();
-  }
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        line_space: e.target.value
+      }
+    }
+    setSettingData(newSettingData)
+  };
 
   function handleLetterSpace(e) {
-    setSettingData({
-      ...settingData,
-      letter_space: e.target.value,
-    });
-    updateTypeArray();
-  }
+    e.preventDefault();
+    const newSettingData = (settingData) => {
+      return {
+        ...settingData,
+        letter_space: e.target.value
+      }
+    }
+    setSettingData(newSettingData)
+  };
 
   function handleMiniDropdown() {
-    dropdown === false ? showDropdown(true) : showDropdown(false);
-  }
+    dropdown === false ? showDropdown(true) : showDropdown(false)
+  };
 
-  async function handleSaveSetting() {
-    let uploadSettingData = {
-      settingData: {
-        settingId: settingData.setting_id,
-        backgroundColour: settingData.background_colour,
-        typeface: settingData.typeface,
-        fontSize: settingData.font_size,
-        lineSpace: settingData.line_space,
-        letterSpace: settingData.letter_space,
-      },
-    };
-    console.log(uploadSettingData);
-    setSettingData(await mainHandler.handleUpdateSetting(uploadSettingData));
-  }
+  function handleSaveSetting() {
+    const uploadSettingData = (settingData) => {
+      mainHandler.handleUpdateSetting({
+        settingData: {
+          settingId: settingData.setting_id,
+          backgroundColour: settingData.background_colour,
+          typeface: settingData.typeface,
+          fontSize: settingData.font_size,
+          lineSpace: settingData.line_space,
+          letterSpace: settingData.letter_space
+        }
+      })
+      return settingData
+    }
+    setSettingData(uploadSettingData)
+  };
 
-  async function handleNewFolder(newFolderName) {
-    let uploadFolderData = {
-      folderData: {
-        userId: "9",
-        folderName: newFolderName,
-      },
-    };
-    await mainHandler.handleAddFolder(uploadFolderData);
-    setFolderArray(await mainHandler.handleGetFoldersByUserId("9"));
-    updateLibraryArray();
-  }
-
-  function updateTypeArray() {
+  function updateTypeArray(settingData) {
     setTypeArray([
       { value: settingData.background_colour, handleChange: handleBGColor },
       { value: settingData.typeface, handleChange: handleTypeface },
@@ -121,26 +131,50 @@ export default function Converted() {
     ]);
   }
 
-  function updateLibraryArray() {
+  function handleNewFolder(newFolderName) {
+    let uploadFolderData = {
+      folderData: {
+        userId: "9",
+        folderName: newFolderName,
+      },
+    };
+    mainHandler.handleAddFolder(uploadFolderData, res => {
+      mainHandler.handleGetFoldersByUserId("9", res => {
+        let newFolderArray = res.data;
+        setFolderArray(newFolderArray);
+        updateLibraryArray(newFolderArray)
+      });
+    });
+  };
+
+  function updateLibraryArray(folderArray) {
+    setLibraryArray([])
     for (let i = 0; i < folderArray.length; i++) {
-      setLibraryArray((arr) => [
-        ...arr,
-        {
-          folder_name: folderArray[i].folder_name,
-          handleClick: async () => {
-            let uploadFileData = {
-              fileData: {
-                fileId: fileData.file_id,
-                fileName: fileData.file_name,
-                folderId: folderArray[i].folder_id,
-              },
-            };
-            setFileData(await mainHandler.handleUpdateFile(uploadFileData));
-          },
-        },
-      ]);
+      setLibraryArray(arr => [...arr, {
+        folder_name: folderArray[i].folder_name,
+        handleClick: () => {
+          let uploadFileData = {
+            fileData: {
+              fileId: fileData.file_id,
+              fileName: fileData.file_name,
+              fileContent: fileData.file_content,
+              folderId: folderArray[i].folder_id
+            }
+          }
+          mainHandler.handleUpdateFile(uploadFileData, res => {
+            let fileData = res.data;
+            console.log(fileData)
+            setFileData(fileData);
+          })
+
+          // const uploadFile = () => {
+          //   return mainHandler.handleUpdateFile(uploadFileData)
+          // }
+          // setFileData(uploadFile)
+        }
+      }])
     }
-  }
+  };
 
   function handleEdit() {
     if (isEditing) {
@@ -149,17 +183,18 @@ export default function Converted() {
       setIsEditing(true);
     }
   }
+
   const getFilenameValue = (e) => {
     setNewFileName(e.target.value);
     console.log("new file name", newFileName);
     console.log(e.target.value);
   };
 
-  function t() {
-    console.log("BEFORE SETTEST", test);
-    setTest(1);
-    console.log("AFTER SETTEST", test);
-  }
+  // function t() {
+  //   console.log("BEFORE SETTEST", test);
+  //   setTest(1);
+  //   console.log("AFTER SETTEST", test);
+  // }
 
   function handleSaveFileName() {
     // console.log(isEditing);
@@ -171,22 +206,25 @@ export default function Converted() {
         "fileId": fileData.file_id,
         "fileName": newFileName,
         "folderId": fileData.folder_id,
+        "fileContent": fileData.file_content,
       },
     };
     console.log(typeof newFileName)
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
   }
+
   function handleDelete() {
-      mainHandler.handleDeleteFile(fileData.file_id);
-      setIsEditing(false);
-      router.push("/");
+    mainHandler.handleDeleteFile(fileData.file_id);
+    setIsEditing(false);
+    router.push("/");
   }
   // function handleMoveFolder() {
   //   console.log("move folder");
   // }
 
   useEffect(() => {
+    console.log('virus')
     if (!router.query.fileData) {
       return;
     } else if (!router.query.settingData) {
@@ -194,14 +232,21 @@ export default function Converted() {
     } else if (!router.query.folderArray) {
       return;
     }
-    setFileData(JSON.parse(router.query.fileData));
-    setFolderArray(JSON.parse(router.query.folderArray));
-    setSettingData(JSON.parse(router.query.settingData));
+    setFileData(JSON.parse(router.query.fileData))
+    const folderArray = JSON.parse(router.query.folderArray)
+    setFolderArray(folderArray)
+    const settingData = JSON.parse(router.query.settingData)
+    setSettingData(settingData)
     setNewFileName(JSON.parse(router.query.fileData).file_name);
-
-    updateTypeArray();
-    updateLibraryArray();
   }, []);
+
+  useEffect(() => {
+    updateTypeArray(settingData)
+  }, [settingData]);
+
+  useEffect(() => {
+    updateLibraryArray(folderArray)
+  }, [folderArray]);
 
   return (
     <Flexbox>
@@ -212,42 +257,63 @@ export default function Converted() {
         handleNewFolder={handleNewFolder}
         handleSaveSetting={handleSaveSetting}
       ></ToolBar>
-      <Wrapper>
-        {!isEditing && (
-          <Title dir="row">
-            <Header text={newFileName} />
-            <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
-            {dropdown && (
-              <MiniDropdown
-                arr={editFileDataArr}
-                onEdit={() => {
-                  console.log("clicking edit");
-                  handleEdit();
-                }}
-                onDelete={() => {
-                  console.log("clicking delete");
-                  handleDelete();
-                }}
+      <DocCont>
+        <Wrapper>
+          {!isEditing && (
+            <Title dir="row">
+              <Header text={newFileName} />
+              <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+              {dropdown && (
+                <MiniDropdown
+                  arr={editFileDataArr}
+                  onEdit={() => {
+                    console.log("clicking edit");
+                    handleEdit();
+                  }}
+                  onDelete={() => {
+                    console.log("clicking delete");
+                    handleDelete();
+                  }}
                 // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                />
+              )}
+            </Title>
+          )}
+          {isEditing && (
+            <Title dir="row">
+              <Input
+                type="text"
+                value={newFileName}
+                onChange={(e) => getFilenameValue(e)}
               />
-            )}
-          </Title>
-        )}
-        {isEditing && (
-          <Title dir="row">
-            <Input
-              type="text"
-              value={newFileName}
-              onChange={(e) => getFilenameValue(e)}
-            />
-            <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
-          </Title>
-        )}
+              <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
+            </Title>
+          )}
 
-        <Container width="100%" backgroundColor={settingData.background_colour}>
-          <Content fileData={fileData} settingData={settingData}></Content>
-        </Container>
-      </Wrapper>
+          <Container width="100%" backgroundColor={settingData.background_colour}>
+            <Content fileData={fileData} settingData={settingData}></Content>
+          </Container>
+        </Wrapper>
+        <SideBar></SideBar>
+      </DocCont>
+
+      {/* <DocCont>
+        <Wrapper>
+          <Title dir="row">
+            <Header text={fileData.file_name} />
+            <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+            {dropdown && <MiniDropdown arr={editFileDataArr} />}
+          </Title>
+          <Container
+            width="100%"
+            backgroundColor={settingData.background_colour}
+          >
+            <Content fileData={fileData} settingData={settingData}></Content>
+          </Container>
+        </Wrapper>
+        <SideBar></SideBar>
+      </DocCont> */}
+
     </Flexbox>
   );
-}
+};

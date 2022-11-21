@@ -44,9 +44,9 @@ form {
 input::placeholder {
   letter-spacing: 0.22rem;
 }
-input[type="text"] {
+/* input[type="text"] {
   padding: 1rem;
-}
+} */
 
 input[type="color"] {
   -webkit-appearance: none;

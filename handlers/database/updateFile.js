@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleUpdateFile(dbData) {
+export async function handleUpdateFile(dbData, cb) {
 
     // dbData = {
     //     "fileData": {
@@ -17,7 +17,7 @@ export async function handleUpdateFile(dbData) {
             data: dbData
         })
             .then((response) => {
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);

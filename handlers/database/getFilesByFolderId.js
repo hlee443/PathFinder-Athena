@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleGetFilesByFolderId(folderId) {
+export async function handleGetFilesByFolderId(folderId, cb) {
 
     try {
         return await axios({
@@ -8,8 +8,7 @@ export async function handleGetFilesByFolderId(folderId) {
             url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/files/folderid/${folderId}`
         })
             .then((response) => {
-                console.log(response)
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);
