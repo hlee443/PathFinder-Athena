@@ -18,3 +18,33 @@ export const btnData = {
     },
   },
 };
+
+export const btns = [
+  {
+    text: "Log In",
+    type: "login"
+  },
+  {
+    text: "Sign Up",
+    type: "signup"
+  },
+]
+
+
+export const menus = [
+  {
+    src: "Home.svg",
+    text: "Home",
+    page: "/"
+  },
+  {
+    src: "Library.svg",
+    text: "Library",
+    page: "/library"
+  },
+  {
+    src: "Profile.svg",
+    text: "Profile",
+    page: ""
+  },
+];
