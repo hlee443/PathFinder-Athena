@@ -9,9 +9,11 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${(props) => props.backgroundColor || btnData.state.active};
+  background-color: ${(props) => props.backgroundColor };
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
+  width: 15rem;
+  height: 3.875rem;
   max-width: 15rem;
   max-height: 3.875rem;
   height: ${(props) => props.height};
@@ -26,6 +28,12 @@ const StyledButton = styled.button`
   cursor: pointer;
   color: ${(props) => props.color || colors.textBlack};
   padding: 1rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: 12rem;
+    min-width: fit-content;
+    height: fit-content;
+  };
 
   :hover {
     background-color: ${(props) => props.hoverColor || btnData.state.hover};
