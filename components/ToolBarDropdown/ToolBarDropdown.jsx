@@ -64,7 +64,7 @@ export default function ToolBarDropdown({
             backgroundColor="transparent"
             type="IconButton"
             faIconName={faFolderPlus}
-            handleClick={() => handleNewFolder()}
+            handleClick={() => handleNewFolder("temp")}
           ></Button>
         </ButtonCont>
       }

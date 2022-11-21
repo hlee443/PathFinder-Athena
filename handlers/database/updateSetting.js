@@ -2,8 +2,6 @@ import axios from "axios";
 
 export async function handleUpdateSetting(dbData) {
 
-    console.log("bobo", dbData)
-
     // dbData = {
     //     "settingData": {
     //         "settingId": "16",

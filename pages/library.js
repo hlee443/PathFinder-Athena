@@ -32,35 +32,28 @@ export default function Library() {
   const [files, setFiles] = useState([])
 
   useEffect(() => {
-
-    const getFolders = async (cb) => {
-      const folderData = await mainHandler.handleGetFoldersByUserId(9)
-
-
-      folderData.data.map(folder => {
-        folder.icon = faFolder
+    const getFolders = (cb) => {
+      mainHandler.handleGetFoldersByUserId(9, res => {
+        let folderData = res.data
+        folderData.map(folder => {
+          folder.icon = faFolder
+        })
+        folderData.push({ text: "Create New", icon: faFolderPlus })
+        setFolders(folderData)
+        cb(folderData[0])
       })
-
-      folderData.data.push({ text: "Create New", icon: faFolderPlus })
-
-      setFolders(folderData.data)
-
-      cb(folderData.data[0])
-
     }
-
     getFolders((folder) => {
       onSelectFolder(folder.folder_id)
     })
-
-
   }, []);
 
   async function onSelectFolder(folderId) {
-    const fileData = await mainHandler.handleGetFilesByFolderId(folderId)
-
-    setFiles(fileData.data)
-
+    mainHandler.handleGetFilesByFolderId(folderId, res => {
+      let fileData = res.data
+      console.log(fileData)
+      setFiles(fileData)
+    })
   }
 
   function onSelectFile(fileId) {

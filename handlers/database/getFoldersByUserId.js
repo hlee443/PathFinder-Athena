@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleGetFoldersByUserId(userId) {
+export async function handleGetFoldersByUserId(userId, cb) {
 
     try {
         return await axios({
@@ -9,7 +9,7 @@ export async function handleGetFoldersByUserId(userId) {
         })
             .then((response) => {
                 console.log(response)
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);
