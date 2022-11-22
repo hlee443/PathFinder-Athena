@@ -227,7 +227,7 @@ export default function Converted() {
   //   console.log("move folder");
   // }
 
-  async function handleUpdateFileContent() {
+  function handleUpdateFileContent() {
     const newFileContent = document.querySelector(".file__content").innerHTML;
 
     const fileObject = {
@@ -239,9 +239,11 @@ export default function Converted() {
       },
     };
 
-    const updatedFileData = await mainHandler.handleUpdateFile(fileObject);
-    console.log("updatedFileData", updatedFileData);
-    setFileData(updatedFileData);
+    mainHandler.handleUpdateFile(fileObject, (res) => {
+      console.log("updatedFileData", res.data);
+      setFileData(res.data);
+    });
+
   }
 
   function moveSelectedHighlighted() {
