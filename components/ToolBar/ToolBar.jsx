@@ -7,7 +7,6 @@ import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
-import * as ReactDomClient from 'react-dom/client'
 
 
 
@@ -34,6 +33,7 @@ export default function ToolBar({
   handleNewFolder = () => {},
   handleSaveSetting = () => {},
   handleUpdateFileContent = () => {},
+  handleSummary = () => {},
   highlightedNode = ""
 }) {
   const [sel, setSel] = useState(0);
@@ -45,80 +45,12 @@ export default function ToolBar({
     setShowDropdown(false);
   };
 
-  const closeSummary = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-      const selectedElement = e.target.parentElement
-
-      const selectedSummaryComponent = selectedElement.closest('.summarize__wrapper-container')
-
-      const grandParentElement = selectedElement.closest('#selectedNode__container') ? selectedElement.closest('#selectedNode__container') : selectedElement.closest('.selectedNode__highlighted')
-      const selectedHighlightedNode = selectedElement
-      while(!selectedHighlightedNode.classList.contains('selectedNode__highlighted')){
-        selectedHighlightedNode = selectedHighlightedNode.parentElement
-      }
-
-      const highlightedContainer = selectedHighlightedNode.querySelector('.selectedNode__highlighted > .highlighted__container')
-
-      selectedSummaryComponent.classList.add('summary--close')
-      setTimeout(() => {
-      
-        selectedSummaryComponent.remove()
-        grandParentElement.parentElement.replaceChild(highlightedContainer.firstChild, grandParentElement)
-        grandParentElement.remove()
-
-        handleUpdateFileContent()
-
-      }, 600)
-
-     
-  
-  }
 
   const closePopUp = () => {
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
     setWordInfo(null)
-  }
-
-  function renderSummaryComponent(summaryContent){
-    const summaryComponent = (<Summary  
-      summarizedContent={summaryContent}
-      onClose={(e) => closeSummary(e)}
-    />)
-
-    const container = document.querySelector('#selectedNode__container > .selectedNode__highlighted')
-    
-    const summaryWrapperContainer = document.createElement('div')
-
-      summaryWrapperContainer.classList.add('summarize__wrapper-container')
-
-    container.appendChild(summaryWrapperContainer)
-
-    const root = ReactDomClient.createRoot(document.querySelector('#selectedNode__container .summarize__wrapper-container'))
-
-    root.render(summaryComponent)
-
-    handleUpdateFileContent()
-
-  }
-
-
-  async function fetchSummarize(e) {
-    e.preventDefault();
-    try {
-      const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
-      if (res) {
-        console.log(res)
-    
-        renderSummaryComponent(res.data.summary)
-       
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   function fetchDictionary(e) {
@@ -178,7 +110,7 @@ export default function ToolBar({
         <Icon
           faIconName={toolBarData[toolbarNum + 2].icon}
           text={toolBarData[toolbarNum + 2].name}
-          handleClick={(e) => fetchSummarize(e)}
+          handleClick={handleSummary}
           hoverColor={colors.buttonLightGrey}
         />
       </div>

@@ -5,7 +5,7 @@
 
 import axios from 'axios'
 
-export async function handleSummarize(postContent){
+export async function handleSummarize(postContent, cb){
     try {
         console.log('content', postContent)
         // axios call
@@ -17,7 +17,7 @@ export async function handleSummarize(postContent){
                 key: 'Bearman123'
             }
         })
-        .then((res) => res)
+        .then((res) => cb(res))
         .catch((err) => {
             console.error(err)
         })
