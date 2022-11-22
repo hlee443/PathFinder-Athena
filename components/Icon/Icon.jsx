@@ -45,7 +45,7 @@ export default function Icon({
 
   return (
     <IconCont
-      onClick={handleClick}
+      onMouseDown={handleClick}
       hoverColor={hoverColor}
       width={width}
       onMouseEnter={handleMouseEnter}

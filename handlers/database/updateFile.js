@@ -6,7 +6,8 @@ export async function handleUpdateFile(dbData, cb) {
     //     "fileData": {
     //         "fileId": "11",
     //         "fileName": "Flowers are beautiful",
-    //         "folderId": "11"
+    //         "folderId": "11",
+    //         "fileContent": "Flowers are not so beautiful afterall"
     //     }
     // }
 

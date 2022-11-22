@@ -8,6 +8,8 @@ import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
 
+
+
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
   align-items: center;
@@ -26,80 +28,28 @@ const Divider = styled.div`
 `;
 
 export default function ToolBar({
-  typeArray,
-  libraryArray,
-  handleNewFolder = () => { },
-  handleSaveSetting = () => { },
+  typeArray = [],
+  libraryArray = [],
+  handleNewFolder = () => {},
+  handleSaveSetting = () => {},
+  handleSummary = () => {},
+  highlightedNode = ""
 }) {
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
-  const [highlightedNode, setHighlightedNode] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
-
-  const [activateHighlight, setActivateHighlight] = useState(false)
 
   const closeDropdown = () => {
     setShowDropdown(false);
   };
 
+
   const closePopUp = () => {
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null)
     setWordInfo(null)
-    setHighlightedNode('')
-  }
-
-  useEffect(() => {
-    // add event listener to the document
-
-    console.log("Highlight State", activateHighlight)
-
-    if (activateHighlight) {
-
-      const saveSelection = () => {
-        const selected = window.getSelection()
-
-        const rangeCount = selected.rangeCount
-
-        if (rangeCount !== 0) {
-          const range = selected.getRangeAt(0)
-
-          const highlightedNode = document.createElement("span")
-          highlightedNode.className = "highlighted"
-          range.surroundContents(highlightedNode)
-
-          setHighlightedNode(highlightedNode)
-          console.log('highlighted Node', highlightedNode)
-
-        }
-      }
-
-      document.addEventListener("mousedown", saveSelection);
-
-      // remove event listener when component unmounts
-      return () => {
-        document.removeEventListener("mousedown", saveSelection);
-      };
-
-    }
-  });
-
-  async function fetchSummarize(e) {
-    e.preventDefault();
-    try {
-      const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
-      if (res) {
-        console.log(res)
-        setSummarizedContent(res.data.summary)
-        setShowPopUp("summarize")
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   function fetchDictionary(e) {
@@ -159,17 +109,17 @@ export default function ToolBar({
         <Icon
           faIconName={toolBarData[toolbarNum + 2].icon}
           text={toolBarData[toolbarNum + 2].name}
-          handleClick={(e) => fetchSummarize(e)}
+          handleClick={handleSummary}
           hoverColor={colors.buttonLightGrey}
         />
       </div>
       {
-        summarizedContent && showPopUp === "summarize" && (
-          <Summary
-            summarizedContent={summarizedContent}
-            onClose={closePopUp}
-          ></Summary>
-        )
+        // summarizedContent && showPopUp === "summarize" && (
+        //   <Summary
+        //     summarizedContent={summarizedContent}
+        //     onClose={closePopUp}
+        //   ></Summary>
+        // )
       }
       <Divider />
 
@@ -179,7 +129,7 @@ export default function ToolBar({
           faIconName={toolBarData[toolbarNum + 3].icon}
           text={toolBarData[toolbarNum + 3].name}
           hoverColor={colors.buttonLightGrey}
-          handleClick={() => activateHighlight ? setActivateHighlight(false) : setActivateHighlight(true)}
+          handleClick={()=> console.log("change highlighter color")}
         />
       </div>
       <Divider />
