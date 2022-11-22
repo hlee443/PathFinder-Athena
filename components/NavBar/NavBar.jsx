@@ -142,6 +142,7 @@ export default function NavBar() {
               {
                 btns.map((o, i) => (
                   <Button
+                    key={i}
                     handleClick={() => setShowBubble(o.type)}
                     width={btnData.width}
                     height={btnData.height}

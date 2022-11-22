@@ -11,8 +11,8 @@ font-size: 1.5rem
 export default function Loading() {
 
   return <Container>
-    <Heading>"Waiting for a web page to load..."</Heading>
+    <Heading>&quot;Waiting for a web page to load...&quot;</Heading>
     <Lottie style={{ width: 200 }} animationData={LoadingAnimation} loop={true} />
-    <BodyText>"Do not close your browser. Wait until it’s processed!"</BodyText>
+    <BodyText>&quot;Do not close your browser. Wait until it&apos;s processed!&quot;</BodyText>
   </Container>
 };
