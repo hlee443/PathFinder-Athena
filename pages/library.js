@@ -120,7 +120,7 @@ export default function Library() {
           <File
             fileName="Add a new file"
             handleClick={() => {
-              r.push("/");
+              router.push("/");
             }} />
           {files ? fileList :
             (

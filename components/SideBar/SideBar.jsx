@@ -32,16 +32,16 @@ const CloseIcon = styled.div`
 
 export default function SideBar() {
   const [showPopUp, setShowPopUp] = useState("type");
-  const [summarizedContent, setSummarizedContent] = useState(null);
-  const [wordInfo, setWordInfo] = useState(null);
-  const [highlightedNode, setHighlightedNode] = useState("");
+  // const [summarizedContent, setSummarizedContent] = useState(null);
+  // const [wordInfo, setWordInfo] = useState(null);
+  // const [highlightedNode, setHighlightedNode] = useState("");
   const closePopUp = () => {
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null);
-    setWordInfo(null);
-    setHighlightedNode("");
+    // setSummarizedContent(null);
+    // setWordInfo(null);
+    // setHighlightedNode("");
   };
   return (
     <SideBarCont>

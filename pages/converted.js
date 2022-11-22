@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../components/MiniDropdown/data";
 import * as mainHandler from "../handlers/main";
+import Summary from "../components/Summary/Summary";
+import * as ReactDomClient from 'react-dom/client';
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
@@ -27,7 +29,7 @@ const DocCont = styled.div`
 `;
 
 export default function Converted() {
-  const [dictionary, setDictionary] = useState(null);
+  const [dictionary, setDictionary] = useState(false);
   // props: file settings, -- probably -- file info, and url
   const router = useRouter();
   // MVP - get response of the handler.
@@ -44,6 +46,8 @@ export default function Converted() {
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState("");
   const [test, setTest] = useState(0);
+  const [summary, setSummary] = useState(false);
+  const [selectedText, setSelectedText] = useState({});
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -209,7 +213,7 @@ export default function Converted() {
         "fileContent": fileData.file_content,
       },
     };
-    console.log(typeof newFileName)
+    console.log(typeof newFileName);
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
   }
@@ -223,6 +227,41 @@ export default function Converted() {
   //   console.log("move folder");
   // }
 
+  function handleUpdateFileContent() {
+    const newFileContent = document.querySelector(".file__content").innerHTML;
+
+    const fileObject = {
+      fileData: {
+        fileId: fileData.file_id,
+        fileName: newFileName,
+        folderId: fileData.folder_id,
+        fileContent: newFileContent,
+      },
+    };
+
+    mainHandler.handleUpdateFile(fileObject, (res) => {
+      console.log("updatedFileData", res.data);
+      setFileData(res.data);
+    });
+
+  }
+
+  function moveSelectedHighlighted() {
+    if (document.querySelector("#selectedNode__container")) {
+      const prevSelectContainer = document.querySelector(
+        "#selectedNode__container"
+      );
+      const parentContainer = prevSelectContainer.parentNode;
+      while (prevSelectContainer.firstChild) {
+        parentContainer.insertBefore(
+          prevSelectContainer.firstChild,
+          prevSelectContainer
+        );
+      }
+      parentContainer.removeChild(prevSelectContainer);
+    }
+  }
+
   useEffect(() => {
     console.log('virus')
     if (!router.query.fileData) {
@@ -231,8 +270,7 @@ export default function Converted() {
       return;
     } else if (!router.query.folderArray) {
       return;
-    }
-    setFileData(JSON.parse(router.query.fileData))
+    } setFileData(JSON.parse(router.query.fileData))
     const folderArray = JSON.parse(router.query.folderArray)
     setFolderArray(folderArray)
     const settingData = JSON.parse(router.query.settingData)
@@ -248,6 +286,174 @@ export default function Converted() {
     updateLibraryArray(folderArray)
   }, [folderArray]);
 
+
+  const closeSummary = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+
+    const selectedSummaryComponent = selectedElement.closest(
+      ".summarize__wrapper-container"
+    );
+
+    const grandParentElement = selectedElement.closest(
+      "#selectedNode__container"
+    )
+      ? selectedElement.closest("#selectedNode__container")
+      : selectedElement.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
+    const selectedHighlightedNode = selectedElement;
+
+    while (
+      !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
+    ) {
+      selectedHighlightedNode = selectedHighlightedNode.parentElement;
+    }
+
+    const highlightedContainer = selectedHighlightedNode.querySelector(
+      ".selectedNode__highlighted > .highlighted__container"
+    );
+
+    selectedSummaryComponent.classList.add("summary--close"); // animation stuff
+    setTimeout(() => {
+      // async function
+
+      selectedSummaryComponent.remove();
+      grandParentElement.parentElement.replaceChild(
+        highlightedContainer.firstChild,
+        grandParentElement
+      );
+      grandParentElement.remove();
+
+      handleUpdateFileContent();
+    }, 600); // animation
+  };
+
+  function handleSummary() {
+    // summary content received from api
+    if (!summary) {
+      try {
+        setSummary(true);
+        mainHandler.handleSummarize(selectedText.toString(), (res) => {
+          console.log("res", res)
+          const rangeCount = selectedText.rangeCount;
+
+          if (rangeCount !== 0 || selectedText.toString() !== "") {
+            console.log("summary clicked, call highlight");
+            // console.log("highlight!");
+            moveSelectedHighlighted();
+
+            const selectedNodeContainer = document.createElement("div");
+            const highlightedContainer = document.createElement("div");
+            const highlightedNode = document.createElement("span");
+
+            selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
+            highlightedContainer.className = "selectedNode__highlighted"; // 2
+            highlightedNode.className = "highlighted__container"; // 3
+
+            highlightedNode.style.backgroundColor = "#3df9b4";
+            highlightedNode.style.color = "#000000";
+
+            // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
+
+            const range = selectedText.getRangeAt(0);
+
+            range.surroundContents(highlightedNode);
+
+            highlightedNode.parentNode.insertBefore(
+              highlightedContainer,
+              highlightedNode
+            );
+            highlightedContainer.appendChild(highlightedNode);
+
+            highlightedContainer.parentNode.insertBefore(
+              selectedNodeContainer,
+              highlightedContainer
+            );
+            selectedNodeContainer.appendChild(highlightedContainer);
+
+            // setHighlightedNode(highlightedNode); // save to useState and pass to prop
+
+            const summaryComponent = (
+              <Summary
+                summarizedContent={res.data.summary}
+                onClose={(e) => closeSummary(e)}
+              />
+            );
+
+            const container = document.querySelector(
+              "#selectedNode__container > .selectedNode__highlighted"
+            );
+
+            const summaryWrapperContainer = document.createElement("div");
+
+            summaryWrapperContainer.classList.add(
+              "summarize__wrapper-container"
+            );
+
+            container.appendChild(summaryWrapperContainer);
+
+            const root = ReactDomClient.createRoot(
+              document.querySelector(
+                "#selectedNode__container .summarize__wrapper-container"
+              )
+            );
+
+            root.render(summaryComponent);
+
+            handleUpdateFileContent();
+
+            setSummary(false);
+          }
+        }); // call handler for axios call
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  function handleDictionary() {
+    if (!dictionary) {
+      try {
+        setDictionary(true);
+        mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
+          const { data } = res;
+          const { definition } = data;
+          const newDefinition = data[0].shortdef[0];
+          setWord(highlightedNode.textContent);
+          setWordInfo(newDefinition);
+          setShowPopUp("definition");
+          let keywordData = {
+            keywordData: {
+              fileId: fileData.file_id,
+              keywordName: highlightedNode.textContent,
+              keywordDefinition: data[0].shortdef[0],
+            },
+          };
+          // add keyword to database
+          // console.log(keywordData);
+          mainHandler.handleAddKeyword(keywordData);
+          setDictionary(false);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    const saveSelection = () => {
+      setSelectedText(window.getSelection());
+      console.log("cliccck", window.getSelection().toString())
+      file__content.removeEventListener("mouseup", saveSelection, false);
+    };
+
+    const file__content = document.querySelector(".file__content");
+    file__content.addEventListener("mousedown", () => {
+      file__content.addEventListener("mouseup", saveSelection, false);
+    });
+  });
+
   return (
     <Flexbox>
       <NavBar />
@@ -256,6 +462,10 @@ export default function Converted() {
         libraryArray={libraryArray}
         handleNewFolder={handleNewFolder}
         handleSaveSetting={handleSaveSetting}
+        // highlightedNode={highlightedNode}
+        handleDictionary = {handleDictionary}
+        handleSummary={handleSummary}
+        handleUpdateFileContent={handleUpdateFileContent}
       ></ToolBar>
       <DocCont>
         <Wrapper>
@@ -290,7 +500,7 @@ export default function Converted() {
             </Title>
           )}
 
-          <Container width="100%" backgroundColor={settingData.background_colour}>
+          <Container  className="file__content" width="100%" backgroundColor={settingData.background_colour}>
             <Content fileData={fileData} settingData={settingData}></Content>
           </Container>
         </Wrapper>

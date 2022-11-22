@@ -9,6 +9,8 @@ import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
 import { useRouter } from "next/router";
 
+
+
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
   align-items: center;
@@ -27,121 +29,60 @@ const Divider = styled.div`
 `;
 
 export default function ToolBar({
-  typeArray,
-  libraryArray,
+  typeArray = [],
+  libraryArray = [],
   handleNewFolder = () => {},
   handleSaveSetting = () => {},
+  handleSummary = () => {},
+  handleDictionary = () => {},
+  highlightedNode = ""
 }) {
   const router = useRouter();
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
-  const [word, setWord] = useState(null);
-  const [highlightedNode, setHighlightedNode] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
-
-  const [fileData, setFileData] = useState({});
-
-  const [activateHighlight, setActivateHighlight] = useState(false);
 
   const closeDropdown = () => {
     setShowDropdown(false);
   };
 
+
   const closePopUp = () => {
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null);
-    setWordInfo(null);
-    setHighlightedNode("");
-  };
-
-  useEffect(() => {
-    // add event listener to the document
-
-    console.log("Highlight State", activateHighlight);
-
-    if (activateHighlight) {
-      const saveSelection = () => {
-        const selected = window.getSelection();
-
-        const rangeCount = selected.rangeCount;
-
-        if (rangeCount !== 0) {
-          const range = selected.getRangeAt(0);
-
-          const highlightedNode = document.createElement("span");
-          highlightedNode.className = "highlighted";
-          range.surroundContents(highlightedNode);
-
-          setHighlightedNode(highlightedNode);
-          console.log("highlighted Node", highlightedNode);
-        }
-      };
-
-      document.addEventListener("mousedown", saveSelection);
-
-      // remove event listener when component unmounts
-      return () => {
-        document.removeEventListener("mousedown", saveSelection);
-      };
-    }
-  });
-
-  useEffect(() => {
-    console.log("virus");
-    if (!router.query.fileData) {
-      return;
-    }
-    setFileData(JSON.parse(router.query.fileData));
-  }, []);
-
-  async function fetchSummarize(e) {
-    e.preventDefault();
-    try {
-      const res = await mainHandler.handleSummarize(
-        highlightedNode.textContent
-      ); // call handler for axios call
-      if (res) {
-        console.log(res);
-        setSummarizedContent(res.data.summary);
-        setShowPopUp("summarize");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    setWordInfo(null)
   }
 
-  function fetchDictionary(e) {
-    e.preventDefault();
-    console.log("fetch dictionary done");
-    try {
-      //   // callback
-      mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
-        const { data } = res;
-        const { definition } = data;
-        const newDefinition = data[0].shortdef[0];
-        setWord(highlightedNode.textContent);
-        setWordInfo(newDefinition);
-        setShowPopUp("definition");
-        let keywordData = {
-          keywordData: {
-            fileId: fileData.file_id,
-            keywordName: highlightedNode.textContent,
-            keywordDefinition: data[0].shortdef[0],
-          },
-        };
-        // add keyword to database
-        // console.log(keywordData);
-        mainHandler.handleAddKeyword(keywordData);
+  // function fetchDictionary(e) {
+  //   e.preventDefault();
+  //   console.log("fetch dictionary done");
+  //   try {
+  //     //   // callback
+  //     mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
+  //       const { data } = res;
+  //       const { definition } = data;
+  //       const newDefinition = data[0].shortdef[0];
+  //       setWord(highlightedNode.textContent);
+  //       setWordInfo(newDefinition);
+  //       setShowPopUp("definition");
+  //       let keywordData = {
+  //         keywordData: {
+  //           fileId: fileData.file_id,
+  //           keywordName: highlightedNode.textContent,
+  //           keywordDefinition: data[0].shortdef[0],
+  //         },
+  //       };
+  //       // add keyword to database
+  //       // console.log(keywordData);
+  //       mainHandler.handleAddKeyword(keywordData);
 
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
   return (
     <ToolBarCont dir="row">
@@ -158,7 +99,7 @@ export default function ToolBar({
         <Icon
           faIconName={toolBarData[toolbarNum + 1].icon}
           text={toolBarData[toolbarNum + 1].name}
-          handleClick={(e) => fetchDictionary(e)}
+          handleClick={handleDictionary}
           hoverColor={colors.buttonLightGrey}
         />
       </div>
@@ -175,16 +116,18 @@ export default function ToolBar({
         <Icon
           faIconName={toolBarData[toolbarNum + 2].icon}
           text={toolBarData[toolbarNum + 2].name}
-          handleClick={(e) => fetchSummarize(e)}
+          handleClick={handleSummary}
           hoverColor={colors.buttonLightGrey}
         />
       </div>
-      {summarizedContent && showPopUp === "summarize" && (
-        <Summary
-          summarizedContent={summarizedContent}
-          onClose={closePopUp}
-        ></Summary>
-      )}
+      {
+        // summarizedContent && showPopUp === "summarize" && (
+        //   <Summary
+        //     summarizedContent={summarizedContent}
+        //     onClose={closePopUp}
+        //   ></Summary>
+        // )
+      }
       <Divider />
 
       {/* HIGHLIGHT */}
@@ -193,11 +136,7 @@ export default function ToolBar({
           faIconName={toolBarData[toolbarNum + 3].icon}
           text={toolBarData[toolbarNum + 3].name}
           hoverColor={colors.buttonLightGrey}
-          handleClick={() =>
-            activateHighlight
-              ? setActivateHighlight(false)
-              : setActivateHighlight(true)
-          }
+          handleClick={()=> console.log("change highlighter color")}
         />
       </div>
       <Divider />
