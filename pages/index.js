@@ -166,7 +166,7 @@ export default function Home() {
       fontSize: 16,
       lineSpace: 150,
       letterSpace: 0.35
-    })
+    });
   }
 
   function resetPageStates() {

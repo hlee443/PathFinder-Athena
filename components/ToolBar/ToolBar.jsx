@@ -32,7 +32,6 @@ export default function ToolBar({
   libraryArray = [],
   handleNewFolder = () => {},
   handleSaveSetting = () => {},
-  handleUpdateFileContent = () => {},
   handleSummary = () => {},
   highlightedNode = ""
 }) {

@@ -22,7 +22,7 @@ const DropdownCont = styled(Flexbox)`
 export default function MiniDropdown({
   // left = "",
   // top = "",
-  position ="",
+  position = "",
   arr = [],
   handleOption = () => { },
   onEdit = () => { },
