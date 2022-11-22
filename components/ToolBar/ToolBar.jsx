@@ -7,8 +7,7 @@ import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
-import {useRouter} from 'next/router'
-
+import { useRouter } from "next/router";
 
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
@@ -28,7 +27,6 @@ const Divider = styled.div`
 `;
 
 export default function ToolBar({
-  
   typeArray,
   libraryArray,
   handleNewFolder = () => {},
@@ -122,85 +120,28 @@ export default function ToolBar({
     try {
       //   // callback
       mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
-        // console.log(highlightedNode);
-        // console.log(res)
         const { data } = res;
         const { definition } = data;
-        // console.log("RES", res);
-        // console.log("definition", data[0].meta.stems);
-
-        // split the response string into an array using regex
         const newDefinition = data[0].shortdef[0];
-        // console.log(newDefinition)
         setWord(highlightedNode.textContent);
         setWordInfo(newDefinition);
         setShowPopUp("definition");
+        let keywordData = {
+          keywordData: {
+            fileId: fileData.file_id,
+            keywordName: highlightedNode.textContent,
+            keywordDefinition: data[0].shortdef[0],
+          },
+        };
+        // add keyword to database
+        // console.log(keywordData);
+        mainHandler.handleAddKeyword(keywordData);
+
       });
     } catch (err) {
       console.error(err);
     }
-    // try {
-    //   // callback
-    //   // dbData = {
-    //   //     "keywordData": {
-    //   //         "fileId": "9",
-    //   //         "keywordName": "Quiz",
-    //   //         "keywordDescription": "Red is the colour of blood"
-    //   //     }
-    //   // }
-    //   let data = {
-    //     keywordData: {
-    //       "fileId": "350",
-    //       "keywordName": "word",
-    //       "keywordDescription": "definition",
-    //     },
-    //   }
-    //   mainHandler.handleAddKeyword(data, (res) => {
-    //     console.log("handle add keyword", res);
-    //   });
-    // } catch (err) {
-    //   console.error(err);
-    // }
-    try {
-      // callback
-      // dbData = {
-      //     "keywordData": {
-      //         "fileId": "9",
-      //         "keywordName": "Quiz",
-      //         "keywordDescription": "Red is the colour of blood"
-      //     }
-      // }
-      let data = {
-        keywordData: {
-          fileId: fileData.file_id,
-          keywordName: word,
-          keywordDescription: wordInfo,
-        },
-      };
-      // console.log("fileData", fileData);
-      // console.log("fileData.fileId", fileData.file_id);
-      // console.log("word", word);
-      // console.log("wordInfo", wordInfo);
-      console.log(data)
-      // mainHandler.handleAddKeyword(data, (res) => {
-      //   console.log("handle add keyword", res);
-      // });
-    } catch (err) {
-      console.error(err);
-    }
   }
-
-  // function addKeyword(e) {
-  //   e.preventDefault();
-  //   try {
-  //     mainHandler.handleAddKeyword(highlightedNode.textContent, (res) => {
-  //       console.log(res);
-  //     });
-  //   }
-  //   catch (err) {
-  //     console.error(err)
-  //   }
-  // }
 
   return (
     <ToolBarCont dir="row">
