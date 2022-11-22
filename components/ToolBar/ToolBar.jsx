@@ -7,6 +7,8 @@ import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
+import {useRouter} from 'next/router'
+
 
 const ToolBarCont = styled(Flexbox)`
   justify-content: flex-start;
@@ -26,19 +28,24 @@ const Divider = styled.div`
 `;
 
 export default function ToolBar({
+  
   typeArray,
   libraryArray,
-  handleNewFolder = () => { },
-  handleSaveSetting = () => { },
+  handleNewFolder = () => {},
+  handleSaveSetting = () => {},
 }) {
+  const router = useRouter();
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [summarizedContent, setSummarizedContent] = useState(null);
   const [wordInfo, setWordInfo] = useState(null);
+  const [word, setWord] = useState(null);
   const [highlightedNode, setHighlightedNode] = useState("");
   const [showPopUp, setShowPopUp] = useState("type");
 
-  const [activateHighlight, setActivateHighlight] = useState(false)
+  const [fileData, setFileData] = useState({});
+
+  const [activateHighlight, setActivateHighlight] = useState(false);
 
   const closeDropdown = () => {
     setShowDropdown(false);
@@ -48,35 +55,33 @@ export default function ToolBar({
     setShowPopUp("type");
 
     // clean up all the selected text and the api results
-    setSummarizedContent(null)
-    setWordInfo(null)
-    setHighlightedNode('')
-  }
+    setSummarizedContent(null);
+    setWordInfo(null);
+    setHighlightedNode("");
+  };
 
   useEffect(() => {
     // add event listener to the document
 
-    console.log("Highlight State", activateHighlight)
+    console.log("Highlight State", activateHighlight);
 
     if (activateHighlight) {
-
       const saveSelection = () => {
-        const selected = window.getSelection()
+        const selected = window.getSelection();
 
-        const rangeCount = selected.rangeCount
+        const rangeCount = selected.rangeCount;
 
         if (rangeCount !== 0) {
-          const range = selected.getRangeAt(0)
+          const range = selected.getRangeAt(0);
 
-          const highlightedNode = document.createElement("span")
-          highlightedNode.className = "highlighted"
-          range.surroundContents(highlightedNode)
+          const highlightedNode = document.createElement("span");
+          highlightedNode.className = "highlighted";
+          range.surroundContents(highlightedNode);
 
-          setHighlightedNode(highlightedNode)
-          console.log('highlighted Node', highlightedNode)
-
+          setHighlightedNode(highlightedNode);
+          console.log("highlighted Node", highlightedNode);
         }
-      }
+      };
 
       document.addEventListener("mousedown", saveSelection);
 
@@ -84,18 +89,27 @@ export default function ToolBar({
       return () => {
         document.removeEventListener("mousedown", saveSelection);
       };
-
     }
   });
+
+  useEffect(() => {
+    console.log("virus");
+    if (!router.query.fileData) {
+      return;
+    }
+    setFileData(JSON.parse(router.query.fileData));
+  }, []);
 
   async function fetchSummarize(e) {
     e.preventDefault();
     try {
-      const res = await mainHandler.handleSummarize(highlightedNode.textContent) // call handler for axios call
+      const res = await mainHandler.handleSummarize(
+        highlightedNode.textContent
+      ); // call handler for axios call
       if (res) {
-        console.log(res)
-        setSummarizedContent(res.data.summary)
-        setShowPopUp("summarize")
+        console.log(res);
+        setSummarizedContent(res.data.summary);
+        setShowPopUp("summarize");
       }
     } catch (error) {
       console.log(error);
@@ -104,10 +118,12 @@ export default function ToolBar({
 
   function fetchDictionary(e) {
     e.preventDefault();
+    console.log("fetch dictionary done");
     try {
-      // callback
+      //   // callback
       mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
-        console.log(res)
+        // console.log(highlightedNode);
+        // console.log(res)
         const { data } = res;
         const { definition } = data;
         // console.log("RES", res);
@@ -116,14 +132,75 @@ export default function ToolBar({
         // split the response string into an array using regex
         const newDefinition = data[0].shortdef[0];
         // console.log(newDefinition)
-
+        setWord(highlightedNode.textContent);
         setWordInfo(newDefinition);
         setShowPopUp("definition");
       });
     } catch (err) {
       console.error(err);
     }
+    // try {
+    //   // callback
+    //   // dbData = {
+    //   //     "keywordData": {
+    //   //         "fileId": "9",
+    //   //         "keywordName": "Quiz",
+    //   //         "keywordDescription": "Red is the colour of blood"
+    //   //     }
+    //   // }
+    //   let data = {
+    //     keywordData: {
+    //       "fileId": "350",
+    //       "keywordName": "word",
+    //       "keywordDescription": "definition",
+    //     },
+    //   }
+    //   mainHandler.handleAddKeyword(data, (res) => {
+    //     console.log("handle add keyword", res);
+    //   });
+    // } catch (err) {
+    //   console.error(err);
+    // }
+    try {
+      // callback
+      // dbData = {
+      //     "keywordData": {
+      //         "fileId": "9",
+      //         "keywordName": "Quiz",
+      //         "keywordDescription": "Red is the colour of blood"
+      //     }
+      // }
+      let data = {
+        keywordData: {
+          fileId: fileData.file_id,
+          keywordName: word,
+          keywordDescription: wordInfo,
+        },
+      };
+      // console.log("fileData", fileData);
+      // console.log("fileData.fileId", fileData.file_id);
+      // console.log("word", word);
+      // console.log("wordInfo", wordInfo);
+      console.log(data)
+      // mainHandler.handleAddKeyword(data, (res) => {
+      //   console.log("handle add keyword", res);
+      // });
+    } catch (err) {
+      console.error(err);
+    }
   }
+
+  // function addKeyword(e) {
+  //   e.preventDefault();
+  //   try {
+  //     mainHandler.handleAddKeyword(highlightedNode.textContent, (res) => {
+  //       console.log(res);
+  //     });
+  //   }
+  //   catch (err) {
+  //     console.error(err)
+  //   }
+  // }
 
   return (
     <ToolBarCont dir="row">
@@ -144,15 +221,13 @@ export default function ToolBar({
           hoverColor={colors.buttonLightGrey}
         />
       </div>
-      {
-        wordInfo && showPopUp === "definition" && (
-          <Dictionary
-            word={highlightedNode.textContent}
-            wordDefinition={wordInfo}
-            onClose={closePopUp}
-          ></Dictionary>
-        )
-      }
+      {wordInfo && showPopUp === "definition" && (
+        <Dictionary
+          word={highlightedNode.textContent}
+          wordDefinition={wordInfo}
+          onClose={closePopUp}
+        ></Dictionary>
+      )}
       <Divider />
       {/* SUMMARIZE */}
       <div>
@@ -163,14 +238,12 @@ export default function ToolBar({
           hoverColor={colors.buttonLightGrey}
         />
       </div>
-      {
-        summarizedContent && showPopUp === "summarize" && (
-          <Summary
-            summarizedContent={summarizedContent}
-            onClose={closePopUp}
-          ></Summary>
-        )
-      }
+      {summarizedContent && showPopUp === "summarize" && (
+        <Summary
+          summarizedContent={summarizedContent}
+          onClose={closePopUp}
+        ></Summary>
+      )}
       <Divider />
 
       {/* HIGHLIGHT */}
@@ -179,7 +252,11 @@ export default function ToolBar({
           faIconName={toolBarData[toolbarNum + 3].icon}
           text={toolBarData[toolbarNum + 3].name}
           hoverColor={colors.buttonLightGrey}
-          handleClick={() => activateHighlight ? setActivateHighlight(false) : setActivateHighlight(true)}
+          handleClick={() =>
+            activateHighlight
+              ? setActivateHighlight(false)
+              : setActivateHighlight(true)
+          }
         />
       </div>
       <Divider />
@@ -232,4 +309,4 @@ export default function ToolBar({
       </div>
     </ToolBarCont>
   );
-};
+}
