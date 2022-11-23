@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 
 const ContentSpan = styled.span`
@@ -9,17 +10,22 @@ const ContentSpan = styled.span`
 `;
 
 export default function Content({
-    fileData = {},
-    settingData = {}
+    fileData = {}
 }) {
+    const [fileContent, setFileContent] = useState('')
+
+    useEffect(() => {
+        
+        const fileBody = document.querySelector(".file__content")
+        setFileContent(fileData.file_content)
+        fileBody.innerText = fileContent
+
+    }, [fileContent])
+
+
     return (
-        <ContentSpan
-            fontSize={settingData.font_size}
-            typeface={settingData.typeface}
-            lineSpace={settingData.line_space}
-            letterSpace={settingData.letter_space}
-        >
-            {fileData.file_content}
+        <ContentSpan>
+            {fileContent}
         </ContentSpan>
     );
 }

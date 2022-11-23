@@ -1,14 +1,14 @@
 import axios from "axios";
 
-export async function handleGetFoldersByUserId(userId, cb) {
+export async function handleGetKeywordsByFileId(fileId, cb) {
 
     try {
         return await axios({
             method: "GET",
-            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/folders/userid/${userId}`
+            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/keywords/fileid/${fileId}`,
+            data: fileId,
         })
             .then((response) => {
-                console.log(response)
                 cb(response)
             })
             .catch((error) => {

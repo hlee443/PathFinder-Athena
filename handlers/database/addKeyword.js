@@ -1,20 +1,19 @@
 import axios from "axios";
 
-export async function handleUpdateFile(dbData, cb) {
+export async function handleAddKeyword(dbData, cb) {
 
     // dbData = {
-    //     "fileData": {
-    //         "fileId": "11",
-    //         "fileName": "Flowers are beautiful",
-    //         "folderId": "11",
-    //         "fileContent": "Flowers are not so beautiful afterall"
+    //     "keywordData": {
+    //         "fileId": "9",
+    //         "keywordName": "Quiz",
+    //         "keywordDefinition": "Red is the colour of blood"
     //     }
     // }
 
     try {
         return await axios({
-            method: "PUT",
-            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/file`,
+            method: "POST",
+            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/keyword`,
             data: dbData
         })
             .then((response) => {

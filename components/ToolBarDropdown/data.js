@@ -11,9 +11,12 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 import { iconSvgs } from "../Icon/data";
-import { btnArr } from "../TabBar/data";
+import * as mainHandler from "../../handlers/main";
+
+// import { btnArr } from "../TabBar/data";
 
 var num = 0;
+
 
 export const libraryDataArr = [
   {
@@ -24,17 +27,17 @@ export const libraryDataArr = [
   },
   {
     faIconName: faFolder,
-    text: btnArr[num].text,
+    // text: folders[num].text,
     faIconNameRight: faChevronRight,
   },
   {
     faIconName: faFolder,
-    text: btnArr[num + 1].text,
+    // text: folders[num + 1].text,
     faIconNameRight: faChevronRight,
   },
   {
     faIconName: faFolder,
-    text: btnArr[num + 2].text,
+    // text: folders[num + 2].text,
     faIconNameRight: faChevronRight,
   },
 ];

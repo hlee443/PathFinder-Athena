@@ -32,10 +32,10 @@ form {
   white-space: pre-line; /* recognizes <br /> in the HTML and will line break it. Pretty coolllll*/
 }
 
-.highlighted{
+/* .selectedNode__highlighted{
   background-color: #89DBC7;
   color: black;
-}
+} */
 
 * {
   box-sizing: border-box;
@@ -44,9 +44,9 @@ form {
 input::placeholder {
   letter-spacing: 0.22rem;
 }
-input[type="text"] {
+/* input[type="text"] {
   padding: 1rem;
-}
+} */
 
 input[type="color"] {
   -webkit-appearance: none;
@@ -73,12 +73,17 @@ p {
   margin: 0;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-} */
+.summarize__wrapper-container{
+  overflow: hidden;
+  transition: max-height .5s;
+  height: auto;
+  max-height: 22.813rem;
+}
+
+.summary--close{
+  max-height: 0;
+}
+
+
+
+

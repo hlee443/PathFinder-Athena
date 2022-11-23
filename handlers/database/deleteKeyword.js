@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export async function handleGetFoldersByUserId(userId, cb) {
+export async function handleDeleteKeyword(keywordId,cb) {
 
     try {
         return await axios({
-            method: "GET",
-            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/folders/userid/${userId}`
+            method: "DELETE",
+            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/keyword/${keywordId}`
         })
             .then((response) => {
                 console.log(response)

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleAddFolder(dbData) {
+export async function handleAddFolder(dbData, cb) {
 
     // dbData = {
     //     "folderData": {
@@ -16,7 +16,7 @@ export async function handleAddFolder(dbData) {
             data: dbData
         })
             .then((response) => {
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);
