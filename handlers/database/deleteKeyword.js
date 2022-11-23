@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function handleDeleteKeyword(keywordId) {
+export async function handleDeleteKeyword(keywordId,cb) {
 
     try {
         return await axios({
@@ -9,7 +9,7 @@ export async function handleDeleteKeyword(keywordId) {
         })
             .then((response) => {
                 console.log(response)
-                return response
+                cb(response)
             })
             .catch((error) => {
                 console.error(error);

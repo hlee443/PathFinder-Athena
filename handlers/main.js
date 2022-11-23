@@ -43,3 +43,10 @@ export * from "./database/deleteFolder";
 export * from "./database/deleteFoldersByUserId";
 
 // Images
+
+// Keywords
+export * from "./database/getKeyword";
+export * from "./database/getKeywordsByFileId";
+export * from "./database/addKeyword";
+export * from "./database/updateKeyword";
+export * from "./database/deleteKeyword";

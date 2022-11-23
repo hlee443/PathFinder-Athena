@@ -7,6 +7,7 @@ import { colors, Flexbox } from "../../styles/globals";
 import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
+import { useRouter } from "next/router";
 
 
 
@@ -33,8 +34,10 @@ export default function ToolBar({
   handleNewFolder = () => {},
   handleSaveSetting = () => {},
   handleSummary = () => {},
+  handleDictionary = () => {},
   highlightedNode = ""
 }) {
+  const router = useRouter();
   const [sel, setSel] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [wordInfo, setWordInfo] = useState(null);
@@ -52,28 +55,34 @@ export default function ToolBar({
     setWordInfo(null)
   }
 
-  function fetchDictionary(e) {
-    e.preventDefault();
-    try {
-      // callback
-      mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
-        console.log(res)
-        const { data } = res;
-        const { definition } = data;
-        // console.log("RES", res);
-        // console.log("definition", data[0].meta.stems);
+  // function fetchDictionary(e) {
+  //   e.preventDefault();
+  //   console.log("fetch dictionary done");
+  //   try {
+  //     //   // callback
+  //     mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
+  //       const { data } = res;
+  //       const { definition } = data;
+  //       const newDefinition = data[0].shortdef[0];
+  //       setWord(highlightedNode.textContent);
+  //       setWordInfo(newDefinition);
+  //       setShowPopUp("definition");
+  //       let keywordData = {
+  //         keywordData: {
+  //           fileId: fileData.file_id,
+  //           keywordName: highlightedNode.textContent,
+  //           keywordDefinition: data[0].shortdef[0],
+  //         },
+  //       };
+  //       // add keyword to database
+  //       // console.log(keywordData);
+  //       mainHandler.handleAddKeyword(keywordData);
 
-        // split the response string into an array using regex
-        const newDefinition = data[0].shortdef[0];
-        // console.log(newDefinition)
-
-        setWordInfo(newDefinition);
-        setShowPopUp("definition");
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
   return (
     <ToolBarCont dir="row">
@@ -90,19 +99,17 @@ export default function ToolBar({
         <Icon
           faIconName={toolBarData[toolbarNum + 1].icon}
           text={toolBarData[toolbarNum + 1].name}
-          handleClick={(e) => fetchDictionary(e)}
+          handleClick={handleDictionary}
           hoverColor={colors.buttonLightGrey}
         />
       </div>
-      {
-        wordInfo && showPopUp === "definition" && (
-          <Dictionary
-            word={highlightedNode.textContent}
-            wordDefinition={wordInfo}
-            onClose={closePopUp}
-          ></Dictionary>
-        )
-      }
+      {/* {wordInfo && showPopUp === "definition" && (
+        <Dictionary
+          word={highlightedNode.textContent}
+          wordDefinition={wordInfo}
+          onClose={closePopUp}
+        ></Dictionary>
+      )} */}
       <Divider />
       {/* SUMMARIZE */}
       <div>
@@ -182,4 +189,4 @@ export default function ToolBar({
       </div>
     </ToolBarCont>
   );
-};
+}

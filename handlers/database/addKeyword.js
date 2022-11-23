@@ -6,7 +6,7 @@ export async function handleAddKeyword(dbData, cb) {
     //     "keywordData": {
     //         "fileId": "9",
     //         "keywordName": "Quiz",
-    //         "keywordDescription": "Red is the colour of blood"
+    //         "keywordDefinition": "Red is the colour of blood"
     //     }
     // }
 
