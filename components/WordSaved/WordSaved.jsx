@@ -32,13 +32,13 @@ const IconCont = styled.div`
 `;
 const Text = styled.p``;
 
-export default function WordSaved({ type = "" }) {
+export default function WordSaved({ type = "", word = "", definition = "", id ="", onClose=()=>{} }) {
   const [open, setOpen] = useState(false);
   const [showDef, setShowDef] = useState(false);
   return (
     <Cont>
       <TopDiv>
-        {(type !== "summary" && <Word>Word</Word>) || (
+        {(type !== "summary" && <Word>{word}</Word>) || (
           <Text>Summary preview</Text>
         )}
         <IconCont>
@@ -54,10 +54,10 @@ export default function WordSaved({ type = "" }) {
             ></Icon>
           )}
 
-          <Icon faIconName={faClose}></Icon>
+          <Icon faIconName={faClose} handleClick={()=> onClose(id)}></Icon>
         </IconCont>
       </TopDiv>
-      {showDef && <Text>Definition here (or the rest of the summary..?)</Text>}
+      {showDef && <Text>{definition}</Text>}
     </Cont>
   );
 }

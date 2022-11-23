@@ -103,13 +103,13 @@ export default function ToolBar({
           hoverColor={colors.buttonLightGrey}
         />
       </div>
-      {wordInfo && showPopUp === "definition" && (
+      {/* {wordInfo && showPopUp === "definition" && (
         <Dictionary
           word={highlightedNode.textContent}
           wordDefinition={wordInfo}
           onClose={closePopUp}
         ></Dictionary>
-      )}
+      )} */}
       <Divider />
       {/* SUMMARIZE */}
       <div>

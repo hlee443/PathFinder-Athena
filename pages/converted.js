@@ -9,12 +9,12 @@ import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
 import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useInsertionEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../components/MiniDropdown/data";
 import * as mainHandler from "../handlers/main";
 import Summary from "../components/Summary/Summary";
-import * as ReactDomClient from 'react-dom/client';
+import * as ReactDomClient from "react-dom/client";
 
 const Title = styled(Flexbox)`
   align-self: flex-start;
@@ -48,65 +48,66 @@ export default function Converted() {
   const [test, setTest] = useState(0);
   const [summary, setSummary] = useState(false);
   const [selectedText, setSelectedText] = useState({});
+  const [keywordArray, setKeywordArray] = useState([]);
 
   function handleBGColor(e) {
     e.preventDefault();
     const newSettingData = (settingData) => {
       return {
         ...settingData,
-        background_colour: e.target.value
-      }
-    }
-    setSettingData(newSettingData)
-  };
+        background_colour: e.target.value,
+      };
+    };
+    setSettingData(newSettingData);
+  }
 
   function handleTypeface(e) {
     e.preventDefault();
     const newSettingData = (settingData) => {
       return {
         ...settingData,
-        typeface: e.target.value
-      }
-    }
-    setSettingData(newSettingData)
-  };
+        typeface: e.target.value,
+      };
+    };
+    setSettingData(newSettingData);
+  }
 
   function handleFontSize(e) {
     e.preventDefault();
     const newSettingData = (settingData) => {
       return {
         ...settingData,
-        font_size: e.target.value
-      }
-    }
-    setSettingData(newSettingData)
-  };
+        font_size: e.target.value,
+      };
+    };
+    setSettingData(newSettingData);
+  }
 
   function handleLineSpace(e) {
     e.preventDefault();
     const newSettingData = (settingData) => {
       return {
         ...settingData,
-        line_space: e.target.value
-      }
-    }
-    setSettingData(newSettingData)
-  };
+        line_space: e.target.value,
+      };
+    };
+    setSettingData(newSettingData);
+  }
 
   function handleLetterSpace(e) {
     e.preventDefault();
     const newSettingData = (settingData) => {
       return {
         ...settingData,
-        letter_space: e.target.value
-      }
-    }
-    setSettingData(newSettingData)
-  };
+        letter_space: e.target.value,
+      };
+    };
+    setSettingData(newSettingData);
+  }
 
   function handleMiniDropdown() {
-    dropdown === false ? showDropdown(true) : showDropdown(false)
-  };
+    dropdown === false ? showDropdown(true) : showDropdown(false);
+  }
 
   function handleSaveSetting() {
     const uploadSettingData = (settingData) => {
@@ -117,13 +118,13 @@ export default function Converted() {
           typeface: settingData.typeface,
           fontSize: settingData.font_size,
           lineSpace: settingData.line_space,
-          letterSpace: settingData.letter_space
-        }
-      })
-      return settingData
-    }
-    setSettingData(uploadSettingData)
-  };
+          letterSpace: settingData.letter_space,
+        },
+      });
+      return settingData;
+    };
+    setSettingData(uploadSettingData);
+  }
 
   function updateTypeArray(settingData) {
     setTypeArray([
@@ -142,43 +143,46 @@ export default function Converted() {
         folderName: newFolderName,
       },
     };
-    mainHandler.handleAddFolder(uploadFolderData, res => {
-      mainHandler.handleGetFoldersByUserId("9", res => {
+    mainHandler.handleAddFolder(uploadFolderData, (res) => {
+      mainHandler.handleGetFoldersByUserId("9", (res) => {
         let newFolderArray = res.data;
         setFolderArray(newFolderArray);
-        updateLibraryArray(newFolderArray)
+        updateLibraryArray(newFolderArray);
       });
     });
-  };
+  }
 
   function updateLibraryArray(folderArray) {
-    setLibraryArray([])
+    setLibraryArray([]);
     for (let i = 0; i < folderArray.length; i++) {
-      setLibraryArray(arr => [...arr, {
-        folder_name: folderArray[i].folder_name,
-        handleClick: () => {
-          let uploadFileData = {
-            fileData: {
-              fileId: fileData.file_id,
-              fileName: fileData.file_name,
-              fileContent: fileData.file_content,
-              folderId: folderArray[i].folder_id
-            }
-          }
-          mainHandler.handleUpdateFile(uploadFileData, res => {
-            let fileData = res.data;
-            console.log(fileData)
-            setFileData(fileData);
-          })
+      setLibraryArray((arr) => [
+        ...arr,
+        {
+          folder_name: folderArray[i].folder_name,
+          handleClick: () => {
+            let uploadFileData = {
+              fileData: {
+                fileId: fileData.file_id,
+                fileName: fileData.file_name,
+                fileContent: fileData.file_content,
+                folderId: folderArray[i].folder_id,
+              },
+            };
+            mainHandler.handleUpdateFile(uploadFileData, (res) => {
+              let fileData = res.data;
+              console.log(fileData);
+              setFileData(fileData);
+            });
 
-          // const uploadFile = () => {
-          //   return mainHandler.handleUpdateFile(uploadFileData)
-          // }
-          // setFileData(uploadFile)
-        }
-      }])
+            // const uploadFile = () => {
+            //   return mainHandler.handleUpdateFile(uploadFileData)
+            // }
+            // setFileData(uploadFile)
+          },
+        },
+      ]);
     }
-  };
+  }
 
   function handleEdit() {
     if (isEditing) {
@@ -207,10 +211,10 @@ export default function Converted() {
     console.log("newFileName", newFileName);
     const fileObject = {
       fileData: {
-        "fileId": fileData.file_id,
-        "fileName": newFileName,
-        "folderId": fileData.folder_id,
-        "fileContent": fileData.file_content,
+        fileId: fileData.file_id,
+        fileName: newFileName,
+        folderId: fileData.folder_id,
+        fileContent: fileData.file_content,
       },
     };
     console.log(typeof newFileName);
@@ -243,7 +247,6 @@ export default function Converted() {
       console.log("updatedFileData", res.data);
       setFileData(res.data);
     });
-
   }
 
   function moveSelectedHighlighted() {
@@ -263,29 +266,37 @@ export default function Converted() {
   }
 
   useEffect(() => {
-    console.log('virus')
+    console.log("virus");
     if (!router.query.fileData) {
       return;
     } else if (!router.query.settingData) {
       return;
     } else if (!router.query.folderArray) {
       return;
-    } setFileData(JSON.parse(router.query.fileData))
-    const folderArray = JSON.parse(router.query.folderArray)
-    setFolderArray(folderArray)
-    const settingData = JSON.parse(router.query.settingData)
-    setSettingData(settingData)
+    }
+    setFileData(JSON.parse(router.query.fileData));
+    const folderArray = JSON.parse(router.query.folderArray);
+    setFolderArray(folderArray);
+    const settingData = JSON.parse(router.query.settingData);
+    setSettingData(settingData);
     setNewFileName(JSON.parse(router.query.fileData).file_name);
+    console.log("FILEDAAYAYY", fileData);
+    mainHandler.handleGetKeywordsByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res)
+        setKeywordArray(res.data);
+      }
+    );
   }, []);
 
   useEffect(() => {
-    updateTypeArray(settingData)
+    updateTypeArray(settingData);
   }, [settingData]);
 
   useEffect(() => {
-    updateLibraryArray(folderArray)
+    updateLibraryArray(folderArray);
   }, [folderArray]);
-
 
   const closeSummary = (e) => {
     e.preventDefault();
@@ -329,13 +340,20 @@ export default function Converted() {
     }, 600); // animation
   };
 
+  const closeDictionary = (id) => {
+    mainHandler.handleDeleteKeyword(id, (res) => {
+      setKeywordArray(res.data);
+      setKeywordArray(keywordArray.filter(keyword => keyword.keyword_id !== id))
+    });
+  };
+
   function handleSummary() {
     // summary content received from api
     if (!summary) {
       try {
         setSummary(true);
         mainHandler.handleSummarize(selectedText.toString(), (res) => {
-          console.log("res", res)
+          console.log("res", res);
           const rangeCount = selectedText.rangeCount;
 
           if (rangeCount !== 0 || selectedText.toString() !== "") {
@@ -412,39 +430,52 @@ export default function Converted() {
     }
   }
 
+  // function getKeywords() {
+  //   console.log("fileid", fileData.file_id);
+  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
+  //     setKeywordArray(res.data);
+  //   });
+  // }
+
   function handleDictionary() {
     if (!dictionary) {
       try {
         setDictionary(true);
-        mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
+        mainHandler.handleDictionary(selectedText.toString(), (res) => {
           const { data } = res;
           const { definition } = data;
           const newDefinition = data[0].shortdef[0];
-          setWord(highlightedNode.textContent);
-          setWordInfo(newDefinition);
-          setShowPopUp("definition");
           let keywordData = {
             keywordData: {
               fileId: fileData.file_id,
-              keywordName: highlightedNode.textContent,
-              keywordDefinition: data[0].shortdef[0],
+              keywordName: selectedText.toString(),
+              keywordDefinition: newDefinition,
             },
           };
           // add keyword to database
           // console.log(keywordData);
-          mainHandler.handleAddKeyword(keywordData);
-          setDictionary(false);
+          mainHandler.handleAddKeyword(keywordData, (res) => {
+            console.log("keyword added", res);
+            setKeywordArray([...keywordArray, res.data]);
+            setDictionary(false);
+          });
         });
       } catch (error) {
         console.log(error);
       }
     }
   }
+  // useEffect(() => {
+  //   console.log("fileid", fileData);
+  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
+  //     setKeywordArray(res.data);
+  //   });
+  // },[])
 
   useEffect(() => {
     const saveSelection = () => {
       setSelectedText(window.getSelection());
-      console.log("cliccck", window.getSelection().toString())
+      console.log("cliccck", window.getSelection().toString());
       file__content.removeEventListener("mouseup", saveSelection, false);
     };
 
@@ -463,7 +494,7 @@ export default function Converted() {
         handleNewFolder={handleNewFolder}
         handleSaveSetting={handleSaveSetting}
         // highlightedNode={highlightedNode}
-        handleDictionary = {handleDictionary}
+        handleDictionary={handleDictionary}
         handleSummary={handleSummary}
         handleUpdateFileContent={handleUpdateFileContent}
       ></ToolBar>
@@ -484,7 +515,7 @@ export default function Converted() {
                     console.log("clicking delete");
                     handleDelete();
                   }}
-                // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                 />
               )}
             </Title>
@@ -500,11 +531,18 @@ export default function Converted() {
             </Title>
           )}
 
-          <Container  className="file__content" width="100%" backgroundColor={settingData.background_colour}>
+          <Container
+            className="file__content"
+            width="100%"
+            backgroundColor={settingData.background_colour}
+          >
             <Content fileData={fileData} settingData={settingData}></Content>
           </Container>
         </Wrapper>
-        <SideBar></SideBar>
+        <SideBar
+          keywordArray={keywordArray}
+          closeDictionary={closeDictionary}
+        ></SideBar>
       </DocCont>
 
       {/* <DocCont>
@@ -523,7 +561,6 @@ export default function Converted() {
         </Wrapper>
         <SideBar></SideBar>
       </DocCont> */}
-
     </Flexbox>
   );
-};
+}

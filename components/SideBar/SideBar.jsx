@@ -18,6 +18,7 @@ const SideBarCont = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+  overflow-y: scroll;
 `;
 const Section = styled.div`
   display: flex;
@@ -30,7 +31,7 @@ const CloseIcon = styled.div`
   align-self: flex-end;
 `;
 
-export default function SideBar() {
+export default function SideBar({keywordArray=[], closeDictionary=()=>{}}) {
   const [showPopUp, setShowPopUp] = useState("type");
   // const [summarizedContent, setSummarizedContent] = useState(null);
   // const [wordInfo, setWordInfo] = useState(null);
@@ -43,6 +44,7 @@ export default function SideBar() {
     // setWordInfo(null);
     // setHighlightedNode("");
   };
+
   return (
     <SideBarCont>
       <CloseIcon>
@@ -52,8 +54,11 @@ export default function SideBar() {
         <Icon faIconName={faMagnifyingGlass}></Icon>
         <Heading>Words</Heading>
       </Section>
-      <WordSaved></WordSaved>
-      <WordSaved></WordSaved>
+      {
+      keywordArray.map((keyword) => {
+        return <WordSaved key={keyword.keyword_id} word={keyword.keyword_name} definition={keyword.keyword_definition} id= {keyword.keyword_id} onClose={closeDictionary}></WordSaved>
+      })
+      }
       <Section>
         <Icon faIconName={faFileLines}></Icon>
         <Heading>Summary</Heading>

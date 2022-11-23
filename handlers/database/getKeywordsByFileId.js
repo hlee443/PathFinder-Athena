@@ -6,7 +6,7 @@ export async function handleGetKeywordsByFileId(fileId, cb) {
         return await axios({
             method: "GET",
             url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/keywords/fileid/${fileId}`,
-            data: dbData
+            data: fileId,
         })
             .then((response) => {
                 cb(response)
