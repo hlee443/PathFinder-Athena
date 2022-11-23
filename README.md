@@ -1,6 +1,6 @@
 # Storybook Development
 
-Please follow this readme for all component development and testing while working on this repository.
+Please follow this readme for all component development and testing while working on this repository. 
 
 ## Setup
 
