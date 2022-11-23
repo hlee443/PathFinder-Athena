@@ -535,8 +535,12 @@ export default function Converted() {
             className="file__content"
             width="100%"
             backgroundColor={settingData.background_colour}
+            fontSize={settingData.font_size}
+            typeface={settingData.typeface}
+            lineSpace={settingData.line_space}
+            letterSpace={settingData.letter_space}
           >
-            <Content fileData={fileData} settingData={settingData}></Content>
+            <Content fileData={fileData}></Content>
           </Container>
         </Wrapper>
         <SideBar

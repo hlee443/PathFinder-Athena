@@ -86,4 +86,8 @@ export const Container = styled(Flexbox)`
   background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
   border-radius: 2rem;
   gap: ${(props) => props.gap};
+  font-family: ${(props) => props.typeface};
+  font-size: ${(props) => props.fontSize}px;
+  line-height: ${(props) => props.lineSpace}%;
+  letter-spacing: ${(props) => props.letterSpace}rem;
 `;

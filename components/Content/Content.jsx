@@ -10,8 +10,7 @@ const ContentSpan = styled.span`
 `;
 
 export default function Content({
-    fileData = {},
-    settingData = {}
+    fileData = {}
 }) {
     const [fileContent, setFileContent] = useState('')
 
@@ -25,13 +24,7 @@ export default function Content({
 
 
     return (
-        <ContentSpan
-            className="file__content"
-            fontSize={settingData.font_size}
-            typeface={settingData.typeface}
-            lineSpace={settingData.line_space}
-            letterSpace={settingData.letter_space}
-        >
+        <ContentSpan>
             {fileContent}
         </ContentSpan>
     );
