@@ -20,6 +20,7 @@
     "axios": "^1.1.2",
     "babel-plugin-styled-components": "^2.0.7",
     "file-saver": "^2.0.5",
+    "framer-motion": "^7.6.12",
     "html-to-text": "^8.2.1",
     "jquery": "^3.6.1",
     "jspdf": "^2.5.1",

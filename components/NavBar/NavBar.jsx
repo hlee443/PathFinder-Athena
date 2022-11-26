@@ -12,6 +12,7 @@ import { ProfileDataArr } from "../MiniDropdown/data";
 import useMediaQuery from "../../MediaQuery/MediaQuery";
 import { mediaQuery } from "../../MediaQuery/data";
 import { menus, btns } from "./data";
+import { motion } from "framer-motion";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
@@ -130,9 +131,15 @@ export default function NavBar() {
                     {sel === i && label && <Label position="absolute" text={o.text} />}
                     {isMobile && <Label backgroundColor="transparent" text={o.text} />}
                     {
-                      showMiniDropDown && <MiniDropDown
-                        handleMouseLeave={() => setShowMiniDropDown(false)}
-                        arr={ProfileDataArr} />
+                      showMiniDropDown && <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      > 
+                        <MiniDropDown
+                          handleMouseLeave={() => setShowMiniDropDown(false)}
+                          arr={ProfileDataArr} /> 
+                      </motion.div>
                     }
                   </Flexbox>
                 ))
