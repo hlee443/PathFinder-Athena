@@ -6,6 +6,7 @@ import { faFolderPlus, faBook, faFolder, faClose, faChevronRight, faFont } from 
 import { useState } from "react";
 import { libraryDataArr, typefaceDataArr, dataArr } from "./data";
 import { iconSvgs } from "../Icon/data";
+import { motion } from "framer-motion";
 
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
@@ -35,7 +36,11 @@ export default function ToolBarDropdown({
   const [sel, setSel] = useState(0);
 
   return (
-
+    <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.1 }}
+    > 
     <DropdownCont type={type}>
       {type === "Library" && 
         <Option
@@ -103,5 +108,6 @@ export default function ToolBarDropdown({
         </ButtonCont>
       }
     </DropdownCont >
+    </motion.div>
   );
 };
