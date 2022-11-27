@@ -8,7 +8,7 @@ import * as mainHandler from "../../handlers/main";
 import Dictionary from "../Dictionary/Dictionary";
 import { toolBarData, toolbarNum } from "./data";
 import { useRouter } from "next/router";
-
+ import { motion } from "framer-motion";
 
 
 const ToolBarCont = styled(Flexbox)`
@@ -95,14 +95,16 @@ export default function ToolBar({
       <Divider /> */}
 
       {/* DICTIONARY */}
-      <div>
+      <motion.div
+        whileHover={{ scale:1.2 }}
+      >
         <Icon
           faIconName={toolBarData[toolbarNum + 1].icon}
           text={toolBarData[toolbarNum + 1].name}
           handleClick={handleDictionary}
           hoverColor={colors.buttonLightGrey}
         />
-      </div>
+      </motion.div>
       {/* {wordInfo && showPopUp === "definition" && (
         <Dictionary
           word={highlightedNode.textContent}
@@ -112,14 +114,16 @@ export default function ToolBar({
       )} */}
       <Divider />
       {/* SUMMARIZE */}
-      <div>
+      <motion.div
+        whileHover={{ scale:1.2 }}
+      >
         <Icon
           faIconName={toolBarData[toolbarNum + 2].icon}
           text={toolBarData[toolbarNum + 2].name}
           handleClick={handleSummary}
           hoverColor={colors.buttonLightGrey}
         />
-      </div>
+      </motion.div>
       {
         // summarizedContent && showPopUp === "summarize" && (
         //   <Summary
@@ -131,18 +135,22 @@ export default function ToolBar({
       <Divider />
 
       {/* HIGHLIGHT */}
-      <div>
+      <motion.div
+        whileHover={{ scale:1.2 }}
+      >
         <Icon
           faIconName={toolBarData[toolbarNum + 3].icon}
           text={toolBarData[toolbarNum + 3].name}
           hoverColor={colors.buttonLightGrey}
           handleClick={()=> console.log("change highlighter color")}
         />
-      </div>
+      </motion.div>
       <Divider />
 
       {/* TYPEFACE SETTING */}
-      <div>
+      <motion.div
+        whileHover={{ scale:1.2 }}
+      >
         <Icon
           faIconName={toolBarData[toolbarNum + 4].icon}
           handleClick={() => setShowDropdown("typeface")}
@@ -157,11 +165,13 @@ export default function ToolBar({
             handleSaveSetting={handleSaveSetting}
           />
         )}
-      </div>
+      </motion.div>
       <Divider />
 
       {/* SAVE TO LIBRARY */}
-      <div>
+      <motion.div
+        whileHover={{ scale:1.2 }}
+      >
         <Icon
           faIconName={toolBarData[toolbarNum + 5].icon}
           handleClick={() => setShowDropdown("library")}
@@ -176,17 +186,19 @@ export default function ToolBar({
             handleNewFolder={handleNewFolder}
           />
         )}
-      </div>
+      </motion.div>
       <Divider />
 
       {/* DOWNLOAD */}
-      <div>
+      <motion.div
+        whileHover={{ scale:1.2 }}
+      >
         <Icon
           faIconName={toolBarData[toolbarNum + 6].icon}
           text={toolBarData[toolbarNum + 6].name}
           hoverColor={colors.buttonLightGrey}
         />
-      </div>
+      </motion.div>
     </ToolBarCont>
   );
 }
