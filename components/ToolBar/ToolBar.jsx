@@ -123,16 +123,12 @@ export default function ToolBar({
         onMouseEnter={() => handleLabel(0)}
         onMouseLeave={handleLabel}
       >
-        <motion.div
-        whileHover={{ scale:1.2 }}
-        >
         <Icon
           faIconName={toolBarData[toolbarNum + 1].icon}
           text={isMobile ? null : toolBarData[toolbarNum + 1].name}
           handleClick={handleDictionary}
           hoverColor={colors.buttonLightGrey}
         />
-        </motion.div>
         {isMobile && label && sel === 0 && <Label text={toolBarData[toolbarNum + 1].name} />}
       </IconCont>
       {/* {wordInfo && showPopUp === "definition" && (
@@ -149,16 +145,12 @@ export default function ToolBar({
         onMouseEnter={() => handleLabel(1)}
         onMouseLeave={handleLabel}
       >
-        <motion.div
-        whileHover={{ scale:1.2 }}
-        >
         <Icon
           faIconName={toolBarData[toolbarNum + 2].icon}
           text={isMobile ? null : toolBarData[toolbarNum + 2].name}
           handleClick={handleSummary}
           hoverColor={colors.buttonLightGrey}
         />
-        </motion.div>
         {isMobile && label && sel === 1 && <Label text={toolBarData[toolbarNum + 2].name} />}
       </IconCont>
       {
@@ -176,16 +168,12 @@ export default function ToolBar({
         onMouseEnter={() => handleLabel(2)}
         onMouseLeave={handleLabel}
       >
-        <motion.div
-        whileHover={{ scale:1.2 }}
-        >
         <Icon
           faIconName={toolBarData[toolbarNum + 3].icon}
           text={isMobile ? null : toolBarData[toolbarNum + 3].name}
           hoverColor={colors.buttonLightGrey}
           handleClick={() => console.log("change highlighter color")}
         />
-        </motion.div>
         {isMobile && label && sel === 2 && <Label text={toolBarData[toolbarNum + 3].name} />}
       </IconCont>
       <Divider />
@@ -195,16 +183,12 @@ export default function ToolBar({
         onMouseEnter={() => handleLabel(3)}
         onMouseLeave={handleLabel}
       >
-        <motion.div
-        whileHover={{ scale:1.2 }}
-        >
         <Icon
           faIconName={toolBarData[toolbarNum + 4].icon}
           handleClick={() => setShowDropdown("typeface")}
           text={isMobile ? null : toolBarData[toolbarNum + 4].name}
           hoverColor={colors.buttonLightGrey}
         />
-        </motion.div>
         {showDropdown === "typeface" && (
           <ToolBarDropdown
             type="Typeface"
@@ -222,16 +206,12 @@ export default function ToolBar({
         onMouseEnter={() => handleLabel(4)}
         onMouseLeave={handleLabel}
       >
-        <motion.div
-        whileHover={{ scale:1.2 }}
-        >
         <Icon
           faIconName={toolBarData[toolbarNum + 5].icon}
           handleClick={() => setShowDropdown("library")}
           text={isMobile ? null : toolBarData[toolbarNum + 5].name}
           hoverColor={colors.buttonLightGrey}
         />
-        </motion.div>
 
         {showDropdown === "library" && (
           <ToolBarDropdown
@@ -249,15 +229,11 @@ export default function ToolBar({
       <IconCont dir={isMobile ? "row" : "column"}
         onMouseEnter={() => handleLabel(5)}
         onMouseLeave={handleLabel}>
-        <motion.div
-        whileHover={{ scale:1.2 }}
-        >
         <Icon
           faIconName={toolBarData[toolbarNum + 6].icon}
           text={isMobile ? null : toolBarData[toolbarNum + 6].name}
           hoverColor={colors.buttonLightGrey}
         />
-        </motion.div>
         {isMobile && label && sel === 5 && <Label text={toolBarData[toolbarNum + 6].name} />}
       </IconCont>
     </ToolBarCont>
