@@ -24,7 +24,7 @@ const FileCont = styled(Flexbox)`
   } ;
 `;
 
-const Title = styled.p`
+const Title = styled(motion.p)`
   font-weight: bold;
   word-break: break-word;
   white-space: normal;
@@ -83,6 +83,7 @@ export default function File({
   const [newFolderId, setNewFolderId] = useState(folderId);
   const [isHover, setIsHover] = useState(false);
   const [showMiniDropdown, setShowMiniDropdown] = useState(false);
+  const [editAnimation, setEditAnimation] = useState(false);
 
   const editFilename = () => {
     setShowMiniDropdown(false);
@@ -147,7 +148,13 @@ export default function File({
 
       {!isEditing && (
         <BottomCont dir="row">
-          <Title>{newFileName}</Title>
+          <Title
+            initial={{ opacity: editAnimation ? 0 : 1 }}
+            animate={{ opacity: 1 }}
+            transition={{ ease: "easeOut", duration: 2 }}
+          >
+            {newFileName}
+          </Title>
           {fileId && (
             <Icon
               handleClick={setShowMiniDropdown}
@@ -182,6 +189,7 @@ export default function File({
             backgroundColor={colors.primaryBlue}
             width="fit-content"
             height="100%"
+            padding="0.5rem"
           />
         </BottomCont>
       )}

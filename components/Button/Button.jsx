@@ -27,7 +27,7 @@ const StyledButton = styled.button`
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
   color: ${(props) => props.color || colors.textBlack};
-  padding: 1rem;
+  padding: ${(props) => props.padding || "1rem"};
 
   @media ${mediaQuery.maxWidth.mobile} {
     width: 12rem;
@@ -46,6 +46,7 @@ export default function Button({
   backgroundColor = "",
   text = "button text",
   height = "",
+  padding = "",
   // fontSize = "1rem",
   borderBottom = "none",
   borderRadius = "3.125rem",
@@ -72,6 +73,7 @@ export default function Button({
       borderRadius={borderRadius}
       width={width}
       fontWeight={fontWeight}
+      padding={padding}
     >
       {text}
       {faIconName !== null && (
