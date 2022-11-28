@@ -46,17 +46,19 @@ export const Flexbox = styled.div`
   flex-direction: ${(props) => props.dir || "column"};
   align-items: center;
   justify-content: center;
+  // position: relative;
 `;
 
 export const Wrapper = styled(Flexbox)`
   align-items: start;
   justify-content: start;
   width: 100vw;
+  height: 100vh;
   min-height: 100vh;
-  margin: 0 auto;
   gap: 2.5rem;
   padding: 8rem;
-  overflow-y: scroll;
+  bottom: 0;
+  background-color: ${(props) => props.backgroundColor || colors.backgroundCream};
 
   @media ${mediaQuery.maxWidth.mobile} {
     padding: 1rem;
@@ -78,6 +80,9 @@ export const BodyText = styled.p`
 
 export const Container = styled(Flexbox)`
   width: ${(props) => props.width || "100%"};
+  justify-content: start;
+  overflow-y: ${(props) => props.scroll || "inherit"};
+  // min-width: 100%;
   max-width: 100%;
   height: ${(props) => props.height || "fit-content"};
   padding: 2em;
