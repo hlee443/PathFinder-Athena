@@ -8,8 +8,13 @@ import Icon from "../Icon/Icon";
 import { Flexbox } from "../../styles/globals";
 import { useState } from "react";
 import { colors } from "../../styles/globals";
+import { motion } from "framer-motion";
 
-const WordCont = styled(Flexbox)`
+const WordCont = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   min-width: 100%;
   max-width: 30rem;
@@ -45,11 +50,21 @@ const Text = styled.div`
   width: 100%;
 `;
 
-export default function WordSaved({ type = "", word = "", definition = "", id = "", onClose = () => { } }) {
+export default function WordSaved({
+  type = "",
+  word = "",
+  definition = "",
+  id = "",
+  onClose = () => {},
+}) {
   const [open, setOpen] = useState(false);
-  const [showDef, setShowDef] = useState(false);
+  const [showDef, setShowDef] = useState(true);
   return (
-    <WordCont>
+    <WordCont
+      initial={{ x: 20 }}
+      animate={{ x: 0 }}
+      transition={{ ease: "easeOut", duration: 1 }}
+    >
       <TopDiv dir="row">
         {(type !== "summary" && <Word>{word}</Word>) || (
           <Text>Summary preview</Text>
@@ -62,16 +77,16 @@ export default function WordSaved({ type = "", word = "", definition = "", id = 
               handleClick={() => setShowDef(false)}
             />
           )) || (
-              <Icon
-                size="m"
-                faIconName={faChevronDown}
-                handleClick={() => setShowDef(true)}
-              />
-            )}
+            <Icon
+              size="m"
+              faIconName={faChevronDown}
+              handleClick={() => setShowDef(true)}
+            />
+          )}
           <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
         </IconCont>
       </TopDiv>
-      {showDef && <Divider /> }
+      {showDef && <Divider />}
       {showDef && <Text>{definition}</Text>}
     </WordCont>
   );

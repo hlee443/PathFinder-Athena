@@ -10,6 +10,7 @@ import * as mainHandler from "../../handlers/main";
 import { mediaQuery } from "../../MediaQuery/data";
 import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../MiniDropdown/data";
+import { motion } from "framer-motion";
 
 const FileCont = styled(Flexbox)`
   align-items: start;
@@ -20,20 +21,25 @@ const FileCont = styled(Flexbox)`
 
   @media ${mediaQuery.minWidth.tablet} {
     width: 12rem;
-  };
+  } ;
 `;
 
 const Title = styled.p`
-  font-weight: bold;  
+  font-weight: bold;
   word-break: break-word;
   white-space: normal;
-`
+`;
 
-const Preview = styled(Flexbox)`
+const Preview = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   font-size: 1rem;
   padding: 1rem;
   border-radius: 2rem;
-  background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
+  background-color: ${(props) =>
+    props.backgroundColor || colors.backgroundWhite};
   border: 0.188rem ${(props) => props.border || "dashed"} ${colors.darkGray};
   cursor: pointer;
   width: 100%;
@@ -41,16 +47,16 @@ const Preview = styled(Flexbox)`
 
   :hover {
     background-color: ${colors.opacity};
-    border: 0.188rem solid ${colors.primaryBlue}
+    border: 0.188rem solid ${colors.primaryBlue};
   }
 
   @media ${mediaQuery.minWidth.mobile} {
     height: 10rem;
-  };
+  }
 
   @media ${mediaQuery.minWidth.tablet} {
     height: 14rem;
-  };
+  } ;
 `;
 
 const BottomCont = styled(Flexbox)`
@@ -67,8 +73,8 @@ export default function File({
   fileId = null,
   folderId = null,
   fileContent = null,
-  handleClick = () => { },
-  handleDelete = () => { }
+  handleClick = () => {},
+  handleDelete = () => {},
 }) {
   const r = useRouter();
 
@@ -88,19 +94,21 @@ export default function File({
   };
 
   const saveFilename = () => {
-
     setIsEditing(false);
     setShowMiniDropdown(false);
-    mainHandler.handleUpdateFile({
-      fileData: {
-        fileId: fileId,
-        fileName: newFileName,
-        fileContent: fileContent,
-        folderId: newFolderId
+    mainHandler.handleUpdateFile(
+      {
+        fileData: {
+          fileId: fileId,
+          fileName: newFileName,
+          fileContent: fileContent,
+          folderId: newFolderId,
+        },
       },
-    }, res => {
-      console.log(res)
-    });
+      (res) => {
+        console.log(res);
+      }
+    );
   };
 
   const deleteFile = () => {
@@ -113,15 +121,19 @@ export default function File({
     console.log(e.target.value);
   };
 
-  const moveFolder = () => { };
+  const moveFolder = () => {};
 
   return (
     <FileCont fileId={fileId}>
       <Preview
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ ease: "easeOut", duration: 1 }}
         border={fileId ? "solid" : "dashed"}
         onMouseEnter={setIsHover}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => handleClick(fileId)}>
+        onClick={() => handleClick(fileId)}
+      >
         {fileId ? (
           <p> file #{fileId} preview</p>
         ) : (
@@ -136,23 +148,23 @@ export default function File({
       {!isEditing && (
         <BottomCont dir="row">
           <Title>{newFileName}</Title>
-          {
-            fileId && (
-              <Icon
-                handleClick={setShowMiniDropdown}
-                // handleClick={editFilename}
-                faIconName={faEllipsisVertical} />
-            )
-          }
-          {
-            showMiniDropdown && <MiniDropdown
+          {fileId && (
+            <Icon
+              handleClick={setShowMiniDropdown}
+              // handleClick={editFilename}
+              faIconName={faEllipsisVertical}
+            />
+          )}
+          {showMiniDropdown && (
+            <MiniDropdown
               handleMouseLeave={() => setShowMiniDropdown(false)}
               position="absolute"
               onEdit={editFilename}
               onDelete={deleteFile}
               onMoveFolder={moveFolder}
-              arr={editFileDataArr} />
-          }
+              arr={editFileDataArr}
+            />
+          )}
         </BottomCont>
       )}
       {isEditing && (
@@ -175,4 +187,4 @@ export default function File({
       )}
     </FileCont>
   );
-};
+}
