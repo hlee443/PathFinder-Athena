@@ -11,7 +11,7 @@ const OptionCont = styled(Flexbox)`
   width: 100%;
   cursor: pointer;
   gap: ${(props) => props.gap || "1.875rem"};
-  padding: 1rem 1.5rem;
+  padding: ${(props) => props.padding || "1rem 1.5rem"};
 
   :hover {
     font-weight: bold;
@@ -46,43 +46,44 @@ export default function Option({
   hoverColor = "",
   height = "",
   fontSize = "18pt",
+  padding = null,
   // num = 1
 }) {
   return (
-    <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 0.1 }}
-    style={{width:'100%'}}
-    > 
-
-    <OptionCont
-      hoverColor={hoverColor}
-      onClick={handleOption}
-      dir="row"
-      bgColor={bgColor}
-      fontSize={fontSize}
-      gap={gap}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.1 }}
+      style={{ width: "100%" }}
     >
-      {faIconName !== null && <Icon faIconName={faIconName} />}
-      {src !== null && <img src={src} />}
+      <OptionCont
+        hoverColor={hoverColor}
+        onClick={handleOption}
+        dir="row"
+        bgColor={bgColor}
+        fontSize={fontSize}
+        gap={gap}
+        padding={padding}
+      >
+        {faIconName !== null && <Icon faIconName={faIconName} />}
+        {src !== null && <img src={src} />}
 
-      <OptionText>{text}</OptionText>
-      {inputType !== null && (
-        <Input
-          type={inputType}
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          height={height}
-          width={inputWidth}
-        />
-      )}
-      {unit !== null && <UnitText>{unit}</UnitText>}
-      {faIconNameRight !== null && (
-        <Icon size="1x" faIconName={faIconNameRight} handleClick={onClose} />
-      )}
-    </OptionCont>
+        <OptionText>{text}</OptionText>
+        {inputType !== null && (
+          <Input
+            type={inputType}
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+            height={height}
+            width={inputWidth}
+          />
+        )}
+        {unit !== null && <UnitText>{unit}</UnitText>}
+        {faIconNameRight !== null && (
+          <Icon size="1x" faIconName={faIconNameRight} handleClick={onClose} />
+        )}
+      </OptionCont>
     </motion.div>
   );
 }
