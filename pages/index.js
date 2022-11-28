@@ -3,12 +3,7 @@ import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
 import LogoBar from "../components/LogoBar/LogoBar";
-import {
-  colors,
-  Flexbox,
-  Wrapper,
-  Container,
-} from "../styles/globals";
+import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import Button from "../components/Button/Button";
 import {
@@ -56,7 +51,6 @@ export const tabBarBtns = [
 
 export default function Home() {
   const router = useRouter();
-
 
   const [inputType, setInputType] = useState("upload");
   const [active, setActive] = useState(false);
@@ -108,14 +102,14 @@ export default function Home() {
     };
 
     mainHandler.handleUpload(uploadData, (res) => {
-      let { fileData, settingData, folderArray } = res.data
+      let { fileData, settingData, folderArray } = res.data;
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
             settingData: JSON.stringify(settingData),
-            folderArray: JSON.stringify(folderArray)
+            folderArray: JSON.stringify(folderArray),
           },
         },
         "/converted"
@@ -165,7 +159,7 @@ export default function Home() {
       typeface: "Open Sans",
       fontSize: 16,
       lineSpace: 150,
-      letterSpace: 0.35
+      letterSpace: 0.35,
     });
   }
 
@@ -181,7 +175,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
 
-
   return (
     <Flexbox>
       <LogoBar />
@@ -189,11 +182,9 @@ export default function Home() {
       <Wrapper>
         <Header text="Upload your study materials!" />
         <SubHeader text="Let us make your documents easier to understand." />
-        {
-          isLoading && <Loading />
-        }
-        {
-          !isLoading && <>
+        {isLoading && <Loading />}
+        {!isLoading && (
+          <>
             <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
             {inputType === "url" && (
               <CustomizeInputBox dir="row">
@@ -207,7 +198,7 @@ export default function Home() {
                   handleClick={setActive}
                   backgroundColor={colors.buttonPrimaryBlue}
                   borderRadius="0 3.125rem 3.125rem 0;"
-                  text={!isMobile ? "Customize": ""}
+                  text={!isMobile ? "Customize" : ""}
                   type="IconButton"
                   iconSize="1x"
                   faIconName={active ? faChevronUp : faChevronDown}
@@ -230,7 +221,7 @@ export default function Home() {
                     handleClick={setActive}
                     backgroundColor={colors.buttonPrimaryBlue}
                     borderRadius="0 3.125rem 3.125rem 0;"
-                    text={!isMobile ? "Customize": ""}
+                    text={!isMobile ? "Customize" : ""}
                     type="IconButton"
                     faIconName={active ? faChevronUp : faChevronDown}
                   />
@@ -238,13 +229,14 @@ export default function Home() {
               </>
             )}
             {active && (
-              <Container gap="1rem">
+              <Container gap="1rem" padding="0.5rem">
                 <Option
                   src={iconSvgs.backgroundColor}
                   text="Background Colour"
                   inputType="color"
                   onChange={handleBGColor}
                   value={uploadSetting.backgroundColour}
+                  gap={isMobile ? "0.5rem" : "1.875rem"}
                 />
                 <Option
                   src={iconSvgs.typeface}
@@ -254,6 +246,7 @@ export default function Home() {
                   placeholder="Choose your typeface"
                   onChange={handleTypeface}
                   value={uploadSetting.typeface}
+                  gap={isMobile ? "0.5rem" : "1.875rem"}
                 />
                 <Option
                   src={iconSvgs.fontSize}
@@ -263,6 +256,9 @@ export default function Home() {
                   placeholder="Choose your font size"
                   onChange={handleFontSize}
                   value={uploadSetting.fontSize}
+                  inputWidth={isMobile ? "3rem" : "4rem"}
+                  gap={isMobile ? "0.5rem" : "1.875rem"}
+                  // fontSize="5pt"
                 />
                 <Option
                   src={iconSvgs.lineSpacing}
@@ -272,6 +268,8 @@ export default function Home() {
                   unit="%"
                   onChange={handleLineSpace}
                   value={uploadSetting.lineSpace}
+                  inputWidth={isMobile ? "3rem" : "4rem"}
+                  gap={isMobile ? "0.5rem" : "1.875rem"}
                 />
                 <Option
                   src={iconSvgs.letterSpacing}
@@ -281,6 +279,8 @@ export default function Home() {
                   placeholder="Choose your letter spacing"
                   onChange={handleLetterSpace}
                   value={uploadSetting.letterSpace}
+                  inputWidth={isMobile ? "3rem" : "4rem"}
+                  gap={isMobile ? "0.5rem" : "1.875rem"}
                 />
                 <BtnCont align="end">
                   <Button
@@ -340,8 +340,7 @@ export default function Home() {
                 />
               </Container>
             )}
-            <BtnCont
-              align="center">
+            <BtnCont align="center">
               {displayFileNameForm && inputType === "upload" && (
                 <Button
                   backgroundColor={colors.buttonPrimaryBlue}
@@ -350,7 +349,7 @@ export default function Home() {
                   handleClick={(e) => {
                     setIsLoading(true),
                       setTimeout(() => {
-                        onFileUpload(e)
+                        onFileUpload(e);
                       }, 3000);
                   }}
                 />
@@ -363,11 +362,8 @@ export default function Home() {
                 />
               )}
             </BtnCont>
-
           </>
-        }
-
-
+        )}
       </Wrapper>
     </Flexbox>
   );
