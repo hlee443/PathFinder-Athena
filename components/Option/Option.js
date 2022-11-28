@@ -3,6 +3,7 @@ import Icon from "../Icon/Icon";
 import { Flexbox, BodyText, colors } from "../../styles/globals";
 import Input from "../Input/Input";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const OptionCont = styled(Flexbox)`
   justify-content: flex-start;
@@ -48,6 +49,13 @@ export default function Option({
   // num = 1
 }) {
   return (
+    <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.1 }}
+    style={{width:'100%'}}
+    > 
+
     <OptionCont
       hoverColor={hoverColor}
       onClick={handleOption}
@@ -75,5 +83,6 @@ export default function Option({
         <Icon size="1x" faIconName={faIconNameRight} handleClick={onClose} />
       )}
     </OptionCont>
+    </motion.div>
   );
 }

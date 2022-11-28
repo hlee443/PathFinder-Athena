@@ -96,4 +96,5 @@ export const Container = styled(Flexbox)`
   font-size: ${(props) => props.fontSize}px;
   line-height: ${(props) => props.lineSpace}%;
   letter-spacing: ${(props) => props.letterSpace}rem;
+  animation: fadeIn 1s;
 `;
