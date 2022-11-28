@@ -238,7 +238,9 @@ export default function Home() {
               </>
             )}
             {active && (
-              <Container gap="1rem">
+              <Container
+                height="fit-content"
+                gap="1rem">
                 <Option
                   src={iconSvgs.backgroundColor}
                   text="Background Colour"
@@ -351,7 +353,7 @@ export default function Home() {
                     setIsLoading(true),
                       setTimeout(() => {
                         onFileUpload(e)
-                      }, 3000);
+                      }, 2000);
                   }}
                 />
               )}
