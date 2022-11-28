@@ -17,14 +17,13 @@ const NavBarCont = styled(Flexbox)`
   width: 100vw;
   max-height: 6.438rem;
   backdrop-filter: blur(0.125rem);
-  z-index: 100;
+  // z-index: 100;
   justify-content: space-between;
-  position: relative;
   display: ${(props) => props.display} ;
 
   @media ${mediaQuery.maxWidth.mobile} {
-   position: fixed;
-   bottom: 0;
+    bottom: 0;
+    position: fixed;
   };
 `;
 
@@ -138,21 +137,21 @@ export default function NavBar() {
                 ))
               }
             </IconContainer>
-          ) : ( <ButtonContainer dir="row">
-              {
-                btns.map((o, i) => (
-                  <Button
-                    key={i}
-                    handleClick={() => setShowBubble(o.type)}
-                    width={btnData.width}
-                    height={btnData.height}
-                    backgroundColor={colors.backgroundCream}
-                    hoverColor={colors.buttonLightBlue}
-                    text={o.text}
-                  />
-                ))
-              }
-            </ButtonContainer>
+          ) : (<ButtonContainer dir="row">
+            {
+              btns.map((o, i) => (
+                <Button
+                  key={i}
+                  handleClick={() => setShowBubble(o.type)}
+                  width={btnData.width}
+                  height={btnData.height}
+                  backgroundColor={colors.backgroundCream}
+                  hoverColor={colors.buttonLightBlue}
+                  text={o.text}
+                />
+              ))
+            }
+          </ButtonContainer>
           )}
         {showBubble === "login" && (
           <Overlay>
