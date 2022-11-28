@@ -19,9 +19,9 @@ const StyledButton = styled.button`
   max-height: 3.875rem;
   height: ${(props) => props.height};
   width: ${(props) => props.width};
-  min-width: "fit-content";
+  min-width: fit-content;
   white-space: nowrap;
-  min-height: "3.875rem";
+  min-height: 3.875rem;
   font-size: ${(props) => props.fontSize};
   border-color: ${(props) => props.borderColor};
   line-height: ${textData.lineHeight};

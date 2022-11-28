@@ -4,9 +4,6 @@ import {
   faFolder,
   faFont,
   faFillDrip,
-  faTextSize,
-  faLineHeight,
-  faTextWidth,
   faClose,
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
@@ -72,7 +69,7 @@ export const typefaceDataArr = [
     placeholder: "150"
   },
   {
-    faIconName: faTextWidth,
+    // faIconName: faTextWidth,
     text: "Letter Spacing",
     width: "5rem",
     unit: "pt",

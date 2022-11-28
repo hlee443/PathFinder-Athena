@@ -1,13 +1,13 @@
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
-import { Flexbox, Wrapper, Container } from "../styles/globals";
+import { Flexbox, Wrapper, Container, colors } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
 import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
-import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faCheck, faSliders, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useInsertionEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
@@ -15,18 +15,62 @@ import { editFileDataArr } from "../components/MiniDropdown/data";
 import * as mainHandler from "../handlers/main";
 import Summary from "../components/Summary/Summary";
 import * as ReactDomClient from "react-dom/client";
+import LogoBar from "../components/LogoBar/LogoBar";
+import { mediaQuery } from "../MediaQuery/data";
+import Button from "../components/Button/Button";
+import Lottie from "lottie-react";
+import LoadingAnimation from "../public/lotties/loading_dots.json"
+
+const Layout = styled(Flexbox)`
+  padding: 4rem;
+  gap: 2rem;
+  align-items: start;
+  width: 100%;
+  min-width: 100%;
+  flex: 2 1;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    padding: 2rem;
+  };
+`
 
 const Title = styled(Flexbox)`
-  align-self: flex-start;
   user-select: none;
   justify-content: space-between;
   width: 100%;
 `;
-const DocCont = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
+
+const DocCont = styled(Flexbox)`
+  width: 100%;
+  max-width: 100%;
+  gap: 1rem;
+  // height: 100vh;
 `;
+
+const IconCont = styled(Flexbox)`
+  position: relative; 
+`
+
+const StickyCont = styled(Flexbox)`
+  position: sticky;
+  top: 0;
+  z-index: 100;
+`
+
+
+const SidebarCont = styled.div`
+  width: 40vw;
+  overflow-y: scroll;
+  height: 100%;
+
+  @media ${mediaQuery.maxWidth.tablet} {
+    position: fixed;
+
+    width: 100%;
+    bottom:0;
+    height: 30vh;
+  };
+`
 
 export default function Converted() {
   const [dictionary, setDictionary] = useState(false);
@@ -35,6 +79,22 @@ export default function Converted() {
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
+
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [isActive, setIsActive] = useState();
+  const [showIcon, setShowIcon] = useState(false);
+
+  const handleSidebar = () => {
+    if (isActive) {
+      setShowIcon(false)
+      setShowSidebar(true)
+    }
+    if (!isActive) {
+      setIsActive(false)
+      setShowSidebar(false);
+      setShowIcon(true)
+    }
+  };
 
   const [fileData, setFileData] = useState({});
   const [settingData, setSettingData] = useState({});
@@ -220,6 +280,7 @@ export default function Converted() {
     console.log(typeof newFileName);
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
+    showDropdown(false);
   }
 
   function handleDelete() {
@@ -487,37 +548,52 @@ export default function Converted() {
 
   return (
     <Flexbox>
-      <NavBar />
-      <ToolBar
-        typeArray={typeArray}
-        libraryArray={libraryArray}
-        handleNewFolder={handleNewFolder}
-        handleSaveSetting={handleSaveSetting}
-        // highlightedNode={highlightedNode}
-        handleDictionary={handleDictionary}
-        handleSummary={handleSummary}
-        handleUpdateFileContent={handleUpdateFileContent}
-      ></ToolBar>
-      <DocCont>
-        <Wrapper>
+      <StickyCont>
+        <LogoBar />
+        <NavBar />
+        <ToolBar
+          typeArray={typeArray}
+          libraryArray={libraryArray}
+          handleNewFolder={handleNewFolder}
+          handleSaveSetting={handleSaveSetting}
+          // highlightedNode={highlightedNode}
+          handleDictionary={handleDictionary}
+          handleSummary={handleSummary}
+          handleUpdateFileContent={handleUpdateFileContent}
+        />
+      </StickyCont>
+      {/* <DocCont dir="row"> */}
+      <Layout dir="row" backgroundColor={colors.backgroundWhite}>
+        <DocCont>
           {!isEditing && (
             <Title dir="row">
               <Header text={newFileName} />
-              <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
-              {dropdown && (
-                <MiniDropdown
-                  arr={editFileDataArr}
-                  onEdit={() => {
-                    console.log("clicking edit");
-                    handleEdit();
-                  }}
-                  onDelete={() => {
-                    console.log("clicking delete");
-                    handleDelete();
-                  }}
+              <IconCont dir="row">
+                <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
+                {
+                  !isActive && showIcon && <Icon
+                    faIconName={faArrowRightFromBracket}
+                    handleClick={
+                      () => { setShowSidebar(true), setShowIcon(false) }
+                    } />
+                }
+                {
+                  dropdown &&
+                  <MiniDropdown
+                    position="absolute"
+                    arr={editFileDataArr}
+                    onEdit={() => {
+                      console.log("clicking edit");
+                      handleEdit();
+                    }}
+                    onDelete={() => {
+                      console.log("clicking delete");
+                      handleDelete();
+                    }}
                   // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
-                />
-              )}
+                  />
+                }
+              </IconCont>
             </Title>
           )}
           {isEditing && (
@@ -527,28 +603,40 @@ export default function Converted() {
                 value={newFileName}
                 onChange={(e) => getFilenameValue(e)}
               />
-              <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
+              <Button
+                backgroundColor={colors.buttonPrimaryBlue}
+                text="Save"
+                handleClick={handleSaveFileName} />
             </Title>
           )}
-
           <Container
             className="file__content"
             width="100%"
+            height="100vh"
+            scroll="scroll"
             backgroundColor={settingData.background_colour}
             fontSize={settingData.font_size}
             typeface={settingData.typeface}
             lineSpace={settingData.line_space}
             letterSpace={settingData.letter_space}
           >
-            <Content fileData={fileData}></Content>
+            <Content fileData={fileData} />
           </Container>
-        </Wrapper>
-        <SideBar
-          keywordArray={keywordArray}
-          closeDictionary={closeDictionary}
-        ></SideBar>
-      </DocCont>
+        </DocCont>
+        <SidebarCont>
+          {
+            showSidebar &&
+            <SideBar
+              handleSidebar={handleSidebar}
+              keywordArray={keywordArray}
+              closeDictionary={closeDictionary}
+            />
+          }
+        </SidebarCont>
+      </Layout>
 
+
+      {/* </DocCont> */}
       {/* <DocCont>
         <Wrapper>
           <Title dir="row">
@@ -565,6 +653,7 @@ export default function Converted() {
         </Wrapper>
         <SideBar></SideBar>
       </DocCont> */}
+
     </Flexbox>
   );
 }

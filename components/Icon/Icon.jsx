@@ -10,7 +10,7 @@ const IconCont = styled(Flexbox)`
   padding: 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
-  // position: relative;
+  position: ${(props) => props.position};
   // height: 100%;
   width: ${(props) => props.width};
   border-radius: 1.25rem;
@@ -37,6 +37,7 @@ export default function Icon({
   width = "",
   handleMouseEnter = () => { },
   handleMouseLeave = () => { },
+  position =""
 }) {
 
   const [bg, setBg] = useState("transparent");
@@ -45,7 +46,8 @@ export default function Icon({
 
   return (
     <IconCont
-      onMouseDown={handleClick}
+      position={position}
+      onClick={handleClick}
       hoverColor={hoverColor}
       width={width}
       onMouseEnter={handleMouseEnter}

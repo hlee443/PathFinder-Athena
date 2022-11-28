@@ -15,7 +15,8 @@ const DropdownCont = styled(Flexbox)`
   max-width: 25rem;
   overflow: hidden;
   position: absolute;
-  z-index: 1;
+  top: 0;
+  // z-index: 999;
 `;
 
 const ButtonCont = styled(Flexbox)`
@@ -44,7 +45,7 @@ export default function ToolBarDropdown({
           text="Library"
           faIconNameRight={faClose}
           handleOption={onClose}
-        ></Option>
+        />
       }
       {type === "Library" && libraryArray.map((o, i) => (
         <Option
@@ -54,7 +55,7 @@ export default function ToolBarDropdown({
           faIconNameRight={faChevronRight}
           handleOption={o.handleClick}
           value={o.folder_id}
-        ></Option>
+        />
       ))
       }
       {type === "Library" &&
@@ -65,7 +66,7 @@ export default function ToolBarDropdown({
             type="IconButton"
             faIconName={faFolderPlus}
             handleClick={() => handleNewFolder("temp")}
-          ></Button>
+          />
         </ButtonCont>
       }
       {type === "Typeface" && 
@@ -75,7 +76,7 @@ export default function ToolBarDropdown({
           text="Typeface"
           faIconNameRight={faClose}
           handleOption={onClose}
-        ></Option>
+        />
       }
       {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
         key={i}
@@ -89,7 +90,7 @@ export default function ToolBarDropdown({
         src={o.src}
         onChange={typeArray[i].handleChange}
         value={typeArray[i].value}
-      ></Option>))
+      />))
       }
       {type === "Typeface" &&
         <ButtonCont>
@@ -99,7 +100,7 @@ export default function ToolBarDropdown({
             type="IconButton"
             faIconName={faFolderPlus}
             handleClick={handleSaveSetting}
-          ></Button>
+          />
         </ButtonCont>
       }
     </DropdownCont >
