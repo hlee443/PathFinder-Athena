@@ -51,7 +51,9 @@ const Header = styled(Flexbox)`
 
 export default function SideBar({
   keywordArray = [],
+  summaryArray = [],
   closeDictionary = () => { },
+  closeSummarySidebar = () => {},
   handleSidebar = () => { },
 }) {
 
@@ -83,14 +85,15 @@ export default function SideBar({
           <p>Words</p>
         </Header>
         {
-          keywordArray.map((keyword) => {
-            return <WordSaved
+          keywordArray.map((keyword) => (
+             <WordSaved
               key={keyword.keyword_id}
+              type='dictionary'
               word={keyword.keyword_name}
               definition={keyword.keyword_definition}
               id={keyword.keyword_id}
               onClose={closeDictionary} />
-          })
+          ))
         }
         </Category>
         <Divider />
@@ -99,7 +102,18 @@ export default function SideBar({
           <Icon faIconName={faFileLines} />
             <p>Summary</p>
           </Header>
-          <WordSaved type="summary" />
+          {
+            summaryArray.map((summary) => (
+              <WordSaved 
+                key={summary.summary_id}
+                type='summary'
+                definition={summary.summarized_text}
+                id={summary.summary_id}
+                onClose={closeSummarySidebar}
+              />
+            ))
+          }
+        
         </Category>
       </Section>
     </SideBarCont>

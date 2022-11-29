@@ -113,6 +113,7 @@ export default function Converted() {
   const [summary, setSummary] = useState(false);
   const [selectedText, setSelectedText] = useState({});
   const [keywordArray, setKeywordArray] = useState([]);
+  const [summaryArray, setSummaryArray] = useState([])
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -532,6 +533,7 @@ export default function Converted() {
       }
     }
   }
+
   // useEffect(() => {
   //   console.log("fileid", fileData);
   //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
@@ -542,7 +544,6 @@ export default function Converted() {
   useEffect(() => {
     const saveSelection = () => {
       setSelectedText(window.getSelection());
-      console.log("cliccck", window.getSelection().toString());
       file__content.removeEventListener("mouseup", saveSelection, false);
     };
 
@@ -638,6 +639,7 @@ export default function Converted() {
             <SideBar
               handleSidebar={handleSidebar}
               keywordArray={keywordArray}
+              summaryArray={summaryArray}
               closeDictionary={closeDictionary}
             />
           )}

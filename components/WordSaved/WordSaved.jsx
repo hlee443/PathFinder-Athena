@@ -3,6 +3,7 @@ import {
   faChevronUp,
   faChevronDown,
   faClose,
+  faLocationDot
 } from "@fortawesome/free-solid-svg-icons";
 import Icon from "../Icon/Icon";
 import { Flexbox } from "../../styles/globals";
@@ -66,7 +67,54 @@ export default function WordSaved({
       transition={{ ease: "easeOut", duration: 1 }}
     >
       <TopDiv dir="row">
-        {(type !== "summary" && <Word>{word}</Word>) || (
+        {
+          type !== "summary" ? 
+          ( // show keyword
+            <>
+            <Word>{word}</Word>
+            <IconCont>
+            {(showDef && (
+              <Icon
+                size="m"
+                faIconName={faChevronUp}
+                handleClick={() => setShowDef(false)}
+              />
+            )) || (
+              <Icon
+                size="m"
+                faIconName={faChevronDown}
+                handleClick={() => setShowDef(true)}
+              />
+            )}
+             <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
+            </IconCont>
+            </>
+          ) : (
+            // show Summary
+            <>
+            <Text>Summary preview</Text>
+            <IconCont>
+              {(showDef && (
+                <Icon
+                  size="m"
+                  faIconName={faChevronUp}
+                  handleClick={() => setShowDef(false)}
+                />
+              )) || (
+                <Icon
+                  size="m"
+                  faIconName={faChevronDown}
+                  handleClick={() => setShowDef(true)}
+                />
+              )}
+              <Icon size="m" faIconName={faLocationDot} handleClick={() => console.log("go to summary location")} />
+              <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
+            </IconCont>
+            </>
+          )
+        }
+
+        {/* {(type !== "summary" && <Word>{word}</Word>) || (
           <Text>Summary preview</Text>
         )}
         <IconCont>
@@ -84,10 +132,10 @@ export default function WordSaved({
             />
           )}
           <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
-        </IconCont>
+        </IconCont> */}
       </TopDiv>
       {showDef && <Divider />}
-      {showDef && <Text>{definition}</Text>}
+      {showDef && <Text>{type !== 'summary'? definition : definition.substring(0, 100) + '...'}</Text>}
     </WordCont>
   );
 }
