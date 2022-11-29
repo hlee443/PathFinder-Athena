@@ -114,7 +114,7 @@ export default function Converted() {
   const [newFileName, setNewFileName] = useState("");
   const [test, setTest] = useState(0);
   const [summary, setSummary] = useState(false);
-  const [selectedText, setSelectedText] = useState({});
+  const [selectedText, setSelectedText] = useState('');
   const [keywordArray, setKeywordArray] = useState([]);
 
   function handleBGColor(e) {
@@ -391,43 +391,8 @@ export default function Converted() {
         setSummary(true);
         mainHandler.handleSummarize(selectedText.toString(), (res) => {
           console.log("res", res);
-          const rangeCount = selectedText.rangeCount;
 
-          if (rangeCount !== 0 || selectedText.toString() !== "") {
-            console.log("summary clicked, call highlight");
-            // console.log("highlight!");
-            moveSelectedHighlighted();
-
-            const selectedNodeContainer = document.createElement("div");
-            const highlightedContainer = document.createElement("div");
-            const highlightedNode = document.createElement("span");
-
-            selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
-            highlightedContainer.className = "selectedNode__highlighted"; // 2
-            highlightedNode.className = "highlighted__container"; // 3
-
-            highlightedNode.style.backgroundColor = highlightColor.colorHex;
-
-
-
-            // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
-
-            const range = selectedText.getRangeAt(0);
-
-            range.surroundContents(highlightedNode);
-
-            highlightedNode.parentNode.insertBefore(
-              highlightedContainer,
-              highlightedNode
-            );
-            highlightedContainer.appendChild(highlightedNode);
-
-            highlightedContainer.parentNode.insertBefore(
-              selectedNodeContainer,
-              highlightedContainer
-            );
-            selectedNodeContainer.appendChild(highlightedContainer);
-
+            
             // highlightedNode.addEventListener('click', (e) => {
             //   e.preventDefault()
             //   console.log("CHANGE COLOUR", e.target)
@@ -468,7 +433,7 @@ export default function Converted() {
 
             setSummary(false);
           }
-        }); // call handler for axios call
+        ); // call handler for axios call
       } catch (error) {
         console.log(error);
       }
@@ -517,6 +482,49 @@ export default function Converted() {
   //   });
   // },[])
 
+  const handleHighlight = () => {
+    console.log('selectedText', selectedText)
+    if(selectedText){
+      const rangeCount = selectedText.rangeCount;
+
+      if (rangeCount !== 0 || selectedText.toString() !== "") {
+              console.log("highlight!");
+              moveSelectedHighlighted();
+
+              const selectedNodeContainer = document.createElement("div");
+              const highlightedContainer = document.createElement("div");
+              const highlightedNode = document.createElement("span");
+
+              selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
+              highlightedContainer.className = "selectedNode__highlighted"; // 2
+              highlightedNode.className = "highlighted__container"; // 3
+
+              highlightedNode.style.backgroundColor = highlightColor.colorHex;
+
+              // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
+
+              const range = selectedText.getRangeAt(0);
+
+              range.surroundContents(highlightedNode);
+
+              highlightedNode.parentNode.insertBefore(
+                highlightedContainer,
+                highlightedNode
+              );
+              highlightedContainer.appendChild(highlightedNode);
+
+              highlightedContainer.parentNode.insertBefore(
+                selectedNodeContainer,
+                highlightedContainer
+              );
+              selectedNodeContainer.appendChild(highlightedContainer);
+
+      }
+    }
+
+  }
+
+
   function handleChangeHighlightColor(colorObj) {
     console.log('colorObj update', colorObj)
     setHighlightColor(colorObj)
@@ -554,6 +562,11 @@ export default function Converted() {
     updateLibraryArray(folderArray);
   }, [folderArray]);
 
+  useEffect(() => {
+    console.log('call highlit')
+    handleHighlight()
+  }, [selectedText])
+  
 
   useEffect(() => {
     const saveSelection = () => {
@@ -567,9 +580,10 @@ export default function Converted() {
       if (e.target.classList.contains('highlighted__container')) {
         e.target.style.backgroundColor = highlightColor.colorHex
       } else {
-        file__content.addEventListener("mouseup", saveSelection, false);
+        file__content.addEventListener("mouseup", () => {
+          saveSelection()
+        }, false);
       }
-
     });
   });
 
