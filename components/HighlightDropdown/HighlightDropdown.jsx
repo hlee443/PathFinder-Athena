@@ -1,19 +1,23 @@
 import styled from "styled-components";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { Flexbox } from "../../styles/globals";
 import { ColorArr } from "./data";
 import { colors } from "../../styles/globals";
+import Icon from "../Icon/Icon";
 import Label from "../Label/Label";
 import { useState } from "react";
 
 const Cont = styled(Flexbox)`
-  background-color: ${colors.backgroundCream};
-  padding: 1rem;
-  width: 10rem;
-  justify-content: space-between;
-  border: 0.15rem solid ${colors.darkGrey};
-  border-radius: 1rem;
-  position: relative;
+  background-color: ${colors.backgroundYellow};
+  padding: 1rem 0;
+  width: auto;
+  column-gap: .5rem;
+  padding: .5rem 1rem;
+  border-radius: 0.6rem;
+  position: absolute;
+  margin-top: 8.5rem;
 `;
+
 const Circle = styled.div`
   width: 1.5rem;
   height: 1.5rem;
@@ -25,17 +29,21 @@ const Circle = styled.div`
   }
 `;
 
-export default function HighlightDropdown() {
+export default function HighlightDropdown({
+  handleChangeHighlightColor = () => {},
+  onClose = () => {}
+}) {
   const [sel, setSel] = useState(0);
   const [label, setLabel] = useState(false);
   return (
     <Cont dir="row">
-      {ColorArr.map((o, i) => (
+      {ColorArr.map((color, i) => (
         <Flexbox key={i}>
           <Circle
-            backgroundColor={o.cl}
-            onClick={() => {
-              console.log("highlight color clicked");
+            backgroundColor={color.colorHex}
+            onClick={(e) => {
+              e.preventDefault()
+              handleChangeHighlightColor(color)
             }}
             onMouseEnter={() => {
               {
@@ -46,12 +54,13 @@ export default function HighlightDropdown() {
               setLabel(false), setSel(i);
             }}
           ></Circle>
-
+          
           {sel === i && label && (
-            <Label position="absolute" text={o.text} top="4rem" />
+            <Label position="absolute" text={color.colorText} top="4rem" />
           )}
         </Flexbox>
       ))}
+      <Icon handleClick={onClose} faIconName={faClose} />
     </Cont>
   );
 }

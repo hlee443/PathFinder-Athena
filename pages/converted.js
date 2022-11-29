@@ -14,7 +14,7 @@ import {
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useEffect, useInsertionEffect, useState } from "react";
+import { useEffect, useInsertionEffect, useState, useCallback } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../components/MiniDropdown/data";
 import * as mainHandler from "../handlers/main";
@@ -83,7 +83,10 @@ export default function Converted() {
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
-
+  const [highlightColor, setHighlightColor] = useState({
+    colorText: 'yellow',
+    colorHex: '#FCFF7C'
+  })
   const [showSidebar, setShowSidebar] = useState(true);
   const [isActive, setIsActive] = useState();
   const [showIcon, setShowIcon] = useState(false);
@@ -345,7 +348,6 @@ export default function Converted() {
     const settingData = JSON.parse(router.query.settingData);
     setSettingData(settingData);
     setNewFileName(JSON.parse(router.query.fileData).file_name);
-    console.log("FILEDAAYAYY", fileData);
     mainHandler.handleGetKeywordsByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
@@ -436,8 +438,9 @@ export default function Converted() {
             highlightedContainer.className = "selectedNode__highlighted"; // 2
             highlightedNode.className = "highlighted__container"; // 3
 
-            highlightedNode.style.backgroundColor = "#3df9b4";
-            highlightedNode.style.color = "#000000";
+            highlightedNode.style.backgroundColor = highlightColor.colorHex;
+
+            
 
             // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
 
@@ -456,6 +459,13 @@ export default function Converted() {
               highlightedContainer
             );
             selectedNodeContainer.appendChild(highlightedContainer);
+
+            // highlightedNode.addEventListener('click', (e) => {
+            //   e.preventDefault()
+            //   console.log("CHANGE COLOUR", e.target)
+              
+            //   changeColor(e)
+            // })
 
             // setHighlightedNode(highlightedNode); // save to useState and pass to prop
 
@@ -539,6 +549,7 @@ export default function Converted() {
   //   });
   // },[])
 
+  
   useEffect(() => {
     const saveSelection = () => {
       setSelectedText(window.getSelection());
@@ -547,10 +558,28 @@ export default function Converted() {
     };
 
     const file__content = document.querySelector(".file__content");
-    file__content.addEventListener("mousedown", () => {
-      file__content.addEventListener("mouseup", saveSelection, false);
+    file__content.addEventListener("mousedown", (e) => {
+      if(e.target.classList.contains('highlighted__container')){
+        e.target.style.backgroundColor = highlightColor.colorHex
+      } else {
+        file__content.addEventListener("mouseup", saveSelection, false);
+      }
+
     });
   });
+
+  // useEffect(() => {
+  //   file__content.addEventListener("mousedown", (e) => {
+  //     if(e.target.classtList.contains('highlighted__container')){
+  //       changeColor(e)
+  //     }
+  //   });
+  // })
+
+  function handleChangeHighlightColor(colorObj){
+      console.log('colorObj update', colorObj)
+      setHighlightColor(colorObj)
+  }
 
   return (
     <Flexbox>
@@ -562,7 +591,7 @@ export default function Converted() {
           libraryArray={libraryArray}
           handleNewFolder={handleNewFolder}
           handleSaveSetting={handleSaveSetting}
-          // highlightedNode={highlightedNode}
+          handleChangeHighlightColor={handleChangeHighlightColor}
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
           handleUpdateFileContent={handleUpdateFileContent}
