@@ -25,7 +25,6 @@ import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
-import HighlightDropdown from "../components/HighlightDropdown/HighlightDropdown";
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -558,7 +557,6 @@ export default function Converted() {
       <StickyCont>
         <LogoBar />
         <NavBar />
-        <HighlightDropdown></HighlightDropdown>
         <ToolBar
           typeArray={typeArray}
           libraryArray={libraryArray}
