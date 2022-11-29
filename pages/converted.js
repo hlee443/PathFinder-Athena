@@ -333,39 +333,7 @@ export default function Converted() {
     }
   }
 
-  useEffect(() => {
-    console.log("virus");
-    if (!router.query.fileData) {
-      return;
-    } else if (!router.query.settingData) {
-      return;
-    } else if (!router.query.folderArray) {
-      return;
-    }
-    setFileData(JSON.parse(router.query.fileData));
-    const folderArray = JSON.parse(router.query.folderArray);
-    setFolderArray(folderArray);
-    const settingData = JSON.parse(router.query.settingData);
-    setSettingData(settingData);
-    setNewFileName(JSON.parse(router.query.fileData).file_name);
-    mainHandler.handleGetKeywordsByFileId(
-      JSON.parse(router.query.fileData).file_id,
-      (res) => {
-        console.log(res);
-        setKeywordArray(res.data);
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    updateTypeArray(settingData);
-  }, [settingData]);
-
-  useEffect(() => {
-    updateLibraryArray(folderArray);
-  }, [folderArray]);
-
-  const closeSummary = (e) => {
+  function closeSummary(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -380,7 +348,7 @@ export default function Converted() {
     )
       ? selectedElement.closest("#selectedNode__container")
       : selectedElement.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
-    const selectedHighlightedNode = selectedElement;
+    let selectedHighlightedNode = selectedElement;
 
     while (
       !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
@@ -407,7 +375,7 @@ export default function Converted() {
     }, 600); // animation
   };
 
-  const closeDictionary = (id) => {
+  function closeDictionary (id) {
     mainHandler.handleDeleteKeyword(id, (res) => {
       setKeywordArray(res.data);
       setKeywordArray(
@@ -440,7 +408,7 @@ export default function Converted() {
 
             highlightedNode.style.backgroundColor = highlightColor.colorHex;
 
-            
+
 
             // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
 
@@ -463,7 +431,7 @@ export default function Converted() {
             // highlightedNode.addEventListener('click', (e) => {
             //   e.preventDefault()
             //   console.log("CHANGE COLOUR", e.target)
-              
+
             //   changeColor(e)
             // })
 
@@ -549,7 +517,44 @@ export default function Converted() {
   //   });
   // },[])
 
-  
+  function handleChangeHighlightColor(colorObj) {
+    console.log('colorObj update', colorObj)
+    setHighlightColor(colorObj)
+  }
+
+  useEffect(() => {
+    console.log("virus");
+    if (!router.query.fileData) {
+      return;
+    } else if (!router.query.settingData) {
+      return;
+    } else if (!router.query.folderArray) {
+      return;
+    }
+    setFileData(JSON.parse(router.query.fileData));
+    const folderArray = JSON.parse(router.query.folderArray);
+    setFolderArray(folderArray);
+    const settingData = JSON.parse(router.query.settingData);
+    setSettingData(settingData);
+    setNewFileName(JSON.parse(router.query.fileData).file_name);
+    mainHandler.handleGetKeywordsByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setKeywordArray(res.data);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    updateTypeArray(settingData);
+  }, [settingData]);
+
+  useEffect(() => {
+    updateLibraryArray(folderArray);
+  }, [folderArray]);
+
+
   useEffect(() => {
     const saveSelection = () => {
       setSelectedText(window.getSelection());
@@ -559,7 +564,7 @@ export default function Converted() {
 
     const file__content = document.querySelector(".file__content");
     file__content.addEventListener("mousedown", (e) => {
-      if(e.target.classList.contains('highlighted__container')){
+      if (e.target.classList.contains('highlighted__container')) {
         e.target.style.backgroundColor = highlightColor.colorHex
       } else {
         file__content.addEventListener("mouseup", saveSelection, false);
@@ -575,11 +580,6 @@ export default function Converted() {
   //     }
   //   });
   // })
-
-  function handleChangeHighlightColor(colorObj){
-      console.log('colorObj update', colorObj)
-      setHighlightColor(colorObj)
-  }
 
   return (
     <Flexbox>
@@ -629,7 +629,7 @@ export default function Converted() {
                       console.log("clicking delete");
                       handleDelete();
                     }}
-                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
                 )}
               </IconCont>
