@@ -591,6 +591,7 @@ export default function Converted() {
           libraryArray={libraryArray}
           handleNewFolder={handleNewFolder}
           handleSaveSetting={handleSaveSetting}
+          currentHighlightColor={highlightColor}
           handleChangeHighlightColor={handleChangeHighlightColor}
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}

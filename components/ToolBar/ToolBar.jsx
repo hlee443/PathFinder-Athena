@@ -51,7 +51,8 @@ export default function ToolBar({
   handleSaveSetting = () => { },
   handleSummary = () => { },
   handleDictionary = () => { },
-  handleChangeHighlightColor= () => {}
+  handleChangeHighlightColor= () => {},
+  currentHighlightColor = {}
 }) {
   const router = useRouter();
   const [sel, setSel] = useState(0);
@@ -136,6 +137,7 @@ export default function ToolBar({
         {
           showDropdown === 'highlightColor' && (
             <HighlightDropdown
+              currentHighlightColor = {currentHighlightColor}
               handleChangeHighlightColor={handleChangeHighlightColor}
               onClose={closeDropdown}
             />
