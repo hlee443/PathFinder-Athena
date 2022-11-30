@@ -50,3 +50,10 @@ export * from "./database/getKeywordsByFileId";
 export * from "./database/addKeyword";
 export * from "./database/updateKeyword";
 export * from "./database/deleteKeyword";
+
+// Summary
+export * from "./database/getSummary";
+export * from "./database/getSummariesByFileId";
+export * from "./database/addSummary";
+export * from "./database/updateSummary";
+export * from "./database/deleteSummary";

@@ -9,14 +9,11 @@ const DropdownCont = styled(Flexbox)`
   filter: drop-shadow(3px 5px 10px rgba(0, 0, 0, 0.2));
   border-radius: 20px;
   overflow: hidden;
-  z-index: 1;
+  z-index: 999;
   position: ${(props) => props.position || ''};
-  // right: 0;
+  right: ${(props) => props.right};
   width: fit-content;
   height: fit-content;
-  position: absolute;
-  top: 0;
-  right: 0;
 `;
 
 export default function MiniDropdown({
@@ -29,8 +26,7 @@ export default function MiniDropdown({
   onDelete = () => { },
   onMoveFolder = () => { },
   handleMouseLeave = () => { },
-  onSetting = () => { },
-  onSignOut = () => { }
+  right = ""
 }) {
 
   return (
@@ -40,19 +36,16 @@ export default function MiniDropdown({
       {
         arr.map((o, i) => (
           <Option
-            handleOption={
-              () => {
-                o.text === "Rename" && onEdit(),
-                  o.text === "Delete" && onDelete(),
-                  o.text === "Move" && onMoveFolder(),
-                  o.text === "Setting" && onSetting(),
-                  o.text === "Log Out" && onSignOut()
-              }
-            }
+            handleOption={() => {
+              o.text === "Rename" && onEdit(),
+                o.text === "Delete" && onDelete(),
+                o.text === "Move" && onMoveFolder()
+            }}
             key={i}
             bgColor={o.bgColor}
             text={o.text}
             faIconNameRight={o.faIconNameRight}
+            right={right}
           />
         ))
       }

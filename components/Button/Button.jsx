@@ -14,21 +14,20 @@ const StyledButton = styled.button`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
   width: 15rem;
-  height: 3.875rem;
   max-width: 15rem;
   max-height: 3.875rem;
-  height: ${(props) => props.height};
+  height: ${(props) => props.height || "3.875rem"};
   width: ${(props) => props.width};
-  min-width: "fit-content";
+  min-width: fit-content;
   white-space: nowrap;
-  min-height: "3.875rem";
+  // min-height: 3.875rem;
   font-size: ${(props) => props.fontSize};
   border-color: ${(props) => props.borderColor};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
   color: ${(props) => props.color || colors.textBlack};
-  padding: 1rem;
+  padding: ${(props) => props.padding || "1rem"};
 
   @media ${mediaQuery.maxWidth.mobile} {
     width: 12rem;
@@ -47,6 +46,7 @@ export default function Button({
   backgroundColor = "",
   text = "button text",
   height = "",
+  padding = "",
   // fontSize = "1rem",
   borderBottom = "none",
   borderRadius = "3.125rem",
@@ -73,6 +73,7 @@ export default function Button({
       borderRadius={borderRadius}
       width={width}
       fontWeight={fontWeight}
+      padding={padding}
     >
       {text}
       {faIconName !== null && (

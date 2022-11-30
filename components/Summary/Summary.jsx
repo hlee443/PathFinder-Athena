@@ -21,23 +21,24 @@ const slideDown = keyframes`
 
 // TEMPORARY STUFF??
 const SummarizeCont = styled(Flexbox)`
-  top: 12rem;
-  right: 12rem;
+  // top: 12rem;
+  // right: 12rem;
   margin: 3.125rem 0;
   width: 100%;
   height: 100%;
+  min-width: 100%;
   padding: 1.875rem;
   border-radius: 0.625rem;
-  border: 0.1rem solid black;
+  border: 0.1rem solid ${colors.darkGrey};
   background-color: ${colors.backgroundYellow};
   animation: ${slideDown} .3s ease-in-out 1;
   user-select: none;
+  gap: 1rem;
 `
 
-const TopSectionRight = styled.div`
-  display: flex;
+const TopSection = styled(Flexbox)`
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
 
 const LeftContainer = styled.div`
@@ -47,20 +48,24 @@ const LeftContainer = styled.div`
   align-content: flex-start;
 `
 
-
-
 export default function Summary({
-  summarizedContent="Summarization here",
-  onClose = () => {}
+  summarizedContent = "Summarization here",
+  handleCloseSummary = () => { },
+  summaryId = ''
 }) {
+
+  function onClose(e){
+    e.preventDefault()
+    // const selectedElement = e.target.parentElement
+    handleCloseSummary(summaryId)
+  }
+
   return (
-  <SummarizeCont className="summarize__container">
-    {/* <Container backgroundColor ={colors.backgroundYellow}> */}
-      {/* <CloseButton> */}
-      <TopSectionRight>
+    <SummarizeCont className="summarize__container">
+      <TopSection dir="row">
+        <SubHeader text="Summary"></SubHeader>
         <Icon handleClick={onClose} faIconName={faClose} />
-      </TopSectionRight>
-      {/* </CloseButton> */}
+      </TopSection>
       {/* <>
       <SubHeader text="Keyword"></SubHeader> */}
       {/* {
@@ -72,15 +77,9 @@ export default function Summary({
         <Label text="keyword"></Label>
       </KeywordCont>
       </> */}
-      <LeftContainer>
-      <SubHeader text="Summary"></SubHeader>
-      <br />
       <BodyText>
         {summarizedContent}
       </BodyText>
-      </LeftContainer>
-      
-    {/* </Container> */}
-  </SummarizeCont>
+    </SummarizeCont>
   )
 }

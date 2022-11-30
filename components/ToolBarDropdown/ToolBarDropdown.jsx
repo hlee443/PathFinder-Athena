@@ -6,6 +6,7 @@ import { faFolderPlus, faBook, faFolder, faClose, faChevronRight, faFont } from 
 import { useState } from "react";
 import { libraryDataArr, typefaceDataArr, dataArr } from "./data";
 import { iconSvgs } from "../Icon/data";
+import { motion } from "framer-motion";
 
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
@@ -15,7 +16,8 @@ const DropdownCont = styled(Flexbox)`
   max-width: 25rem;
   overflow: hidden;
   position: absolute;
-  z-index: 1;
+  top: 0;
+  // z-index: 999;
 `;
 
 const ButtonCont = styled(Flexbox)`
@@ -35,7 +37,11 @@ export default function ToolBarDropdown({
   const [sel, setSel] = useState(0);
 
   return (
-
+    <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.1 }}
+    > 
     <DropdownCont type={type}>
       {type === "Library" && 
         <Option
@@ -44,7 +50,7 @@ export default function ToolBarDropdown({
           text="Library"
           faIconNameRight={faClose}
           handleOption={onClose}
-        ></Option>
+        />
       }
       {type === "Library" && libraryArray.map((o, i) => (
         <Option
@@ -54,7 +60,7 @@ export default function ToolBarDropdown({
           faIconNameRight={faChevronRight}
           handleOption={o.handleClick}
           value={o.folder_id}
-        ></Option>
+        />
       ))
       }
       {type === "Library" &&
@@ -65,7 +71,7 @@ export default function ToolBarDropdown({
             type="IconButton"
             faIconName={faFolderPlus}
             handleClick={() => handleNewFolder("temp")}
-          ></Button>
+          />
         </ButtonCont>
       }
       {type === "Typeface" && 
@@ -75,7 +81,7 @@ export default function ToolBarDropdown({
           text="Typeface"
           faIconNameRight={faClose}
           handleOption={onClose}
-        ></Option>
+        />
       }
       {type === "Typeface" && typefaceDataArr.map((o, i) => (<Option
         key={i}
@@ -89,7 +95,7 @@ export default function ToolBarDropdown({
         src={o.src}
         onChange={typeArray[i].handleChange}
         value={typeArray[i].value}
-      ></Option>))
+      />))
       }
       {type === "Typeface" &&
         <ButtonCont>
@@ -99,9 +105,10 @@ export default function ToolBarDropdown({
             type="IconButton"
             faIconName={faFolderPlus}
             handleClick={handleSaveSetting}
-          ></Button>
+          />
         </ButtonCont>
       }
     </DropdownCont >
+    </motion.div>
   );
 };

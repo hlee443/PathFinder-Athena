@@ -3,61 +3,152 @@ import {
   faChevronUp,
   faChevronDown,
   faClose,
+  faLocationDot
 } from "@fortawesome/free-solid-svg-icons";
 import Icon from "../Icon/Icon";
 import { Flexbox } from "../../styles/globals";
 import { useState } from "react";
 import { colors } from "../../styles/globals";
+import { motion } from "framer-motion";
 
-const Cont = styled.div`
+const WordCont = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  min-width: 100%;
+  max-width: 30rem;
   border-radius: 0.75rem;
   box-shadow: 2px 5px 10px 0px #0000001a;
   padding: 1rem;
-  background-color: ${colors.backgroundLightYellow};
-  margin-top: 1rem;
+  background-color: ${colors.backgroundWhite};
+  justify-content: start;
+  gap: 1rem;
 `;
+
+const Divider = styled.div`
+  border-bottom: 1px solid ${colors.lightGrey};
+  width: 100%;
+`;
+
 const Word = styled.p`
-  font-weight: 700;
+  font-weight: bolder;
 `;
-const TopDiv = styled.div`
-  display: flex;
-  flex-direction: row;
+
+const TopDiv = styled(Flexbox)`
   justify-content: space-between;
-  align-items: center;
+  width: 100%;
 `;
+
 const IconCont = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const Text = styled.p``;
 
-export default function WordSaved({ type = "", word = "", definition = "", id ="", onClose=()=>{} }) {
+const Text = styled.div`
+  max-width: 100%;
+  width: 100%;
+`;
+
+export default function WordSaved({
+  type = "",
+  word = "",
+  definition = "",
+  id = "",
+  handleCloseSummary = () => {},
+  handleLocateSummary = () => {}
+}) {
   const [open, setOpen] = useState(false);
-  const [showDef, setShowDef] = useState(false);
+  const [showDef, setShowDef] = useState(true);
+
+  function onSummaryClose(e){
+    e.preventDefault()
+    handleCloseSummary(id)
+  }
+
+  function onLocate(e){
+    e.preventDefault()
+
+    handleLocateSummary(id)
+  }
+
   return (
-    <Cont>
-      <TopDiv>
-        {(type !== "summary" && <Word>{word}</Word>) || (
+    <WordCont
+      initial={{ x: 20 }}
+      animate={{ x: 0 }}
+      transition={{ ease: "easeOut", duration: 1 }}
+    >
+      <TopDiv dir="row">
+        {
+          type !== "summary" ? 
+          ( // show keyword
+            <>
+            <Word>{word}</Word>
+            <IconCont>
+            {(showDef && (
+              <Icon
+                size="m"
+                faIconName={faChevronUp}
+                handleClick={() => setShowDef(false)}
+              />
+            )) || (
+              <Icon
+                size="m"
+                faIconName={faChevronDown}
+                handleClick={() => setShowDef(true)}
+              />
+            )}
+             <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
+            </IconCont>
+            </>
+          ) : (
+            // show Summary
+            <>
+            <Text>{definition.substring(0, 15) + '...'}</Text>
+            <IconCont>
+              {(showDef && (
+                <Icon
+                  size="m"
+                  faIconName={faChevronUp}
+                  handleClick={() => setShowDef(false)}
+                />
+              )) || (
+                <Icon
+                  size="m"
+                  faIconName={faChevronDown}
+                  handleClick={() => setShowDef(true)}
+                />
+              )}
+              <Icon size="sm" faIconName={faLocationDot} handleClick={onLocate} />
+              <Icon size="m" faIconName={faClose} handleClick={onSummaryClose} />
+            </IconCont>
+            </>
+          )
+        }
+
+        {/* {(type !== "summary" && <Word>{word}</Word>) || (
           <Text>Summary preview</Text>
         )}
         <IconCont>
           {(showDef && (
             <Icon
+              size="m"
               faIconName={faChevronUp}
               handleClick={() => setShowDef(false)}
-            ></Icon>
+            />
           )) || (
             <Icon
+              size="m"
               faIconName={faChevronDown}
               handleClick={() => setShowDef(true)}
-            ></Icon>
+            />
           )}
-
-          <Icon faIconName={faClose} handleClick={()=> onClose(id)}></Icon>
-        </IconCont>
+          <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
+        </IconCont> */}
       </TopDiv>
-      {showDef && <Text>{definition}</Text>}
-    </Cont>
+      {showDef && <Divider />}
+      {showDef && <Text>{type !== 'summary'? definition : definition.substring(0, 80) + '...'}</Text>}
+    </WordCont>
   );
 }

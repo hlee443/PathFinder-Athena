@@ -3,17 +3,22 @@ import Button from "../Button/Button";
 import { Flexbox } from "../../styles/globals";
 import { btnData } from "./data";
 import { useState } from "react";
+import { mediaQuery } from "../../MediaQuery/data";
 
 const TabBarCont = styled(Flexbox)`
   border-bottom: 0.25rem solid #e1e1e1;
   justify-content: start;
   width: 100%;
-  overflow-x: scroll;
   height: fit-content;
   gap: 0.5rem;
+  overflow-x: inherit;
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  @media ${mediaQuery.maxWidth.tablet} {
+    overflow-x: scroll;
   }
 `;
 

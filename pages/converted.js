@@ -1,13 +1,18 @@
 import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
-import { Flexbox, Wrapper, Container } from "../styles/globals";
+import { Flexbox, Wrapper, Container, colors } from "../styles/globals";
 import ToolBar from "../components/ToolBar/ToolBar";
 import Icon from "../components/Icon/Icon";
 import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
-import { faEllipsis, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsis,
+  faCheck,
+  faSliders,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useInsertionEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
@@ -15,17 +20,62 @@ import { editFileDataArr } from "../components/MiniDropdown/data";
 import * as mainHandler from "../handlers/main";
 import Summary from "../components/Summary/Summary";
 import * as ReactDomClient from "react-dom/client";
+import LogoBar from "../components/LogoBar/LogoBar";
+import { mediaQuery } from "../MediaQuery/data";
+import Button from "../components/Button/Button";
+import Lottie from "lottie-react";
+import LoadingAnimation from "../public/lotties/loading_dots.json";
+import { jsPDF } from "jspdf";
+
+const { htmlToText } = require("html-to-text");
+
+const Layout = styled(Flexbox)`
+  padding: 4rem;
+  gap: 2rem;
+  align-items: start;
+  width: 100%;
+  min-width: 100%;
+  flex: 2 1;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    padding: 2rem;
+  } ;
+`;
 
 const Title = styled(Flexbox)`
-  align-self: flex-start;
   user-select: none;
   justify-content: space-between;
   width: 100%;
 `;
-const DocCont = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
+
+const DocCont = styled(Flexbox)`
+  width: 100%;
+  max-width: 100%;
+  gap: 1rem;
+  // height: 100vh;
+`;
+
+const IconCont = styled(Flexbox)`
+  position: relative;
+`;
+
+const StickyCont = styled(Flexbox)`
+  position: sticky;
+  top: 0;
+  z-index: 100;
+`;
+
+const SidebarCont = styled.div`
+  width: 40vw;
+  overflow-y: scroll;
+  height: 100%;
+
+  @media ${mediaQuery.maxWidth.tablet} {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 30vh;
+  } ;
 `;
 
 export default function Converted() {
@@ -35,6 +85,22 @@ export default function Converted() {
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
+
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [isActive, setIsActive] = useState();
+  const [showIcon, setShowIcon] = useState(false);
+
+  const handleSidebar = () => {
+    if (isActive) {
+      setShowIcon(false);
+      setShowSidebar(true);
+    }
+    if (!isActive) {
+      setIsActive(false);
+      setShowSidebar(false);
+      setShowIcon(true);
+    }
+  };
 
   const [fileData, setFileData] = useState({});
   const [settingData, setSettingData] = useState({});
@@ -49,6 +115,7 @@ export default function Converted() {
   const [summary, setSummary] = useState(false);
   const [selectedText, setSelectedText] = useState({});
   const [keywordArray, setKeywordArray] = useState([]);
+  const [summaryArray, setSummaryArray] = useState([]);
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -220,6 +287,7 @@ export default function Converted() {
     console.log(typeof newFileName);
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
+    showDropdown(false);
   }
 
   function handleDelete() {
@@ -280,12 +348,18 @@ export default function Converted() {
     const settingData = JSON.parse(router.query.settingData);
     setSettingData(settingData);
     setNewFileName(JSON.parse(router.query.fileData).file_name);
-    console.log("FILEDAAYAYY", fileData);
     mainHandler.handleGetKeywordsByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
-        console.log(res)
+        console.log(res);
         setKeywordArray(res.data);
+      }
+    );
+    mainHandler.handleGetSummariesByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setSummaryArray(res.data);
       }
     );
   }, []);
@@ -298,59 +372,77 @@ export default function Converted() {
     updateLibraryArray(folderArray);
   }, [folderArray]);
 
-  const closeSummary = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleCloseSummary = (summaryId) => {
 
-    const selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    mainHandler.handleDeleteSummary(summaryId, (res) => {
+      console.log(res.data);
+     
+      const selectedSummaryComponent = document.getElementsByClassName(
+        `summarize__wrapper-container ${summaryId}`
+      )[0];
 
-    const selectedSummaryComponent = selectedElement.closest(
-      ".summarize__wrapper-container"
-    );
+      selectedSummaryComponent.classList.add("summary--close"); // animation stuff
 
-    const grandParentElement = selectedElement.closest(
-      "#selectedNode__container"
-    )
-      ? selectedElement.closest("#selectedNode__container")
-      : selectedElement.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
-    const selectedHighlightedNode = selectedElement;
+      const grandParentElement = selectedSummaryComponent.closest(
+        "#selectedNode__container"
+      )
+        ? selectedSummaryComponent.closest("#selectedNode__container")
+        : selectedSummaryComponent.closest(".selectedNode__highlighted");
+      const selectedHighlightedNode = selectedSummaryComponent;
 
-    while (
-      !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
-    ) {
-      selectedHighlightedNode = selectedHighlightedNode.parentElement;
-    }
+      while (
+        !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
+      ) {
+        selectedHighlightedNode = selectedHighlightedNode.parentElement;
+      }
 
-    const highlightedContainer = selectedHighlightedNode.querySelector(
-      ".selectedNode__highlighted > .highlighted__container"
-    );
-
-    selectedSummaryComponent.classList.add("summary--close"); // animation stuff
-    setTimeout(() => {
-      // async function
-
-      selectedSummaryComponent.remove();
-      grandParentElement.parentElement.replaceChild(
-        highlightedContainer.firstChild,
-        grandParentElement
+      const highlightedContainer = selectedHighlightedNode.querySelector(
+        ".selectedNode__highlighted > .highlighted__container"
       );
-      grandParentElement.remove();
 
-      handleUpdateFileContent();
-    }, 600); // animation
+      setTimeout(() => {
+        // Delete highlight component and joining the original text back to normal
+        grandParentElement.parentElement.replaceChild(
+          highlightedContainer.firstChild,
+          grandParentElement
+        );
+        grandParentElement.remove();
+
+        // Delete summary component in the file__container
+        selectedSummaryComponent.remove();
+
+        // Delete the summary in sidebar
+        setSummaryArray(
+          summaryArray.filter((summary) => summary.summary_id !== summaryId)
+        );
+
+        handleUpdateFileContent();
+      }, 600); // animation
+    });
   };
 
   const closeDictionary = (id) => {
     mainHandler.handleDeleteKeyword(id, (res) => {
       setKeywordArray(res.data);
-      setKeywordArray(keywordArray.filter(keyword => keyword.keyword_id !== id))
+      setKeywordArray(
+        keywordArray.filter((keyword) => keyword.keyword_id !== id)
+      );
     });
   };
+
+  const handleLocateSummary = (summaryId) => {
+    console.log("SCROLL TO VIEW")
+    const selectedSummary = document.getElementsByClassName(
+      `summarize__wrapper-container ${summaryId}`
+    )[0];
+
+    selectedSummary.closest(".selectedNode__highlighted").scrollIntoView({behavior: "smooth", block: 'center', inline: 'center'})
+  }
 
   function handleSummary() {
     // summary content received from api
     if (!summary) {
-      try {
+      try { 
         setSummary(true);
         mainHandler.handleSummarize(selectedText.toString(), (res) => {
           console.log("res", res);
@@ -392,36 +484,54 @@ export default function Converted() {
 
             // setHighlightedNode(highlightedNode); // save to useState and pass to prop
 
-            const summaryComponent = (
-              <Summary
-                summarizedContent={res.data.summary}
-                onClose={(e) => closeSummary(e)}
-              />
-            );
+            let summaryData = {
+              summaryData: {
+                fileId: fileData.file_id,
+                summaryContent: selectedText.toString(),
+                summaryResult: `${res.data.summary}`,
+              },
+            };
+            mainHandler.handleAddSummary(summaryData, (res) => {
+              console.log("summary added", res.data);
 
-            const container = document.querySelector(
-              "#selectedNode__container > .selectedNode__highlighted"
-            );
+              const summaryComponent = (
+                <Summary
+                  summarizedContent={res.data.summary_result}
+                  handleCloseSummary={handleCloseSummary}
+                  summaryId={res.data.summary_id}
+                />
+              );
 
-            const summaryWrapperContainer = document.createElement("div");
+              const container = document.querySelector(
+                "#selectedNode__container > .selectedNode__highlighted"
+              );
 
-            summaryWrapperContainer.classList.add(
-              "summarize__wrapper-container"
-            );
+              const summaryWrapperContainer = document.createElement("div");
 
-            container.appendChild(summaryWrapperContainer);
+              summaryWrapperContainer.classList.add(
+                "summarize__wrapper-container",
+                `${res.data.summary_id}`
+              );
 
-            const root = ReactDomClient.createRoot(
+              container.appendChild(summaryWrapperContainer);
+
+              const root = ReactDomClient.createRoot(
+                document.querySelector(
+                  "#selectedNode__container .summarize__wrapper-container"
+                )
+              );
+
+              root.render(summaryComponent);
+
               document.querySelector(
                 "#selectedNode__container .summarize__wrapper-container"
-              )
-            );
+              ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
-            root.render(summaryComponent);
+              handleUpdateFileContent();
 
-            handleUpdateFileContent();
-
-            setSummary(false);
+              setSummaryArray([...summaryArray, res.data]);
+              setSummary(false);
+            });
           }
         }); // call handler for axios call
       } catch (error) {
@@ -465,6 +575,7 @@ export default function Converted() {
       }
     }
   }
+
   // useEffect(() => {
   //   console.log("fileid", fileData);
   //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
@@ -475,7 +586,6 @@ export default function Converted() {
   useEffect(() => {
     const saveSelection = () => {
       setSelectedText(window.getSelection());
-      console.log("cliccck", window.getSelection().toString());
       file__content.removeEventListener("mouseup", saveSelection, false);
     };
 
@@ -485,39 +595,98 @@ export default function Converted() {
     });
   });
 
+  const handleDownloadFile = () => {
+    // // write html file contents to .txt file
+    // const element = document.createElement("a");
+    // // convert file with html tags to plain text
+    // const fileContent = htmlToText(fileData.file_content);
+    // const file = new Blob([fileContent], {
+    //   type: "text/plain",
+    // });
+
+    // element.href = URL.createObjectURL(file);
+    // element.download = fileData.file_name;
+    // document.body.appendChild(element); // Required for this to work in FireFox
+    // element.click();
+
+    // Source HTMLElement or a string containing HTML.
+    // download pdf
+    let doc = new jsPDF();
+    var elementHTML = document.querySelector(".file__content").outerHTML;
+    console.log("PEEPEE", elementHTML)
+
+    doc.html(elementHTML, {
+      callback: function (doc) {
+        // Save the PDF
+        doc.save(`${newFileName}.pdf`);
+      },
+      margin: [10, 10, 10, 10],
+      x: 10,
+      y: 10,
+      autoPaging: "text",
+      width: 180,
+      windowWidth: 1080,
+    });
+      // autoPaging:"text",
+    //   x: 0,
+    //   y: 0,
+    //   width: 190, //target width in the PDF document
+    //   windowWidth: 675, //window width in CSS pixels
+    // });
+  };
+
   return (
     <Flexbox>
-      <NavBar />
-      <ToolBar
-        typeArray={typeArray}
-        libraryArray={libraryArray}
-        handleNewFolder={handleNewFolder}
-        handleSaveSetting={handleSaveSetting}
-        // highlightedNode={highlightedNode}
-        handleDictionary={handleDictionary}
-        handleSummary={handleSummary}
-        handleUpdateFileContent={handleUpdateFileContent}
-      ></ToolBar>
-      <DocCont>
-        <Wrapper>
+      <StickyCont>
+        <LogoBar />
+        <NavBar />
+        <ToolBar
+          typeArray={typeArray}
+          libraryArray={libraryArray}
+          handleNewFolder={handleNewFolder}
+          handleSaveSetting={handleSaveSetting}
+          // highlightedNode={highlightedNode}
+          handleDictionary={handleDictionary}
+          handleSummary={handleSummary}
+          handleUpdateFileContent={handleUpdateFileContent}
+          handleDownloadFile={handleDownloadFile}
+        />
+      </StickyCont>
+      {/* <DocCont dir="row"> */}
+      <Layout dir="row" backgroundColor={colors.backgroundWhite}>
+        <DocCont>
           {!isEditing && (
             <Title dir="row">
               <Header text={newFileName} />
-              <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
-              {dropdown && (
-                <MiniDropdown
-                  arr={editFileDataArr}
-                  onEdit={() => {
-                    console.log("clicking edit");
-                    handleEdit();
-                  }}
-                  onDelete={() => {
-                    console.log("clicking delete");
-                    handleDelete();
-                  }}
-                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+              <IconCont dir="row">
+                <Icon
+                  faIconName={faEllipsis}
+                  handleClick={handleMiniDropdown}
                 />
-              )}
+                {!isActive && showIcon && (
+                  <Icon
+                    faIconName={faArrowRightFromBracket}
+                    handleClick={() => {
+                      setShowSidebar(true), setShowIcon(false);
+                    }}
+                  />
+                )}
+                {dropdown && (
+                  <MiniDropdown
+                    position="absolute"
+                    arr={editFileDataArr}
+                    onEdit={() => {
+                      console.log("clicking edit");
+                      handleEdit();
+                    }}
+                    onDelete={() => {
+                      console.log("clicking delete");
+                      handleDelete();
+                    }}
+                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                  />
+                )}
+              </IconCont>
             </Title>
           )}
           {isEditing && (
@@ -527,28 +696,42 @@ export default function Converted() {
                 value={newFileName}
                 onChange={(e) => getFilenameValue(e)}
               />
-              <Icon faIconName={faCheck} handleClick={handleSaveFileName} />
+              <Button
+                backgroundColor={colors.buttonPrimaryBlue}
+                text="Save"
+                handleClick={handleSaveFileName}
+              />
             </Title>
           )}
-
           <Container
             className="file__content"
             width="100%"
+            height="100vh"
+            scroll="scroll"
             backgroundColor={settingData.background_colour}
             fontSize={settingData.font_size}
             typeface={settingData.typeface}
             lineSpace={settingData.line_space}
             letterSpace={settingData.letter_space}
           >
-            <Content fileData={fileData}></Content>
+            <Content fileData={fileData} />
           </Container>
-        </Wrapper>
-        <SideBar
-          keywordArray={keywordArray}
-          closeDictionary={closeDictionary}
-        ></SideBar>
-      </DocCont>
+        </DocCont>
+        <SidebarCont>
+          {showSidebar && (
+            <SideBar
+              handleSidebar={handleSidebar}
+              keywordArray={keywordArray}
+              summaryArray={summaryArray}
+              closeDictionary={closeDictionary}
+              handleCloseSummary={handleCloseSummary}
+              handleLocateSummary={handleLocateSummary}
+            />
+          )}
+        </SidebarCont>
+      </Layout>
 
+      {/* </DocCont> */}
       {/* <DocCont>
         <Wrapper>
           <Title dir="row">

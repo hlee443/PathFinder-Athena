@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {mediaQuery} from "../MediaQuery/data"
+import { mediaQuery } from "../MediaQuery/data";
 
 export const textData = {
   lineHeight: "150%",
@@ -18,7 +18,7 @@ export const logoData = {
   logoHorizontal: "../images/logo-horizontal.svg",
   logoVertical: "../images/logo-vertical.svg",
   logoIcon: "../images/logo-icon.svg",
-  logoTypeface: "../images/logo-typeface.svg"
+  logoTypeface: "../images/logo-typeface.svg",
 };
 
 export const colors = {
@@ -38,7 +38,7 @@ export const colors = {
   lightGrey: "#E1E1E1",
   buttonLightGrey: "#F5F5F5",
   grey: "#D9D9D9",
-  opacity: "rgba(240, 240, 240, .7)"
+  opacity: "rgba(240, 240, 240, .7)",
 };
 
 export const Flexbox = styled.div`
@@ -46,26 +46,28 @@ export const Flexbox = styled.div`
   flex-direction: ${(props) => props.dir || "column"};
   align-items: center;
   justify-content: center;
+  // position: relative;
 `;
 
 export const Wrapper = styled(Flexbox)`
   align-items: start;
   justify-content: start;
   width: 100vw;
+  height: 100vh;
   min-height: 100vh;
-  margin: 0 auto;
   gap: 2.5rem;
   padding: 8rem;
-  overflow-y: scroll;
+  bottom: 0;
+  background-color: ${(props) => props.backgroundColor || colors.backgroundCream};
 
   @media ${mediaQuery.maxWidth.mobile} {
     padding: 1rem;
     gap: 1rem;
-  };
+  }
 
   @media ${mediaQuery.maxWidth.tablet} {
-    padding: 3rem; 
-  };
+    padding: 3rem;
+  } ;
 `;
 
 export const BodyText = styled.p`
@@ -78,16 +80,21 @@ export const BodyText = styled.p`
 
 export const Container = styled(Flexbox)`
   width: ${(props) => props.width || "100%"};
+  justify-content: start;
+  overflow-y: ${(props) => props.scroll || "inherit"};
+  // min-width: 100%;
   max-width: 100%;
   height: ${(props) => props.height || "fit-content"};
-  padding: 2em;
+  padding: ${(props) => props.padding || "2em"};
   border: 0.125rem solid;
   border-color: ${(props) => props.borderColor || colors.darkGray};
-  background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
+  background-color: ${(props) =>
+    props.backgroundColor || colors.backgroundWhite};
   border-radius: 2rem;
   gap: ${(props) => props.gap};
   font-family: ${(props) => props.typeface};
   font-size: ${(props) => props.fontSize}px;
   line-height: ${(props) => props.lineSpace}%;
   letter-spacing: ${(props) => props.letterSpace}rem;
+  animation: fadeIn 1s;
 `;

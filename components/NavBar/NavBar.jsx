@@ -12,19 +12,19 @@ import { ProfileDataArr } from "../MiniDropdown/data";
 import useMediaQuery from "../../MediaQuery/MediaQuery";
 import { mediaQuery } from "../../MediaQuery/data";
 import { menus, btns } from "./data";
+import { motion } from "framer-motion";
 
 const NavBarCont = styled(Flexbox)`
   width: 100vw;
   max-height: 6.438rem;
   backdrop-filter: blur(0.125rem);
-  z-index: 100;
+  // z-index: 100;
   justify-content: space-between;
-  position: relative;
   display: ${(props) => props.display} ;
 
   @media ${mediaQuery.maxWidth.mobile} {
-   position: fixed;
-   bottom: 0;
+    bottom: 0;
+    position: fixed;
   };
 `;
 
@@ -130,29 +130,35 @@ export default function NavBar() {
                     {sel === i && label && <Label position="absolute" text={o.text} />}
                     {isMobile && <Label backgroundColor="transparent" text={o.text} />}
                     {
-                      showMiniDropDown && <MiniDropDown
-                        handleMouseLeave={() => setShowMiniDropDown(false)}
-                        arr={ProfileDataArr} />
+                      showMiniDropDown && <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      > 
+                        <MiniDropDown
+                          handleMouseLeave={() => setShowMiniDropDown(false)}
+                          arr={ProfileDataArr} /> 
+                      </motion.div>
                     }
                   </Flexbox>
                 ))
               }
             </IconContainer>
-          ) : ( <ButtonContainer dir="row">
-              {
-                btns.map((o, i) => (
-                  <Button
-                    key={i}
-                    handleClick={() => setShowBubble(o.type)}
-                    width={btnData.width}
-                    height={btnData.height}
-                    backgroundColor={colors.backgroundCream}
-                    hoverColor={colors.buttonLightBlue}
-                    text={o.text}
-                  />
-                ))
-              }
-            </ButtonContainer>
+          ) : (<ButtonContainer dir="row">
+            {
+              btns.map((o, i) => (
+                <Button
+                  key={i}
+                  handleClick={() => setShowBubble(o.type)}
+                  width={btnData.width}
+                  height={btnData.height}
+                  backgroundColor={colors.backgroundCream}
+                  hoverColor={colors.buttonLightBlue}
+                  text={o.text}
+                />
+              ))
+            }
+          </ButtonContainer>
           )}
         {showBubble === "login" && (
           <Overlay>

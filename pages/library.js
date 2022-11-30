@@ -5,14 +5,19 @@ import TabBar from "../components/TabBar/TabBar";
 import File from "../components/File/File";
 import Header from "../components/Header/Header";
 import SearchBar from "../components/SearchBar/SearchBar";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
-import * as mainHandler from '../handlers/main';
-import LogoBar from "../components/LogoBar/LogoBar"
+import * as mainHandler from "../handlers/main";
+import LogoBar from "../components/LogoBar/LogoBar";
 import { mediaQuery } from "../MediaQuery/data";
+import { motion } from "framer-motion";
 
-const FileDisplay = styled(Flexbox)`
+const FileDisplay = styled(motion.div)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -23,18 +28,18 @@ const FileDisplay = styled(Flexbox)`
   @media ${mediaQuery.maxWidth.mobile} {
     column-gap: 2rem;
     row-gap: 1rem;
-  };
+  }
 
   @media ${mediaQuery.maxWidth.tablet} {
     column-gap: 3rem;
     row-gap: 2rem;
-  };
-`
+  } ;
+`;
 
 const TopCont = styled(Flexbox)`
   justify-content: space-between;
   width: 100%;
-`
+`;
 
 export default function Library() {
   const [folders, setFolders] = useState([]);
@@ -44,63 +49,65 @@ export default function Library() {
 
   useEffect(() => {
     const getFolders = (cb) => {
-      mainHandler.handleGetFoldersByUserId(9, res => {
-        let folderData = res.data
-        folderData.map(folder => {
-          folder.icon = faFolder
-        })
-        folderData.push({ text: "Create New", icon: faFolderPlus })
-        setFolders(folderData)
-        cb(folderData[0])
-      })
-    }
+      mainHandler.handleGetFoldersByUserId(9, (res) => {
+        let folderData = res.data;
+        folderData.map((folder) => {
+          folder.icon = faFolder;
+        });
+        folderData.push({ text: "Create New", icon: faFolderPlus });
+        setFolders(folderData);
+        cb(folderData[0]);
+      });
+    };
     getFolders((folder) => {
-      onSelectFolder(folder.folder_id)
-    })
+      onSelectFolder(folder.folder_id);
+    });
   }, []);
 
   async function onSelectFolder(folderId) {
-    mainHandler.handleGetFilesByFolderId(folderId, res => {
-      let fileData = res.data
-      console.log(fileData)
-      setFiles(fileData)
-    })
+    mainHandler.handleGetFilesByFolderId(folderId, (res) => {
+      let fileData = res.data;
+      console.log(fileData);
+      setFiles(fileData);
+    });
   }
 
   function onSelectFile(fileId) {
-    mainHandler.handleGetFile(fileId, res => {
-      let { fileData, settingData } = res.data
+    mainHandler.handleGetFile(fileId, (res) => {
+      let { fileData, settingData } = res.data;
       router.push(
         {
           pathname: `/converted`,
           query: {
             fileData: JSON.stringify(fileData),
             settingData: JSON.stringify(settingData),
-            folderArray: JSON.stringify(folders)
+            folderArray: JSON.stringify(folders),
           },
         },
         "/converted"
       );
-    })
+    });
   }
 
   function handleDelete(fileId) {
     mainHandler.handleDeleteFile(fileId);
-    setFiles(files.filter(files => files.file_id !== fileId));
-  };
+    setFiles(files.filter((files) => files.file_id !== fileId));
+  }
 
-  let fileList = files.map(file => {
-    return <File
-      {...file}
-      key={file.file_id}
-      fileName={file.file_name}
-      fileId={file.file_id}
-      folderId={file.folder_id}
-      fileContent={file.file_content}
-      handleClick={onSelectFile}
-      handleDelete={handleDelete}
-    ></File>
-  })
+  let fileList = files.map((file) => {
+    return (
+      <File
+        {...file}
+        key={file.file_id}
+        fileName={file.file_name}
+        fileId={file.file_id}
+        folderId={file.folder_id}
+        fileContent={file.file_content}
+        handleClick={onSelectFile}
+        handleDelete={handleDelete}
+      ></File>
+    );
+  });
 
   return (
     <Flexbox>
@@ -112,24 +119,29 @@ export default function Library() {
           <SearchBar />
         </TopCont> */}
         <Header text="Library" />
-        <TabBar
-          btnArr={folders}
-          buttonClick={onSelectFolder}
-        />
-        <FileDisplay dir="row">
+        <TabBar btnArr={folders} buttonClick={onSelectFolder} />
+        <FileDisplay
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ ease: "easeOut", duration: 2 }}
+        >
           <File
             fileName="Add a new file"
             handleClick={() => {
               router.push("/");
-            }} />
-          {files ? fileList :
-            (
-              <>
-                <BodyText>Your library is currently empty, add a document to get started.</BodyText>
-              </>
-            )
-          }
+            }}
+          />
+          {files ? (
+            fileList
+          ) : (
+            <>
+              <BodyText>
+                Your library is currently empty, add a document to get started.
+              </BodyText>
+            </>
+          )}
         </FileDisplay>
       </Wrapper>
-    </Flexbox>);
-};
+    </Flexbox>
+  );
+}

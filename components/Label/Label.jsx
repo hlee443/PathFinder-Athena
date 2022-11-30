@@ -6,10 +6,12 @@ const LabelCont = styled(Flexbox)`
   width: fit-content;
   letter-spacing: ${textData.letterSpacing};
   cursor: pointer;
+  left: ${(props) => props.left};
   padding: 0.3rem 0.5rem;
   background-color: ${(props) => props.backgroundColor};
   position: ${(props) => props.position};
   bottom: ${(props) => props.bottom || "0"};
+  top: ${(props) => props.top};
 `;
 
 // background-color: ${(props) => props.backgroundColor};
@@ -18,9 +20,11 @@ const LabelCont = styled(Flexbox)`
 export default function Label({
   text = "placeholder",
   backgroundColor = "#FFFEF6",
-  handleClick = () => { },
-  position = ""
-  // top = null,
+  handleClick = () => {},
+  position = "",
+  bottom = "0",
+  left = "",
+  top = "",
   // right = null,
 }) {
   return (
@@ -28,7 +32,9 @@ export default function Label({
       backgroundColor={backgroundColor}
       onClick={handleClick}
       position={position}
-      // top={top}
+      bottom={bottom}
+      left={left}
+      top={top}
       // right={right}
     >
       {text}

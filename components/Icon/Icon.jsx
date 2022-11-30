@@ -10,7 +10,7 @@ const IconCont = styled(Flexbox)`
   padding: 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
-  // position: relative;
+  position: ${(props) => props.position};
   // height: 100%;
   width: ${(props) => props.width};
   border-radius: 1.25rem;
@@ -18,7 +18,7 @@ const IconCont = styled(Flexbox)`
 
   :hover {
     background-color: ${(props) => props.hoverColor};
-}
+  }
 `;
 
 const IconImg = styled.img`
@@ -28,24 +28,25 @@ const IconImg = styled.img`
 
 export default function Icon({
   faIconName = faLink,
-  handleClick = () => { },
+  handleClick = () => {},
   size = "lg",
   color = colors.textBlack,
   hoverColor = "transparent",
   src = null,
   text = "",
   width = "",
-  handleMouseEnter = () => { },
-  handleMouseLeave = () => { },
+  handleMouseEnter = () => {},
+  handleMouseLeave = () => {},
+  position = "",
 }) {
-
   const [bg, setBg] = useState("transparent");
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
   const isTablet = useMediaQuery(mediaQuery.maxWidth.tablet);
 
   return (
     <IconCont
-      onMouseDown={handleClick}
+      position={position}
+      onClick={handleClick}
       hoverColor={hoverColor}
       width={width}
       onMouseEnter={handleMouseEnter}
@@ -58,8 +59,10 @@ export default function Icon({
           icon={faIconName}
         />
       )}
-      {src !== null && <IconImg size={(isMobile || isTablet) && "2rem" || size} src={src} />}
+      {src !== null && (
+        <IconImg size={((isMobile || isTablet) && "2rem") || size} src={src} />
+      )}
       {text && <div>{text}</div>}
     </IconCont>
   );
-};
+}
