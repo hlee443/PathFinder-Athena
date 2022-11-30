@@ -28,6 +28,11 @@ const UnitText = styled.p`
   font-size: ${(props) => props.fontSize};
 `;
 
+const IconImg = styled.img`
+width: 2.5rem;
+height: 100%;
+`
+
 export default function Option({
   bgColor = "transparent",
   gap = "1.875rem",
@@ -65,7 +70,7 @@ export default function Option({
       gap={gap}
     >
       {faIconName !== null && <Icon faIconName={faIconName} />}
-      {src !== null && <img src={src} />}
+      {src !== null && <IconImg src={src} />}
 
       <OptionText>{text}</OptionText>
       {inputType !== null && (
