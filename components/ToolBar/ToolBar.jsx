@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { mediaQuery } from "../../MediaQuery/data";
 import useMediaQuery from "../../MediaQuery/MediaQuery";
 import Label from "../Label/Label";
+import HighlightDropdown from "../HighlightDropdown/HighlightDropdown";
  import { motion } from "framer-motion";
 
 const ToolBarCont = styled(Flexbox)`
@@ -50,7 +51,9 @@ export default function ToolBar({
   handleSaveSetting = () => { },
   handleSummary = () => { },
   handleDictionary = () => { },
-  highlightedNode = ""
+  handleChangeHighlightColor= () => {},
+  currentHighlightColor = {},
+  handleDownloadFile = () => { },
 }) {
   const router = useRouter();
   const [sel, setSel] = useState(0);
@@ -79,34 +82,7 @@ export default function ToolBar({
     setWordInfo(null)
   }
 
-  // function fetchDictionary(e) {
-  //   e.preventDefault();
-  //   console.log("fetch dictionary done");
-  //   try {
-  //     //   // callback
-  //     mainHandler.handleDictionary(highlightedNode.textContent, (res) => {
-  //       const { data } = res;
-  //       const { definition } = data;
-  //       const newDefinition = data[0].shortdef[0];
-  //       setWord(highlightedNode.textContent);
-  //       setWordInfo(newDefinition);
-  //       setShowPopUp("definition");
-  //       let keywordData = {
-  //         keywordData: {
-  //           fileId: fileData.file_id,
-  //           keywordName: highlightedNode.textContent,
-  //           keywordDefinition: data[0].shortdef[0],
-  //         },
-  //       };
-  //       // add keyword to database
-  //       // console.log(keywordData);
-  //       mainHandler.handleAddKeyword(keywordData);
 
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
 
   return (
     <ToolBarCont dir="row">
@@ -131,13 +107,6 @@ export default function ToolBar({
         />
         {isMobile && label && sel === 0 && <Label text={toolBarData[toolbarNum + 1].name} />}
       </IconCont>
-      {/* {wordInfo && showPopUp === "definition" && (
-          <Dictionary
-            word={highlightedNode.textContent}
-            wordDefinition={wordInfo}
-            onClose={closePopUp}
-          />
-        )} */}
       <Divider />
 
       {/* SUMMARIZE */}
@@ -153,14 +122,6 @@ export default function ToolBar({
         />
         {isMobile && label && sel === 1 && <Label text={toolBarData[toolbarNum + 2].name} />}
       </IconCont>
-      {
-        // summarizedContent && showPopUp === "summarize" && (
-        //   <Summary
-        //     summarizedContent={summarizedContent}
-        //     onClose={closePopUp}
-        //   ></Summary>
-        // )
-      }
       <Divider />
 
       {/* HIGHLIGHT */}
@@ -172,8 +133,17 @@ export default function ToolBar({
           faIconName={toolBarData[toolbarNum + 3].icon}
           text={isMobile ? null : toolBarData[toolbarNum + 3].name}
           hoverColor={colors.buttonLightGrey}
-          handleClick={() => console.log("change highlighter color")}
+          handleClick={() => setShowDropdown("highlightColor")}
         />
+        {
+          showDropdown === 'highlightColor' && (
+            <HighlightDropdown
+              currentHighlightColor = {currentHighlightColor}
+              handleChangeHighlightColor={handleChangeHighlightColor}
+              onClose={closeDropdown}
+            />
+          )
+        }
         {isMobile && label && sel === 2 && <Label text={toolBarData[toolbarNum + 3].name} />}
       </IconCont>
       <Divider />
@@ -231,6 +201,7 @@ export default function ToolBar({
         onMouseLeave={handleLabel}>
         <Icon
           faIconName={toolBarData[toolbarNum + 6].icon}
+          handleClick={handleDownloadFile}
           text={isMobile ? null : toolBarData[toolbarNum + 6].name}
           hoverColor={colors.buttonLightGrey}
         />

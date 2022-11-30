@@ -1,5 +1,5 @@
 export const ColorArr = [
-  { text: "yellow", cl: "#FCFF7C" },
-  { text: "blue", cl: "#8EEEEE" },
-  { text: "pink", cl: "#FFCDCD" },
+  { colorText: "yellow", colorHex: "#FCFF7C" },
+  { colorText: "blue", colorHex: "#8EEEEE" },
+  { colorText: "pink", colorHex: "#FFCDCD" },
 ];

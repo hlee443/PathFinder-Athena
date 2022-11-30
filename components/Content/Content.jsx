@@ -15,7 +15,7 @@ export default function Content({
     const [fileContent, setFileContent] = useState('')
 
     useEffect(() => {
-        
+
         const fileBody = document.querySelector(".file__content")
         setFileContent(fileData.file_content)
         fileBody.innerText = fileContent
