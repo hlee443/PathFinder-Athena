@@ -90,6 +90,7 @@ export const BodyText = styled.p`
 `;
 
 export const Container = styled(Flexbox)`
+  display: ${(props) => props.display || "flex"};
   width: ${(props) => props.width || "100%"};
   justify-content: start;
   overflow-y: ${(props) => props.scroll || "inherit"};

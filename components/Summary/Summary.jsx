@@ -50,8 +50,16 @@ const LeftContainer = styled.div`
 
 export default function Summary({
   summarizedContent = "Summarization here",
-  onClose = () => { }
+  handleCloseSummary = () => { },
+  summaryId = ''
 }) {
+
+  function onClose(e){
+    e.preventDefault()
+    // const selectedElement = e.target.parentElement
+    handleCloseSummary(e, summaryId)
+  }
+
   return (
     <SummarizeCont className="summarize__container">
       <TopSection dir="row">
