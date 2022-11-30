@@ -69,7 +69,6 @@ const SidebarCont = styled.div`
 
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
-
     width: 100%;
     bottom: 0;
     height: 30vh;
@@ -113,7 +112,7 @@ export default function Converted() {
   const [summary, setSummary] = useState(false);
   const [selectedText, setSelectedText] = useState({});
   const [keywordArray, setKeywordArray] = useState([]);
-  const [summaryArray, setSummaryArray] = useState([])
+  const [summaryArray, setSummaryArray] = useState([]);
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -354,6 +353,13 @@ export default function Converted() {
         setKeywordArray(res.data);
       }
     );
+    mainHandler.handleGetSummariesByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setSummaryArray(res.data);
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -364,46 +370,59 @@ export default function Converted() {
     updateLibraryArray(folderArray);
   }, [folderArray]);
 
-  const closeSummary = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleCloseSummary = (summaryId) => {
+    // e.preventDefault();
+    // e.stopPropagation();
 
-    const selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    mainHandler.handleDeleteSummary(summaryId, (res) => {
+      console.log(res.data);
+      // const selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
 
-    const selectedSummaryComponent = selectedElement.closest(
-      ".summarize__wrapper-container"
-    );
+      // const selectedSummaryComponent = selectedElement.closest(
+      //   ".summarize__wrapper-container"
+      // );
+      const selectedSummaryComponent = document.getElementsByClassName(
+        `summarize__wrapper-container ${summaryId}`
+      )[0];
 
-    const grandParentElement = selectedElement.closest(
-      "#selectedNode__container"
-    )
-      ? selectedElement.closest("#selectedNode__container")
-      : selectedElement.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
-    const selectedHighlightedNode = selectedElement;
+      selectedSummaryComponent.classList.add("summary--close"); // animation stuff
 
-    while (
-      !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
-    ) {
-      selectedHighlightedNode = selectedHighlightedNode.parentElement;
-    }
+      const grandParentElement = selectedSummaryComponent.closest(
+        "#selectedNode__container"
+      )
+        ? selectedSummaryComponent.closest("#selectedNode__container")
+        : selectedSummaryComponent.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
+      const selectedHighlightedNode = selectedSummaryComponent;
 
-    const highlightedContainer = selectedHighlightedNode.querySelector(
-      ".selectedNode__highlighted > .highlighted__container"
-    );
+      while (
+        !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
+      ) {
+        selectedHighlightedNode = selectedHighlightedNode.parentElement;
+      }
 
-    selectedSummaryComponent.classList.add("summary--close"); // animation stuff
-    setTimeout(() => {
-      // async function
-
-      selectedSummaryComponent.remove();
-      grandParentElement.parentElement.replaceChild(
-        highlightedContainer.firstChild,
-        grandParentElement
+      const highlightedContainer = selectedHighlightedNode.querySelector(
+        ".selectedNode__highlighted > .highlighted__container"
       );
-      grandParentElement.remove();
 
-      handleUpdateFileContent();
-    }, 600); // animation
+      setTimeout(() => {
+        // Delete highlight component and joining the original text back to normal
+        grandParentElement.parentElement.replaceChild(
+          highlightedContainer.firstChild,
+          grandParentElement
+        );
+        grandParentElement.remove();
+
+        // Delete summary component in the file__container
+        selectedSummaryComponent.remove();
+
+        // Delete the summary in sidebar
+        setSummaryArray(
+          summaryArray.filter((summary) => summary.summary_id !== summaryId)
+        );
+
+        handleUpdateFileContent();
+      }, 600); // animation
+    });
   };
 
   const closeDictionary = (id) => {
@@ -460,36 +479,50 @@ export default function Converted() {
 
             // setHighlightedNode(highlightedNode); // save to useState and pass to prop
 
-            const summaryComponent = (
-              <Summary
-                summarizedContent={res.data.summary}
-                onClose={(e) => closeSummary(e)}
-              />
-            );
+            let summaryData = {
+              summaryData: {
+                fileId: fileData.file_id,
+                summaryContent: selectedText.toString(),
+                summaryResult: `${res.data.summary}`,
+              },
+            };
+            mainHandler.handleAddSummary(summaryData, (res) => {
+              console.log("summary added", res.data);
 
-            const container = document.querySelector(
-              "#selectedNode__container > .selectedNode__highlighted"
-            );
+              const summaryComponent = (
+                <Summary
+                  summarizedContent={res.data.summary_result}
+                  handleCloseSummary={handleCloseSummary}
+                  summaryId={res.data.summary_id}
+                />
+              );
 
-            const summaryWrapperContainer = document.createElement("div");
+              const container = document.querySelector(
+                "#selectedNode__container > .selectedNode__highlighted"
+              );
 
-            summaryWrapperContainer.classList.add(
-              "summarize__wrapper-container"
-            );
+              const summaryWrapperContainer = document.createElement("div");
 
-            container.appendChild(summaryWrapperContainer);
+              summaryWrapperContainer.classList.add(
+                "summarize__wrapper-container",
+                `${res.data.summary_id}`
+              );
 
-            const root = ReactDomClient.createRoot(
-              document.querySelector(
-                "#selectedNode__container .summarize__wrapper-container"
-              )
-            );
+              container.appendChild(summaryWrapperContainer);
 
-            root.render(summaryComponent);
+              const root = ReactDomClient.createRoot(
+                document.querySelector(
+                  "#selectedNode__container .summarize__wrapper-container"
+                )
+              );
 
-            handleUpdateFileContent();
+              root.render(summaryComponent);
 
-            setSummary(false);
+              handleUpdateFileContent();
+
+              setSummaryArray([...summaryArray, res.data]);
+              setSummary(false);
+            });
           }
         }); // call handler for axios call
       } catch (error) {
@@ -641,6 +674,7 @@ export default function Converted() {
               keywordArray={keywordArray}
               summaryArray={summaryArray}
               closeDictionary={closeDictionary}
+              handleCloseSummary={handleCloseSummary}
             />
           )}
         </SidebarCont>

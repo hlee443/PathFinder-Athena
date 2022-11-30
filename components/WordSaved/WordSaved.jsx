@@ -56,10 +56,16 @@ export default function WordSaved({
   word = "",
   definition = "",
   id = "",
-  onClose = () => {},
+  handleCloseSummary = () => {},
 }) {
   const [open, setOpen] = useState(false);
   const [showDef, setShowDef] = useState(true);
+
+  function onSummaryClose(e){
+    e.preventDefault()
+    handleCloseSummary(id)
+  }
+
   return (
     <WordCont
       initial={{ x: 20 }}
@@ -92,7 +98,7 @@ export default function WordSaved({
           ) : (
             // show Summary
             <>
-            <Text>Summary preview</Text>
+            <Text>{definition.substring(0, 15) + '...'}</Text>
             <IconCont>
               {(showDef && (
                 <Icon
@@ -107,8 +113,8 @@ export default function WordSaved({
                   handleClick={() => setShowDef(true)}
                 />
               )}
-              <Icon size="m" faIconName={faLocationDot} handleClick={() => console.log("go to summary location")} />
-              <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
+              <Icon size="sm" faIconName={faLocationDot} handleClick={() => console.log("go to summary location")} />
+              <Icon size="m" faIconName={faClose} handleClick={onSummaryClose} />
             </IconCont>
             </>
           )
@@ -135,7 +141,7 @@ export default function WordSaved({
         </IconCont> */}
       </TopDiv>
       {showDef && <Divider />}
-      {showDef && <Text>{type !== 'summary'? definition : definition.substring(0, 100) + '...'}</Text>}
+      {showDef && <Text>{type !== 'summary'? definition : definition.substring(0, 80) + '...'}</Text>}
     </WordCont>
   );
 }

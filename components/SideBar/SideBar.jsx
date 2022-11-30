@@ -21,6 +21,7 @@ const SideBarCont = styled(Container)`
   width: 100%;
   justify-content: start;
   min-width: fit-content;
+  user-select: none;
 `;
 
 const Category = styled(Flexbox)`
@@ -55,7 +56,8 @@ export default function SideBar({
   closeDictionary = () => { },
   closeSummarySidebar = () => {},
   handleSidebar = () => { },
-}) {
+  handleCloseSummary = () => {}
+ }) {
 
   const [showPopUp, setShowPopUp] = useState("type");
 
@@ -107,9 +109,9 @@ export default function SideBar({
               <WordSaved 
                 key={summary.summary_id}
                 type='summary'
-                definition={summary.summarized_text}
+                definition={summary.summary_result}
                 id={summary.summary_id}
-                onClose={closeSummarySidebar}
+                handleCloseSummary={handleCloseSummary}
               />
             ))
           }

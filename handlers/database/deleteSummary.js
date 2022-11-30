@@ -6,7 +6,7 @@ export async function handleDeleteSummary(summaryId, cb) {
         return await axios({
             method: "DELETE",
             url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/summary/${summaryId}`,
-            data: dbData
+            data: summaryId
         })
             .then((response) => {
                 cb(response)
