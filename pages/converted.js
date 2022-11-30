@@ -25,6 +25,7 @@ import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
+import { v4 as uuidv4 } from 'uuid';
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -90,19 +91,6 @@ export default function Converted() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [isActive, setIsActive] = useState();
   const [showIcon, setShowIcon] = useState(false);
-
-  const handleSidebar = () => {
-    if (isActive) {
-      setShowIcon(false);
-      setShowSidebar(true);
-    }
-    if (!isActive) {
-      setIsActive(false);
-      setShowSidebar(false);
-      setShowIcon(true);
-    }
-  };
-
   const [fileData, setFileData] = useState({});
   const [settingData, setSettingData] = useState({});
   const [libraryArray, setLibraryArray] = useState([]);
@@ -116,6 +104,19 @@ export default function Converted() {
   const [summary, setSummary] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const [keywordArray, setKeywordArray] = useState([]);
+  const [highlightIds, setHighlightIds] = useState([]);
+
+  function handleSidebar() {
+    if (isActive) {
+      setShowIcon(false);
+      setShowSidebar(true);
+    }
+    if (!isActive) {
+      setIsActive(false);
+      setShowSidebar(false);
+      setShowIcon(true);
+    }
+  };
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -317,136 +318,6 @@ export default function Converted() {
     });
   }
 
-  function moveSelectedHighlighted() {
-    if (document.querySelector("#selectedNode__container")) {
-      const prevSelectContainer = document.querySelector(
-        "#selectedNode__container"
-      );
-      const parentContainer = prevSelectContainer.parentNode;
-      while (prevSelectContainer.firstChild) {
-        parentContainer.insertBefore(
-          prevSelectContainer.firstChild,
-          prevSelectContainer
-        );
-      }
-      parentContainer.removeChild(prevSelectContainer);
-    }
-  }
-
-  function closeSummary(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-
-    const selectedSummaryComponent = selectedElement.closest(
-      ".summarize__wrapper-container"
-    );
-
-    const grandParentElement = selectedElement.closest(
-      "#selectedNode__container"
-    )
-      ? selectedElement.closest("#selectedNode__container")
-      : selectedElement.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
-    let selectedHighlightedNode = selectedElement;
-
-    while (
-      !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
-    ) {
-      selectedHighlightedNode = selectedHighlightedNode.parentElement;
-    }
-
-    const highlightedContainer = selectedHighlightedNode.querySelector(
-      ".selectedNode__highlighted > .highlighted__container"
-    );
-
-    selectedSummaryComponent.classList.add("summary--close"); // animation stuff
-    setTimeout(() => {
-      // async function
-
-      selectedSummaryComponent.remove();
-      grandParentElement.parentElement.replaceChild(
-        highlightedContainer.firstChild,
-        grandParentElement
-      );
-      grandParentElement.remove();
-
-      handleUpdateFileContent();
-    }, 600); // animation
-  };
-
-  function closeDictionary (id) {
-    mainHandler.handleDeleteKeyword(id, (res) => {
-      setKeywordArray(res.data);
-      setKeywordArray(
-        keywordArray.filter((keyword) => keyword.keyword_id !== id)
-      );
-    });
-  };
-
-  function handleSummary() {
-    // summary content received from api
-    if (!summary) {
-      try {
-        setSummary(true);
-        mainHandler.handleSummarize(selectedText.toString(), (res) => {
-          console.log("res", res);
-
-            
-            // highlightedNode.addEventListener('click', (e) => {
-            //   e.preventDefault()
-            //   console.log("CHANGE COLOUR", e.target)
-
-            //   changeColor(e)
-            // })
-
-            // setHighlightedNode(highlightedNode); // save to useState and pass to prop
-
-            const summaryComponent = (
-              <Summary
-                summarizedContent={res.data.summary}
-                onClose={(e) => closeSummary(e)}
-              />
-            );
-
-            const container = document.querySelector(
-              "#selectedNode__container > .selectedNode__highlighted"
-            );
-
-            const summaryWrapperContainer = document.createElement("div");
-
-            summaryWrapperContainer.classList.add(
-              "summarize__wrapper-container"
-            );
-
-            container.appendChild(summaryWrapperContainer);
-
-            const root = ReactDomClient.createRoot(
-              document.querySelector(
-                "#selectedNode__container .summarize__wrapper-container"
-              )
-            );
-
-            root.render(summaryComponent);
-
-            handleUpdateFileContent();
-
-            setSummary(false);
-          }
-        ); // call handler for axios call
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-
-  // function getKeywords() {
-  //   console.log("fileid", fileData.file_id);
-  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
-  //     setKeywordArray(res.data);
-  //   });
-  // }
-
   function handleDictionary() {
     if (!dictionary) {
       try {
@@ -475,6 +346,143 @@ export default function Converted() {
       }
     }
   }
+
+  function closeDictionary(id) {
+    mainHandler.handleDeleteKeyword(id, (res) => {
+      setKeywordArray(res.data);
+      setKeywordArray(
+        keywordArray.filter((keyword) => keyword.keyword_id !== id)
+      );
+    });
+  };
+
+  // Selected and Dom
+
+  function handleSummary() {
+    // summary content received from api
+    if (!summary) {
+      try {
+        setSummary(true);
+        mainHandler.handleSummarize(selectedText.toString(), (res) => {
+          console.log("res", res);
+
+          // highlightedNode.addEventListener('click', (e) => {
+          //   e.preventDefault()
+          //   console.log("CHANGE COLOUR", e.target)
+
+          //   changeColor(e)
+          // })
+
+          // setHighlightedNode(highlightedNode); // save to useState and pass to prop
+
+          const summaryComponent = (
+            <Summary
+              summarizedContent={res.data.summary}
+              onClose={(e) => closeSummary(e)}
+            />
+          );
+          let highlightedNode = handleHighlight(null, "alternate");
+          if (!highlightedNode) {
+            setSummary(false);
+            return;
+          }
+          let highlitedContainer = document.createElement("div");
+          const parentSummaryContainer = document.createElement("div");
+          parentSummaryContainer.classList.add("parent-summary-container");
+          const summaryContainer = document.createElement("div");
+          highlightedNode.parentNode.insertBefore(
+            parentSummaryContainer,
+            highlightedNode
+          );
+          parentSummaryContainer.appendChild(highlitedContainer);
+          highlitedContainer.appendChild(highlightedNode);
+          parentSummaryContainer.appendChild(summaryContainer);
+          let root = ReactDomClient.createRoot(summaryContainer);
+          root.render(summaryComponent);
+
+          handleUpdateFileContent();
+
+          setSummary(false);
+
+          // const container = document.querySelector(
+          //   "#selectedNode__container > .selectedNode__highlighted"
+          // );
+
+          // const summaryWrapperContainer = document.createElement("div");
+
+          // summaryWrapperContainer.classList.add(
+          //   "summarize__wrapper-container"
+          // );
+
+          // container.appendChild(summaryWrapperContainer);
+
+          // const root = ReactDomClient.createRoot(
+          //   document.querySelector(
+          //     "#selectedNode__container .summarize__wrapper-container"
+          //   )
+          // );
+
+          // root.render(summaryComponent);
+
+          // handleUpdateFileContent();
+
+          // setSummary(false);
+        }); // call handler for axios call
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  function closeSummary(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    let highlightedNode = document.querySelector(`#${selectedSummaryComponent.classList[1]}`);
+
+
+    // const grandParentElement = selectedElement.closest(
+    //   "#selectedNode__container"
+    // )
+    //   ? selectedElement.closest("#selectedNode__container")
+    //   : selectedElement.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
+    // let selectedHighlightedNode = selectedElement;
+
+    // while (
+    //   !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
+    // ) {
+    //   selectedHighlightedNode = selectedHighlightedNode.parentElement;
+    // }
+
+    // const highlightedContainer = selectedHighlightedNode.querySelector(
+    //   ".selectedNode__highlighted > .highlighted__container"
+    // );
+
+    selectedSummaryComponent.classList.add("summary--close"); // animation stuff
+    setTimeout(() => {
+      // async function
+
+      selectedSummaryComponent.parentElement.replaceChild(
+        highlightedNode,
+        selectedSummaryComponent
+      );
+      selectedSummaryComponent.remove();
+
+      handleUpdateFileContent();
+    }, 600); // animation
+  };
+
+
+  // function getKeywords() {
+  //   console.log("fileid", fileData.file_id);
+  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
+  //     setKeywordArray(res.data);
+  //   });
+  // }
+
+
   // useEffect(() => {
   //   console.log("fileid", fileData);
   //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
@@ -482,56 +490,119 @@ export default function Converted() {
   //   });
   // },[])
 
-  const handleHighlight = () => {
-    console.log('selectedText', selectedText)
-    if(selectedText){
-      const rangeCount = selectedText.rangeCount;
-
-      if (rangeCount !== 0 || selectedText.toString() !== "") {
-              console.log("highlight!");
-              moveSelectedHighlighted();
-
-              const selectedNodeContainer = document.createElement("div");
-              const highlightedContainer = document.createElement("div");
-              const highlightedNode = document.createElement("span");
-
-              selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
-              highlightedContainer.className = "selectedNode__highlighted"; // 2
-              highlightedNode.className = "highlighted__container"; // 3
-
-              highlightedNode.style.backgroundColor = highlightColor.colorHex;
-
-              // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
-
-              const range = selectedText.getRangeAt(0);
-
-              range.surroundContents(highlightedNode);
-
-              highlightedNode.parentNode.insertBefore(
-                highlightedContainer,
-                highlightedNode
-              );
-              highlightedContainer.appendChild(highlightedNode);
-
-              highlightedContainer.parentNode.insertBefore(
-                selectedNodeContainer,
-                highlightedContainer
-              );
-              selectedNodeContainer.appendChild(highlightedContainer);
-
+  const handleHighlight = (colorObj, type) => {
+    if (selectedText) {
+      // for loop that goes through the selected ids, assigns them to a variable
+      let match = false;
+      for (const selectedId of highlightIds) {
+        const selectedElement = document.getElementById(`${selectedId}`);
+        if (selectedText.containsNode(selectedElement, true)) {
+          if (colorObj) {
+            selectedElement.style.backgroundColor = colorObj.colorHex;
+          }
+          match = true;
+        }
+      }
+      if (!match) {
+        const rangeCount = selectedText.rangeCount;
+        if (rangeCount > 0 || selectedText.toString() !== "") {
+          let id = uuidv4();
+          const highlightedNode = document.createElement("span");
+          highlightedNode.id = id;
+          if (!colorObj) {
+            highlightedNode.style.backgroundColor = highlightColor.colorHex;
+          } else {
+            highlightedNode.style.backgroundColor = colorObj.colorHex;
+          }
+          const range = selectedText.getRangeAt(0);
+          range.surroundContents(highlightedNode);
+          setHighlightIds([...highlightIds, id]);
+          if (type === "alternate") {
+            return highlightedNode
+          }
+        }
       }
     }
-
   }
+
+  // const handleHighlight = (selectedText) => {
+  //   console.log('selectedText', selectedText)
+  //   if (selectedText) {
+  //     const rangeCount = selectedText.rangeCount;
+
+  //     if (rangeCount !== 0 || selectedText.toString() !== "") {
+  //       console.log("highlight!");
+  //       let id = uuidv4();
+  //       // moveSelectedHighlighted();
+
+  //       // this needs to me move
+  //       const selectedNodeContainer = document.createElement("div");
+
+  //       const highlightedContainer = document.createElement("div");
+  //       const highlightedNode = document.createElement("span");
+
+  //       // this needs to move
+  //       selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
+
+
+  //       highlightedContainer.className = "selectedNode__highlighted"; // 2
+  //       highlightedNode.className = "highlighted__container"; // 3
+
+  //       highlightedNode.style.backgroundColor = highlightColor.colorHex;
+
+  //       // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
+
+  //       const range = selectedText.getRangeAt(0);
+
+  //       range.surroundContents(highlightedNode);
+
+  //       highlightedNode.parentNode.insertBefore(
+  //         highlightedContainer,
+  //         highlightedNode
+  //       );
+  //       highlightedContainer.appendChild(highlightedNode);
+
+  //       highlightedContainer.parentNode.insertBefore(
+  //         selectedNodeContainer,
+  //         highlightedContainer
+  //       );
+  //       selectedNodeContainer.appendChild(highlightedContainer);
+
+  //     }
+  //   }
+
+  // }
+
+  // function moveSelectedHighlighted() {
+  //   if (document.querySelector("#selectedNode__container")) {
+  //     const prevSelectContainer = document.querySelector(
+  //       "#selectedNode__container"
+  //     );
+  //     const parentContainer = prevSelectContainer.parentNode;
+  //     while (prevSelectContainer.firstChild) {
+  //       parentContainer.insertBefore(
+  //         prevSelectContainer.firstChild,
+  //         prevSelectContainer
+  //       );
+  //     }
+  //     parentContainer.removeChild(prevSelectContainer);
+  //   }
+  // }
 
 
   function handleChangeHighlightColor(colorObj) {
-    console.log('colorObj update', colorObj)
-    setHighlightColor(colorObj)
+
+    setHighlightColor(colorObj);
+    console.log(selectedText.toString())
+    handleHighlight(colorObj);
+    // console.log('colorObj update', colorObj)
+    // setHighlightColor(colorObj)
   }
 
+
+  // USE EFFECTS
+
   useEffect(() => {
-    console.log("virus");
     if (!router.query.fileData) {
       return;
     } else if (!router.query.settingData) {
@@ -562,30 +633,33 @@ export default function Converted() {
     updateLibraryArray(folderArray);
   }, [folderArray]);
 
-  useEffect(() => {
-    console.log('call highlit')
-    handleHighlight()
-  }, [selectedText])
-  
+  // useEffect(() => {
+  //   console.log('call highlit')
+  //   handleHighlight()
+  // }, [selectedText])
+
 
   useEffect(() => {
-    const saveSelection = () => {
-      setSelectedText(window.getSelection());
-      console.log("cliccck", window.getSelection().toString());
-      file__content.removeEventListener("mouseup", saveSelection, false);
-    };
+    // const saveSelection = () => {
+    //   setSelectedText(window.getSelection());
+    //   console.log("save selection", window.getSelection().toString());
+    // };
+
+    // if (e.target.classList.contains('highlighted__container')) {
+    //   e.target.style.backgroundColor = highlightColor.colorHex
+    // } else {
+    //   file__content.addEventListener("mouseup", () => {
+    //     saveSelection()
+    //   }, false);
+    // }
 
     const file__content = document.querySelector(".file__content");
-    file__content.addEventListener("mousedown", (e) => {
-      if (e.target.classList.contains('highlighted__container')) {
-        e.target.style.backgroundColor = highlightColor.colorHex
-      } else {
-        file__content.addEventListener("mouseup", () => {
-          saveSelection()
-        }, false);
+    file__content.addEventListener("mouseup", () => {
+      if (window.getSelection().toString() !== "") {
+        setSelectedText(window.getSelection());
       }
-    });
-  });
+    }, false);
+  }), [];
 
   // useEffect(() => {
   //   file__content.addEventListener("mousedown", (e) => {
