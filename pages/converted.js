@@ -14,7 +14,7 @@ import {
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useEffect, useInsertionEffect, useState } from "react";
+import { useEffect, useInsertionEffect, useState, useCallback } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../components/MiniDropdown/data";
 import * as mainHandler from "../handlers/main";
@@ -25,6 +25,7 @@ import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
+import { v4 as uuidv4 } from 'uuid';
 import { jsPDF } from "jspdf";
 
 const { htmlToText } = require("html-to-text");
@@ -85,23 +86,13 @@ export default function Converted() {
   // MVP - get response of the handler.
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
-
+  const [highlightColor, setHighlightColor] = useState({
+    colorText: 'yellow',
+    colorHex: '#FCFF7C'
+  })
   const [showSidebar, setShowSidebar] = useState(true);
   const [isActive, setIsActive] = useState();
   const [showIcon, setShowIcon] = useState(false);
-
-  const handleSidebar = () => {
-    if (isActive) {
-      setShowIcon(false);
-      setShowSidebar(true);
-    }
-    if (!isActive) {
-      setIsActive(false);
-      setShowSidebar(false);
-      setShowIcon(true);
-    }
-  };
-
   const [fileData, setFileData] = useState({});
   const [settingData, setSettingData] = useState({});
   const [libraryArray, setLibraryArray] = useState([]);
@@ -113,9 +104,23 @@ export default function Converted() {
   const [newFileName, setNewFileName] = useState("");
   const [test, setTest] = useState(0);
   const [summary, setSummary] = useState(false);
-  const [selectedText, setSelectedText] = useState({});
+  const [selectedText, setSelectedText] = useState('');
   const [keywordArray, setKeywordArray] = useState([]);
+  const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
+
+  function handleSidebar() {
+    if (isActive) {
+      setShowIcon(false);
+      setShowSidebar(true);
+    }
+    if (!isActive) {
+      setIsActive(false);
+      setShowSidebar(false);
+      setShowIcon(true);
+    }
+  };
+
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -317,228 +322,205 @@ export default function Converted() {
     });
   }
 
-  function moveSelectedHighlighted() {
-    if (document.querySelector("#selectedNode__container")) {
-      const prevSelectContainer = document.querySelector(
-        "#selectedNode__container"
-      );
-      const parentContainer = prevSelectContainer.parentNode;
-      while (prevSelectContainer.firstChild) {
-        parentContainer.insertBefore(
-          prevSelectContainer.firstChild,
-          prevSelectContainer
-        );
-      }
-      parentContainer.removeChild(prevSelectContainer);
-    }
-  }
 
-  useEffect(() => {
-    console.log("virus");
-    if (!router.query.fileData) {
-      return;
-    } else if (!router.query.settingData) {
-      return;
-    } else if (!router.query.folderArray) {
-      return;
-    }
-    setFileData(JSON.parse(router.query.fileData));
-    const folderArray = JSON.parse(router.query.folderArray);
-    setFolderArray(folderArray);
-    const settingData = JSON.parse(router.query.settingData);
-    setSettingData(settingData);
-    setNewFileName(JSON.parse(router.query.fileData).file_name);
-    mainHandler.handleGetKeywordsByFileId(
-      JSON.parse(router.query.fileData).file_id,
-      (res) => {
-        console.log(res);
-        setKeywordArray(res.data);
-      }
-    );
-    mainHandler.handleGetSummariesByFileId(
-      JSON.parse(router.query.fileData).file_id,
-      (res) => {
-        console.log(res);
-        setSummaryArray(res.data);
-      }
-    );
-  }, []);
+  // useEffect(() => {
+  //   if (!router.query.fileData) {
+  //     return;
+  //   } else if (!router.query.settingData) {
+  //     return;
+  //   } else if (!router.query.folderArray) {
+  //     return;
+  //   }
+  //   setFileData(JSON.parse(router.query.fileData));
+  //   const folderArray = JSON.parse(router.query.folderArray);
+  //   setFolderArray(folderArray);
+  //   const settingData = JSON.parse(router.query.settingData);
+  //   setSettingData(settingData);
+  //   setNewFileName(JSON.parse(router.query.fileData).file_name);
+  //   mainHandler.handleGetKeywordsByFileId(
+  //     JSON.parse(router.query.fileData).file_id,
+  //     (res) => {
+  //       console.log(res);
+  //       setKeywordArray(res.data);
+  //     }
+  //   );
+  //   mainHandler.handleGetSummariesByFileId(
+  //     JSON.parse(router.query.fileData).file_id,
+  //     (res) => {
+  //       console.log(res);
+  //       setSummaryArray(res.data);
+  //     }
+  //   );
+  // }, []);
 
-  useEffect(() => {
-    updateTypeArray(settingData);
-  }, [settingData]);
+  // useEffect(() => {
+  //   updateTypeArray(settingData);
+  // }, [settingData]);
 
-  useEffect(() => {
-    updateLibraryArray(folderArray);
-  }, [folderArray]);
+  // useEffect(() => {
+  //   updateLibraryArray(folderArray);
+  // }, [folderArray]);
 
-  const handleCloseSummary = (summaryId) => {
+  // const handleCloseSummary = (summaryId) => {
 
-    mainHandler.handleDeleteSummary(summaryId, (res) => {
-      console.log(res.data);
-     
-      const selectedSummaryComponent = document.getElementsByClassName(
-        `summarize__wrapper-container ${summaryId}`
-      )[0];
+  //   mainHandler.handleDeleteSummary(summaryId, (res) => {
+  //     console.log(res.data);
 
-      selectedSummaryComponent.classList.add("summary--close"); // animation stuff
+  //     const selectedSummaryComponent = document.getElementsByClassName(
+  //       `summarize__wrapper-container ${summaryId}`
+  //     )[0];
 
-      const grandParentElement = selectedSummaryComponent.closest(
-        "#selectedNode__container"
-      )
-        ? selectedSummaryComponent.closest("#selectedNode__container")
-        : selectedSummaryComponent.closest(".selectedNode__highlighted");
-      const selectedHighlightedNode = selectedSummaryComponent;
+  //     selectedSummaryComponent.classList.add("summary--close"); // animation stuff
 
-      while (
-        !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
-      ) {
-        selectedHighlightedNode = selectedHighlightedNode.parentElement;
-      }
+  //     const grandParentElement = selectedSummaryComponent.closest(
+  //       "#selectedNode__container"
+  //     )
+  //       ? selectedSummaryComponent.closest("#selectedNode__container")
+  //       : selectedSummaryComponent.closest(".selectedNode__highlighted");
+  //     const selectedHighlightedNode = selectedSummaryComponent;
 
-      const highlightedContainer = selectedHighlightedNode.querySelector(
-        ".selectedNode__highlighted > .highlighted__container"
-      );
+  //     while (
+  //       !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
+  //     ) {
+  //       selectedHighlightedNode = selectedHighlightedNode.parentElement;
+  //     }
 
-      setTimeout(() => {
-        // Delete highlight component and joining the original text back to normal
-        grandParentElement.parentElement.replaceChild(
-          highlightedContainer.firstChild,
-          grandParentElement
-        );
-        grandParentElement.remove();
+  //     const highlightedContainer = selectedHighlightedNode.querySelector(
+  //       ".selectedNode__highlighted > .highlighted__container"
+  //     );
 
-        // Delete summary component in the file__container
-        selectedSummaryComponent.remove();
+  //     setTimeout(() => {
+  //       // Delete highlight component and joining the original text back to normal
+  //       grandParentElement.parentElement.replaceChild(
+  //         highlightedContainer.firstChild,
+  //         grandParentElement
+  //       );
+  //       grandParentElement.remove();
 
-        // Delete the summary in sidebar
-        setSummaryArray(
-          summaryArray.filter((summary) => summary.summary_id !== summaryId)
-        );
+  //       // Delete summary component in the file__container
+  //       selectedSummaryComponent.remove();
 
-        handleUpdateFileContent();
-      }, 600); // animation
-    });
-  };
+  //       // Delete the summary in sidebar
+  //       setSummaryArray(
+  //         summaryArray.filter((summary) => summary.summary_id !== summaryId)
+  //       );
 
-  const closeDictionary = (id) => {
-    mainHandler.handleDeleteKeyword(id, (res) => {
-      setKeywordArray(res.data);
-      setKeywordArray(
-        keywordArray.filter((keyword) => keyword.keyword_id !== id)
-      );
-    });
-  };
+  //       handleUpdateFileContent();
+  //     }, 600); // animation
+  //   });
+  // };
 
-  const handleLocateSummary = (summaryId) => {
-    console.log("SCROLL TO VIEW")
-    const selectedSummary = document.getElementsByClassName(
-      `summarize__wrapper-container ${summaryId}`
-    )[0];
+  // const closeDictionary = (id) => {
+  //   mainHandler.handleDeleteKeyword(id, (res) => {
+  //     setKeywordArray(res.data);
+  //     setKeywordArray(
+  //       keywordArray.filter((keyword) => keyword.keyword_id !== id)
+  //     );
+  //   });
+  // };
 
-    selectedSummary.closest(".selectedNode__highlighted").scrollIntoView({behavior: "smooth", block: 'center', inline: 'center'})
-  }
 
-  function handleSummary() {
-    // summary content received from api
-    if (!summary) {
-      try { 
-        setSummary(true);
-        mainHandler.handleSummarize(selectedText.toString(), (res) => {
-          console.log("res", res);
-          const rangeCount = selectedText.rangeCount;
 
-          if (rangeCount !== 0 || selectedText.toString() !== "") {
-            console.log("summary clicked, call highlight");
-            // console.log("highlight!");
-            moveSelectedHighlighted();
+  // function handleSummary() {
+  //   // summary content received from api
+  //   if (!summary) {
+  //     try {
+  //       setSummary(true);
+  //       mainHandler.handleSummarize(selectedText.toString(), (res) => {
+  //         console.log("res", res);
+  //         const rangeCount = selectedText.rangeCount;
 
-            const selectedNodeContainer = document.createElement("div");
-            const highlightedContainer = document.createElement("div");
-            const highlightedNode = document.createElement("span");
+  //         if (rangeCount !== 0 || selectedText.toString() !== "") {
+  //           console.log("summary clicked, call highlight");
+  //           // console.log("highlight!");
+  //           moveSelectedHighlighted();
 
-            selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
-            highlightedContainer.className = "selectedNode__highlighted"; // 2
-            highlightedNode.className = "highlighted__container"; // 3
+  //           const selectedNodeContainer = document.createElement("div");
+  //           const highlightedContainer = document.createElement("div");
+  //           const highlightedNode = document.createElement("span");
 
-            highlightedNode.style.backgroundColor = "#3df9b4";
-            highlightedNode.style.color = "#000000";
+  //           selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
+  //           highlightedContainer.className = "selectedNode__highlighted"; // 2
+  //           highlightedNode.className = "highlighted__container"; // 3
 
-            // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
+  //           highlightedNode.style.backgroundColor = "#3df9b4";
+  //           highlightedNode.style.color = "#000000";
 
-            const range = selectedText.getRangeAt(0);
+  //           // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
 
-            range.surroundContents(highlightedNode);
+  //           const range = selectedText.getRangeAt(0);
 
-            highlightedNode.parentNode.insertBefore(
-              highlightedContainer,
-              highlightedNode
-            );
-            highlightedContainer.appendChild(highlightedNode);
+  //           range.surroundContents(highlightedNode);
 
-            highlightedContainer.parentNode.insertBefore(
-              selectedNodeContainer,
-              highlightedContainer
-            );
-            selectedNodeContainer.appendChild(highlightedContainer);
+  //           highlightedNode.parentNode.insertBefore(
+  //             highlightedContainer,
+  //             highlightedNode
+  //           );
+  //           highlightedContainer.appendChild(highlightedNode);
 
-            // setHighlightedNode(highlightedNode); // save to useState and pass to prop
+  //           highlightedContainer.parentNode.insertBefore(
+  //             selectedNodeContainer,
+  //             highlightedContainer
+  //           );
+  //           selectedNodeContainer.appendChild(highlightedContainer);
 
-            let summaryData = {
-              summaryData: {
-                fileId: fileData.file_id,
-                summaryContent: selectedText.toString(),
-                summaryResult: `${res.data.summary}`,
-              },
-            };
-            mainHandler.handleAddSummary(summaryData, (res) => {
-              console.log("summary added", res.data);
+  //           // setHighlightedNode(highlightedNode); // save to useState and pass to prop
 
-              const summaryComponent = (
-                <Summary
-                  summarizedContent={res.data.summary_result}
-                  handleCloseSummary={handleCloseSummary}
-                  summaryId={res.data.summary_id}
-                />
-              );
+  //           let summaryData = {
+  //             summaryData: {
+  //               fileId: fileData.file_id,
+  //               summaryContent: selectedText.toString(),
+  //               summaryResult: `${res.data.summary}`,
+  //             },
+  //           };
+  //           mainHandler.handleAddSummary(summaryData, (res) => {
+  //             console.log("summary added", res.data);
 
-              const container = document.querySelector(
-                "#selectedNode__container > .selectedNode__highlighted"
-              );
+  //             const summaryComponent = (
+  //               <Summary
+  //                 summarizedContent={res.data.summary_result}
+  //                 handleCloseSummary={handleCloseSummary}
+  //                 summaryId={res.data.summary_id}
+  //               />
+  //             );
 
-              const summaryWrapperContainer = document.createElement("div");
+  //             const container = document.querySelector(
+  //               "#selectedNode__container > .selectedNode__highlighted"
+  //             );
 
-              summaryWrapperContainer.classList.add(
-                "summarize__wrapper-container",
-                `${res.data.summary_id}`
-              );
+  //             const summaryWrapperContainer = document.createElement("div");
 
-              container.appendChild(summaryWrapperContainer);
+  //             summaryWrapperContainer.classList.add(
+  //               "summarize__wrapper-container",
+  //               `${res.data.summary_id}`
+  //             );
 
-              const root = ReactDomClient.createRoot(
-                document.querySelector(
-                  "#selectedNode__container .summarize__wrapper-container"
-                )
-              );
+  //             container.appendChild(summaryWrapperContainer);
 
-              root.render(summaryComponent);
+  //             const root = ReactDomClient.createRoot(
+  //               document.querySelector(
+  //                 "#selectedNode__container .summarize__wrapper-container"
+  //               )
+  //             );
 
-              document.querySelector(
-                "#selectedNode__container .summarize__wrapper-container"
-              ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+  //             root.render(summaryComponent);
 
-              handleUpdateFileContent();
+  //             document.querySelector(
+  //               "#selectedNode__container .summarize__wrapper-container"
+  //             ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
-              setSummaryArray([...summaryArray, res.data]);
-              setSummary(false);
-            });
-          }
-        }); // call handler for axios call
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
+  //             handleUpdateFileContent();
+
+  //             setSummaryArray([...summaryArray, res.data]);
+  //             setSummary(false);
+  //           });
+  //         }
+  //       }); // call handler for axios call
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
 
   // function getKeywords() {
   //   console.log("fileid", fileData.file_id);
@@ -576,6 +558,244 @@ export default function Converted() {
     }
   }
 
+
+  function closeDictionary(id) {
+    mainHandler.handleDeleteKeyword(id, (res) => {
+      setKeywordArray(res.data);
+      setKeywordArray(
+        keywordArray.filter((keyword) => keyword.keyword_id !== id)
+      );
+    });
+  };
+
+  const handleLocateSummary = (summaryId) => {
+    console.log("SCROLL TO VIEW")
+    const selectedSummary = document.getElementsByClassName(
+      `parent-summary-container ${summaryId}`
+    )[0];
+
+    selectedSummary.closest(".highlightnode").scrollIntoView({ behavior: "smooth", block: 'center', inline: 'center' })
+  }
+
+  // Selected and Dom
+
+  function handleSummary() {
+    // summary content received from api
+    if (!summary) {
+      try {
+        let highlightedNode = handleHighlight(null, "alternate");
+        if (!highlightedNode) {
+          setSummary(false);
+          return;
+        }
+        setSummary(true);
+        mainHandler.handleSummarize(selectedText.toString(), (sumRes) => {
+          let summaryData = {
+            summaryData: {
+              fileId: fileData.file_id,
+              summaryContent: selectedText.toString(),
+              summaryResult: `${sumRes.data.summary}`,
+            },
+          };
+          mainHandler.handleAddSummary(summaryData, (res) => {
+            console.log("summary added", res.data);
+
+            const summaryComponent = (
+              <Summary
+                summarizedContent={res.data.summary_result}
+                handleCloseSummary={handleCloseSummary}
+                summaryId={res.data.summary_id}
+              />
+            );
+            // const summaryComponent = (
+            //   <Summary
+            //     summarizedContent={res.data.summary}
+            //     onClose={(e) => closeSummary(e)}
+            //   />
+            // );
+            //             summaryWrapperContainer.classList.add(
+            //               "summarize__wrapper-container",
+            //               `${res.data.summary_id}`
+            //             );
+            let highlitedContainer = document.createElement("div");
+            const parentSummaryContainer = document.createElement("div");
+            parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
+            const summaryContainer = document.createElement("div");
+            highlightedNode.parentNode.insertBefore(
+              parentSummaryContainer,
+              highlightedNode
+            );
+            parentSummaryContainer.appendChild(highlitedContainer);
+            highlitedContainer.appendChild(highlightedNode);
+            parentSummaryContainer.appendChild(summaryContainer);
+            let root = ReactDomClient.createRoot(summaryContainer);
+            root.render(summaryComponent);
+
+            // document.querySelector(
+            //   "#selectedNode__container .summarize__wrapper-container"
+            // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+            handleUpdateFileContent();
+            setSummaryArray([...summaryArray, res.data]);
+            setSummary(false);
+          }); // call handler for axios call
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  function handleCloseSummary(e, summaryId) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    let highlightedNode = document.getElementById(`${selectedSummaryComponent.classList[1]}`);
+    let nodeArray = Array.from(highlightedNode.childNodes);
+    nodeArray.forEach(node => {
+      selectedSummaryComponent.parentNode.insertBefore(
+        node,
+        selectedSummaryComponent
+      )
+    });
+
+    // BUG WITH STATE RIGHT HERE
+    // NEED TO FIX ASAP
+
+    // HIGHLIGHT IDS ARE ONE STATE BEHIND
+    // FILTER DOESNT WORK BECAUSE OF THIS
+
+
+
+    console.log('about to filter', highlightIds)
+    let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
+    console.log('newhighlights', newHighlightIds)
+    setHighlightIds(newHighlightIds);
+    selectedSummaryComponent.remove();
+    highlightedNode.remove();
+  };
+
+  const handleHighlight = (colorObj, type) => {
+    if (selectedText) {
+      let match = false;
+      // check if user is only clicking on a highlighted node
+      if (selectedText.toString().length === 0) {
+        console.log('no text selected', highlightIds);
+        for (const selectedId of highlightIds) {
+          const selectedElement = document.getElementById(`${selectedId}`);
+          if (selectedText.containsNode(selectedElement, true)) {
+            if (colorObj) {
+              selectedElement.style.backgroundColor = colorObj.colorHex;
+            }
+            match = true;
+          }
+        }
+      }
+      // check if user is selecting a node used in a summary
+      if (selectedText.toString().length > 0) {
+        console.log('text selected', highlightIds);
+        for (const selectedId of highlightIds) {
+          const selectedSummary = document.getElementsByClassName(`${selectedId}`);
+          console.log('summary component', selectedSummary);
+          if (selectedSummary[0]) {
+            const selectedElement = document.getElementById(`${selectedId}`);
+            if (selectedText.containsNode(selectedElement, true)) {
+              if (colorObj) {
+                selectedElement.style.backgroundColor = colorObj.colorHex;
+              }
+              match = true;
+            }
+          }
+        }
+      }
+
+      if (!match) {
+        console.log("no match");
+        const rangeCount = selectedText.rangeCount;
+        if (rangeCount > 0 && selectedText.toString() !== "" && selectedText.toString().length > 0) {
+          let id = uuidv4();
+          console.log('making highlight', id)
+          const highlightedNode = document.createElement("span");
+          highlightedNode.classList.add("highlightnode");
+          if (!colorObj) {
+            highlightedNode.style.backgroundColor = highlightColor.colorHex;
+          } else {
+            highlightedNode.style.backgroundColor = colorObj.colorHex;
+          }
+          const range = selectedText.getRangeAt(0);
+          range.surroundContents(highlightedNode);
+          highlightedNode.id = id;
+          let newHighlightIds = [...highlightIds, id];
+          for (const selectedId of highlightIds) {
+            const selectedElement = document.getElementById(`${selectedId}`);
+            if (selectedText.containsNode(selectedElement, true) && selectedId !== id) {
+              let nodeArray = Array.from(selectedElement.childNodes);
+              nodeArray.forEach(node => {
+                selectedElement.parentNode.insertBefore(
+                  node,
+                  selectedElement
+                )
+              });
+              newHighlightIds = newHighlightIds.filter(id => id !== selectedElement.id);
+              selectedElement.remove();
+            }
+          }
+          setHighlightIds(newHighlightIds);
+
+
+          // setHighlightIds([...highlightIds, id]);
+          if (type === "alternate") {
+            return highlightedNode
+          }
+        }
+      }
+    }
+  }
+
+  function handleChangeHighlightColor(colorObj) {
+
+    setHighlightColor(colorObj);
+    console.log(selectedText.toString())
+    handleHighlight(colorObj);
+    // console.log('colorObj update', colorObj)
+    // setHighlightColor(colorObj)
+  }
+
+
+  // USE EFFECTS
+
+  useEffect(() => {
+    if (!router.query.fileData) {
+      return;
+    } else if (!router.query.settingData) {
+      return;
+    } else if (!router.query.folderArray) {
+      return;
+    }
+    setFileData(JSON.parse(router.query.fileData));
+    const folderArray = JSON.parse(router.query.folderArray);
+    setFolderArray(folderArray);
+    const settingData = JSON.parse(router.query.settingData);
+    setSettingData(settingData);
+    setNewFileName(JSON.parse(router.query.fileData).file_name);
+    mainHandler.handleGetKeywordsByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setKeywordArray(res.data);
+      }
+    );
+    mainHandler.handleGetSummariesByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setSummaryArray(res.data);
+      }
+    );
+  }, []);
+
   // useEffect(() => {
   //   console.log("fileid", fileData);
   //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
@@ -583,17 +803,29 @@ export default function Converted() {
   //   });
   // },[])
 
-  useEffect(() => {
-    const saveSelection = () => {
-      setSelectedText(window.getSelection());
-      file__content.removeEventListener("mouseup", saveSelection, false);
-    };
+  // useEffect(() => {
+  //   const saveSelection = () => {
+  //     setSelectedText(window.getSelection());
+  //     file__content.removeEventListener("mouseup", saveSelection, false);
+  //   };
 
+  useEffect(() => {
+    updateTypeArray(settingData);
+  }, [settingData]);
+
+  useEffect(() => {
+    updateLibraryArray(folderArray);
+  }, [folderArray]);
+
+
+  useEffect(() => {
     const file__content = document.querySelector(".file__content");
-    file__content.addEventListener("mousedown", () => {
-      file__content.addEventListener("mouseup", saveSelection, false);
-    });
-  });
+    file__content.addEventListener("mouseup", () => {
+      if (window.getSelection().toString() !== "") {
+        setSelectedText(window.getSelection());
+      }
+    }, false);
+  }), [];
 
   const handleDownloadFile = () => {
     // // write html file contents to .txt file
@@ -627,7 +859,7 @@ export default function Converted() {
       width: 180,
       windowWidth: 1080,
     });
-      // autoPaging:"text",
+    // autoPaging:"text",
     //   x: 0,
     //   y: 0,
     //   width: 190, //target width in the PDF document
@@ -645,7 +877,8 @@ export default function Converted() {
           libraryArray={libraryArray}
           handleNewFolder={handleNewFolder}
           handleSaveSetting={handleSaveSetting}
-          // highlightedNode={highlightedNode}
+          currentHighlightColor={highlightColor}
+          handleChangeHighlightColor={handleChangeHighlightColor}
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
           handleUpdateFileContent={handleUpdateFileContent}
@@ -683,7 +916,7 @@ export default function Converted() {
                       console.log("clicking delete");
                       handleDelete();
                     }}
-                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
                 )}
               </IconCont>
@@ -708,6 +941,7 @@ export default function Converted() {
             width="100%"
             height="100vh"
             scroll="scroll"
+            display="inline"
             backgroundColor={settingData.background_colour}
             fontSize={settingData.font_size}
             typeface={settingData.typeface}

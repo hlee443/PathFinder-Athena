@@ -5,7 +5,7 @@ export async function handleGetSummariesByFileId(fileId, cb) {
     try {
         return await axios({
             method: "GET",
-            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/summaries/${fileId}`,
+            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/summaries/fileid/${fileId}`,
             data: fileId
         })
             .then((response) => {
