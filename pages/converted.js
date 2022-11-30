@@ -362,6 +362,11 @@ export default function Converted() {
     // summary content received from api
     if (!summary) {
       try {
+        let highlightedNode = handleHighlight(null, "alternate");
+        if (!highlightedNode) {
+          setSummary(false);
+          return;
+        }
         setSummary(true);
         mainHandler.handleSummarize(selectedText.toString(), (res) => {
           console.log("res", res);
@@ -381,14 +386,9 @@ export default function Converted() {
               onClose={(e) => closeSummary(e)}
             />
           );
-          let highlightedNode = handleHighlight(null, "alternate");
-          if (!highlightedNode) {
-            setSummary(false);
-            return;
-          }
           let highlitedContainer = document.createElement("div");
           const parentSummaryContainer = document.createElement("div");
-          parentSummaryContainer.classList.add("parent-summary-container");
+          parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`);
           const summaryContainer = document.createElement("div");
           highlightedNode.parentNode.insertBefore(
             parentSummaryContainer,
@@ -440,7 +440,39 @@ export default function Converted() {
 
     let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
     let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
-    let highlightedNode = document.querySelector(`#${selectedSummaryComponent.classList[1]}`);
+    let highlightedNode = document.getElementById(`${selectedSummaryComponent.classList[1]}`);
+    let nodeArray = Array.from(highlightedNode.childNodes);
+    nodeArray.forEach(node => {
+      selectedSummaryComponent.parentNode.insertBefore(
+        node,
+        selectedSummaryComponent
+      )
+    });
+
+    // BUG WITH STATE RIGHT HERE
+    // NEED TO FIX ASAP
+
+    // HIGHLIGHT IDS ARE ONE STATE BEHIND
+    // FILTER DOESNT WORK BECAUSE OF THIS
+
+    
+
+    console.log('about to filter', highlightIds)
+    let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
+    console.log('newhighlights', newHighlightIds)
+    setHighlightIds(newHighlightIds);
+    selectedSummaryComponent.remove();
+    highlightedNode.remove();
+    
+    // selectedSummaryComponent.parentNode.insertBefore(
+    //   highlightedNode,
+    //   selectedSummaryComponent
+    // );
+
+    // selectedSummaryComponent.parentNode.replaceChild(
+    //   highlightedNode.firstChild,
+    //   selectedSummaryComponent
+    // );
 
 
     // const grandParentElement = selectedElement.closest(
@@ -460,18 +492,18 @@ export default function Converted() {
     //   ".selectedNode__highlighted > .highlighted__container"
     // );
 
-    selectedSummaryComponent.classList.add("summary--close"); // animation stuff
-    setTimeout(() => {
-      // async function
+    // selectedSummaryComponent.classList.add("summary--close"); // animation stuff
+    // setTimeout(() => {
+    //   // async function
 
-      selectedSummaryComponent.parentElement.replaceChild(
-        highlightedNode,
-        selectedSummaryComponent
-      );
-      selectedSummaryComponent.remove();
+    //   selectedSummaryComponent.parentElement.replaceChild(
+    //     highlightedNode,
+    //     selectedSummaryComponent
+    //   );
+    //   selectedSummaryComponent.remove();
 
-      handleUpdateFileContent();
-    }, 600); // animation
+    //   handleUpdateFileContent();
+    // }, 600); // animation
   };
 
 
@@ -492,23 +524,45 @@ export default function Converted() {
 
   const handleHighlight = (colorObj, type) => {
     if (selectedText) {
-      // for loop that goes through the selected ids, assigns them to a variable
       let match = false;
-      for (const selectedId of highlightIds) {
-        const selectedElement = document.getElementById(`${selectedId}`);
-        if (selectedText.containsNode(selectedElement, true)) {
-          if (colorObj) {
-            selectedElement.style.backgroundColor = colorObj.colorHex;
+      // check if user is only clicking on a highlighted node
+      if (selectedText.toString().length === 0) {
+        console.log('no text selected', highlightIds);
+        for (const selectedId of highlightIds) {
+          const selectedElement = document.getElementById(`${selectedId}`);
+          if (selectedText.containsNode(selectedElement, true)) {
+            if (colorObj) {
+              selectedElement.style.backgroundColor = colorObj.colorHex;
+            }
+            match = true;
           }
-          match = true;
         }
       }
+      // check if user is selecting a node used in a summary
+      if (selectedText.toString().length > 0) {
+        console.log('text selected', highlightIds);
+        for (const selectedId of highlightIds) {
+          const selectedSummary = document.getElementsByClassName(`${selectedId}`);
+          console.log('summary component', selectedSummary);
+          if (selectedSummary[0]) {
+            const selectedElement = document.getElementById(`${selectedId}`);
+            if (selectedText.containsNode(selectedElement, true)) {
+              if (colorObj) {
+                selectedElement.style.backgroundColor = colorObj.colorHex;
+              }
+              match = true;
+            }
+          }
+        }
+      }
+
       if (!match) {
+        console.log("no match");
         const rangeCount = selectedText.rangeCount;
-        if (rangeCount > 0 || selectedText.toString() !== "") {
+        if (rangeCount > 0 && selectedText.toString() !== "" && selectedText.toString().length > 0) {
           let id = uuidv4();
+          console.log('making highlight', id)
           const highlightedNode = document.createElement("span");
-          highlightedNode.id = id;
           if (!colorObj) {
             highlightedNode.style.backgroundColor = highlightColor.colorHex;
           } else {
@@ -516,7 +570,26 @@ export default function Converted() {
           }
           const range = selectedText.getRangeAt(0);
           range.surroundContents(highlightedNode);
-          setHighlightIds([...highlightIds, id]);
+          highlightedNode.id = id;
+          let newHighlightIds = [...highlightIds, id];
+          for (const selectedId of highlightIds) {
+            const selectedElement = document.getElementById(`${selectedId}`);
+            if (selectedText.containsNode(selectedElement, true) && selectedId !== id) {
+              let nodeArray = Array.from(selectedElement.childNodes);
+              nodeArray.forEach(node => {
+                selectedElement.parentNode.insertBefore(
+                  node,
+                  selectedElement
+                )
+              });
+              newHighlightIds = newHighlightIds.filter(id => id !== selectedElement.id);
+              selectedElement.remove();
+            }
+          }
+          setHighlightIds(newHighlightIds);
+
+
+          // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
             return highlightedNode
           }
@@ -525,245 +598,247 @@ export default function Converted() {
     }
   }
 
-  // const handleHighlight = (selectedText) => {
-  //   console.log('selectedText', selectedText)
-  //   if (selectedText) {
-  //     const rangeCount = selectedText.rangeCount;
 
-  //     if (rangeCount !== 0 || selectedText.toString() !== "") {
-  //       console.log("highlight!");
-  //       let id = uuidv4();
-  //       // moveSelectedHighlighted();
+    // const handleHighlight = (selectedText) => {
+    //   console.log('selectedText', selectedText)
+    //   if (selectedText) {
+    //     const rangeCount = selectedText.rangeCount;
 
-  //       // this needs to me move
-  //       const selectedNodeContainer = document.createElement("div");
+    //     if (rangeCount !== 0 || selectedText.toString() !== "") {
+    //       console.log("highlight!");
+    //       let id = uuidv4();
+    //       // moveSelectedHighlighted();
 
-  //       const highlightedContainer = document.createElement("div");
-  //       const highlightedNode = document.createElement("span");
+    //       // this needs to me move
+    //       const selectedNodeContainer = document.createElement("div");
 
-  //       // this needs to move
-  //       selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
+    //       const highlightedContainer = document.createElement("div");
+    //       const highlightedNode = document.createElement("span");
 
-
-  //       highlightedContainer.className = "selectedNode__highlighted"; // 2
-  //       highlightedNode.className = "highlighted__container"; // 3
-
-  //       highlightedNode.style.backgroundColor = highlightColor.colorHex;
-
-  //       // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
-
-  //       const range = selectedText.getRangeAt(0);
-
-  //       range.surroundContents(highlightedNode);
-
-  //       highlightedNode.parentNode.insertBefore(
-  //         highlightedContainer,
-  //         highlightedNode
-  //       );
-  //       highlightedContainer.appendChild(highlightedNode);
-
-  //       highlightedContainer.parentNode.insertBefore(
-  //         selectedNodeContainer,
-  //         highlightedContainer
-  //       );
-  //       selectedNodeContainer.appendChild(highlightedContainer);
-
-  //     }
-  //   }
-
-  // }
-
-  // function moveSelectedHighlighted() {
-  //   if (document.querySelector("#selectedNode__container")) {
-  //     const prevSelectContainer = document.querySelector(
-  //       "#selectedNode__container"
-  //     );
-  //     const parentContainer = prevSelectContainer.parentNode;
-  //     while (prevSelectContainer.firstChild) {
-  //       parentContainer.insertBefore(
-  //         prevSelectContainer.firstChild,
-  //         prevSelectContainer
-  //       );
-  //     }
-  //     parentContainer.removeChild(prevSelectContainer);
-  //   }
-  // }
+    //       // this needs to move
+    //       selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
 
 
-  function handleChangeHighlightColor(colorObj) {
+    //       highlightedContainer.className = "selectedNode__highlighted"; // 2
+    //       highlightedNode.className = "highlighted__container"; // 3
 
-    setHighlightColor(colorObj);
-    console.log(selectedText.toString())
-    handleHighlight(colorObj);
-    // console.log('colorObj update', colorObj)
-    // setHighlightColor(colorObj)
-  }
+    //       highlightedNode.style.backgroundColor = highlightColor.colorHex;
 
+    //       // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
 
-  // USE EFFECTS
+    //       const range = selectedText.getRangeAt(0);
 
-  useEffect(() => {
-    if (!router.query.fileData) {
-      return;
-    } else if (!router.query.settingData) {
-      return;
-    } else if (!router.query.folderArray) {
-      return;
-    }
-    setFileData(JSON.parse(router.query.fileData));
-    const folderArray = JSON.parse(router.query.folderArray);
-    setFolderArray(folderArray);
-    const settingData = JSON.parse(router.query.settingData);
-    setSettingData(settingData);
-    setNewFileName(JSON.parse(router.query.fileData).file_name);
-    mainHandler.handleGetKeywordsByFileId(
-      JSON.parse(router.query.fileData).file_id,
-      (res) => {
-        console.log(res);
-        setKeywordArray(res.data);
-      }
-    );
-  }, []);
+    //       range.surroundContents(highlightedNode);
 
-  useEffect(() => {
-    updateTypeArray(settingData);
-  }, [settingData]);
+    //       highlightedNode.parentNode.insertBefore(
+    //         highlightedContainer,
+    //         highlightedNode
+    //       );
+    //       highlightedContainer.appendChild(highlightedNode);
 
-  useEffect(() => {
-    updateLibraryArray(folderArray);
-  }, [folderArray]);
+    //       highlightedContainer.parentNode.insertBefore(
+    //         selectedNodeContainer,
+    //         highlightedContainer
+    //       );
+    //       selectedNodeContainer.appendChild(highlightedContainer);
 
-  // useEffect(() => {
-  //   console.log('call highlit')
-  //   handleHighlight()
-  // }, [selectedText])
+    //     }
+    //   }
 
-
-  useEffect(() => {
-    // const saveSelection = () => {
-    //   setSelectedText(window.getSelection());
-    //   console.log("save selection", window.getSelection().toString());
-    // };
-
-    // if (e.target.classList.contains('highlighted__container')) {
-    //   e.target.style.backgroundColor = highlightColor.colorHex
-    // } else {
-    //   file__content.addEventListener("mouseup", () => {
-    //     saveSelection()
-    //   }, false);
     // }
 
-    const file__content = document.querySelector(".file__content");
-    file__content.addEventListener("mouseup", () => {
-      if (window.getSelection().toString() !== "") {
-        setSelectedText(window.getSelection());
+    // function moveSelectedHighlighted() {
+    //   if (document.querySelector("#selectedNode__container")) {
+    //     const prevSelectContainer = document.querySelector(
+    //       "#selectedNode__container"
+    //     );
+    //     const parentContainer = prevSelectContainer.parentNode;
+    //     while (prevSelectContainer.firstChild) {
+    //       parentContainer.insertBefore(
+    //         prevSelectContainer.firstChild,
+    //         prevSelectContainer
+    //       );
+    //     }
+    //     parentContainer.removeChild(prevSelectContainer);
+    //   }
+    // }
+
+
+    function handleChangeHighlightColor(colorObj) {
+
+      setHighlightColor(colorObj);
+      console.log(selectedText.toString())
+      handleHighlight(colorObj);
+      // console.log('colorObj update', colorObj)
+      // setHighlightColor(colorObj)
+    }
+
+
+    // USE EFFECTS
+
+    useEffect(() => {
+      if (!router.query.fileData) {
+        return;
+      } else if (!router.query.settingData) {
+        return;
+      } else if (!router.query.folderArray) {
+        return;
       }
-    }, false);
-  }), [];
+      setFileData(JSON.parse(router.query.fileData));
+      const folderArray = JSON.parse(router.query.folderArray);
+      setFolderArray(folderArray);
+      const settingData = JSON.parse(router.query.settingData);
+      setSettingData(settingData);
+      setNewFileName(JSON.parse(router.query.fileData).file_name);
+      mainHandler.handleGetKeywordsByFileId(
+        JSON.parse(router.query.fileData).file_id,
+        (res) => {
+          console.log(res);
+          setKeywordArray(res.data);
+        }
+      );
+    }, []);
 
-  // useEffect(() => {
-  //   file__content.addEventListener("mousedown", (e) => {
-  //     if(e.target.classtList.contains('highlighted__container')){
-  //       changeColor(e)
-  //     }
-  //   });
-  // })
+    useEffect(() => {
+      updateTypeArray(settingData);
+    }, [settingData]);
 
-  return (
-    <Flexbox>
-      <StickyCont>
-        <LogoBar />
-        <NavBar />
-        <ToolBar
-          typeArray={typeArray}
-          libraryArray={libraryArray}
-          handleNewFolder={handleNewFolder}
-          handleSaveSetting={handleSaveSetting}
-          currentHighlightColor={highlightColor}
-          handleChangeHighlightColor={handleChangeHighlightColor}
-          handleDictionary={handleDictionary}
-          handleSummary={handleSummary}
-          handleUpdateFileContent={handleUpdateFileContent}
-        />
-      </StickyCont>
-      {/* <DocCont dir="row"> */}
-      <Layout dir="row" backgroundColor={colors.backgroundWhite}>
-        <DocCont>
-          {!isEditing && (
-            <Title dir="row">
-              <Header text={newFileName} />
-              <IconCont dir="row">
-                <Icon
-                  faIconName={faEllipsis}
-                  handleClick={handleMiniDropdown}
-                />
-                {!isActive && showIcon && (
+    useEffect(() => {
+      updateLibraryArray(folderArray);
+    }, [folderArray]);
+
+    // useEffect(() => {
+    //   console.log('call highlit')
+    //   handleHighlight()
+    // }, [selectedText])
+
+
+    useEffect(() => {
+      // const saveSelection = () => {
+      //   setSelectedText(window.getSelection());
+      //   console.log("save selection", window.getSelection().toString());
+      // };
+
+      // if (e.target.classList.contains('highlighted__container')) {
+      //   e.target.style.backgroundColor = highlightColor.colorHex
+      // } else {
+      //   file__content.addEventListener("mouseup", () => {
+      //     saveSelection()
+      //   }, false);
+      // }
+
+      const file__content = document.querySelector(".file__content");
+      file__content.addEventListener("mouseup", () => {
+        if (window.getSelection().toString() !== "") {
+          setSelectedText(window.getSelection());
+        }
+      }, false);
+    }), [];
+
+    // useEffect(() => {
+    //   file__content.addEventListener("mousedown", (e) => {
+    //     if(e.target.classtList.contains('highlighted__container')){
+    //       changeColor(e)
+    //     }
+    //   });
+    // })
+  console.log('bottom of doc', highlightIds)
+    return (
+      <Flexbox>
+        <StickyCont>
+          <LogoBar />
+          <NavBar />
+          <ToolBar
+            typeArray={typeArray}
+            libraryArray={libraryArray}
+            handleNewFolder={handleNewFolder}
+            handleSaveSetting={handleSaveSetting}
+            currentHighlightColor={highlightColor}
+            handleChangeHighlightColor={handleChangeHighlightColor}
+            handleDictionary={handleDictionary}
+            handleSummary={handleSummary}
+            handleUpdateFileContent={handleUpdateFileContent}
+          />
+        </StickyCont>
+        {/* <DocCont dir="row"> */}
+        <Layout dir="row" backgroundColor={colors.backgroundWhite}>
+          <DocCont>
+            {!isEditing && (
+              <Title dir="row">
+                <Header text={newFileName} />
+                <IconCont dir="row">
                   <Icon
-                    faIconName={faArrowRightFromBracket}
-                    handleClick={() => {
-                      setShowSidebar(true), setShowIcon(false);
-                    }}
+                    faIconName={faEllipsis}
+                    handleClick={handleMiniDropdown}
                   />
-                )}
-                {dropdown && (
-                  <MiniDropdown
-                    position="absolute"
-                    arr={editFileDataArr}
-                    onEdit={() => {
-                      console.log("clicking edit");
-                      handleEdit();
-                    }}
-                    onDelete={() => {
-                      console.log("clicking delete");
-                      handleDelete();
-                    }}
-                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
-                  />
-                )}
-              </IconCont>
-            </Title>
-          )}
-          {isEditing && (
-            <Title dir="row">
-              <Input
-                type="text"
-                value={newFileName}
-                onChange={(e) => getFilenameValue(e)}
+                  {!isActive && showIcon && (
+                    <Icon
+                      faIconName={faArrowRightFromBracket}
+                      handleClick={() => {
+                        setShowSidebar(true), setShowIcon(false);
+                      }}
+                    />
+                  )}
+                  {dropdown && (
+                    <MiniDropdown
+                      position="absolute"
+                      arr={editFileDataArr}
+                      onEdit={() => {
+                        console.log("clicking edit");
+                        handleEdit();
+                      }}
+                      onDelete={() => {
+                        console.log("clicking delete");
+                        handleDelete();
+                      }}
+                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                    />
+                  )}
+                </IconCont>
+              </Title>
+            )}
+            {isEditing && (
+              <Title dir="row">
+                <Input
+                  type="text"
+                  value={newFileName}
+                  onChange={(e) => getFilenameValue(e)}
+                />
+                <Button
+                  backgroundColor={colors.buttonPrimaryBlue}
+                  text="Save"
+                  handleClick={handleSaveFileName}
+                />
+              </Title>
+            )}
+            <Container
+              className="file__content"
+              width="100%"
+              height="100vh"
+              scroll="scroll"
+              display="inline"
+              backgroundColor={settingData.background_colour}
+              fontSize={settingData.font_size}
+              typeface={settingData.typeface}
+              lineSpace={settingData.line_space}
+              letterSpace={settingData.letter_space}
+            >
+              <Content fileData={fileData} />
+            </Container>
+          </DocCont>
+          <SidebarCont>
+            {showSidebar && (
+              <SideBar
+                handleSidebar={handleSidebar}
+                keywordArray={keywordArray}
+                closeDictionary={closeDictionary}
               />
-              <Button
-                backgroundColor={colors.buttonPrimaryBlue}
-                text="Save"
-                handleClick={handleSaveFileName}
-              />
-            </Title>
-          )}
-          <Container
-            className="file__content"
-            width="100%"
-            height="100vh"
-            scroll="scroll"
-            backgroundColor={settingData.background_colour}
-            fontSize={settingData.font_size}
-            typeface={settingData.typeface}
-            lineSpace={settingData.line_space}
-            letterSpace={settingData.letter_space}
-          >
-            <Content fileData={fileData} />
-          </Container>
-        </DocCont>
-        <SidebarCont>
-          {showSidebar && (
-            <SideBar
-              handleSidebar={handleSidebar}
-              keywordArray={keywordArray}
-              closeDictionary={closeDictionary}
-            />
-          )}
-        </SidebarCont>
-      </Layout>
+            )}
+          </SidebarCont>
+        </Layout>
 
-      {/* </DocCont> */}
-      {/* <DocCont>
+        {/* </DocCont> */}
+        {/* <DocCont>
         <Wrapper>
           <Title dir="row">
             <Header text={fileData.file_name} />
@@ -779,6 +854,6 @@ export default function Converted() {
         </Wrapper>
         <SideBar></SideBar>
       </DocCont> */}
-    </Flexbox>
-  );
-}
+      </Flexbox>
+    );
+  }
