@@ -3,87 +3,104 @@ import Icon from "../Icon/Icon";
 import { Flexbox, BodyText, colors } from "../../styles/globals";
 import Input from "../Input/Input";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { mediaQuery } from "../../MediaQuery/data";
 
 const OptionCont = styled(Flexbox)`
   justify-content: flex-start;
   background-color: ${(props) => props.bgColor || "transparent"};
   width: 100%;
   cursor: pointer;
-  gap: ${(props) => props.gap || "1.875rem"};
-  padding: ${(props) => props.padding || "1rem 1.5rem"};
+  font-size: 1.125rem;
+  gap: 1rem;
+  min-width: 100%;
 
   :hover {
     font-weight: bold;
-    background-color: ${(props) => props.hoverColor || colors.secondaryBlue};
+    background-color: ${(props) => props.hoverColor};
+  }
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    align-items: start;
+    font-size: 1rem;
   }
 `;
 
-const OptionText = styled.p`
-  // width: 100%;
-  font-size: ${(props) => props.fontSize};
-`;
+const Img = styled.img`
+  width: 2rem;
+  height: 2rem;
+  aspect-ratio: 1;
+  background-color: ${(props) => props.imgColor};
+  border-radius: 50rem;
+`
 
-const UnitText = styled.p`
-  font-size: ${(props) => props.fontSize};
-`;
+const OptionText = styled(Flexbox)`
+  justify-content: space-between;
+  width: 100%;
+
+  @media ${mediaQuery.minWidth.mobile} {
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+  }
+`
+
+const InputCont = styled(Flexbox)`
+  justify-content: space-between;
+  gap: 1rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    gap: 0.5rem;
+  }
+`
 
 export default function Option({
   bgColor = "transparent",
-  gap = "1.875rem",
   text = "text",
   unit = null,
   faIconName = null,
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleOption = () => {},
-  onClose = () => {},
-  onChange = () => {},
+  handleOption = () => { },
+  onClose = () => { },
+  onChange = () => { },
   value = "",
   src = null,
-  inputWidth = "4rem",
+  inputWidth = "100%",
   hoverColor = "",
   height = "",
-  fontSize = "18pt",
-  padding = null,
-  // num = 1
+  imgColor = "transparent"
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.1 }}
-      style={{ width: "100%" }}
+    <OptionCont
+      hoverColor={hoverColor}
+      onClick={handleOption}
+      dir="row"
+      bgColor={bgColor}
     >
-      <OptionCont
-        hoverColor={hoverColor}
-        onClick={handleOption}
-        dir="row"
-        bgColor={bgColor}
-        fontSize={fontSize}
-        gap={gap}
-        padding={padding}
-      >
-        {faIconName !== null && <Icon faIconName={faIconName} />}
-        {src !== null && <img src={src} />}
-
-        <OptionText>{text}</OptionText>
-        {inputType !== null && (
-          <Input
-            type={inputType}
-            placeholder={placeholder}
-            onChange={onChange}
-            value={value}
-            height={height}
-            width={inputWidth}
-          />
-        )}
-        {unit !== null && <UnitText>{unit}</UnitText>}
+      {faIconName !== null && <Icon faIconName={faIconName} />}
+      {src !== null && <Img
+        imgColor={imgColor}
+        src={src} />}
+      <OptionText dir="row">
+        <p>{text}</p>
+        <InputCont dir="row">
+          {inputType !== null && (
+            <Input
+              type={inputType}
+              placeholder={placeholder}
+              onChange={onChange}
+              value={value}
+              height={height}
+              width={inputWidth}
+            />
+          )}
+          {unit !== null && <p>{unit}</p>}
+        </InputCont>
         {faIconNameRight !== null && (
           <Icon size="1x" faIconName={faIconNameRight} handleClick={onClose} />
         )}
-      </OptionCont>
-    </motion.div>
+      </OptionText>
+    </OptionCont>
   );
 }
