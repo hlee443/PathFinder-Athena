@@ -56,7 +56,8 @@ export default function SideBar({
   closeDictionary = () => { },
   closeSummarySidebar = () => {},
   handleSidebar = () => { },
-  handleCloseSummary = () => {}
+  handleCloseSummary = () => {},
+  handleLocateSummary = () => {}
  }) {
 
   const [showPopUp, setShowPopUp] = useState("type");
@@ -112,6 +113,7 @@ export default function SideBar({
                 definition={summary.summary_result}
                 id={summary.summary_id}
                 handleCloseSummary={handleCloseSummary}
+                handleLocateSummary={handleLocateSummary}
               />
             ))
           }

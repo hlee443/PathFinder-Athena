@@ -345,7 +345,6 @@ export default function Converted() {
     const settingData = JSON.parse(router.query.settingData);
     setSettingData(settingData);
     setNewFileName(JSON.parse(router.query.fileData).file_name);
-    console.log("FILEDAAYAYY", fileData);
     mainHandler.handleGetKeywordsByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
@@ -371,16 +370,10 @@ export default function Converted() {
   }, [folderArray]);
 
   const handleCloseSummary = (summaryId) => {
-    // e.preventDefault();
-    // e.stopPropagation();
 
     mainHandler.handleDeleteSummary(summaryId, (res) => {
       console.log(res.data);
-      // const selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-
-      // const selectedSummaryComponent = selectedElement.closest(
-      //   ".summarize__wrapper-container"
-      // );
+     
       const selectedSummaryComponent = document.getElementsByClassName(
         `summarize__wrapper-container ${summaryId}`
       )[0];
@@ -391,7 +384,7 @@ export default function Converted() {
         "#selectedNode__container"
       )
         ? selectedSummaryComponent.closest("#selectedNode__container")
-        : selectedSummaryComponent.closest(".selectedNode__highlighted"); // <selectenode__Hgihligt> xxx
+        : selectedSummaryComponent.closest(".selectedNode__highlighted");
       const selectedHighlightedNode = selectedSummaryComponent;
 
       while (
@@ -434,10 +427,19 @@ export default function Converted() {
     });
   };
 
+  const handleLocateSummary = (summaryId) => {
+    console.log("SCROLL TO VIEW")
+    const selectedSummary = document.getElementsByClassName(
+      `summarize__wrapper-container ${summaryId}`
+    )[0];
+
+    selectedSummary.closest(".selectedNode__highlighted").scrollIntoView({behavior: "smooth", block: 'center', inline: 'center'})
+  }
+
   function handleSummary() {
     // summary content received from api
     if (!summary) {
-      try {
+      try { 
         setSummary(true);
         mainHandler.handleSummarize(selectedText.toString(), (res) => {
           console.log("res", res);
@@ -517,6 +519,10 @@ export default function Converted() {
               );
 
               root.render(summaryComponent);
+
+              document.querySelector(
+                "#selectedNode__container .summarize__wrapper-container"
+              ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
               handleUpdateFileContent();
 
@@ -675,6 +681,7 @@ export default function Converted() {
               summaryArray={summaryArray}
               closeDictionary={closeDictionary}
               handleCloseSummary={handleCloseSummary}
+              handleLocateSummary={handleLocateSummary}
             />
           )}
         </SidebarCont>

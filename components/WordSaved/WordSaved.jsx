@@ -57,6 +57,7 @@ export default function WordSaved({
   definition = "",
   id = "",
   handleCloseSummary = () => {},
+  handleLocateSummary = () => {}
 }) {
   const [open, setOpen] = useState(false);
   const [showDef, setShowDef] = useState(true);
@@ -64,6 +65,12 @@ export default function WordSaved({
   function onSummaryClose(e){
     e.preventDefault()
     handleCloseSummary(id)
+  }
+
+  function onLocate(e){
+    e.preventDefault()
+
+    handleLocateSummary(id)
   }
 
   return (
@@ -113,7 +120,7 @@ export default function WordSaved({
                   handleClick={() => setShowDef(true)}
                 />
               )}
-              <Icon size="sm" faIconName={faLocationDot} handleClick={() => console.log("go to summary location")} />
+              <Icon size="sm" faIconName={faLocationDot} handleClick={onLocate} />
               <Icon size="m" faIconName={faClose} handleClick={onSummaryClose} />
             </IconCont>
             </>
