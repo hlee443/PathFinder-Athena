@@ -32,7 +32,7 @@ const CustomizeInputBox = styled(Flexbox)`
   border-radius: 50px;
   width: 100%;
   justify-content: start;
-  flex: 1 1 auto;
+  height: fit-content;
 `;
 
 const BtnCont = styled(Flexbox)`

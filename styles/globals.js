@@ -60,7 +60,7 @@ export const Wrapper = styled(Flexbox)`
   align-items: start;
   justify-content: start;
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   gap: 2.5rem;
   padding: 8rem;
   bottom: 0;
@@ -68,8 +68,9 @@ export const Wrapper = styled(Flexbox)`
 
   @media ${mediaQuery.maxWidth.mobile} {
     padding: 1rem;
-    gap: 1rem;
-    margin-bottom: calc(3rem + env(safe-area-inset-bottom));
+    height: 100%;
+    gap: 2rem;
+    margin-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
 
   @media ${mediaQuery.minWidth.tablet} {
