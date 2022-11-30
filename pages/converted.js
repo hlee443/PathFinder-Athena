@@ -26,6 +26,9 @@ import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
 import { v4 as uuidv4 } from 'uuid';
+import { jsPDF } from "jspdf";
+
+const { htmlToText } = require("html-to-text");
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -70,7 +73,6 @@ const SidebarCont = styled.div`
 
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
-
     width: 100%;
     bottom: 0;
     height: 30vh;
@@ -105,6 +107,7 @@ export default function Converted() {
   const [selectedText, setSelectedText] = useState('');
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
+  const [summaryArray, setSummaryArray] = useState([]);
 
   function handleSidebar() {
     if (isActive) {
@@ -117,6 +120,7 @@ export default function Converted() {
       setShowIcon(true);
     }
   };
+
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -318,6 +322,213 @@ export default function Converted() {
     });
   }
 
+
+  // useEffect(() => {
+  //   if (!router.query.fileData) {
+  //     return;
+  //   } else if (!router.query.settingData) {
+  //     return;
+  //   } else if (!router.query.folderArray) {
+  //     return;
+  //   }
+  //   setFileData(JSON.parse(router.query.fileData));
+  //   const folderArray = JSON.parse(router.query.folderArray);
+  //   setFolderArray(folderArray);
+  //   const settingData = JSON.parse(router.query.settingData);
+  //   setSettingData(settingData);
+  //   setNewFileName(JSON.parse(router.query.fileData).file_name);
+  //   mainHandler.handleGetKeywordsByFileId(
+  //     JSON.parse(router.query.fileData).file_id,
+  //     (res) => {
+  //       console.log(res);
+  //       setKeywordArray(res.data);
+  //     }
+  //   );
+  //   mainHandler.handleGetSummariesByFileId(
+  //     JSON.parse(router.query.fileData).file_id,
+  //     (res) => {
+  //       console.log(res);
+  //       setSummaryArray(res.data);
+  //     }
+  //   );
+  // }, []);
+
+  // useEffect(() => {
+  //   updateTypeArray(settingData);
+  // }, [settingData]);
+
+  // useEffect(() => {
+  //   updateLibraryArray(folderArray);
+  // }, [folderArray]);
+
+  // const handleCloseSummary = (summaryId) => {
+
+  //   mainHandler.handleDeleteSummary(summaryId, (res) => {
+  //     console.log(res.data);
+
+  //     const selectedSummaryComponent = document.getElementsByClassName(
+  //       `summarize__wrapper-container ${summaryId}`
+  //     )[0];
+
+  //     selectedSummaryComponent.classList.add("summary--close"); // animation stuff
+
+  //     const grandParentElement = selectedSummaryComponent.closest(
+  //       "#selectedNode__container"
+  //     )
+  //       ? selectedSummaryComponent.closest("#selectedNode__container")
+  //       : selectedSummaryComponent.closest(".selectedNode__highlighted");
+  //     const selectedHighlightedNode = selectedSummaryComponent;
+
+  //     while (
+  //       !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
+  //     ) {
+  //       selectedHighlightedNode = selectedHighlightedNode.parentElement;
+  //     }
+
+  //     const highlightedContainer = selectedHighlightedNode.querySelector(
+  //       ".selectedNode__highlighted > .highlighted__container"
+  //     );
+
+  //     setTimeout(() => {
+  //       // Delete highlight component and joining the original text back to normal
+  //       grandParentElement.parentElement.replaceChild(
+  //         highlightedContainer.firstChild,
+  //         grandParentElement
+  //       );
+  //       grandParentElement.remove();
+
+  //       // Delete summary component in the file__container
+  //       selectedSummaryComponent.remove();
+
+  //       // Delete the summary in sidebar
+  //       setSummaryArray(
+  //         summaryArray.filter((summary) => summary.summary_id !== summaryId)
+  //       );
+
+  //       handleUpdateFileContent();
+  //     }, 600); // animation
+  //   });
+  // };
+
+  // const closeDictionary = (id) => {
+  //   mainHandler.handleDeleteKeyword(id, (res) => {
+  //     setKeywordArray(res.data);
+  //     setKeywordArray(
+  //       keywordArray.filter((keyword) => keyword.keyword_id !== id)
+  //     );
+  //   });
+  // };
+
+
+
+  // function handleSummary() {
+  //   // summary content received from api
+  //   if (!summary) {
+  //     try {
+  //       setSummary(true);
+  //       mainHandler.handleSummarize(selectedText.toString(), (res) => {
+  //         console.log("res", res);
+  //         const rangeCount = selectedText.rangeCount;
+
+  //         if (rangeCount !== 0 || selectedText.toString() !== "") {
+  //           console.log("summary clicked, call highlight");
+  //           // console.log("highlight!");
+  //           moveSelectedHighlighted();
+
+  //           const selectedNodeContainer = document.createElement("div");
+  //           const highlightedContainer = document.createElement("div");
+  //           const highlightedNode = document.createElement("span");
+
+  //           selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
+  //           highlightedContainer.className = "selectedNode__highlighted"; // 2
+  //           highlightedNode.className = "highlighted__container"; // 3
+
+  //           highlightedNode.style.backgroundColor = "#3df9b4";
+  //           highlightedNode.style.color = "#000000";
+
+  //           // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
+
+  //           const range = selectedText.getRangeAt(0);
+
+  //           range.surroundContents(highlightedNode);
+
+  //           highlightedNode.parentNode.insertBefore(
+  //             highlightedContainer,
+  //             highlightedNode
+  //           );
+  //           highlightedContainer.appendChild(highlightedNode);
+
+  //           highlightedContainer.parentNode.insertBefore(
+  //             selectedNodeContainer,
+  //             highlightedContainer
+  //           );
+  //           selectedNodeContainer.appendChild(highlightedContainer);
+
+  //           // setHighlightedNode(highlightedNode); // save to useState and pass to prop
+
+  //           let summaryData = {
+  //             summaryData: {
+  //               fileId: fileData.file_id,
+  //               summaryContent: selectedText.toString(),
+  //               summaryResult: `${res.data.summary}`,
+  //             },
+  //           };
+  //           mainHandler.handleAddSummary(summaryData, (res) => {
+  //             console.log("summary added", res.data);
+
+  //             const summaryComponent = (
+  //               <Summary
+  //                 summarizedContent={res.data.summary_result}
+  //                 handleCloseSummary={handleCloseSummary}
+  //                 summaryId={res.data.summary_id}
+  //               />
+  //             );
+
+  //             const container = document.querySelector(
+  //               "#selectedNode__container > .selectedNode__highlighted"
+  //             );
+
+  //             const summaryWrapperContainer = document.createElement("div");
+
+  //             summaryWrapperContainer.classList.add(
+  //               "summarize__wrapper-container",
+  //               `${res.data.summary_id}`
+  //             );
+
+  //             container.appendChild(summaryWrapperContainer);
+
+  //             const root = ReactDomClient.createRoot(
+  //               document.querySelector(
+  //                 "#selectedNode__container .summarize__wrapper-container"
+  //               )
+  //             );
+
+  //             root.render(summaryComponent);
+
+  //             document.querySelector(
+  //               "#selectedNode__container .summarize__wrapper-container"
+  //             ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+  //             handleUpdateFileContent();
+
+  //             setSummaryArray([...summaryArray, res.data]);
+  //             setSummary(false);
+  //           });
+  //         }
+  //       }); // call handler for axios call
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
+
+  // function getKeywords() {
+  //   console.log("fileid", fileData.file_id);
+  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
+  //     setKeywordArray(res.data);
+  //   });
+  // }
+
   function handleDictionary() {
     if (!dictionary) {
       try {
@@ -347,6 +558,7 @@ export default function Converted() {
     }
   }
 
+
   function closeDictionary(id) {
     mainHandler.handleDeleteKeyword(id, (res) => {
       setKeywordArray(res.data);
@@ -355,6 +567,15 @@ export default function Converted() {
       );
     });
   };
+
+  const handleLocateSummary = (summaryId) => {
+    console.log("SCROLL TO VIEW")
+    const selectedSummary = document.getElementsByClassName(
+      `parent-summary-container ${summaryId}`
+    )[0];
+
+    selectedSummary.closest(".highlightnode").scrollIntoView({ behavior: "smooth", block: 'center', inline: 'center' })
+  }
 
   // Selected and Dom
 
@@ -368,36 +589,64 @@ export default function Converted() {
           return;
         }
         setSummary(true);
-        mainHandler.handleSummarize(selectedText.toString(), (res) => {
-          const summaryComponent = (
-            <Summary
-              summarizedContent={res.data.summary}
-              onClose={(e) => closeSummary(e)}
-            />
-          );
-          let highlitedContainer = document.createElement("div");
-          const parentSummaryContainer = document.createElement("div");
-          parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`);
-          const summaryContainer = document.createElement("div");
-          highlightedNode.parentNode.insertBefore(
-            parentSummaryContainer,
-            highlightedNode
-          );
-          parentSummaryContainer.appendChild(highlitedContainer);
-          highlitedContainer.appendChild(highlightedNode);
-          parentSummaryContainer.appendChild(summaryContainer);
-          let root = ReactDomClient.createRoot(summaryContainer);
-          root.render(summaryComponent);
-          handleUpdateFileContent();
-          setSummary(false);
-        }); // call handler for axios call
+        mainHandler.handleSummarize(selectedText.toString(), (sumRes) => {
+          let summaryData = {
+            summaryData: {
+              fileId: fileData.file_id,
+              summaryContent: selectedText.toString(),
+              summaryResult: `${sumRes.data.summary}`,
+            },
+          };
+          mainHandler.handleAddSummary(summaryData, (res) => {
+            console.log("summary added", res.data);
+
+            const summaryComponent = (
+              <Summary
+                summarizedContent={res.data.summary_result}
+                handleCloseSummary={handleCloseSummary}
+                summaryId={res.data.summary_id}
+              />
+            );
+            // const summaryComponent = (
+            //   <Summary
+            //     summarizedContent={res.data.summary}
+            //     onClose={(e) => closeSummary(e)}
+            //   />
+            // );
+            //             summaryWrapperContainer.classList.add(
+            //               "summarize__wrapper-container",
+            //               `${res.data.summary_id}`
+            //             );
+            let highlitedContainer = document.createElement("div");
+            const parentSummaryContainer = document.createElement("div");
+            parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
+            const summaryContainer = document.createElement("div");
+            highlightedNode.parentNode.insertBefore(
+              parentSummaryContainer,
+              highlightedNode
+            );
+            parentSummaryContainer.appendChild(highlitedContainer);
+            highlitedContainer.appendChild(highlightedNode);
+            parentSummaryContainer.appendChild(summaryContainer);
+            let root = ReactDomClient.createRoot(summaryContainer);
+            root.render(summaryComponent);
+
+            // document.querySelector(
+            //   "#selectedNode__container .summarize__wrapper-container"
+            // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+            handleUpdateFileContent();
+            setSummaryArray([...summaryArray, res.data]);
+            setSummary(false);
+          }); // call handler for axios call
+        })
       } catch (error) {
         console.log(error);
       }
     }
   }
 
-  function closeSummary(e) {
+  function handleCloseSummary(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -469,6 +718,7 @@ export default function Converted() {
           let id = uuidv4();
           console.log('making highlight', id)
           const highlightedNode = document.createElement("span");
+          highlightedNode.classList, add("highlightnode");
           if (!colorObj) {
             highlightedNode.style.backgroundColor = highlightColor.colorHex;
           } else {
@@ -504,14 +754,14 @@ export default function Converted() {
     }
   }
 
-  function handleChangeHighlightColor(colorObj) {
+  // function handleChangeHighlightColor(colorObj) {
 
-    setHighlightColor(colorObj);
-    console.log(selectedText.toString())
-    handleHighlight(colorObj);
-    // console.log('colorObj update', colorObj)
-    // setHighlightColor(colorObj)
-  }
+  //   setHighlightColor(colorObj);
+  //   console.log(selectedText.toString())
+  //   handleHighlight(colorObj);
+  //   // console.log('colorObj update', colorObj)
+  //   // setHighlightColor(colorObj)
+  // }
 
 
   // USE EFFECTS
@@ -537,7 +787,27 @@ export default function Converted() {
         setKeywordArray(res.data);
       }
     );
+    mainHandler.handleGetSummariesByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setSummaryArray(res.data);
+      }
+    );
   }, []);
+
+  // useEffect(() => {
+  //   console.log("fileid", fileData);
+  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
+  //     setKeywordArray(res.data);
+  //   });
+  // },[])
+
+  // useEffect(() => {
+  //   const saveSelection = () => {
+  //     setSelectedText(window.getSelection());
+  //     file__content.removeEventListener("mouseup", saveSelection, false);
+  //   };
 
   useEffect(() => {
     updateTypeArray(settingData);
@@ -557,6 +827,46 @@ export default function Converted() {
     }, false);
   }), [];
 
+  const handleDownloadFile = () => {
+    // // write html file contents to .txt file
+    // const element = document.createElement("a");
+    // // convert file with html tags to plain text
+    // const fileContent = htmlToText(fileData.file_content);
+    // const file = new Blob([fileContent], {
+    //   type: "text/plain",
+    // });
+
+    // element.href = URL.createObjectURL(file);
+    // element.download = fileData.file_name;
+    // document.body.appendChild(element); // Required for this to work in FireFox
+    // element.click();
+
+    // Source HTMLElement or a string containing HTML.
+    // download pdf
+    let doc = new jsPDF();
+    var elementHTML = document.querySelector(".file__content").outerHTML;
+    console.log("PEEPEE", elementHTML)
+
+    doc.html(elementHTML, {
+      callback: function (doc) {
+        // Save the PDF
+        doc.save(`${newFileName}.pdf`);
+      },
+      margin: [10, 10, 10, 10],
+      x: 10,
+      y: 10,
+      autoPaging: "text",
+      width: 180,
+      windowWidth: 1080,
+    });
+    // autoPaging:"text",
+    //   x: 0,
+    //   y: 0,
+    //   width: 190, //target width in the PDF document
+    //   windowWidth: 675, //window width in CSS pixels
+    // });
+  };
+
   return (
     <Flexbox>
       <StickyCont>
@@ -572,6 +882,7 @@ export default function Converted() {
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
           handleUpdateFileContent={handleUpdateFileContent}
+          handleDownloadFile={handleDownloadFile}
         />
       </StickyCont>
       {/* <DocCont dir="row"> */}
@@ -645,7 +956,10 @@ export default function Converted() {
             <SideBar
               handleSidebar={handleSidebar}
               keywordArray={keywordArray}
+              summaryArray={summaryArray}
               closeDictionary={closeDictionary}
+              handleCloseSummary={handleCloseSummary}
+              handleLocateSummary={handleLocateSummary}
             />
           )}
         </SidebarCont>

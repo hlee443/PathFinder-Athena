@@ -52,7 +52,8 @@ export default function ToolBar({
   handleSummary = () => { },
   handleDictionary = () => { },
   handleChangeHighlightColor= () => {},
-  currentHighlightColor = {}
+  currentHighlightColor = {},
+  handleDownloadFile = () => { },
 }) {
   const router = useRouter();
   const [sel, setSel] = useState(0);
@@ -200,6 +201,7 @@ export default function ToolBar({
         onMouseLeave={handleLabel}>
         <Icon
           faIconName={toolBarData[toolbarNum + 6].icon}
+          handleClick={handleDownloadFile}
           text={isMobile ? null : toolBarData[toolbarNum + 6].name}
           hoverColor={colors.buttonLightGrey}
         />
