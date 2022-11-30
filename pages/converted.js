@@ -7,7 +7,12 @@ import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
-import { faEllipsis, faCheck, faSliders, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsis,
+  faCheck,
+  faSliders,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useInsertionEffect, useState } from "react";
 import MiniDropdown from "../components/MiniDropdown/MiniDropdown";
@@ -19,7 +24,7 @@ import LogoBar from "../components/LogoBar/LogoBar";
 import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
-import LoadingAnimation from "../public/lotties/loading_dots.json"
+import LoadingAnimation from "../public/lotties/loading_dots.json";
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -31,8 +36,8 @@ const Layout = styled(Flexbox)`
 
   @media ${mediaQuery.maxWidth.mobile} {
     padding: 2rem;
-  };
-`
+  } ;
+`;
 
 const Title = styled(Flexbox)`
   user-select: none;
@@ -48,15 +53,14 @@ const DocCont = styled(Flexbox)`
 `;
 
 const IconCont = styled(Flexbox)`
-  position: relative; 
-`
+  position: relative;
+`;
 
 const StickyCont = styled(Flexbox)`
   position: sticky;
   top: 0;
   z-index: 100;
-`
-
+`;
 
 const SidebarCont = styled.div`
   width: 40vw;
@@ -67,10 +71,10 @@ const SidebarCont = styled.div`
     position: fixed;
 
     width: 100%;
-    bottom:0;
+    bottom: 0;
     height: 30vh;
-  };
-`
+  } ;
+`;
 
 export default function Converted() {
   const [dictionary, setDictionary] = useState(false);
@@ -86,13 +90,13 @@ export default function Converted() {
 
   const handleSidebar = () => {
     if (isActive) {
-      setShowIcon(false)
-      setShowSidebar(true)
+      setShowIcon(false);
+      setShowSidebar(true);
     }
     if (!isActive) {
-      setIsActive(false)
+      setIsActive(false);
       setShowSidebar(false);
-      setShowIcon(true)
+      setShowIcon(true);
     }
   };
 
@@ -345,7 +349,7 @@ export default function Converted() {
     mainHandler.handleGetKeywordsByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
-        console.log(res)
+        console.log(res);
         setKeywordArray(res.data);
       }
     );
@@ -404,7 +408,9 @@ export default function Converted() {
   const closeDictionary = (id) => {
     mainHandler.handleDeleteKeyword(id, (res) => {
       setKeywordArray(res.data);
-      setKeywordArray(keywordArray.filter(keyword => keyword.keyword_id !== id))
+      setKeywordArray(
+        keywordArray.filter((keyword) => keyword.keyword_id !== id)
+      );
     });
   };
 
@@ -569,16 +575,19 @@ export default function Converted() {
             <Title dir="row">
               <Header text={newFileName} />
               <IconCont dir="row">
-                <Icon faIconName={faEllipsis} handleClick={handleMiniDropdown} />
-                {
-                  !isActive && showIcon && <Icon
+                <Icon
+                  faIconName={faEllipsis}
+                  handleClick={handleMiniDropdown}
+                />
+                {!isActive && showIcon && (
+                  <Icon
                     faIconName={faArrowRightFromBracket}
-                    handleClick={
-                      () => { setShowSidebar(true), setShowIcon(false) }
-                    } />
-                }
-                {
-                  dropdown &&
+                    handleClick={() => {
+                      setShowSidebar(true), setShowIcon(false);
+                    }}
+                  />
+                )}
+                {dropdown && (
                   <MiniDropdown
                     position="absolute"
                     arr={editFileDataArr}
@@ -590,9 +599,9 @@ export default function Converted() {
                       console.log("clicking delete");
                       handleDelete();
                     }}
-                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
-                }
+                )}
               </IconCont>
             </Title>
           )}
@@ -606,7 +615,8 @@ export default function Converted() {
               <Button
                 backgroundColor={colors.buttonPrimaryBlue}
                 text="Save"
-                handleClick={handleSaveFileName} />
+                handleClick={handleSaveFileName}
+              />
             </Title>
           )}
           <Container
@@ -624,17 +634,15 @@ export default function Converted() {
           </Container>
         </DocCont>
         <SidebarCont>
-          {
-            showSidebar &&
+          {showSidebar && (
             <SideBar
               handleSidebar={handleSidebar}
               keywordArray={keywordArray}
               closeDictionary={closeDictionary}
             />
-          }
+          )}
         </SidebarCont>
       </Layout>
-
 
       {/* </DocCont> */}
       {/* <DocCont>
@@ -653,7 +661,6 @@ export default function Converted() {
         </Wrapper>
         <SideBar></SideBar>
       </DocCont> */}
-
     </Flexbox>
   );
 }

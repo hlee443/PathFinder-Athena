@@ -229,7 +229,11 @@ export default function Home() {
               </>
             )}
             {active && (
-              <Container height="fit-content" gap="1rem">
+              <Container
+                height="fit-content"
+                gap="1rem"
+                padding={isMobile ? "1rem" : "2rem"}
+              >
                 <Option
                   src={iconSvgs.backgroundColor}
                   text="Background Colour"
@@ -237,6 +241,7 @@ export default function Home() {
                   onChange={handleBGColor}
                   value={uploadSetting.backgroundColour}
                   gap={isMobile ? "0.5rem" : "1.875rem"}
+                  padding="1rem 0"
                 />
                 <Option
                   src={iconSvgs.typeface}
@@ -247,6 +252,7 @@ export default function Home() {
                   onChange={handleTypeface}
                   value={uploadSetting.typeface}
                   gap={isMobile ? "0.5rem" : "1.875rem"}
+                  padding="1rem 0"
                 />
                 <Option
                   src={iconSvgs.fontSize}
@@ -258,7 +264,7 @@ export default function Home() {
                   value={uploadSetting.fontSize}
                   inputWidth={isMobile ? "3rem" : "4rem"}
                   gap={isMobile ? "0.5rem" : "1.875rem"}
-                  // fontSize="5pt"
+                  padding="1rem 0"
                 />
                 <Option
                   src={iconSvgs.lineSpacing}
@@ -270,6 +276,7 @@ export default function Home() {
                   value={uploadSetting.lineSpace}
                   inputWidth={isMobile ? "3rem" : "4rem"}
                   gap={isMobile ? "0.5rem" : "1.875rem"}
+                  padding="1rem 0"
                 />
                 <Option
                   src={iconSvgs.letterSpacing}
@@ -281,6 +288,7 @@ export default function Home() {
                   value={uploadSetting.letterSpace}
                   inputWidth={isMobile ? "3rem" : "4rem"}
                   gap={isMobile ? "0.5rem" : "1.875rem"}
+                  padding="1rem 0"
                 />
                 <BtnCont align="end">
                   <Button
