@@ -54,7 +54,6 @@ export default function SideBar({
   keywordArray = [],
   summaryArray = [],
   closeDictionary = () => { },
-  closeSummarySidebar = () => {},
   handleSidebar = () => { },
   handleCloseSummary = () => {},
   handleLocateSummary = () => {}
@@ -95,7 +94,7 @@ export default function SideBar({
               word={keyword.keyword_name}
               definition={keyword.keyword_definition}
               id={keyword.keyword_id}
-              onClose={closeDictionary} />
+              handleCloseDictionary={closeDictionary} />
           ))
         }
         </Category>

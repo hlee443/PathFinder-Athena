@@ -646,7 +646,7 @@ export default function Converted() {
     }
   }
 
-  function handleCloseSummary(e, summaryId) {
+  function handleCloseSummary(e, summaryId) { //
     e.preventDefault();
     e.stopPropagation();
 
@@ -661,12 +661,17 @@ export default function Converted() {
       )
     });
 
+    setSummaryArray(
+      summaryArray.filter((summary) => summary.summary_id !== summaryId)
+    );
+
     // BUG WITH STATE RIGHT HERE
     // NEED TO FIX ASAP
 
     // HIGHLIGHT IDS ARE ONE STATE BEHIND
     // FILTER DOESNT WORK BECAUSE OF THIS
 
+    
 
 
     console.log('about to filter', highlightIds)
@@ -742,6 +747,7 @@ export default function Converted() {
               selectedElement.remove();
             }
           }
+
           setHighlightIds(newHighlightIds);
 
 
@@ -827,6 +833,8 @@ export default function Converted() {
     }, false);
   }), [];
 
+console.log('CURRENT HIHGLIGH ARRAY', highlightIds)
+
   const handleDownloadFile = () => {
     // // write html file contents to .txt file
     // const element = document.createElement("a");
@@ -853,8 +861,8 @@ export default function Converted() {
         doc.save(`${newFileName}.pdf`);
       },
       margin: [10, 10, 10, 10],
-      x: 10,
-      y: 10,
+      x: 0,
+      y: 0,
       autoPaging: "text",
       width: 180,
       windowWidth: 1080,
