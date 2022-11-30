@@ -646,7 +646,7 @@ export default function Converted() {
     }
   }
 
-  function handleCloseSummary(e) {
+  function handleCloseSummary(e, summaryId) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -718,7 +718,7 @@ export default function Converted() {
           let id = uuidv4();
           console.log('making highlight', id)
           const highlightedNode = document.createElement("span");
-          highlightedNode.classList, add("highlightnode");
+          highlightedNode.classList.add("highlightnode");
           if (!colorObj) {
             highlightedNode.style.backgroundColor = highlightColor.colorHex;
           } else {
@@ -754,14 +754,14 @@ export default function Converted() {
     }
   }
 
-  // function handleChangeHighlightColor(colorObj) {
+  function handleChangeHighlightColor(colorObj) {
 
-  //   setHighlightColor(colorObj);
-  //   console.log(selectedText.toString())
-  //   handleHighlight(colorObj);
-  //   // console.log('colorObj update', colorObj)
-  //   // setHighlightColor(colorObj)
-  // }
+    setHighlightColor(colorObj);
+    console.log(selectedText.toString())
+    handleHighlight(colorObj);
+    // console.log('colorObj update', colorObj)
+    // setHighlightColor(colorObj)
+  }
 
 
   // USE EFFECTS
