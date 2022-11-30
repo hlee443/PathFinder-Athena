@@ -53,6 +53,11 @@ const InputCont = styled(Flexbox)`
   }
 `
 
+const IconImg = styled.img`
+width: 2.5rem;
+height: 100%;
+`
+
 export default function Option({
   bgColor = "transparent",
   text = "text",
