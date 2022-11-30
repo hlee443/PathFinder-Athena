@@ -6,7 +6,7 @@ const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border: ${(props) => props.border || `0.05rem solid ${colors.darkGray}`};
   width: ${(props) => props.width || "100%"};
-  height: ${(props) => props.height};
+  height: ${(props) => props.height || "100%"};
   padding: 1rem;
 
   @media ${mediaQuery.maxWidth.mobile} {
