@@ -50,6 +50,7 @@ export default function ToolBar({
   handleSaveSetting = () => { },
   handleSummary = () => { },
   handleDictionary = () => { },
+  handleDownloadFile = () => { },
   highlightedNode = ""
 }) {
   const router = useRouter();
@@ -231,6 +232,7 @@ export default function ToolBar({
         onMouseLeave={handleLabel}>
         <Icon
           faIconName={toolBarData[toolbarNum + 6].icon}
+          handleClick={handleDownloadFile}
           text={isMobile ? null : toolBarData[toolbarNum + 6].name}
           hoverColor={colors.buttonLightGrey}
         />

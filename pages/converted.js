@@ -25,6 +25,9 @@ import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
+import { jsPDF } from "jspdf";
+
+const { htmlToText } = require("html-to-text");
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -592,6 +595,46 @@ export default function Converted() {
     });
   });
 
+  const handleDownloadFile = () => {
+    // // write html file contents to .txt file
+    // const element = document.createElement("a");
+    // // convert file with html tags to plain text
+    // const fileContent = htmlToText(fileData.file_content);
+    // const file = new Blob([fileContent], {
+    //   type: "text/plain",
+    // });
+
+    // element.href = URL.createObjectURL(file);
+    // element.download = fileData.file_name;
+    // document.body.appendChild(element); // Required for this to work in FireFox
+    // element.click();
+
+    // Source HTMLElement or a string containing HTML.
+    // download pdf
+    let doc = new jsPDF();
+    var elementHTML = document.querySelector(".file__content").outerHTML;
+    console.log("PEEPEE", elementHTML)
+
+    doc.html(elementHTML, {
+      callback: function (doc) {
+        // Save the PDF
+        doc.save(`${newFileName}.pdf`);
+      },
+      margin: [10, 10, 10, 10],
+      x: 10,
+      y: 10,
+      autoPaging: "text",
+      width: 180,
+      windowWidth: 1080,
+    });
+      // autoPaging:"text",
+    //   x: 0,
+    //   y: 0,
+    //   width: 190, //target width in the PDF document
+    //   windowWidth: 675, //window width in CSS pixels
+    // });
+  };
+
   return (
     <Flexbox>
       <StickyCont>
@@ -606,6 +649,7 @@ export default function Converted() {
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
           handleUpdateFileContent={handleUpdateFileContent}
+          handleDownloadFile={handleDownloadFile}
         />
       </StickyCont>
       {/* <DocCont dir="row"> */}
