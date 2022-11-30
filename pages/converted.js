@@ -572,7 +572,8 @@ export default function Converted() {
     // Source HTMLElement or a string containing HTML.
     // download pdf
     let doc = new jsPDF();
-    var elementHTML = document.querySelector(".file__content").innerHTML;
+    var elementHTML = document.querySelector(".file__content").outerHTML;
+    console.log("PEEPEE", elementHTML)
 
     doc.html(elementHTML, {
       callback: function (doc) {
