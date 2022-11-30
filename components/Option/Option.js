@@ -37,7 +37,7 @@ const OptionText = styled(Flexbox)`
   justify-content: space-between;
   width: 100%;
 
-  @media ${mediaQuery.minWidth.mobile} {
+  @media ${mediaQuery.maxWidth.mobile} {
     flex-direction: column;
     align-items: start;
     gap: 0.5rem;
@@ -48,7 +48,7 @@ const InputCont = styled(Flexbox)`
   justify-content: space-between;
   gap: 1rem;
 
-  @media ${mediaQuery.maxWidth.mobile} {
+  @media ${mediaQuery.minWidth.mobile} {
     gap: 0.5rem;
   }
 `
