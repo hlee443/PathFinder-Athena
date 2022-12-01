@@ -27,6 +27,8 @@ import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
 import { v4 as uuidv4 } from 'uuid';
 import { jsPDF } from "jspdf";
+import { Component } from "react";
+
 
 const { htmlToText } = require("html-to-text");
 
@@ -307,6 +309,7 @@ export default function Converted() {
   function handleUpdateFileContent() {
     const newFileContent = document.querySelector(".file__content").innerHTML;
 
+
     const fileObject = {
       fileData: {
         fileId: fileData.file_id,
@@ -318,6 +321,7 @@ export default function Converted() {
 
     mainHandler.handleUpdateFile(fileObject, (res) => {
       console.log("updatedFileData", res.data);
+      console.log("updatedFile content", res.data.file_content)
       setFileData(res.data);
     });
   }
@@ -635,7 +639,9 @@ export default function Converted() {
               //   "#selectedNode__container .summarize__wrapper-container"
               // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
-              handleUpdateFileContent();
+              setTimeout(function () {
+                handleUpdateFileContent();
+              })
               setSummaryArray([...summaryArray, res.data]);
               setSummary(false);
             }); // call handler for axios call
@@ -647,13 +653,15 @@ export default function Converted() {
     }
   }
 
-  function handleCloseSummary(e, summaryId) { //
-    e.preventDefault();
-    e.stopPropagation();
+  function handleCloseSummary(summaryId) {
+    // e.preventDefault();
+    // e.stopPropagation();
 
-    let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-    let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
-    let highlightedNode = document.getElementById(`${selectedSummaryComponent.classList[1]}`);
+    // let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    // let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    // let fileContent = document.querySelector('.file__content')
+    let selectedSummaryComponent = document.getElementsByClassName(`parent-summary-container ${summaryId}`)[0]
+    let highlightedNode = document.querySelector(`[id='${selectedSummaryComponent.classList[1]}']`);
     let nodeArray = Array.from(highlightedNode.childNodes);
     nodeArray.forEach(node => {
       selectedSummaryComponent.parentNode.insertBefore(
@@ -662,9 +670,12 @@ export default function Converted() {
       )
     });
 
+    // selectedSummaryComponent.classList.add("summary--close"); // animation 
+
     setSummaryArray(
       summaryArray.filter((summary) => summary.summary_id !== summaryId)
     );
+
 
     // BUG WITH STATE RIGHT HERE
     // NEED TO FIX ASAP
@@ -674,17 +685,12 @@ export default function Converted() {
 
     const newHighlightIds = (highlightIds) => [...highlightIds].filter((id) => id !== highlightedNode.id);
     setHighlightIds(newHighlightIds);
-   
 
-    // let newHighlightIds = (() => [...highlightIds].filter(id => id !== highlightedNode.id));
-
-
-    // console.log('about to filter', highlightIds)
-    // let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
-    // console.log('newhighlights', newHighlightIds)
-    // setHighlightIds(newHighlightIds);
+    // setTimeout(() => { // let animation play first before removing everything
     selectedSummaryComponent.remove();
     highlightedNode.remove();
+    // }, 600)
+
   };
 
   const handleHighlight = (colorObj, type, cb) => {
@@ -927,7 +933,6 @@ export default function Converted() {
           handleChangeHighlightColor={handleChangeHighlightColor}
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
-          handleUpdateFileContent={handleUpdateFileContent}
           handleDownloadFile={handleDownloadFile}
         />
       </StickyCont>
