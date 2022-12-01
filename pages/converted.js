@@ -7,6 +7,7 @@ import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
+import Bubble from "../components/Bubble/Bubble";
 import {
   faEllipsis,
   faCheck,
@@ -47,6 +48,7 @@ const Title = styled(Flexbox)`
   user-select: none;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
 `;
 
 const DocCont = styled(Flexbox)`
@@ -98,7 +100,7 @@ export default function Converted() {
   const [libraryArray, setLibraryArray] = useState([]);
   const [typeArray, setTypeArray] = useState([]);
   const [folderArray, setFolderArray] = useState([]);
-  const [dropdown, showDropdown] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
   // const [folderName, setFolderName] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState("");
@@ -108,6 +110,7 @@ export default function Converted() {
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
+  const [showBubble, setShowBubble] = useState();
 
   function handleSidebar() {
     if (isActive) {
@@ -178,7 +181,7 @@ export default function Converted() {
   }
 
   function handleMiniDropdown() {
-    dropdown === false ? showDropdown(true) : showDropdown(false);
+    dropdown === false ? setDropdown(true) : setDropdown(false);
   }
 
   function handleSaveSetting() {
@@ -292,7 +295,7 @@ export default function Converted() {
     console.log(typeof newFileName);
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
-    showDropdown(false);
+    setDropdown(false);
   }
 
   function handleDelete() {
@@ -906,6 +909,7 @@ export default function Converted() {
                 )}
                 {dropdown && (
                   <MiniDropdown
+                    handleMouseLeave={() => setDropdown(false)}
                     position="absolute"
                     arr={editFileDataArr}
                     onEdit={() => {
@@ -928,14 +932,20 @@ export default function Converted() {
                 type="text"
                 value={newFileName}
                 onChange={(e) => getFilenameValue(e)}
+                borderRadius="1rem"
               />
               <Button
+                width="fit-content"
+                borderRadius="1rem"
                 backgroundColor={colors.buttonPrimaryBlue}
                 text="Save"
-                handleClick={handleSaveFileName}
+                handleClick={() => { handleSaveFileName, setShowBubble(true) }}
               />
             </Title>
           )}
+          {
+            showBubble && <Bubble type="rename"/>
+          }
           <Container
             className="file__content"
             width="100%"
