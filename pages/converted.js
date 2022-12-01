@@ -27,6 +27,8 @@ import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
 import { v4 as uuidv4 } from 'uuid';
 import { jsPDF } from "jspdf";
+import { Component } from "react";
+
 
 const { htmlToText } = require("html-to-text");
 
@@ -108,6 +110,7 @@ export default function Converted() {
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
+  const [fileContent, setFileContent] = useState('')
 
   function handleSidebar() {
     if (isActive) {
@@ -307,7 +310,6 @@ export default function Converted() {
   function handleUpdateFileContent() {
     const newFileContent = document.querySelector(".file__content").innerHTML;
 
-    console.log("new file content", newFileContent)
 
     const fileObject = {
       fileData: {
@@ -634,27 +636,35 @@ export default function Converted() {
             let root = ReactDomClient.createRoot(summaryContainer);
             root.render(summaryComponent);
 
+            
             // document.querySelector(
             //   "#selectedNode__container .summarize__wrapper-container"
             // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
-            handleUpdateFileContent();
-            setSummaryArray([...summaryArray, res.data]);
-            setSummary(false);
+            setTimeout(function () {
+              handleUpdateFileContent();
+            })
+
+              setSummaryArray([...summaryArray, res.data]);
+              setSummary(false);
+            
           }); // call handler for axios call
         })
+        
       } catch (error) {
         console.log(error);
       }
     }
   }
 
-  function handleCloseSummary(e, summaryId) {
-    e.preventDefault();
-    e.stopPropagation();
+  function handleCloseSummary(summaryId) {
+    // e.preventDefault();
+    // e.stopPropagation();
 
-    let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-    let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    // let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    // let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    let selectedSummaryComponent = document.getElementsByClassName(`parent-summary-container ${summaryId}`)[0]
+    console.log("selectedSummarycomponent", selectedSummaryComponent)
     let highlightedNode = document.getElementById(`${selectedSummaryComponent.classList[1]}`);
     let nodeArray = Array.from(highlightedNode.childNodes);
     nodeArray.forEach(node => {
@@ -663,6 +673,11 @@ export default function Converted() {
         selectedSummaryComponent
       )
     });
+
+    setSummaryArray(
+        summaryArray.filter((summary) => summary.summary_id !== summaryId)
+    );
+
 
     // BUG WITH STATE RIGHT HERE
     // NEED TO FIX ASAP
@@ -797,6 +812,7 @@ export default function Converted() {
         setSummaryArray(res.data);
       }
     );
+    setFileContent(JSON.parse(router.query.fileData).file_content)
   }, []);
 
   // useEffect(() => {

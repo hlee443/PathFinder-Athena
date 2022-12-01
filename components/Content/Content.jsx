@@ -26,7 +26,6 @@ export default function Content({
         } else {
             fileBody.innerText = fileContent
         }
-      
 
     }, [fileContent])
 
