@@ -31,7 +31,7 @@ const SummarizeCont = styled(Flexbox)`
   border-radius: 0.625rem;
   border: 0.1rem solid ${colors.darkGrey};
   background-color: ${colors.backgroundYellow};
-  animation: ${slideDown} .3s ease-in-out 1;
+
   user-select: none;
   gap: 1rem;
 `
