@@ -27,9 +27,7 @@ import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
 import { v4 as uuidv4 } from "uuid";
 import { jsPDF } from "jspdf";
-import { Component } from "react";
-
-const { htmlToText } = require("html-to-text");
+import html2canvas from "html2canvas";
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -925,28 +923,76 @@ export default function Converted() {
 
     // Source HTMLElement or a string containing HTML.
     // download pdf
-    let doc = new jsPDF();
-    var elementHTML = document.querySelector(".file__content").outerHTML;
-    console.log("PEEPEE", elementHTML);
 
-    doc.html(elementHTML, {
-      callback: function (doc) {
-        // Save the PDF
-        doc.save(`${newFileName}.pdf`);
-      },
-      margin: [10, 10, 10, 10],
-      x: 0,
-      y: 0,
-      autoPaging: "text",
-      width: 180,
-      windowWidth: 1080,
-    });
-    // autoPaging:"text",
-    //   x: 0,
-    //   y: 0,
-    //   width: 190, //target width in the PDF document
-    //   windowWidth: 675, //window width in CSS pixels
+    var elementHTML = document.querySelector(".file__content");
+    console.log("PEEPEE", elementHTML.clientHeight);
+
+    // const doc = new jsPDF({
+    //   orientation: "p",
+    //   unit: "px",
+    //   format: "a4",
+    //   hotfixes: ["px_scaling"],
     // });
+
+    // html2canvas(elementHTML, {
+    //   width: doc.internal.pageSize.getWidth(),
+    //   height: doc.internal.pageSize.getHeight(),
+    //   autoPaging: "text",
+    // }).then((canvas) => {
+    //   const img = canvas.toDataURL("image/png");
+
+    //   doc.addImage(
+    //     img,
+    //     "PNG",
+    //     140,
+    //     10,
+    //     doc.internal.pageSize.getWidth(),
+    //     doc.internal.pageSize.getHeight()
+    //   );
+    //   doc.save("statement.pdf");
+    // });
+
+    //   doc.html(elementHTML, {
+    //     callback: function (doc) {
+    //       // Save the PDF
+    //       doc.save(`${newFileName}.pdf`);
+    //     },
+    //     margin: [10, 10, 10, 10],
+    //     x: 0,
+    //     y: 0,
+    //     autoPaging: "text",
+    //     width: 180,
+    //     windowWidth: 1080,
+    //   });
+
+
+    let HTML_Width = elementHTML.clientWidth;
+		let HTML_Height = elementHTML.clientHeight;
+		let top_left_margin = 15;
+		let PDF_Width = HTML_Width+(top_left_margin*2);
+		let PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+		let canvas_image_width = HTML_Width;
+		let canvas_image_height = HTML_Height;
+		let totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+      
+		html2canvas((elementHTML),{allowTaint:true, autoPaging:"text",}).then(function(canvas) {
+			canvas.getContext('2d');
+			
+			console.log(canvas.height+"  "+canvas.width);
+			
+			
+			let imgData = canvas.toDataURL("image/jpeg", 1.0);
+			let pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+		    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+			
+			
+			for (let i = 1; i <= totalPDFPages; i++) { 
+				pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
+				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+			}
+			
+		    pdf.save(`${newFileName}.pdf`);
+        });
   };
 
   return (
@@ -1025,7 +1071,7 @@ export default function Converted() {
           <Container
             className="file__content"
             width="100%"
-            height="100vh"
+            height="100%"
             scroll="scroll"
             display="inline"
             backgroundColor={settingData.background_colour}
