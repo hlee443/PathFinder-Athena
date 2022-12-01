@@ -625,6 +625,7 @@ export default function Converted() {
               const parentSummaryContainer = document.createElement("div");
               parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
               const summaryContainer = document.createElement("div");
+              summaryContainer.classList.add('summarize__container-wrapper')
               highlightedNode.parentNode.insertBefore(
                 parentSummaryContainer,
                 highlightedNode
