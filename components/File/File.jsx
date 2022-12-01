@@ -11,6 +11,7 @@ import { mediaQuery } from "../../MediaQuery/data";
 import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../MiniDropdown/data";
 import { motion } from "framer-motion";
+import * as htmlToImage from 'html-to-image';
 
 const FileCont = styled(Flexbox)`
   align-items: start;
@@ -44,6 +45,7 @@ const Preview = styled(motion.div)`
   cursor: pointer;
   width: 100%;
   min-height: 10rem;
+  overflow: hiddem;
 
   :hover {
     background-color: ${colors.opacity};
@@ -84,6 +86,7 @@ export default function File({
   const [isHover, setIsHover] = useState(false);
   const [showMiniDropdown, setShowMiniDropdown] = useState(false);
   const [editAnimation, setEditAnimation] = useState(false);
+  const [fileImgUrl, setFileImgUrl] = useState('')
 
   const editFilename = () => {
     setShowMiniDropdown(false);
@@ -122,6 +125,39 @@ export default function File({
     console.log(e.target.value);
   };
 
+  const generateFileImagePreview = () => {
+   
+    // const base64 = btoa(unescape(encodeURIComponent(fileContentHtml)))
+    // const fileContentHTML = fileContent.innerHTML
+
+    
+
+    // const previewContainer =  document.querySelector('.preview__container')
+    // previewContainer.innerHTML = fileContent
+
+    // previewContainer.appendChild(img)
+    
+    // htmlToImage.toPng(previewContainer.innerHTML)
+    // .then(function (dataUrl) {
+    //     var img = new Image();
+    //     img.src = dataUrl;
+    //     previewContainer.appendChild(img);
+    // })
+    // .catch(function (error) {
+    //     console.error('oops, something went wrong!', error);
+    // });
+  }
+
+  useEffect(() => {
+    if(fileId){
+      const fileContentBlob = new Blob([fileContent], { type: 'text/plain' })
+      const fileTextUrl = URL.createObjectURL(fileContentBlob)
+
+      setFileImgUrl(fileTextUrl)
+      
+    }
+  },[])
+
   const moveFolder = () => {};
 
   return (
@@ -136,7 +172,7 @@ export default function File({
         onClick={() => handleClick(fileId)}
       >
         {fileId ? (
-          <p> file #{fileId} preview</p>
+          <img src={fileImgUrl}/>
         ) : (
           <Icon
             faIconName={faPlus}
