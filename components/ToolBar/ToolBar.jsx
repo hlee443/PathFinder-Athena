@@ -23,10 +23,14 @@ const ToolBarCont = styled(Flexbox)`
   justify-content: start;
   padding: 0.5rem 1rem;
   gap: 1.5rem;
+  -ms-overflow-style: none
+  scrollbar-width: none;
   overflow-x: scroll;
+
 
   @media ${mediaQuery.maxWidth.tablet} {
     gap: 1rem;
+    // overflow-x: scroll;
   }
 `;
 
