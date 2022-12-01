@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import { Flexbox, BodyText, colors } from "../../styles/globals";
+import { Flexbox } from "../../styles/globals";
 import Input from "../Input/Input";
-import { useState } from "react";
 import { mediaQuery } from "../../MediaQuery/data";
 
 const OptionCont = styled(Flexbox)`
@@ -13,6 +12,7 @@ const OptionCont = styled(Flexbox)`
   font-size: 1.125rem;
   gap: 1rem;
   min-width: 100%;
+  align-items: center;
 
   :hover {
     font-weight: bold;
@@ -20,27 +20,32 @@ const OptionCont = styled(Flexbox)`
   }
 
   @media ${mediaQuery.maxWidth.mobile} {
-    align-items: start;
+    align-items: center;
     font-size: 1rem;
   }
 `;
 
 const Img = styled.img`
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   aspect-ratio: 1;
   background-color: ${(props) => props.imgColor};
   border-radius: 50rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: 2rem;
+    height: 2rem;
+  }
 `
 
 const OptionText = styled(Flexbox)`
-  justify-content: space-between;
   width: 100%;
+  justify-content: space-between;
 
   @media ${mediaQuery.maxWidth.mobile} {
-    flex-direction: column;
     align-items: start;
     gap: 0.5rem;
+    flex-direction: column;
   }
 `
 
@@ -51,11 +56,6 @@ const InputCont = styled(Flexbox)`
   @media ${mediaQuery.minWidth.mobile} {
     gap: 0.5rem;
   }
-`
-
-const IconImg = styled.img`
-width: 2.5rem;
-height: 100%;
 `
 
 export default function Option({
@@ -86,7 +86,8 @@ export default function Option({
       {faIconName !== null && <Icon faIconName={faIconName} />}
       {src !== null && <Img
         imgColor={imgColor}
-        src={src} />}
+        src={src} />
+      }
       <OptionText dir="row">
         <p>{text}</p>
         <InputCont dir="row">
@@ -103,9 +104,9 @@ export default function Option({
           {unit !== null && <p>{unit}</p>}
         </InputCont>
         {faIconNameRight !== null && (
-          <Icon size="1x" faIconName={faIconNameRight} handleClick={onClose} />
+          <Icon faIconName={faIconNameRight} handleClick={onClose} />
         )}
       </OptionText>
     </OptionCont>
   );
-}
+};
