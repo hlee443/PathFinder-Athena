@@ -1,29 +1,24 @@
 import styled from "styled-components";
 import { colors, textData } from "../../styles/globals";
-import { mediaQuery } from "../../MediaQuery/data";
 
 const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border: ${(props) => props.border || `0.05rem solid ${colors.darkGray}`};
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "100%"};
-  padding: 1rem;
-
-  @media ${mediaQuery.maxWidth.mobile} {
-    padding: 0.5rem;
-  }
+  padding: ${(props) => props.padding};
+  letter-spacing: ${textData.letterSpacing};
+  background-color: ${colors.backgroundWhite}
 `;
 
 const OptionCont = styled.select`
   border-radius: 2rem;
   border: 0.05rem solid ${colors.darkGray};
-  width: ${(props) => props.width ||"100%" };
+  width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "fit-content"};
-  padding: 1rem;
-
-  @media ${mediaQuery.maxWidth.mobile} {
-    padding: 0.5rem;
-  }
+  padding: ${(props) => props.padding};
+  letter-spacing: ${textData.letterSpacing};
+  outline: 1px solid ${colors.darkGrey};
 `;
 
 export default function Input({
@@ -34,7 +29,8 @@ export default function Input({
   borderRadius = "3.125rem",
   placeholder = "placeholder",
   border = "",
-  onChange = () => { }
+  onChange = () => { },
+  padding = "1rem"
 }) {
   if (type === "dropdown") {
     return (
@@ -42,6 +38,7 @@ export default function Input({
         type="option"
         width={width}
         value={value}
+        padding={padding}
         onChange={onChange}>
         <option
           value="Open Sans" >
@@ -64,6 +61,7 @@ export default function Input({
         defaultValue={value}
         border={border}
         height={height}
+        padding={padding}
       />
     );
   }
