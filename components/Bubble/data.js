@@ -1,6 +1,5 @@
 export const bubbleData = {
   login: {
-    type: "login",
     header: "Log in",
     subHeader1: "Don't have an account?",
     subHeader2: "Please",
@@ -8,7 +7,6 @@ export const bubbleData = {
     btnTextRight: "Log In",
   },
   signup: {
-    type: "signup",
     header: "Sign up",
     subHeader1: "I have read and agreed to",
     subHeader2: "Already a member?",
@@ -16,10 +14,12 @@ export const bubbleData = {
     btnTextRight: "Sign Up",
   },
   success: {
-    type: "success",
     header: "You have successfully signed in!",
     subHeader1: "Happy studying!",
     btnTextLeft: "Back to Main",
     btnTextRight: "Go to the Library",
+  },
+  rename: {
+    header: "File name has been changed",
   },
 };
