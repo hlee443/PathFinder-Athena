@@ -11,7 +11,8 @@ import { mediaQuery } from "../../MediaQuery/data";
 import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../MiniDropdown/data";
 import { motion } from "framer-motion";
-import * as htmlToImage from 'html-to-image';
+// import * as htmlToImage from 'html-to-image';
+// import html2canvas from "html2canvas";
 
 const FileCont = styled(Flexbox)`
   align-items: start;
@@ -32,6 +33,7 @@ const Title = styled(motion.p)`
 `;
 
 const Preview = styled(motion.div)`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +47,7 @@ const Preview = styled(motion.div)`
   cursor: pointer;
   width: 100%;
   min-height: 10rem;
-  overflow: hiddem;
+
 
   :hover {
     background-color: ${colors.opacity};
@@ -68,6 +70,14 @@ const BottomCont = styled(Flexbox)`
   align-items: center;
   padding-top: 0.5rem;
 `;
+
+const Embed = styled.object`
+  overflow-y: hidden;
+  object-position: fill;
+  width: 100%;
+  min-height: 100%;
+  font-size: 2px;
+`
 
 export default function File({
   fileName = "Title",
@@ -125,36 +135,22 @@ export default function File({
     console.log(e.target.value);
   };
 
-  const generateFileImagePreview = () => {
-   
-    // const base64 = btoa(unescape(encodeURIComponent(fileContentHtml)))
-    // const fileContentHTML = fileContent.innerHTML
-
-    
-
-    // const previewContainer =  document.querySelector('.preview__container')
-    // previewContainer.innerHTML = fileContent
-
-    // previewContainer.appendChild(img)
-    
-    // htmlToImage.toPng(previewContainer.innerHTML)
-    // .then(function (dataUrl) {
-    //     var img = new Image();
-    //     img.src = dataUrl;
-    //     previewContainer.appendChild(img);
-    // })
-    // .catch(function (error) {
-    //     console.error('oops, something went wrong!', error);
-    // });
-  }
-
   useEffect(() => {
     if(fileId){
-      const fileContentBlob = new Blob([fileContent], { type: 'text/plain' })
+      // const fileContentHtml = fileContent.innerHTML
+
+      const previewContainer = document.querySelector('.filePreview__container')
+      // const embed = document.querySelector('.embedded')
+
+      
+      const fileContentBlob = new Blob([fileContent.substring(0, 130) + '...'], { type: 'text/html' })
+      
       const fileTextUrl = URL.createObjectURL(fileContentBlob)
 
+      // embed.contentDocument.body.style.overflow = 'hidden'
+
       setFileImgUrl(fileTextUrl)
-      
+
     }
   },[])
 
@@ -170,10 +166,15 @@ export default function File({
         onMouseEnter={setIsHover}
         onMouseLeave={() => setIsHover(false)}
         onClick={() => handleClick(fileId)}
+        className="filePreview__container"
       >
-        {fileId ? (
-          <img src={fileImgUrl}/>
-        ) : (
+        {fileId && (
+          <>
+            
+            <Embed className="embedded" data={fileImgUrl} type="text/html"/>
+          </>
+        )}
+        {fileId === false && (
           <Icon
             faIconName={faPlus}
             size="2x"
