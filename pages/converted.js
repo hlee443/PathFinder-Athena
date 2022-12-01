@@ -307,6 +307,8 @@ export default function Converted() {
   function handleUpdateFileContent() {
     const newFileContent = document.querySelector(".file__content").innerHTML;
 
+    console.log("new file content", newFileContent)
+
     const fileObject = {
       fileData: {
         fileId: fileData.file_id,
@@ -318,6 +320,7 @@ export default function Converted() {
 
     mainHandler.handleUpdateFile(fileObject, (res) => {
       console.log("updatedFileData", res.data);
+      console.log("updatedFile content", res.data.file_content)
       setFileData(res.data);
     });
   }
@@ -881,7 +884,6 @@ export default function Converted() {
           handleChangeHighlightColor={handleChangeHighlightColor}
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
-          handleUpdateFileContent={handleUpdateFileContent}
           handleDownloadFile={handleDownloadFile}
         />
       </StickyCont>
