@@ -23,6 +23,13 @@ const SideBarCont = styled(Container)`
   min-width: fit-content;
   user-select: none;
   flex-basis: 30vw;
+  @media ${mediaQuery.maxWidth.tablet} {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 30vh;
+    overflow-y: scroll;
+  } ;
 `;
 
 const Category = styled(Flexbox)`
