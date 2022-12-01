@@ -12,6 +12,8 @@ const IconCont = styled(Flexbox)`
   // height: 100%;
   width: fit-content;
   justify-content: space-between;
+  border-radius: 1rem;
+  padding: 0.5rem;
 
   :hover {
     background-color: ${(props) => props.hoverColor};
