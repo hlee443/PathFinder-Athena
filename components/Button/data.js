@@ -12,13 +12,34 @@ export const btnData = {
       width: "15rem",
       height: "3.875rem",
     },
-    large: {
-      fontSize: "1.25rem",
-      width: "23.75rem",
-      height: "4.375rem",
-    },
+    // large: {
+    //   fontSize: "1.25rem",
+    //   width: "23.75rem",
+    //   height: "4.375rem",
+    // },
   },
-  state: {
+  // state: {
+  //   active: {
+  //     backgroundColor: colors.buttonPrimaryBlue,
+  //   },
+  //   inactive: {
+  //     backgroundColor: colors.buttonGray,
+  //     textColor: colors.buttonTextGrey,
+  //   },
+  //   hover: {
+  //     backgroundColor: colors.buttonSecondaryBlue,
+  //     fontWeight: "bolder",
+  //   },
+  // },
+  variants: {
+    primary: {
+      backgroundColor: colors.buttonPrimaryBlue,
+      boxShadow: "0px 2px 10px rgba(159, 159, 159, 0.2), inset -2px -2px 8px rgba(150, 173, 252, 0.6), inset 2px 2px 8px rgba(255, 255, 255, 0.2)"
+    },
+    secondary: {
+      backgroundColor: colors.buttonSecondaryBlue,
+      boxShadow: "inset -2px -2px 8px #7997FF, inset 2px 2px 8px rgba(239, 242, 255, 0.2);"
+    },
     active: {
       backgroundColor: colors.buttonPrimaryBlue,
     },
@@ -27,8 +48,8 @@ export const btnData = {
       textColor: colors.buttonTextGrey,
     },
     hover: {
-      backgroundColor: colors.buttonLightBlue,
+      backgroundColor: colors.buttonSecondaryBlue,
       fontWeight: "bolder",
     },
-  },
+  }
 };

@@ -63,7 +63,7 @@ const BottomCont = styled(Flexbox)`
   width: 100%;
   min-width: 100%;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding-top: 0.5rem;
 `;
 

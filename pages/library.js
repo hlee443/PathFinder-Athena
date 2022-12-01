@@ -54,7 +54,7 @@ export default function Library() {
         folderData.map((folder) => {
           folder.icon = faFolder;
         });
-        folderData.push({ text: "Create New", icon: faFolderPlus });
+        // folderData.push({ text: "Create New", icon: faFolderPlus });
         setFolders(folderData);
         cb(folderData[0]);
       });
