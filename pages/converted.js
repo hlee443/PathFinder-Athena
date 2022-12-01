@@ -11,7 +11,7 @@ import {
   faEllipsis,
   faCheck,
   faSliders,
-  faArrowRightFromBracket,
+  faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useInsertionEffect, useState, useCallback } from "react";
@@ -59,6 +59,8 @@ const DocCont = styled(Flexbox)`
 
 const IconCont = styled(Flexbox)`
   position: relative;
+  justify-content: space-between;
+  width: 8%;
 `;
 
 const StickyCont = styled(Flexbox)`
@@ -972,12 +974,14 @@ export default function Converted() {
               <Header text={newFileName} />
               <IconCont dir="row">
                 <Icon
+                  size="2x"
                   faIconName={faEllipsis}
                   handleClick={handleMiniDropdown}
                 />
                 {!isActive && showIcon && (
                   <Icon
-                    faIconName={faArrowRightFromBracket}
+                    size="2x"
+                    faIconName={faAnglesRight}
                     handleClick={() => {
                       setShowSidebar(true), setShowIcon(false);
                     }}
@@ -985,6 +989,9 @@ export default function Converted() {
                 )}
                 {dropdown && (
                   <MiniDropdown
+                    onClose={() => {
+                      showDropdown(false);
+                    }}
                     position="absolute"
                     arr={editFileDataArr}
                     onEdit={() => {

@@ -13,6 +13,7 @@ const OptionCont = styled(Flexbox)`
   gap: 1rem;
   min-width: 100%;
   align-items: center;
+  padding: 1rem;
 
   :hover {
     font-weight: bold;
@@ -36,7 +37,7 @@ const Img = styled.img`
     width: 2rem;
     height: 2rem;
   }
-`
+`;
 
 const OptionText = styled(Flexbox)`
   width: 100%;
@@ -47,7 +48,7 @@ const OptionText = styled(Flexbox)`
     gap: 0.5rem;
     flex-direction: column;
   }
-`
+`;
 
 const InputCont = styled(Flexbox)`
   justify-content: space-between;
@@ -56,7 +57,7 @@ const InputCont = styled(Flexbox)`
   @media ${mediaQuery.minWidth.mobile} {
     gap: 0.5rem;
   }
-`
+`;
 
 export default function Option({
   bgColor = "transparent",
@@ -66,15 +67,15 @@ export default function Option({
   inputType = null,
   placeholder = "placeholder",
   faIconNameRight = null,
-  handleOption = () => { },
-  onClose = () => { },
-  onChange = () => { },
+  handleOption = () => {},
+  onClose = () => {},
+  onChange = () => {},
   value = "",
   src = null,
   inputWidth = "100%",
   hoverColor = "",
   height = "",
-  imgColor = "transparent"
+  imgColor = "transparent",
 }) {
   return (
     <OptionCont
@@ -84,10 +85,7 @@ export default function Option({
       bgColor={bgColor}
     >
       {faIconName !== null && <Icon faIconName={faIconName} />}
-      {src !== null && <Img
-        imgColor={imgColor}
-        src={src} />
-      }
+      {src !== null && <Img imgColor={imgColor} src={src} />}
       <OptionText dir="row">
         <p>{text}</p>
         <InputCont dir="row">
@@ -109,4 +107,4 @@ export default function Option({
       </OptionText>
     </OptionCont>
   );
-};
+}
