@@ -126,7 +126,7 @@ export default function NavBar() {
                     setLabel(false), setSel(i);
                   }}
                   handleClick={() => {
-                    r.push("/about");
+                    r.push(o.page);
                   }}
                 />
                 {sel === i && label && (
