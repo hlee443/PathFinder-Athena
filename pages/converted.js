@@ -29,9 +29,6 @@ import LoadingAnimation from "../public/lotties/loading_dots.json";
 import { v4 as uuidv4 } from "uuid";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
-import { Component } from "react";
-
-const { htmlToText } = require("html-to-text");
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -930,27 +927,33 @@ export default function Converted() {
 
     // Source HTMLElement or a string containing HTML.
     // download pdf
-    let doc = new jsPDF();
-    var elementHTML = document.querySelector(".file__content").outerHTML;
-    console.log("PEEPEE", elementHTML);
 
-    doc.html(elementHTML, {
-      callback: function (doc) {
-        // Save the PDF
-        doc.save(`${newFileName}.pdf`);
-      },
-      margin: [10, 10, 10, 10],
-      x: 0,
-      y: 0,
-      autoPaging: "text",
-      width: 180,
-      windowWidth: 1080,
-    });
-    // autoPaging:"text",
-    //   x: 0,
-    //   y: 0,
-    //   width: 190, //target width in the PDF document
-    //   windowWidth: 675, //window width in CSS pixels
+    var elementHTML = document.querySelector(".file__content");
+    console.log("PEEPEE", elementHTML.clientHeight);
+
+    // const doc = new jsPDF({
+    //   orientation: "p",
+    //   unit: "px",
+    //   format: "a4",
+    //   hotfixes: ["px_scaling"],
+    // });
+
+    // html2canvas(elementHTML, {
+    //   width: doc.internal.pageSize.getWidth(),
+    //   height: doc.internal.pageSize.getHeight(),
+    //   autoPaging: "text",
+    // }).then((canvas) => {
+    //   const img = canvas.toDataURL("image/png");
+
+    //   doc.addImage(
+    //     img,
+    //     "PNG",
+    //     140,
+    //     10,
+    //     doc.internal.pageSize.getWidth(),
+    //     doc.internal.pageSize.getHeight()
+    //   );
+    //   doc.save("statement.pdf");
     // });
 
     //   doc.html(elementHTML, {
