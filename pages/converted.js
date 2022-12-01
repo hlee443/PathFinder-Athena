@@ -583,63 +583,64 @@ export default function Converted() {
     // summary content received from api
     if (!summary) {
       try {
-        let highlightedNode = handleHighlight(null, "alternate");
-        if (!highlightedNode) {
-          setSummary(false);
-          return;
-        }
-        setSummary(true);
-        mainHandler.handleSummarize(selectedText.toString(), (sumRes) => {
-          let summaryData = {
-            summaryData: {
-              fileId: fileData.file_id,
-              summaryContent: selectedText.toString(),
-              summaryResult: `${sumRes.data.summary}`,
-            },
-          };
-          mainHandler.handleAddSummary(summaryData, (res) => {
-            console.log("summary added", res.data);
-
-            const summaryComponent = (
-              <Summary
-                summarizedContent={res.data.summary_result}
-                handleCloseSummary={handleCloseSummary}
-                summaryId={res.data.summary_id}
-              />
-            );
-            // const summaryComponent = (
-            //   <Summary
-            //     summarizedContent={res.data.summary}
-            //     onClose={(e) => closeSummary(e)}
-            //   />
-            // );
-            //             summaryWrapperContainer.classList.add(
-            //               "summarize__wrapper-container",
-            //               `${res.data.summary_id}`
-            //             );
-            let highlitedContainer = document.createElement("div");
-            const parentSummaryContainer = document.createElement("div");
-            parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
-            const summaryContainer = document.createElement("div");
-            highlightedNode.parentNode.insertBefore(
-              parentSummaryContainer,
-              highlightedNode
-            );
-            parentSummaryContainer.appendChild(highlitedContainer);
-            highlitedContainer.appendChild(highlightedNode);
-            parentSummaryContainer.appendChild(summaryContainer);
-            let root = ReactDomClient.createRoot(summaryContainer);
-            root.render(summaryComponent);
-
-            // document.querySelector(
-            //   "#selectedNode__container .summarize__wrapper-container"
-            // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
-
-            handleUpdateFileContent();
-            setSummaryArray([...summaryArray, res.data]);
+        handleHighlight(null, "alternate", (highlightedNode) => {
+          if (!highlightedNode) {
             setSummary(false);
-          }); // call handler for axios call
-        })
+            return;
+          }
+          setSummary(true);
+          mainHandler.handleSummarize(selectedText.toString(), (sumRes) => {
+            let summaryData = {
+              summaryData: {
+                fileId: fileData.file_id,
+                summaryContent: selectedText.toString(),
+                summaryResult: `${sumRes.data.summary}`,
+              },
+            };
+            mainHandler.handleAddSummary(summaryData, (res) => {
+              console.log("summary added", res.data);
+
+              const summaryComponent = (
+                <Summary
+                  summarizedContent={res.data.summary_result}
+                  handleCloseSummary={handleCloseSummary}
+                  summaryId={res.data.summary_id}
+                />
+              );
+              // const summaryComponent = (
+              //   <Summary
+              //     summarizedContent={res.data.summary}
+              //     onClose={(e) => closeSummary(e)}
+              //   />
+              // );
+              //             summaryWrapperContainer.classList.add(
+              //               "summarize__wrapper-container",
+              //               `${res.data.summary_id}`
+              //             );
+              let highlitedContainer = document.createElement("div");
+              const parentSummaryContainer = document.createElement("div");
+              parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
+              const summaryContainer = document.createElement("div");
+              highlightedNode.parentNode.insertBefore(
+                parentSummaryContainer,
+                highlightedNode
+              );
+              parentSummaryContainer.appendChild(highlitedContainer);
+              highlitedContainer.appendChild(highlightedNode);
+              parentSummaryContainer.appendChild(summaryContainer);
+              let root = ReactDomClient.createRoot(summaryContainer);
+              root.render(summaryComponent);
+
+              // document.querySelector(
+              //   "#selectedNode__container .summarize__wrapper-container"
+              // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+              handleUpdateFileContent();
+              setSummaryArray([...summaryArray, res.data]);
+              setSummary(false);
+            }); // call handler for axios call
+          })
+        });
       } catch (error) {
         console.log(error);
       }
@@ -671,18 +672,22 @@ export default function Converted() {
     // HIGHLIGHT IDS ARE ONE STATE BEHIND
     // FILTER DOESNT WORK BECAUSE OF THIS
 
-
-
-
-    console.log('about to filter', highlightIds)
-    let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
-    console.log('newhighlights', newHighlightIds)
+    const newHighlightIds = (highlightIds) => [...highlightIds].filter((id) => id !== highlightedNode.id);
     setHighlightIds(newHighlightIds);
+   
+
+    // let newHighlightIds = (() => [...highlightIds].filter(id => id !== highlightedNode.id));
+
+
+    // console.log('about to filter', highlightIds)
+    // let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
+    // console.log('newhighlights', newHighlightIds)
+    // setHighlightIds(newHighlightIds);
     selectedSummaryComponent.remove();
     highlightedNode.remove();
   };
 
-  const handleHighlight = (colorObj, type) => {
+  const handleHighlight = (colorObj, type, cb) => {
     if (selectedText) {
       let match = false;
       // check if user is only clicking on a highlighted node
@@ -786,7 +791,7 @@ export default function Converted() {
 
           // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
-            return highlightedNode
+            cb(highlightedNode);
           }
         }
       }
