@@ -1,24 +1,33 @@
 import styled from "styled-components";
 import { colors, textData } from "../../styles/globals";
+import { mediaQuery } from "../../MediaQuery/data";
 
 const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border: ${(props) => props.border || `0.05rem solid ${colors.darkGray}`};
   width: ${(props) => props.width || "100%"};
-  height: ${(props) => props.height};
-  padding: 0.5rem;
+  height: ${(props) => props.height || "100%"};
+  padding: 1rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    padding: 0.5rem;
+  }
 `;
 
 const OptionCont = styled.select`
   border-radius: 2rem;
   border: 0.05rem solid ${colors.darkGray};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  padding: 0.5rem;
+  width: ${(props) => props.width ||"100%" };
+  height: ${(props) => props.height || "fit-content"};
+  padding: 1rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    padding: 0.5rem;
+  }
 `;
 
 export default function Input({
-  height = "100%",
+  height = "",
   width = "100%",
   type = "text",
   value = "",
@@ -55,7 +64,7 @@ export default function Input({
         defaultValue={value}
         border={border}
         height={height}
-      ></InputCont>
+      />
     );
   }
 }

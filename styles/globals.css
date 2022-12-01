@@ -3,11 +3,10 @@
 html,
 body {
   font-family: "Open Sans", sans-serif;
-  padding: 0;
-  margin: 0;
+  height: 100%;
+  margin: 0 auto;
   /* background-color: #fffef7; */
   letter-spacing: 0.22em;
-  /* overflow-y: hidden; */
 }
 
 div {
@@ -27,6 +26,10 @@ form {
   /* added temporarily for the api test forms to look a little better */
   display: flex;
   flex-direction: column;
+}
+
+input {
+  height: 100%;
 }
 
 .fileOutput__container {

@@ -56,6 +56,7 @@ export default function WordSaved({
   word = "",
   definition = "",
   id = "",
+  handleCloseDictionary = () => {},
   handleCloseSummary = () => {},
   handleLocateSummary = () => {}
 }) {
@@ -65,6 +66,11 @@ export default function WordSaved({
   function onSummaryClose(e){
     e.preventDefault()
     handleCloseSummary(id)
+  }
+
+  function onDictionaryClose(e){
+    e.preventDefault()
+    handleCloseDictionary(id)
   }
 
   function onLocate(e){
@@ -88,18 +94,18 @@ export default function WordSaved({
             <IconCont>
             {(showDef && (
               <Icon
-                size="m"
+                size="sm"
                 faIconName={faChevronUp}
                 handleClick={() => setShowDef(false)}
               />
             )) || (
               <Icon
-                size="m"
+                size="sm"
                 faIconName={faChevronDown}
                 handleClick={() => setShowDef(true)}
               />
             )}
-             <Icon size="m" faIconName={faClose} handleClick={() => onClose(id)} />
+             <Icon size="sm" faIconName={faClose} handleClick={onDictionaryClose} />
             </IconCont>
             </>
           ) : (
@@ -121,7 +127,7 @@ export default function WordSaved({
                 />
               )}
               <Icon size="sm" faIconName={faLocationDot} handleClick={onLocate} />
-              <Icon size="m" faIconName={faClose} handleClick={onSummaryClose} />
+              <Icon size="sm" faIconName={faClose} handleClick={onSummaryClose} />
             </IconCont>
             </>
           )

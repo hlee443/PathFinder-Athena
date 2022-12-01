@@ -4,7 +4,7 @@ import { mediaQuery } from "../../MediaQuery/data";
 
 
 const SubHeaderCont = styled.h2`
-  font-size: ${textData.h2.size};
+  font-size: ${textData.h2.size.desktop};
   color: ${(props) => props.color};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
@@ -12,7 +12,7 @@ const SubHeaderCont = styled.h2`
   font-weight: 400;
 
   @media ${mediaQuery.maxWidth.mobile} {
-    font-size: 1.125rem;
+    font-size: ${textData.h2.size.mobile};
   };
   `
 

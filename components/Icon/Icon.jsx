@@ -7,13 +7,10 @@ import useMediaQuery from "../../MediaQuery/MediaQuery";
 import { mediaQuery } from "../../MediaQuery/data";
 
 const IconCont = styled(Flexbox)`
-  padding: 0.5rem;
-  gap: 0.5rem;
   cursor: pointer;
   position: ${(props) => props.position};
   // height: 100%;
-  width: ${(props) => props.width};
-  border-radius: 1.25rem;
+  width: fit-content;
   justify-content: space-between;
 
   :hover {
@@ -34,7 +31,6 @@ export default function Icon({
   hoverColor = "transparent",
   src = null,
   text = "",
-  width = "",
   handleMouseEnter = () => {},
   handleMouseLeave = () => {},
   position = "",
@@ -48,7 +44,6 @@ export default function Icon({
       position={position}
       onClick={handleClick}
       hoverColor={hoverColor}
-      width={width}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
