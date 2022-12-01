@@ -44,6 +44,6 @@ export const menus = [
   {
     src: "About.svg",
     text: "About",
-    page: "",
+    page: "/about",
   },
 ];
