@@ -110,7 +110,6 @@ export default function Converted() {
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
-  const [fileContent, setFileContent] = useState('')
 
   function handleSidebar() {
     if (isActive) {
@@ -663,9 +662,9 @@ export default function Converted() {
 
     // let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
     // let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    // let fileContent = document.querySelector('.file__content')
     let selectedSummaryComponent = document.getElementsByClassName(`parent-summary-container ${summaryId}`)[0]
-    console.log("selectedSummarycomponent", selectedSummaryComponent)
-    let highlightedNode = document.getElementById(`${selectedSummaryComponent.classList[1]}`);
+    let highlightedNode = document.querySelector(`[id='${selectedSummaryComponent.classList[1]}']`);
     let nodeArray = Array.from(highlightedNode.childNodes);
     nodeArray.forEach(node => {
       selectedSummaryComponent.parentNode.insertBefore(
@@ -673,6 +672,8 @@ export default function Converted() {
         selectedSummaryComponent
       )
     });
+
+    // selectedSummaryComponent.classList.add("summary--close"); // animation 
 
     setSummaryArray(
         summaryArray.filter((summary) => summary.summary_id !== summaryId)
@@ -691,8 +692,12 @@ export default function Converted() {
     let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
     console.log('newhighlights', newHighlightIds)
     setHighlightIds(newHighlightIds);
-    selectedSummaryComponent.remove();
-    highlightedNode.remove();
+
+    // setTimeout(() => { // let animation play first before removing everything
+      selectedSummaryComponent.remove();
+      highlightedNode.remove();
+    // }, 600)
+   
   };
 
   const handleHighlight = (colorObj, type) => {
@@ -812,7 +817,6 @@ export default function Converted() {
         setSummaryArray(res.data);
       }
     );
-    setFileContent(JSON.parse(router.query.fileData).file_content)
   }, []);
 
   // useEffect(() => {

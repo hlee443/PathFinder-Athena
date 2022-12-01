@@ -74,7 +74,22 @@ p {
   margin: 0;
 }
 
-.summarize__wrapper-container{
+.wordSaved--close{
+  animation: fadeOut-X 1s ease-out;
+}
+
+@keyframes fadeOut-X {
+  0%{
+    opacity: 1;
+    transform: translateX(0)
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(20%)
+  }
+}
+
+.summarize__container{
   overflow: hidden;
   transition: max-height .5s;
   height: auto;
