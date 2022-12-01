@@ -22,6 +22,7 @@ const SideBarCont = styled(Container)`
   justify-content: start;
   min-width: fit-content;
   user-select: none;
+  flex-basis: 30vw;
 `;
 
 const Category = styled(Flexbox)`
@@ -53,12 +54,11 @@ const Header = styled(Flexbox)`
 export default function SideBar({
   keywordArray = [],
   summaryArray = [],
-  closeDictionary = () => { },
-  handleSidebar = () => { },
+  closeDictionary = () => {},
+  handleSidebar = () => {},
   handleCloseSummary = () => {},
-  handleLocateSummary = () => {}
- }) {
-
+  handleLocateSummary = () => {},
+}) {
   const [showPopUp, setShowPopUp] = useState("type");
 
   // const [summarizedContent, setSummarizedContent] = useState(null);
@@ -76,47 +76,41 @@ export default function SideBar({
   return (
     <SideBarCont>
       <CloseIcon>
-        <Icon
-          handleClick={handleSidebar}
-          faIconName={faClose} />
+        <Icon handleClick={handleSidebar} faIconName={faClose} />
       </CloseIcon>
       <Section>
         <Category>
-        <Header dir="row">
-          <Icon faIconName={faMagnifyingGlass} />
-          <p>Words</p>
-        </Header>
-        {
-          keywordArray.map((keyword) => (
-             <WordSaved
+          <Header dir="row">
+            <Icon faIconName={faMagnifyingGlass} />
+            <p>Words</p>
+          </Header>
+          {keywordArray.map((keyword) => (
+            <WordSaved
               key={keyword.keyword_id}
-              type='dictionary'
+              type="dictionary"
               word={keyword.keyword_name}
               definition={keyword.keyword_definition}
               id={keyword.keyword_id}
-              handleCloseDictionary={closeDictionary} />
-          ))
-        }
+              handleCloseDictionary={closeDictionary}
+            />
+          ))}
         </Category>
         <Divider />
         <Category>
-        <Header dir="row">
-          <Icon faIconName={faFileLines} />
+          <Header dir="row">
+            <Icon faIconName={faFileLines} />
             <p>Summary</p>
           </Header>
-          {
-            summaryArray.map((summary) => (
-              <WordSaved 
-                key={summary.summary_id}
-                type='summary'
-                definition={summary.summary_result}
-                id={summary.summary_id}
-                handleCloseSummary={handleCloseSummary}
-                handleLocateSummary={handleLocateSummary}
-              />
-            ))
-          }
-        
+          {summaryArray.map((summary) => (
+            <WordSaved
+              key={summary.summary_id}
+              type="summary"
+              definition={summary.summary_result}
+              id={summary.summary_id}
+              handleCloseSummary={handleCloseSummary}
+              handleLocateSummary={handleLocateSummary}
+            />
+          ))}
         </Category>
       </Section>
     </SideBarCont>
