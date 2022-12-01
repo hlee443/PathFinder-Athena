@@ -57,7 +57,7 @@ export default function Summary({
   function onClose(e){
     e.preventDefault()
     // const selectedElement = e.target.parentElement
-    handleCloseSummary(e, summaryId)
+    handleCloseSummary(summaryId)
   }
 
   return (
