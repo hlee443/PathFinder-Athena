@@ -21,18 +21,17 @@ import * as mainHandler from "../handlers/main";
 import { useRef } from "react";
 import { iconSvgs } from "../components/Icon/data";
 import Option from "../components/Option/Option";
-import { btnData } from "../components/Button/data";
 import Loading from "../components/Loading/Loading";
 import useMediaQuery from "../MediaQuery/MediaQuery";
 import { mediaQuery } from "../MediaQuery/data";
 
 const CustomizeInputBox = styled(Flexbox)`
   background-color: ${colors.backgroundWhite};
-  border: 2px solid ${colors.darkGray};
-  border-radius: 50px;
+  outline: 2px solid ${colors.darkGray};
+  border-radius: 3.125rem;
   width: 100%;
   justify-content: start;
-  height: fit-content;
+  max-height: 3.875rem;
 `;
 
 const BtnCont = styled(Flexbox)`
@@ -270,11 +269,9 @@ export default function Home() {
                     onChange={handleFontSize}
                     value={uploadSetting.fontSize}
                     imgColor={colors.backgroundYellow}
-                    inputWidth="4rem"
-
+                    inputWidth="6rem"
                   />
                   {isMobile && <Divider />}
-
                   <Option
                     src={iconSvgs.lineSpacing}
                     text="Line Height"
@@ -284,10 +281,9 @@ export default function Home() {
                     onChange={handleLineSpace}
                     value={uploadSetting.lineSpace}
                     imgColor={colors.backgroundYellow}
-                    inputWidth="4rem"
+                    inputWidth="6rem"
                   />
                   {isMobile && <Divider />}
-
                   <Option
                     src={iconSvgs.letterSpacing}
                     text="Letter Spacing"
@@ -297,7 +293,7 @@ export default function Home() {
                     onChange={handleLetterSpace}
                     value={uploadSetting.letterSpace}
                     imgColor={colors.backgroundYellow}
-                    inputWidth="4rem"
+                    inputWidth="6rem"
                   />
                   <BtnCont align={isMobile ? "center" : "end"}>
                     <Button
