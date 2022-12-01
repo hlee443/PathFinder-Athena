@@ -398,7 +398,7 @@ export default function Converted() {
               const summaryComponent = (
                 <Summary
                   summarizedContent={res.data.summary_result}
-                  handleCloseSummary={handleCloseSummary}
+                  // handleCloseSummary={handleCloseSummary}
                   summaryId={res.data.summary_id}
                 />
               );
@@ -448,21 +448,27 @@ export default function Converted() {
     }
   }
 
-  function handleCloseSummary(summaryId) {
-    console.log("close summary");
+  function handleCloseSummary(id, e) {
     // e.preventDefault();
     // e.stopPropagation();
-
-    // let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-    // let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
-    // let fileContent = document.querySelector('.file__content')
-    let selectedSummaryComponent = document.getElementsByClassName(
-      `parent-summary-container ${summaryId}`
-    )[0];
-    let highlightedNode = document.getElementById(
-      `${selectedSummaryComponent.classList[1]}`
-    );
-    console.log("highlightedNode", highlightedNode);
+    let summaryId = id
+    let selectedSummaryComponent = null;
+    let highlightedNode = null;
+    if (summaryId && !e) {
+      selectedSummaryComponent = document.getElementsByClassName(
+        `parent-summary-container ${summaryId}`
+      )[0];
+      highlightedNode = document.getElementById(
+        `${selectedSummaryComponent.classList[1]}`
+      );
+    } else if (!summaryId && e) {
+      let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+      selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+      summaryId = +selectedSummaryComponent.classList[2];
+      highlightedNode = document.getElementById(
+        `${selectedSummaryComponent.classList[1]}`
+      );
+    }
     let nodeArray = Array.from(highlightedNode.childNodes);
     nodeArray.forEach((node) => {
       selectedSummaryComponent.parentNode.insertBefore(
@@ -472,18 +478,18 @@ export default function Converted() {
     });
 
     // selectedSummaryComponent.classList.add("summary--close"); // animation
-
-    setSummaryArray(
-      summaryArray.filter((summary) => summary.summary_id !== summaryId)
-    );
+    const newSummaryArray = (summaryArray) => 
+      [...summaryArray].filter((summary) => summary.summary_id != summaryId);
+    setSummaryArray(newSummaryArray);
+    // setSummaryArray(
+    //   summaryArray.filter((summary) => summary.summary_id !== summaryId)
+    // );
     mainHandler.handleDeleteSummary(summaryId, (res) => {
-      console.log(res)
       const newHighlightIds = (highlightIds) =>
         [...highlightIds].filter((id) => id !== highlightedNode.id);
       setHighlightIds(newHighlightIds);
 
       mainHandler.handleDeleteHighlight(highlightedNode.id, (res) => {
-        console.log(res)
         // setTimeout(() => { // let animation play first before removing everything
         selectedSummaryComponent.remove();
         highlightedNode.remove();
@@ -725,6 +731,25 @@ export default function Converted() {
     );
   }), [];
 
+  useEffect(() => {
+    // event listener for closing the summary component
+    function eventListenerCallback(e) {
+      e.preventDefault();
+      let closeElement = e.target;
+      if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
+        handleCloseSummary(null, e);
+      }
+      // if (apples.closest(".summary__container")) {
+      
+      // // if (apples.parent?.parent?.classList.contains("summarize__container")) {
+      //   e.preventDefault();
+      //   handleCloseSummary(null, e);
+      // }
+    };
+    const file__content = document.querySelector(".file__content");
+    file__content.addEventListener("click", eventListenerCallback, false);
+  }), [];
+
   // console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
 
   const handleDownloadFile = () => {
@@ -816,6 +841,7 @@ export default function Converted() {
   };
 
   console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
+  console.log("CURRENT SUMMARY ARRAY", summaryArray);
 
   return (
     <Flexbox>
