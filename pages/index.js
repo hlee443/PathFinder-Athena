@@ -5,6 +5,7 @@ import SubHeader from "../components/SubHeader/SubHeader";
 import LogoBar from "../components/LogoBar/LogoBar";
 import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
+import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
 import {
   faLink,
@@ -26,7 +27,7 @@ import useMediaQuery from "../MediaQuery/MediaQuery";
 import { mediaQuery } from "../MediaQuery/data";
 
 const CustomizeInputBox = styled(Flexbox)`
-  background: ${colors.backgroundWhite};
+  background-color: ${colors.backgroundWhite};
   border: 2px solid ${colors.darkGray};
   border-radius: 50px;
   width: 100%;
@@ -38,16 +39,21 @@ const BtnCont = styled(Flexbox)`
   align-self: ${(props) => props.align};
 `;
 
-export const tabBarBtns = [
-  {
-    text: "Upload a file",
-    icon: faUpload,
-  },
-  {
-    text: "Import a URL",
-    icon: faLink,
-  },
-];
+const Divider = styled.div`
+  width: 100%;
+  border: solid .5px ${colors.lightGrey}
+`
+
+// export const tabBarBtns = [
+//   {
+//     text: "Upload a file",
+//     icon: faUpload,
+//   },
+//   {
+//     text: "Import a URL",
+//     icon: faLink,
+//   },
+// ];
 
 export default function Home() {
   const router = useRouter();
@@ -70,6 +76,13 @@ export default function Home() {
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
   const [isActiveDrag, setIsActiveDrag] = useState(false);
+
+  function showCustomizationBox() {
+    setActive(true);
+    if (active) {
+      setActive(false);
+    }
+  }
 
   function handleChange(e) {
     e.preventDefault();
@@ -172,6 +185,7 @@ export default function Home() {
     uploadedFile.fileObj = {};
     inputType === "url" ? setInputType("upload") : setInputType("url");
   }
+
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
 
@@ -185,122 +199,115 @@ export default function Home() {
         {isLoading && <Loading />}
         {!isLoading && (
           <>
-            <TabBar btnArr={tabBarBtns} changePage={resetPageStates}></TabBar>
-            {inputType === "url" && (
+            {/* <TabBar btnArr={tabBarBtns} changePage={resetPageStates} /> */}
+            {/* {inputType === "url" && (
               <CustomizeInputBox dir="row">
                 <Input
                   border="none"
                   borderRadius="3.125rem 0 0 3.125rem;"
                   width="100%"
                   placeholder="Paste your URL here.."
-                ></Input>
+                />
                 <Button
                   handleClick={setActive}
-                  backgroundColor={colors.buttonPrimaryBlue}
                   borderRadius="0 3.125rem 3.125rem 0;"
-                  text={!isMobile ? "Customize" : ""}
-                  type="IconButton"
-                  iconSize="1x"
+                  text="Customize"
                   faIconName={active ? faChevronUp : faChevronDown}
                 />
               </CustomizeInputBox>
-            )}
-            {displayFileNameForm && inputType === "upload" && (
-              <>
-                <CustomizeInputBox dir="row">
-                  <Input
-                    border="none"
-                    placeholder="Enter file name"
-                    type="text"
-                    name="fileName"
-                    value={uploadedFile.fileName}
-                    onChange={handleChange}
-                    width="100%"
-                  />
-                  <Button
-                    handleClick={setActive}
-                    backgroundColor={colors.buttonPrimaryBlue}
-                    borderRadius="0 3.125rem 3.125rem 0;"
-                    text={!isMobile ? "Customize" : ""}
-                    type="IconButton"
-                    faIconName={active ? faChevronUp : faChevronDown}
-                  />
-                </CustomizeInputBox>
-              </>
-            )}
-            {active && (
-              <Container
-                height="fit-content"
-                gap="1rem"
-                padding={isMobile ? "1rem" : "2rem"}
+            )} */}
+            {
+              displayFileNameForm && <CustomizeInputBox dir="row">
+              <Input
+                border="none"
+                placeholder="Enter file name"
+                type="text"
+                name="fileName"
+                value={uploadedFile.fileName}
+                onChange={handleChange}
+                borderRadius="3.125rem 0 0 3.125rem;"
+              />
+              <Button
+                handleClick={showCustomizationBox}
+                borderRadius="0 3.125rem 3.125rem 0;"
+                text={!isMobile ? "Customize" : ""}
+                faIconName={active ? faChevronUp : faChevronDown}
+              />
+            </CustomizeInputBox>
+            }
+            {
+              active && (<motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{ width: "100%" }}
               >
-                <Option
-                  src={iconSvgs.backgroundColor}
-                  text="Background Colour"
-                  inputType="color"
-                  onChange={handleBGColor}
-                  value={uploadSetting.backgroundColour}
-                  gap={isMobile ? "0.5rem" : "1.875rem"}
-                  padding="1rem 0"
-                />
-                <Option
-                  src={iconSvgs.typeface}
-                  text="Typeface"
-                  inputType="dropdown"
-                  inputWidth="10rem"
-                  placeholder="Choose your typeface"
-                  onChange={handleTypeface}
-                  value={uploadSetting.typeface}
-                  gap={isMobile ? "0.5rem" : "1.875rem"}
-                  padding="1rem 0"
-                />
-                <Option
-                  src={iconSvgs.fontSize}
-                  text="Font Size"
-                  inputType="text"
-                  unit="pt"
-                  placeholder="Choose your font size"
-                  onChange={handleFontSize}
-                  value={uploadSetting.fontSize}
-                  inputWidth={isMobile ? "3rem" : "4rem"}
-                  gap={isMobile ? "0.5rem" : "1.875rem"}
-                  padding="1rem 0"
-                />
-                <Option
-                  src={iconSvgs.lineSpacing}
-                  text="Line Height"
-                  inputType="text"
-                  placeholder="Choose your line height"
-                  unit="%"
-                  onChange={handleLineSpace}
-                  value={uploadSetting.lineSpace}
-                  inputWidth={isMobile ? "3rem" : "4rem"}
-                  gap={isMobile ? "0.5rem" : "1.875rem"}
-                  padding="1rem 0"
-                />
-                <Option
-                  src={iconSvgs.letterSpacing}
-                  text="Letter Spacing"
-                  inputType="text"
-                  unit="pt"
-                  placeholder="Choose your letter spacing"
-                  onChange={handleLetterSpace}
-                  value={uploadSetting.letterSpace}
-                  inputWidth={isMobile ? "3rem" : "4rem"}
-                  gap={isMobile ? "0.5rem" : "1.875rem"}
-                  padding="1rem 0"
-                />
-                <BtnCont align="end">
-                  <Button
-                    text="Clear"
-                    backgroundColor={colors.buttonPrimaryBlue}
-                    width={btnData.size.small.width}
-                    height={btnData.size.small.height}
-                    handleClick={handleClear}
+                <Container gap="2rem" height="100%">
+                  <Option
+                    src={iconSvgs.backgroundColor}
+                    text="Background Colour"
+                    inputType="color"
+                    onChange={handleBGColor}
+                    value={uploadSetting.backgroundColour}
+                    imgColor={colors.backgroundYellow}
                   />
-                </BtnCont>
-              </Container>
-            )}
+                  {isMobile && <Divider />}
+                  <Option
+                    src={iconSvgs.typeface}
+                    text="Typeface"
+                    inputType="dropdown"
+                    placeholder="Choose your typeface"
+                    onChange={handleTypeface}
+                    value={uploadSetting.typeface}
+                    imgColor={colors.backgroundYellow}
+                  />
+                  {isMobile && <Divider />}
+                  <Option
+                    src={iconSvgs.fontSize}
+                    text="Font Size"
+                    inputType="text"
+                    unit="pt"
+                    placeholder="Choose your font size"
+                    onChange={handleFontSize}
+                    value={uploadSetting.fontSize}
+                    imgColor={colors.backgroundYellow}
+                    inputWidth="4rem"
+
+                  />
+                  {isMobile && <Divider />}
+
+                  <Option
+                    src={iconSvgs.lineSpacing}
+                    text="Line Height"
+                    inputType="text"
+                    placeholder="Choose your line height"
+                    unit="%"
+                    onChange={handleLineSpace}
+                    value={uploadSetting.lineSpace}
+                    imgColor={colors.backgroundYellow}
+                    inputWidth="4rem"
+                  />
+                  {isMobile && <Divider />}
+
+                  <Option
+                    src={iconSvgs.letterSpacing}
+                    text="Letter Spacing"
+                    inputType="text"
+                    unit="pt"
+                    placeholder="Choose your letter spacing"
+                    onChange={handleLetterSpace}
+                    value={uploadSetting.letterSpace}
+                    imgColor={colors.backgroundYellow}
+                    inputWidth="4rem"
+                  />
+                  <BtnCont align={isMobile ? "center" : "end"}>
+                    <Button
+                      text="Clear"
+                      handleClick={handleClear}
+                    />
+                  </BtnCont>
+                </Container>
+              </motion.div>
+              )}
             {displayFileNameForm === false && inputType === "upload" && (
               <Container
                 backgroundColor={isActiveDrag && `rgba(240, 240, 240, .5)`}
@@ -319,8 +326,7 @@ export default function Home() {
                   e.preventDefault();
                   setIsActiveDrag(false);
                 }}
-                width="100%"
-                alignItems="center"
+
               >
                 <Icon faIconName={faUpload} size="2x" />
                 {isActiveDrag ? (
@@ -330,7 +336,6 @@ export default function Home() {
                 )}
                 <p>or</p>
                 <Button
-                  backgroundColor={colors.buttonPrimaryBlue}
                   handleClick={() => fileInput.current.click()}
                   text="Choose a file"
                 />
@@ -351,9 +356,7 @@ export default function Home() {
             <BtnCont align="center">
               {displayFileNameForm && inputType === "upload" && (
                 <Button
-                  backgroundColor={colors.buttonPrimaryBlue}
                   text="Upload"
-                  type="default"
                   handleClick={(e) => {
                     setIsLoading(true),
                       setTimeout(() => {
@@ -362,17 +365,11 @@ export default function Home() {
                   }}
                 />
               )}
-              {inputType === "url" && (
-                <Button
-                  backgroundColor={colors.buttonPrimaryBlue}
-                  text="Upload"
-                  type="default"
-                />
-              )}
+              {/* {inputType === "url" && <Button text="Upload" />} */}
             </BtnCont>
           </>
         )}
       </Wrapper>
     </Flexbox>
   );
-}
+};

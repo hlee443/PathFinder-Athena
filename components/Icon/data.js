@@ -3,5 +3,5 @@ export const iconSvgs = {
   fontSize: "/icons/fontSize.svg",
   letterSpacing: "/icons/letterSpacing.svg",
   lineSpacing: "/icons/lineSpacing.svg",
-  typeface: "/icons/typeface.svg",
+  typeface: "/icons/font.svg",
 };

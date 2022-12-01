@@ -37,6 +37,31 @@ const SelectedCircle = styled.div`
   border: 0.25rem solid ${colors.darkGrey};
 `;
 
+const ClearCircle = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  overflow: hidden;
+  background-color: transparent;
+  border-radius: 50rem;
+  border: 0.1rem solid ${colors.darkGrey};
+  :hover {
+    border: 0.25rem solid ${colors.darkGrey};
+  }
+`
+
+const Line = styled.div`
+  position: absolute;
+  rotate: 30deg;
+  /* top: 50%; left: 50%;
+  transform: translate(-50%, -50%); */
+  width: .1rem;
+  height: 100%;
+  background-color: red;
+`
+
 export default function HighlightDropdown({
   currentHighlightColor = {},
   handleChangeHighlightColor = () => {},
@@ -46,6 +71,24 @@ export default function HighlightDropdown({
   const [label, setLabel] = useState(false);
   return (
     <Cont dir="row">
+       <Flexbox>
+          <ClearCircle 
+          onClick={() =>  console.log("clear highlight")}
+          onMouseEnter={() => {
+            {
+              setLabel(true), setSel('clear')
+            }
+          }}
+          onMouseLeave={() => {
+            setLabel(false), setSel('')
+          }}
+          >
+          <Line></Line>
+        </ClearCircle>
+        {sel === 'clear' && label && (
+              <Label position="absolute" text={"clear"} top="4rem" />
+        )}
+      </Flexbox>
       {ColorArr.map((color, i) => (
         <Flexbox key={i}>
           {currentHighlightColor.colorText !== color.colorText ? (
