@@ -64,16 +64,19 @@ const Line = styled.div`
 
 export default function HighlightDropdown({
   currentHighlightColor = {},
-  handleChangeHighlightColor = () => {},
-  onClose = () => {},
+  handleChangeHighlightColor = () => { },
+  onClose = () => { },
 }) {
   const [sel, setSel] = useState(0);
   const [label, setLabel] = useState(false);
   return (
     <Cont dir="row">
-       <Flexbox>
-          <ClearCircle 
-          onClick={() =>  console.log("clear highlight")}
+      <Flexbox>
+        <ClearCircle
+          onClick={(e) => {
+            e.preventDefault();
+            handleChangeHighlightColor({colorText: "clear", colorHex: null});
+          }}
           onMouseEnter={() => {
             {
               setLabel(true), setSel('clear')
@@ -82,11 +85,11 @@ export default function HighlightDropdown({
           onMouseLeave={() => {
             setLabel(false), setSel('')
           }}
-          >
+        >
           <Line></Line>
         </ClearCircle>
         {sel === 'clear' && label && (
-              <Label position="absolute" text={"clear"} top="4rem" />
+          <Label position="absolute" text={"clear"} top="4rem" />
         )}
       </Flexbox>
       {ColorArr.map((color, i) => (
