@@ -4,7 +4,7 @@ export async function handleAddHighlight(dbData, cb) {
     // dbData = {
     //     "highlightData": {
     //         "fileId": "1",
-    //         "highlightUuid": "2dscu-12ad4-azv34-ewr34-1qwev",
+    //         "highlightId": "2dscu-12ad4-azv34-ewr34-1qwev",
     //     }
     // }
 

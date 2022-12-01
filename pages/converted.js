@@ -321,210 +321,6 @@ export default function Converted() {
     });
   }
 
-  // useEffect(() => {
-  //   if (!router.query.fileData) {
-  //     return;
-  //   } else if (!router.query.settingData) {
-  //     return;
-  //   } else if (!router.query.folderArray) {
-  //     return;
-  //   }
-  //   setFileData(JSON.parse(router.query.fileData));
-  //   const folderArray = JSON.parse(router.query.folderArray);
-  //   setFolderArray(folderArray);
-  //   const settingData = JSON.parse(router.query.settingData);
-  //   setSettingData(settingData);
-  //   setNewFileName(JSON.parse(router.query.fileData).file_name);
-  //   mainHandler.handleGetKeywordsByFileId(
-  //     JSON.parse(router.query.fileData).file_id,
-  //     (res) => {
-  //       console.log(res);
-  //       setKeywordArray(res.data);
-  //     }
-  //   );
-  //   mainHandler.handleGetSummariesByFileId(
-  //     JSON.parse(router.query.fileData).file_id,
-  //     (res) => {
-  //       console.log(res);
-  //       setSummaryArray(res.data);
-  //     }
-  //   );
-  // }, []);
-
-  // useEffect(() => {
-  //   updateTypeArray(settingData);
-  // }, [settingData]);
-
-  // useEffect(() => {
-  //   updateLibraryArray(folderArray);
-  // }, [folderArray]);
-
-  // const handleCloseSummary = (summaryId) => {
-
-  //   mainHandler.handleDeleteSummary(summaryId, (res) => {
-  //     console.log(res.data);
-
-  //     const selectedSummaryComponent = document.getElementsByClassName(
-  //       `summarize__wrapper-container ${summaryId}`
-  //     )[0];
-
-  //     selectedSummaryComponent.classList.add("summary--close"); // animation stuff
-
-  //     const grandParentElement = selectedSummaryComponent.closest(
-  //       "#selectedNode__container"
-  //     )
-  //       ? selectedSummaryComponent.closest("#selectedNode__container")
-  //       : selectedSummaryComponent.closest(".selectedNode__highlighted");
-  //     const selectedHighlightedNode = selectedSummaryComponent;
-
-  //     while (
-  //       !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
-  //     ) {
-  //       selectedHighlightedNode = selectedHighlightedNode.parentElement;
-  //     }
-
-  //     const highlightedContainer = selectedHighlightedNode.querySelector(
-  //       ".selectedNode__highlighted > .highlighted__container"
-  //     );
-
-  //     setTimeout(() => {
-  //       // Delete highlight component and joining the original text back to normal
-  //       grandParentElement.parentElement.replaceChild(
-  //         highlightedContainer.firstChild,
-  //         grandParentElement
-  //       );
-  //       grandParentElement.remove();
-
-  //       // Delete summary component in the file__container
-  //       selectedSummaryComponent.remove();
-
-  //       // Delete the summary in sidebar
-  //       setSummaryArray(
-  //         summaryArray.filter((summary) => summary.summary_id !== summaryId)
-  //       );
-
-  //       handleUpdateFileContent();
-  //     }, 600); // animation
-  //   });
-  // };
-
-  // const closeDictionary = (id) => {
-  //   mainHandler.handleDeleteKeyword(id, (res) => {
-  //     setKeywordArray(res.data);
-  //     setKeywordArray(
-  //       keywordArray.filter((keyword) => keyword.keyword_id !== id)
-  //     );
-  //   });
-  // };
-
-  // function handleSummary() {
-  //   // summary content received from api
-  //   if (!summary) {
-  //     try {
-  //       setSummary(true);
-  //       mainHandler.handleSummarize(selectedText.toString(), (res) => {
-  //         console.log("res", res);
-  //         const rangeCount = selectedText.rangeCount;
-
-  //         if (rangeCount !== 0 || selectedText.toString() !== "") {
-  //           console.log("summary clicked, call highlight");
-  //           // console.log("highlight!");
-  //           moveSelectedHighlighted();
-
-  //           const selectedNodeContainer = document.createElement("div");
-  //           const highlightedContainer = document.createElement("div");
-  //           const highlightedNode = document.createElement("span");
-
-  //           selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
-  //           highlightedContainer.className = "selectedNode__highlighted"; // 2
-  //           highlightedNode.className = "highlighted__container"; // 3
-
-  //           highlightedNode.style.backgroundColor = "#3df9b4";
-  //           highlightedNode.style.color = "#000000";
-
-  //           // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
-
-  //           const range = selectedText.getRangeAt(0);
-
-  //           range.surroundContents(highlightedNode);
-
-  //           highlightedNode.parentNode.insertBefore(
-  //             highlightedContainer,
-  //             highlightedNode
-  //           );
-  //           highlightedContainer.appendChild(highlightedNode);
-
-  //           highlightedContainer.parentNode.insertBefore(
-  //             selectedNodeContainer,
-  //             highlightedContainer
-  //           );
-  //           selectedNodeContainer.appendChild(highlightedContainer);
-
-  //           // setHighlightedNode(highlightedNode); // save to useState and pass to prop
-
-  //           let summaryData = {
-  //             summaryData: {
-  //               fileId: fileData.file_id,
-  //               summaryContent: selectedText.toString(),
-  //               summaryResult: `${res.data.summary}`,
-  //             },
-  //           };
-  //           mainHandler.handleAddSummary(summaryData, (res) => {
-  //             console.log("summary added", res.data);
-
-  //             const summaryComponent = (
-  //               <Summary
-  //                 summarizedContent={res.data.summary_result}
-  //                 handleCloseSummary={handleCloseSummary}
-  //                 summaryId={res.data.summary_id}
-  //               />
-  //             );
-
-  //             const container = document.querySelector(
-  //               "#selectedNode__container > .selectedNode__highlighted"
-  //             );
-
-  //             const summaryWrapperContainer = document.createElement("div");
-
-  //             summaryWrapperContainer.classList.add(
-  //               "summarize__wrapper-container",
-  //               `${res.data.summary_id}`
-  //             );
-
-  //             container.appendChild(summaryWrapperContainer);
-
-  //             const root = ReactDomClient.createRoot(
-  //               document.querySelector(
-  //                 "#selectedNode__container .summarize__wrapper-container"
-  //               )
-  //             );
-
-  //             root.render(summaryComponent);
-
-  //             document.querySelector(
-  //               "#selectedNode__container .summarize__wrapper-container"
-  //             ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
-
-  //             handleUpdateFileContent();
-
-  //             setSummaryArray([...summaryArray, res.data]);
-  //             setSummary(false);
-  //           });
-  //         }
-  //       }); // call handler for axios call
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // }
-
-  // function getKeywords() {
-  //   console.log("fileid", fileData.file_id);
-  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
-  //     setKeywordArray(res.data);
-  //   });
-  // }
-
   function handleDictionary() {
     if (!dictionary) {
       try {
@@ -653,6 +449,7 @@ export default function Converted() {
   }
 
   function handleCloseSummary(summaryId) {
+    console.log("close summary");
     // e.preventDefault();
     // e.stopPropagation();
 
@@ -662,9 +459,10 @@ export default function Converted() {
     let selectedSummaryComponent = document.getElementsByClassName(
       `parent-summary-container ${summaryId}`
     )[0];
-    let highlightedNode = document.querySelector(
-      `[id='${selectedSummaryComponent.classList[1]}']`
+    let highlightedNode = document.getElementById(
+      `${selectedSummaryComponent.classList[1]}`
     );
+    console.log("highlightedNode", highlightedNode);
     let nodeArray = Array.from(highlightedNode.childNodes);
     nodeArray.forEach((node) => {
       selectedSummaryComponent.parentNode.insertBefore(
@@ -678,21 +476,20 @@ export default function Converted() {
     setSummaryArray(
       summaryArray.filter((summary) => summary.summary_id !== summaryId)
     );
+    mainHandler.handleDeleteSummary(summaryId, (res) => {
+      console.log(res)
+      const newHighlightIds = (highlightIds) =>
+        [...highlightIds].filter((id) => id !== highlightedNode.id);
+      setHighlightIds(newHighlightIds);
 
-    // BUG WITH STATE RIGHT HERE
-    // NEED TO FIX ASAP
-
-    // HIGHLIGHT IDS ARE ONE STATE BEHIND
-    // FILTER DOESNT WORK BECAUSE OF THIS
-
-    const newHighlightIds = (highlightIds) =>
-      [...highlightIds].filter((id) => id !== highlightedNode.id);
-    setHighlightIds(newHighlightIds);
-
-    // setTimeout(() => { // let animation play first before removing everything
-    selectedSummaryComponent.remove();
-    highlightedNode.remove();
-    // }, 600)
+      mainHandler.handleDeleteHighlight(highlightedNode.id, (res) => {
+        console.log(res)
+        // setTimeout(() => { // let animation play first before removing everything
+        selectedSummaryComponent.remove();
+        highlightedNode.remove();
+        // }, 600)
+      });
+    });
   }
 
   const handleHighlight = (colorObj, type, cb) => {
@@ -722,8 +519,11 @@ export default function Converted() {
               setHighlightIds(
                 highlightIds.filter((id) => id !== selectedElement.id)
               );
-              selectedElement.remove();
-              match = true;
+              mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
+                console.log(res)
+                selectedElement.remove();
+                match = true;
+              });
             }
           }
         }
@@ -748,7 +548,9 @@ export default function Converted() {
           } else if (
             !selectedSummary[0] &&
             colorObj &&
-            colorObj.colorText === "clear"
+            colorObj.colorText === "clear" ||
+            !selectedSummary[0] &&
+            highlightColor.colorHex === "clear"
           ) {
             if (selectedText.containsNode(selectedElement, true)) {
               let nodeArray = Array.from(selectedElement.childNodes);
@@ -758,8 +560,11 @@ export default function Converted() {
               newHighlightIds = newHighlightIds.filter(
                 (id) => id !== selectedElement.id
               );
-              selectedElement.remove();
-              match = true;
+              mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
+                console.log(res)
+                selectedElement.remove();
+                match = true;
+              });
             }
           }
         }
@@ -800,25 +605,36 @@ export default function Converted() {
           range.surroundContents(highlightedNode);
           highlightedNode.id = id;
           let newHighlightIds = [...highlightIds, id];
-          for (const selectedId of highlightIds) {
-            const selectedElement = document.getElementById(`${selectedId}`);
-            if (
-              selectedText.containsNode(selectedElement, true) &&
-              selectedId !== id
-            ) {
-              let nodeArray = Array.from(selectedElement.childNodes);
-              nodeArray.forEach((node) => {
-                selectedElement.parentNode.insertBefore(node, selectedElement);
-              });
-              newHighlightIds = newHighlightIds.filter(
-                (id) => id !== selectedElement.id
-              );
-              selectedElement.remove();
+          let dbData = {
+            highlightData: {
+              fileId: fileData.file_id,
+              highlightId: id
+            },
+          };
+          mainHandler.handleAddHighlight(dbData, (res) => {
+            console.log(res)
+            for (const selectedId of highlightIds) {
+              const selectedElement = document.getElementById(`${selectedId}`);
+              if (
+                selectedText.containsNode(selectedElement, true) &&
+                selectedId !== id
+              ) {
+                let nodeArray = Array.from(selectedElement.childNodes);
+                nodeArray.forEach((node) => {
+                  selectedElement.parentNode.insertBefore(node, selectedElement);
+                });
+                newHighlightIds = newHighlightIds.filter(
+                  (id) => id !== selectedElement.id
+                );
+                mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
+                  console.log(res)
+                  selectedElement.remove();
+                });
+              }
             }
-          }
 
-          setHighlightIds(newHighlightIds);
-
+            setHighlightIds(newHighlightIds);
+          });
           // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
             cb(highlightedNode);
@@ -866,6 +682,13 @@ export default function Converted() {
         setSummaryArray(res.data);
       }
     );
+    mainHandler.handleGetHighlightsByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setHighlightIds(res.data.map((highlight) => highlight.highlight_uuid));
+      }
+    );
   }, []);
 
   // useEffect(() => {
@@ -900,10 +723,9 @@ export default function Converted() {
       },
       false
     );
-  }),
-    [];
+  }), [];
 
-  console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
+  // console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
 
   const handleDownloadFile = () => {
     // // write html file contents to .txt file
@@ -923,7 +745,7 @@ export default function Converted() {
     // download pdf
 
     var elementHTML = document.querySelector(".file__content");
-    console.log("PEEPEE", elementHTML.clientHeight);
+    // console.log("PEEPEE", elementHTML.clientHeight);
 
     // const doc = new jsPDF({
     //   orientation: "p",
@@ -965,33 +787,35 @@ export default function Converted() {
 
 
     let HTML_Width = elementHTML.clientWidth;
-		let HTML_Height = elementHTML.clientHeight;
-		let top_left_margin = 15;
-		let PDF_Width = HTML_Width+(top_left_margin*2);
-		let PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
-		let canvas_image_width = HTML_Width;
-		let canvas_image_height = HTML_Height;
-		let totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
-      
-		html2canvas((elementHTML),{allowTaint:true, autoPaging:"text",}).then(function(canvas) {
-			canvas.getContext('2d');
-			
-			console.log(canvas.height+"  "+canvas.width);
-			
-			
-			let imgData = canvas.toDataURL("image/jpeg", 1.0);
-			let pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
-		    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
-			
-			
-			for (let i = 1; i <= totalPDFPages; i++) { 
-				pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
-				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-			}
-			
-		    pdf.save(`${newFileName}.pdf`);
-        });
+    let HTML_Height = elementHTML.clientHeight;
+    let top_left_margin = 15;
+    let PDF_Width = HTML_Width + (top_left_margin * 2);
+    let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    let canvas_image_width = HTML_Width;
+    let canvas_image_height = HTML_Height;
+    let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+    html2canvas((elementHTML), { allowTaint: true, autoPaging: "text", }).then(function (canvas) {
+      canvas.getContext('2d');
+
+      // console.log(canvas.height + "  " + canvas.width);
+
+
+      let imgData = canvas.toDataURL("image/jpeg", 1.0);
+      let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+      for (let i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+      }
+
+      pdf.save(`${newFileName}.pdf`);
+    });
   };
+
+  console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
 
   return (
     <Flexbox>
@@ -1041,7 +865,7 @@ export default function Converted() {
                       console.log("clicking delete");
                       handleDelete();
                     }}
-                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
                 )}
               </IconCont>

@@ -5,8 +5,7 @@ export async function handleDeleteHighlight(highlightId, cb) {
     try {
         return await axios({
             method: "DELETE",
-            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/highlight${highlightId}`,
-            data: dbData
+            url: `${process.env.NEXT_PUBLIC_HERMES_PATH}/api/db/highlight/${highlightId}`
         })
             .then((response) => {
                 cb(response)

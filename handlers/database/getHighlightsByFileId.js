@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function handleGetHighlightsByFiledId(fileId, cb) {
+export async function handleGetHighlightsByFileId(fileId, cb) {
 
     try {
         return await axios({
