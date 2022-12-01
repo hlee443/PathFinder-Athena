@@ -10,7 +10,7 @@ import { useState } from "react";
 import { bubbleData } from "./data";
 
 const BubbleCont = styled(Flexbox)`
-  position: absolute;
+  position: relative;
   border-radius: 2rem;
   background-color: ${colors.backgroundCream};
   padding: 2.5rem;
@@ -68,7 +68,7 @@ export default function Bubble({
         <Icon handleClick={onClose} size="xl" faIconName={faClose} />
       </CloseButton>
       <Header text={bubbleData[type].header} />
-      <BtnCont dir="row">
+      {/* <BtnCont dir="row">
         <Button
           text={bubbleData[type].btnTextLeft}
           handleClick={onClose}
@@ -78,7 +78,7 @@ export default function Bubble({
           text={bubbleData[type].btnTextRight}
           handleClick={handleBubble}
         />
-      </BtnCont>
+      </BtnCont> */}
       {/* {(type == "login" || type === "signup") && (
         <InputCont>
           <Input placeholder="Enter your email" />

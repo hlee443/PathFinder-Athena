@@ -12,7 +12,7 @@ import {
   faEllipsis,
   faCheck,
   faSliders,
-  faArrowRightFromBracket,
+  faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useInsertionEffect, useState, useCallback } from "react";
@@ -29,6 +29,9 @@ import LoadingAnimation from "../public/lotties/loading_dots.json";
 import { v4 as uuidv4 } from "uuid";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import { Component } from "react";
+
+const { htmlToText } = require("html-to-text");
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -51,14 +54,16 @@ const Title = styled(Flexbox)`
 `;
 
 const DocCont = styled(Flexbox)`
-  width: 100%;
-  max-width: 100%;
+  width: 85%;
   gap: 1rem;
   // height: 100vh;
+  justify-content: center;
 `;
 
 const IconCont = styled(Flexbox)`
   position: relative;
+  justify-content: space-between;
+  width: 8%;
 `;
 
 const StickyCont = styled(Flexbox)`
@@ -68,9 +73,9 @@ const StickyCont = styled(Flexbox)`
 `;
 
 const SidebarCont = styled.div`
-  width: 40vw;
   overflow-y: scroll;
   height: 100%;
+  flex-basis: 30vw;
 
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
@@ -294,6 +299,7 @@ export default function Converted() {
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
     setDropdown(false);
+    setShowBubble(false);
   }
 
   function handleDelete() {
@@ -924,33 +930,27 @@ export default function Converted() {
 
     // Source HTMLElement or a string containing HTML.
     // download pdf
+    let doc = new jsPDF();
+    var elementHTML = document.querySelector(".file__content").outerHTML;
+    console.log("PEEPEE", elementHTML);
 
-    var elementHTML = document.querySelector(".file__content");
-    console.log("PEEPEE", elementHTML.clientHeight);
-
-    // const doc = new jsPDF({
-    //   orientation: "p",
-    //   unit: "px",
-    //   format: "a4",
-    //   hotfixes: ["px_scaling"],
-    // });
-
-    // html2canvas(elementHTML, {
-    //   width: doc.internal.pageSize.getWidth(),
-    //   height: doc.internal.pageSize.getHeight(),
-    //   autoPaging: "text",
-    // }).then((canvas) => {
-    //   const img = canvas.toDataURL("image/png");
-
-    //   doc.addImage(
-    //     img,
-    //     "PNG",
-    //     140,
-    //     10,
-    //     doc.internal.pageSize.getWidth(),
-    //     doc.internal.pageSize.getHeight()
-    //   );
-    //   doc.save("statement.pdf");
+    doc.html(elementHTML, {
+      callback: function (doc) {
+        // Save the PDF
+        doc.save(`${newFileName}.pdf`);
+      },
+      margin: [10, 10, 10, 10],
+      x: 0,
+      y: 0,
+      autoPaging: "text",
+      width: 180,
+      windowWidth: 1080,
+    });
+    // autoPaging:"text",
+    //   x: 0,
+    //   y: 0,
+    //   width: 190, //target width in the PDF document
+    //   windowWidth: 675, //window width in CSS pixels
     // });
 
     //   doc.html(elementHTML, {
@@ -1021,12 +1021,14 @@ export default function Converted() {
               <Header text={newFileName} />
               <IconCont dir="row">
                 <Icon
+                  size="2x"
                   faIconName={faEllipsis}
                   handleClick={handleMiniDropdown}
                 />
                 {!isActive && showIcon && (
                   <Icon
-                    faIconName={faArrowRightFromBracket}
+                    size="2x"
+                    faIconName={faAnglesRight}
                     handleClick={() => {
                       setShowSidebar(true), setShowIcon(false);
                     }}
@@ -1035,6 +1037,9 @@ export default function Converted() {
                 {dropdown && (
                   <MiniDropdown
                     handleMouseLeave={() => setDropdown(false)}
+                    onClose={() => {
+                      setDropdown(false);
+                    }}
                     position="absolute"
                     arr={editFileDataArr}
                     onEdit={() => {
@@ -1064,12 +1069,12 @@ export default function Converted() {
                 borderRadius="1rem"
                 backgroundColor={colors.buttonPrimaryBlue}
                 text="Save"
-                handleClick={() => { handleSaveFileName, setShowBubble(true) }}
+                handleClick={()=> {setShowBubble(true)}}
               />
             </Title>
           )}
           {
-            showBubble && <Bubble type="rename"/>
+            showBubble && <Bubble type ="rename" onClose={handleSaveFileName}/>
           }
           <Container
             className="file__content"
@@ -1086,18 +1091,18 @@ export default function Converted() {
             <Content fileData={fileData} />
           </Container>
         </DocCont>
-        <SidebarCont>
-          {showSidebar && (
-            <SideBar
-              handleSidebar={handleSidebar}
-              keywordArray={keywordArray}
-              summaryArray={summaryArray}
-              closeDictionary={closeDictionary}
-              handleCloseSummary={handleCloseSummary}
-              handleLocateSummary={handleLocateSummary}
-            />
-          )}
-        </SidebarCont>
+        {/* <SidebarCont> */}
+        {showSidebar && (
+          <SideBar
+            handleSidebar={handleSidebar}
+            keywordArray={keywordArray}
+            summaryArray={summaryArray}
+            closeDictionary={closeDictionary}
+            handleCloseSummary={handleCloseSummary}
+            handleLocateSummary={handleLocateSummary}
+          />
+        )}
+        {/* </SidebarCont> */}
       </Layout>
 
       {/* </DocCont> */}
