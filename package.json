@@ -22,6 +22,7 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^7.6.12",
     "html-to-text": "^8.2.1",
+    "html2canvas": "^1.4.1",
     "jquery": "^3.6.1",
     "jspdf": "^2.5.1",
     "lottie-react": "^2.3.1",

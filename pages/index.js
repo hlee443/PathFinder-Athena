@@ -165,14 +165,17 @@ export default function Home() {
   }
 
   function handleClear() {
-    setUploadSetting({
-      ...uploadSetting,
-      backgroundColour: "#FFFFFC",
-      typeface: "Open Sans",
-      fontSize: 16,
-      lineSpace: 150,
-      letterSpace: 0.35,
-    });
+    const newUploadSetting = (uploadSetting) => {
+      return {
+        ...uploadSetting,
+        backgroundColour: "#FFFFFC",
+        typeface: "Open Sans",
+        fontSize: 16,
+        lineSpace: 150,
+        letterSpace: 0.35,
+      };
+    };
+    setUploadSetting(newUploadSetting);
   }
 
   function resetPageStates() {
@@ -188,6 +191,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
 
+  console.log(uploadSetting)
   return (
     <Flexbox>
       <LogoBar />

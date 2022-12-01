@@ -26,10 +26,9 @@ import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { jsPDF } from "jspdf";
-
-const { htmlToText } = require("html-to-text");
+import html2canvas from "html2canvas";
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -89,9 +88,9 @@ export default function Converted() {
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
   const [highlightColor, setHighlightColor] = useState({
-    colorText: 'yellow',
-    colorHex: '#FCFF7C'
-  })
+    colorText: "yellow",
+    colorHex: "#FCFF7C",
+  });
   const [showSidebar, setShowSidebar] = useState(true);
   const [isActive, setIsActive] = useState();
   const [showIcon, setShowIcon] = useState(false);
@@ -106,7 +105,7 @@ export default function Converted() {
   const [newFileName, setNewFileName] = useState("");
   const [test, setTest] = useState(0);
   const [summary, setSummary] = useState(false);
-  const [selectedText, setSelectedText] = useState('');
+  const [selectedText, setSelectedText] = useState("");
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
@@ -122,8 +121,7 @@ export default function Converted() {
       setShowSidebar(false);
       setShowIcon(true);
     }
-  };
-
+  }
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -321,10 +319,10 @@ export default function Converted() {
 
     mainHandler.handleUpdateFile(fileObject, (res) => {
       console.log("updatedFileData", res.data);
+      console.log("updatedFile content", res.data.file_content);
       setFileData(res.data);
     });
   }
-
 
   // useEffect(() => {
   //   if (!router.query.fileData) {
@@ -421,8 +419,6 @@ export default function Converted() {
   //     );
   //   });
   // };
-
-
 
   // function handleSummary() {
   //   // summary content received from api
@@ -561,7 +557,6 @@ export default function Converted() {
     }
   }
 
-
   function closeDictionary(id) {
     mainHandler.handleDeleteKeyword(id, (res) => {
       setKeywordArray(res.data);
@@ -569,16 +564,20 @@ export default function Converted() {
         keywordArray.filter((keyword) => keyword.keyword_id !== id)
       );
     });
-  };
+  }
 
   const handleLocateSummary = (summaryId) => {
-    console.log("SCROLL TO VIEW")
+    console.log("SCROLL TO VIEW");
     const selectedSummary = document.getElementsByClassName(
       `parent-summary-container ${summaryId}`
     )[0];
 
-    selectedSummary.closest(".highlightnode").scrollIntoView({ behavior: "smooth", block: 'center', inline: 'center' })
-  }
+    selectedSummary.closest(".highlightnode").scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  };
 
   // Selected and Dom
 
@@ -586,83 +585,102 @@ export default function Converted() {
     // summary content received from api
     if (!summary) {
       try {
-        let highlightedNode = handleHighlight(null, "alternate");
-        if (!highlightedNode) {
-          setSummary(false);
-          return;
-        }
-        setSummary(true);
-        mainHandler.handleSummarize(selectedText.toString(), (sumRes) => {
-          let summaryData = {
-            summaryData: {
-              fileId: fileData.file_id,
-              summaryContent: selectedText.toString(),
-              summaryResult: `${sumRes.data.summary}`,
-            },
-          };
-          mainHandler.handleAddSummary(summaryData, (res) => {
-            console.log("summary added", res.data);
-
-            const summaryComponent = (
-              <Summary
-                summarizedContent={res.data.summary_result}
-                handleCloseSummary={handleCloseSummary}
-                summaryId={res.data.summary_id}
-              />
-            );
-            // const summaryComponent = (
-            //   <Summary
-            //     summarizedContent={res.data.summary}
-            //     onClose={(e) => closeSummary(e)}
-            //   />
-            // );
-            //             summaryWrapperContainer.classList.add(
-            //               "summarize__wrapper-container",
-            //               `${res.data.summary_id}`
-            //             );
-            let highlitedContainer = document.createElement("div");
-            const parentSummaryContainer = document.createElement("div");
-            parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
-            const summaryContainer = document.createElement("div");
-            highlightedNode.parentNode.insertBefore(
-              parentSummaryContainer,
-              highlightedNode
-            );
-            parentSummaryContainer.appendChild(highlitedContainer);
-            highlitedContainer.appendChild(highlightedNode);
-            parentSummaryContainer.appendChild(summaryContainer);
-            let root = ReactDomClient.createRoot(summaryContainer);
-            root.render(summaryComponent);
-
-            // document.querySelector(
-            //   "#selectedNode__container .summarize__wrapper-container"
-            // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
-
-            handleUpdateFileContent();
-            setSummaryArray([...summaryArray, res.data]);
+        handleHighlight(null, "alternate", (highlightedNode) => {
+          if (!highlightedNode) {
             setSummary(false);
-          }); // call handler for axios call
-        })
+            return;
+          }
+          setSummary(true);
+          mainHandler.handleSummarize(selectedText.toString(), (sumRes) => {
+            let summaryData = {
+              summaryData: {
+                fileId: fileData.file_id,
+                summaryContent: selectedText.toString(),
+                summaryResult: `${sumRes.data.summary}`,
+              },
+            };
+            mainHandler.handleAddSummary(summaryData, (res) => {
+              console.log("summary added", res.data);
+
+              const summaryComponent = (
+                <Summary
+                  summarizedContent={res.data.summary_result}
+                  handleCloseSummary={handleCloseSummary}
+                  summaryId={res.data.summary_id}
+                />
+              );
+              // const summaryComponent = (
+              //   <Summary
+              //     summarizedContent={res.data.summary}
+              //     onClose={(e) => closeSummary(e)}
+              //   />
+              // );
+              //             summaryWrapperContainer.classList.add(
+              //               "summarize__wrapper-container",
+              //               `${res.data.summary_id}`
+              //             );
+              let highlitedContainer = document.createElement("div");
+              const parentSummaryContainer = document.createElement("div");
+              parentSummaryContainer.classList.add(
+                "parent-summary-container",
+                `${highlightedNode.id}`,
+                `${res.data.summary_id}`
+              );
+              const summaryContainer = document.createElement("div");
+              highlightedNode.parentNode.insertBefore(
+                parentSummaryContainer,
+                highlightedNode
+              );
+              parentSummaryContainer.appendChild(highlitedContainer);
+              highlitedContainer.appendChild(highlightedNode);
+              parentSummaryContainer.appendChild(summaryContainer);
+              let root = ReactDomClient.createRoot(summaryContainer);
+              root.render(summaryComponent);
+
+              // document.querySelector(
+              //   "#selectedNode__container .summarize__wrapper-container"
+              // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+              setTimeout(function () {
+                handleUpdateFileContent();
+              });
+              setSummaryArray([...summaryArray, res.data]);
+              setSummary(false);
+            }); // call handler for axios call
+          });
+        });
       } catch (error) {
         console.log(error);
       }
     }
   }
 
-  function handleCloseSummary(e, summaryId) {
-    e.preventDefault();
-    e.stopPropagation();
+  function handleCloseSummary(summaryId) {
+    // e.preventDefault();
+    // e.stopPropagation();
 
-    let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-    let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
-    let highlightedNode = document.getElementById(`${selectedSummaryComponent.classList[1]}`);
+    // let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+    // let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+    // let fileContent = document.querySelector('.file__content')
+    let selectedSummaryComponent = document.getElementsByClassName(
+      `parent-summary-container ${summaryId}`
+    )[0];
+    let highlightedNode = document.querySelector(
+      `[id='${selectedSummaryComponent.classList[1]}']`
+    );
     let nodeArray = Array.from(highlightedNode.childNodes);
-    nodeArray.forEach(node => {
+    nodeArray.forEach((node) => {
       selectedSummaryComponent.parentNode.insertBefore(
         node,
         selectedSummaryComponent
-      )
+      );
     });
+
+    // selectedSummaryComponent.classList.add("summary--close"); // animation
+
+    setSummaryArray(
+      summaryArray.filter((summary) => summary.summary_id !== summaryId)
+    );
 
     // BUG WITH STATE RIGHT HERE
     // NEED TO FIX ASAP
@@ -670,62 +688,116 @@ export default function Converted() {
     // HIGHLIGHT IDS ARE ONE STATE BEHIND
     // FILTER DOESNT WORK BECAUSE OF THIS
 
-
-
-    console.log('about to filter', highlightIds)
-    let newHighlightIds = highlightIds.filter(id => id !== highlightedNode.id);
-    console.log('newhighlights', newHighlightIds)
+    const newHighlightIds = (highlightIds) =>
+      [...highlightIds].filter((id) => id !== highlightedNode.id);
     setHighlightIds(newHighlightIds);
+
+    // setTimeout(() => { // let animation play first before removing everything
     selectedSummaryComponent.remove();
     highlightedNode.remove();
-  };
+    // }, 600)
+  }
 
-  const handleHighlight = (colorObj, type) => {
+  const handleHighlight = (colorObj, type, cb) => {
     if (selectedText) {
       let match = false;
       // check if user is only clicking on a highlighted node
       if (selectedText.toString().length === 0) {
-        console.log('no text selected', highlightIds);
+        console.log("no text selected", highlightIds);
         for (const selectedId of highlightIds) {
           const selectedElement = document.getElementById(`${selectedId}`);
+          const selectedSummary = document.getElementsByClassName(
+            `${selectedId}`
+          );
           if (selectedText.containsNode(selectedElement, true)) {
-            if (colorObj) {
+            if (colorObj && colorObj.colorText !== "clear") {
               selectedElement.style.backgroundColor = colorObj.colorHex;
-            }
-            match = true;
-          }
-        }
-      }
-      // check if user is selecting a node used in a summary
-      if (selectedText.toString().length > 0) {
-        console.log('text selected', highlightIds);
-        for (const selectedId of highlightIds) {
-          const selectedSummary = document.getElementsByClassName(`${selectedId}`);
-          console.log('summary component', selectedSummary);
-          if (selectedSummary[0]) {
-            const selectedElement = document.getElementById(`${selectedId}`);
-            if (selectedText.containsNode(selectedElement, true)) {
-              if (colorObj) {
-                selectedElement.style.backgroundColor = colorObj.colorHex;
-              }
+              match = true;
+            } else if (
+              colorObj &&
+              colorObj.colorText === "clear" &&
+              !selectedSummary[0]
+            ) {
+              let nodeArray = Array.from(selectedElement.childNodes);
+              nodeArray.forEach((node) => {
+                selectedElement.parentNode.insertBefore(node, selectedElement);
+              });
+              setHighlightIds(
+                highlightIds.filter((id) => id !== selectedElement.id)
+              );
+              selectedElement.remove();
               match = true;
             }
           }
         }
       }
+      // check if user is selecting a node used in a summary
+      if (selectedText.toString().length > 0) {
+        console.log("text selected", highlightIds);
+        let newHighlightIds = [...highlightIds];
+        for (const selectedId of highlightIds) {
+          const selectedElement = document.getElementById(`${selectedId}`);
+          const selectedSummary = document.getElementsByClassName(
+            `${selectedId}`
+          );
+          console.log("summary component", selectedSummary);
+          if (selectedSummary[0]) {
+            if (selectedText.containsNode(selectedElement, true)) {
+              if (colorObj && colorObj.colorText !== "clear") {
+                selectedElement.style.backgroundColor = colorObj.colorHex;
+              }
+              match = true;
+            }
+          } else if (
+            !selectedSummary[0] &&
+            colorObj &&
+            colorObj.colorText === "clear"
+          ) {
+            if (selectedText.containsNode(selectedElement, true)) {
+              let nodeArray = Array.from(selectedElement.childNodes);
+              nodeArray.forEach((node) => {
+                selectedElement.parentNode.insertBefore(node, selectedElement);
+              });
+              newHighlightIds = newHighlightIds.filter(
+                (id) => id !== selectedElement.id
+              );
+              selectedElement.remove();
+              match = true;
+            }
+          }
+        }
+        setHighlightIds(newHighlightIds);
+      }
 
       if (!match) {
-        console.log("no match");
+        let newColorObj = colorObj;
+        if (
+          colorObj &&
+          colorObj.colorText === "clear" &&
+          type !== `alternate`
+        ) {
+          return console.log("no match and clear highlight");
+        } else if (
+          highlightColor.colorText === "clear" &&
+          type === `alternate`
+        ) {
+          newColorObj = { colorText: "yellow", colorHex: "#FCFF7C" };
+          setHighlightColor(newColorObj);
+        }
         const rangeCount = selectedText.rangeCount;
-        if (rangeCount > 0 && selectedText.toString() !== "" && selectedText.toString().length > 0) {
+        if (
+          rangeCount > 0 &&
+          selectedText.toString() !== "" &&
+          selectedText.toString().length > 0
+        ) {
           let id = uuidv4();
-          console.log('making highlight', id)
+          console.log("making highlight", id);
           const highlightedNode = document.createElement("span");
           highlightedNode.classList.add("highlightnode");
-          if (!colorObj) {
+          if (!newColorObj) {
             highlightedNode.style.backgroundColor = highlightColor.colorHex;
           } else {
-            highlightedNode.style.backgroundColor = colorObj.colorHex;
+            highlightedNode.style.backgroundColor = newColorObj.colorHex;
           }
           const range = selectedText.getRangeAt(0);
           range.surroundContents(highlightedNode);
@@ -733,39 +805,39 @@ export default function Converted() {
           let newHighlightIds = [...highlightIds, id];
           for (const selectedId of highlightIds) {
             const selectedElement = document.getElementById(`${selectedId}`);
-            if (selectedText.containsNode(selectedElement, true) && selectedId !== id) {
+            if (
+              selectedText.containsNode(selectedElement, true) &&
+              selectedId !== id
+            ) {
               let nodeArray = Array.from(selectedElement.childNodes);
-              nodeArray.forEach(node => {
-                selectedElement.parentNode.insertBefore(
-                  node,
-                  selectedElement
-                )
+              nodeArray.forEach((node) => {
+                selectedElement.parentNode.insertBefore(node, selectedElement);
               });
-              newHighlightIds = newHighlightIds.filter(id => id !== selectedElement.id);
+              newHighlightIds = newHighlightIds.filter(
+                (id) => id !== selectedElement.id
+              );
               selectedElement.remove();
             }
           }
-          setHighlightIds(newHighlightIds);
 
+          setHighlightIds(newHighlightIds);
 
           // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
-            return highlightedNode
+            cb(highlightedNode);
           }
         }
       }
     }
-  }
+  };
 
   function handleChangeHighlightColor(colorObj) {
-
     setHighlightColor(colorObj);
-    console.log(selectedText.toString())
+    console.log(selectedText.toString());
     handleHighlight(colorObj);
     // console.log('colorObj update', colorObj)
     // setHighlightColor(colorObj)
   }
-
 
   // USE EFFECTS
 
@@ -820,15 +892,21 @@ export default function Converted() {
     updateLibraryArray(folderArray);
   }, [folderArray]);
 
-
   useEffect(() => {
     const file__content = document.querySelector(".file__content");
-    file__content.addEventListener("mouseup", () => {
-      if (window.getSelection().toString() !== "") {
-        setSelectedText(window.getSelection());
-      }
-    }, false);
-  }), [];
+    file__content.addEventListener(
+      "mouseup",
+      () => {
+        if (window.getSelection().toString() !== "") {
+          setSelectedText(window.getSelection());
+        }
+      },
+      false
+    );
+  }),
+    [];
+
+  console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
 
   const handleDownloadFile = () => {
     // // write html file contents to .txt file
@@ -846,28 +924,76 @@ export default function Converted() {
 
     // Source HTMLElement or a string containing HTML.
     // download pdf
-    let doc = new jsPDF();
-    var elementHTML = document.querySelector(".file__content").outerHTML;
-    console.log("PEEPEE", elementHTML)
 
-    doc.html(elementHTML, {
-      callback: function (doc) {
-        // Save the PDF
-        doc.save(`${newFileName}.pdf`);
-      },
-      margin: [10, 10, 10, 10],
-      x: 10,
-      y: 10,
-      autoPaging: "text",
-      width: 180,
-      windowWidth: 1080,
-    });
-    // autoPaging:"text",
-    //   x: 0,
-    //   y: 0,
-    //   width: 190, //target width in the PDF document
-    //   windowWidth: 675, //window width in CSS pixels
+    var elementHTML = document.querySelector(".file__content");
+    console.log("PEEPEE", elementHTML.clientHeight);
+
+    // const doc = new jsPDF({
+    //   orientation: "p",
+    //   unit: "px",
+    //   format: "a4",
+    //   hotfixes: ["px_scaling"],
     // });
+
+    // html2canvas(elementHTML, {
+    //   width: doc.internal.pageSize.getWidth(),
+    //   height: doc.internal.pageSize.getHeight(),
+    //   autoPaging: "text",
+    // }).then((canvas) => {
+    //   const img = canvas.toDataURL("image/png");
+
+    //   doc.addImage(
+    //     img,
+    //     "PNG",
+    //     140,
+    //     10,
+    //     doc.internal.pageSize.getWidth(),
+    //     doc.internal.pageSize.getHeight()
+    //   );
+    //   doc.save("statement.pdf");
+    // });
+
+    //   doc.html(elementHTML, {
+    //     callback: function (doc) {
+    //       // Save the PDF
+    //       doc.save(`${newFileName}.pdf`);
+    //     },
+    //     margin: [10, 10, 10, 10],
+    //     x: 0,
+    //     y: 0,
+    //     autoPaging: "text",
+    //     width: 180,
+    //     windowWidth: 1080,
+    //   });
+
+
+    let HTML_Width = elementHTML.clientWidth;
+		let HTML_Height = elementHTML.clientHeight;
+		let top_left_margin = 15;
+		let PDF_Width = HTML_Width+(top_left_margin*2);
+		let PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+		let canvas_image_width = HTML_Width;
+		let canvas_image_height = HTML_Height;
+		let totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+      
+		html2canvas((elementHTML),{allowTaint:true, autoPaging:"text",}).then(function(canvas) {
+			canvas.getContext('2d');
+			
+			console.log(canvas.height+"  "+canvas.width);
+			
+			
+			let imgData = canvas.toDataURL("image/jpeg", 1.0);
+			let pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+		    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+			
+			
+			for (let i = 1; i <= totalPDFPages; i++) { 
+				pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
+				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+			}
+			
+		    pdf.save(`${newFileName}.pdf`);
+        });
   };
 
   return (
@@ -884,7 +1010,6 @@ export default function Converted() {
           handleChangeHighlightColor={handleChangeHighlightColor}
           handleDictionary={handleDictionary}
           handleSummary={handleSummary}
-          handleUpdateFileContent={handleUpdateFileContent}
           handleDownloadFile={handleDownloadFile}
         />
       </StickyCont>
@@ -920,7 +1045,7 @@ export default function Converted() {
                       console.log("clicking delete");
                       handleDelete();
                     }}
-                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
                 )}
               </IconCont>
@@ -949,7 +1074,7 @@ export default function Converted() {
           <Container
             className="file__content"
             width="100%"
-            height="100vh"
+            height="100%"
             scroll="scroll"
             display="inline"
             backgroundColor={settingData.background_colour}
