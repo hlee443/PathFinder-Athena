@@ -13,6 +13,7 @@ const OptionCont = styled(Flexbox)`
   gap: 1rem;
   min-width: 100%;
   align-items: center;
+  padding: ${(props) => props.padding};
 
   :hover {
     font-weight: bold;
@@ -41,6 +42,7 @@ const Img = styled.img`
 const OptionText = styled(Flexbox)`
   width: 100%;
   justify-content: space-between;
+  gap: 1rem;
 
   @media ${mediaQuery.maxWidth.mobile} {
     align-items: start;
@@ -74,10 +76,12 @@ export default function Option({
   inputWidth = "100%",
   hoverColor = "",
   height = "",
-  imgColor = "transparent"
+  imgColor = "transparent",
+  padding = "",
 }) {
   return (
     <OptionCont
+      padding={padding}
       hoverColor={hoverColor}
       onClick={handleOption}
       dir="row"

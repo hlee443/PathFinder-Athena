@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option";
-import { useState } from "react";
-import { faBedPulse, faLaptopHouse } from "@fortawesome/free-solid-svg-icons";
 
 const DropdownCont = styled(Flexbox)`
   background-color: ${colors.backgroundYellow};
@@ -24,7 +22,6 @@ export default function MiniDropdown({
   handleOption = () => { },
   onEdit = () => { },
   onDelete = () => { },
-  onMoveFolder = () => { },
   handleMouseLeave = () => { },
   right = ""
 }) {
@@ -36,16 +33,17 @@ export default function MiniDropdown({
       {
         arr.map((o, i) => (
           <Option
+            padding="1.2rem 1.5rem"
             handleOption={() => {
               o.text === "Rename" && onEdit(),
-                o.text === "Delete" && onDelete(),
-                o.text === "Move" && onMoveFolder()
+                o.text === "Delete" && onDelete()
             }}
             key={i}
             bgColor={o.bgColor}
             text={o.text}
             faIconNameRight={o.faIconNameRight}
             right={right}
+            hoverColor={colors.secondaryBlue}
           />
         ))
       }
