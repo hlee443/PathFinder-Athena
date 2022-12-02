@@ -140,14 +140,10 @@ export default function File({
       // const fileContentHtml = fileContent.innerHTML
 
       const previewContainer = document.querySelector('.filePreview__container')
-      // const embed = document.querySelector('.embedded')
-
       
       const fileContentBlob = new Blob([fileContent.substring(0, 130) + '...'], { type: 'text/html' })
       
       const fileTextUrl = URL.createObjectURL(fileContentBlob)
-
-      // embed.contentDocument.body.style.overflow = 'hidden'
 
       setFileImgUrl(fileTextUrl)
 
@@ -170,11 +166,10 @@ export default function File({
       >
         {fileId && (
           <>
-            
             <Embed className="embedded" data={fileImgUrl} type="text/html"/>
           </>
         )}
-        {fileId === false && (
+        {fileId === null && (
           <Icon
             faIconName={faPlus}
             size="2x"
