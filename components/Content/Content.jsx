@@ -15,7 +15,7 @@ export default function Content({
     const [fileContent, setFileContent] = useState('')
 
     useEffect(() => {
-        console.log("CONTENT CONVERSION", fileData.file_content)
+        //console.log("CONTENT CONVERSION", fileData.file_content)
 
         const isHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/
 
