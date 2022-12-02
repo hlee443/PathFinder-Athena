@@ -361,6 +361,8 @@ export default function Converted() {
           mainHandler.handleDictionary(selectedText.toString(), (res) => {
             const { data } = res;
             const { definition } = data;
+            if (data[0] && data[0].shortdef) {
+            
             const newDefinition = data[0].shortdef[0];
             let keywordData = {
               keywordData: {
@@ -376,12 +378,19 @@ export default function Converted() {
               setKeywordArray([...keywordArray, res.data]);
               setDictionary(false);
             });
+          } else {
+            console.log("no definition found");
+            setDictionary(false);
+          }
           });
+        
         } else {
           console.log("not a word");
+          setDictionary(false);
         }
       } catch (error) {
         console.log(error);
+        setDictionary(false);
       }
     }
   }
