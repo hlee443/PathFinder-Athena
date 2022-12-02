@@ -75,7 +75,7 @@ export default function ToolBarDropdown({
               value={o.folder_id}
             />
           ))}
-        {type === "Library" && (
+        {/* {type === "Library" && (
           <ButtonCont>
             <Button
               text="New Folder"
@@ -85,7 +85,7 @@ export default function ToolBarDropdown({
               handleClick={() => handleNewFolder("temp")}
             />
           </ButtonCont>
-        )}
+        )} */}
         {type === "Typeface" && (
           <Option
             bgColor={colors.primaryBlue}
