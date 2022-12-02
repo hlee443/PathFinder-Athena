@@ -769,6 +769,11 @@ export default function Converted() {
     };
     // const file__content = document.querySelector(".file__content");
     file__content.addEventListener("click", eventListenerCallback, false);
+
+    window.onbeforeunload = function () {
+      return "Are you sure you want to leave?";
+    };
+
   }, []);
 
   useEffect(() => {

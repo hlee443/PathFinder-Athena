@@ -72,6 +72,7 @@ const BottomCont = styled(Flexbox)`
 `;
 
 const Embed = styled.object`
+  cursor: pointer;
   overflow-y: hidden;
   object-position: fill;
   width: 100%;
