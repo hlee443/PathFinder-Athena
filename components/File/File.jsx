@@ -10,9 +10,11 @@ import * as mainHandler from "../../handlers/main";
 import { mediaQuery } from "../../MediaQuery/data";
 import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../MiniDropdown/data";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
-const FileCont = styled(Flexbox)`
+const FileCont = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
   align-items: start;
   width: 9rem;
   position: relative;
@@ -30,7 +32,7 @@ const Title = styled(motion.p)`
   white-space: normal;
 `;
 
-const Preview = styled(motion.div)`
+const Preview = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -125,11 +127,8 @@ export default function File({
   const moveFolder = () => {};
 
   return (
-    <FileCont fileId={fileId}>
+    <FileCont fileId={fileId} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Preview
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ ease: "easeOut", duration: 1 }}
         border={fileId ? "solid" : "dashed"}
         onMouseEnter={setIsHover}
         onMouseLeave={() => setIsHover(false)}

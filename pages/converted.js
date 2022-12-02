@@ -965,34 +965,47 @@ export default function Converted() {
     //     windowWidth: 1080,
     //   });
 
-
     let HTML_Width = elementHTML.clientWidth;
-		let HTML_Height = elementHTML.clientHeight;
-		let top_left_margin = 15;
-		let PDF_Width = HTML_Width+(top_left_margin*2);
-		let PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
-		let canvas_image_width = HTML_Width;
-		let canvas_image_height = HTML_Height;
-		let totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
-      
-		html2canvas((elementHTML),{allowTaint:true, autoPaging:"text",}).then(function(canvas) {
-			canvas.getContext('2d');
-			
-			console.log(canvas.height+"  "+canvas.width);
-			
-			
-			let imgData = canvas.toDataURL("image/jpeg", 1.0);
-			let pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
-		    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
-			
-			
-			for (let i = 1; i <= totalPDFPages; i++) { 
-				pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
-				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-			}
-			
-		    pdf.save(`${newFileName}.pdf`);
-        });
+    let HTML_Height = elementHTML.clientHeight;
+    let top_left_margin = 15;
+    let PDF_Width = HTML_Width + top_left_margin * 2;
+    let PDF_Height = PDF_Width * 1.5 + top_left_margin * 2;
+    let canvas_image_width = HTML_Width;
+    let canvas_image_height = HTML_Height;
+    let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+    html2canvas(elementHTML, { allowTaint: true, autoPaging: "text" }).then(
+      function (canvas) {
+        canvas.getContext("2d");
+
+        console.log(canvas.height + "  " + canvas.width);
+
+        let imgData = canvas.toDataURL("image/jpeg", 1.0);
+        let pdf = new jsPDF("p", "pt", [PDF_Width, PDF_Height]);
+        pdf.addImage(
+          imgData,
+          "JPG",
+          top_left_margin,
+          top_left_margin,
+          canvas_image_width,
+          canvas_image_height
+        );
+
+        for (let i = 1; i <= totalPDFPages; i++) {
+          pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
+          pdf.addImage(
+            imgData,
+            "JPG",
+            top_left_margin,
+            -(PDF_Height * i) + top_left_margin * 4,
+            canvas_image_width,
+            canvas_image_height
+          );
+        }
+
+        pdf.save(`${newFileName}.pdf`);
+      }
+    );
   };
 
   return (
@@ -1035,6 +1048,7 @@ export default function Converted() {
                 )}
                 {dropdown && (
                   <MiniDropdown
+                    handleMouseLeave={() => showDropdown(false)}
                     onClose={() => {
                       showDropdown(false);
                     }}
