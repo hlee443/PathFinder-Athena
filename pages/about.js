@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 
 const StyledWrapper = styled(Wrapper)`
   padding: 10rem;
+  height: 100%;
 `;
 
 const StyledImg = styled.img`
