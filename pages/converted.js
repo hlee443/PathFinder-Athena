@@ -357,29 +357,29 @@ export default function Converted() {
         // regex to find letter following a space following a letter
         const regex = /(?<=\s)\w/g;
         if (!regex.test(selectedText)) {
-        setDictionary(true);
-        mainHandler.handleDictionary(selectedText.toString(), (res) => {
-          const { data } = res;
-          const { definition } = data;
-          const newDefinition = data[0].shortdef[0];
-          let keywordData = {
-            keywordData: {
-              fileId: fileData.file_id,
-              keywordName: selectedText.toString(),
-              keywordDefinition: newDefinition,
-            },
-          };
-          // add keyword to database
-          // console.log(keywordData);
-          mainHandler.handleAddKeyword(keywordData, (res) => {
-            //console.log("keyword added", res);
-            setKeywordArray([...keywordArray, res.data]);
-            setDictionary(false);
+          setDictionary(true);
+          mainHandler.handleDictionary(selectedText.toString(), (res) => {
+            const { data } = res;
+            const { definition } = data;
+            const newDefinition = data[0].shortdef[0];
+            let keywordData = {
+              keywordData: {
+                fileId: fileData.file_id,
+                keywordName: selectedText.toString(),
+                keywordDefinition: newDefinition,
+              },
+            };
+            // add keyword to database
+            // console.log(keywordData);
+            mainHandler.handleAddKeyword(keywordData, (res) => {
+              //console.log("keyword added", res);
+              setKeywordArray([...keywordArray, res.data]);
+              setDictionary(false);
+            });
           });
-        });
-      } else {
-        console.log("not a word");
-      }
+        } else {
+          console.log("not a word");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -780,7 +780,7 @@ export default function Converted() {
   // }, [])
 
   useEffect(() => {
-    
+
 
     if (!router.query.fileData) {
       router.push({ pathname: "/" });
@@ -838,7 +838,7 @@ export default function Converted() {
         handleCloseSummary(null, e);
       }
     };
-   
+
     file__content.addEventListener("click", eventListenerCallback, false);
 
     window.onbeforeunload = function () {
@@ -859,7 +859,7 @@ export default function Converted() {
     updateFileData(fileData);
   }, [fileData]);
 
- 
+
 
   const handleDownloadFile = () => {
     var elementHTML = document.querySelector(".file__content");
@@ -970,13 +970,13 @@ export default function Converted() {
                 )}
               </IconCont>
               {
-            showBubble && <Overlay>
-              <Bubble
-                handleBubble={()=>router.push("/")}
-                onClose={() => router.push("/")}
-                type="delete" />
-            </Overlay>
-          }
+                showBubble && <Overlay>
+                  <Bubble
+                    handleBubble={() => router.push("/")}
+                    onClose={() => router.push("/")}
+                    type="delete" />
+                </Overlay>
+              }
             </Title>
           )}
           {isEditing && (
