@@ -84,13 +84,10 @@ const StickyCont = styled(Flexbox)`
 // `;
 
 const Overlay = styled.div`
-position:absolute;
-top:50%;
-left:50%;
-transform: translate(-50%,-50%);
--webkit-transform: translate(-50%,-50%);
--ms-transform: translate(-50%,-50%);
--moz-transform: translate(-50%,-50%);
+position: relative;
+width: 100%;
+height: 100%;
+
 `
 
 export default function Converted() {
@@ -312,8 +309,9 @@ export default function Converted() {
   function handleDelete() {
     mainHandler.handleDeleteFile(fileData.file_id);
     setIsEditing(false);
+    setShowBubble("delete");
+    showDropdown(false);
     // router.push("/");
-    setShowBubble("delete")
   }
   // function handleMoveFolder() {
   //   console.log("move folder");
@@ -925,13 +923,12 @@ export default function Converted() {
                     }}
                   />
                 )}
-
                 {dropdown && (
                   <MiniDropdown
                     handleMouseLeave={handleMiniDropdown}
-                    onClose={() => {
-                      showDropdown(false);
-                    }}
+                    onClose={() =>
+                      router.push("/")
+                    }
                     position="absolute"
                     arr={editFileDataArr}
                     onEdit={() => {
@@ -940,24 +937,22 @@ export default function Converted() {
                     }}
                     onDelete={() => {
                       //console.log("clicking delete");
-                      // handleDelete();
-                      setShowBubble(true);
-                      showDropdown(false)
+                      handleDelete();
                     }}
-                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
                 )}
               </IconCont>
-            </Title>
-          )}
-          {
+              {
             showBubble && <Overlay>
               <Bubble
-                handleBubble={handleDelete}
-                onClose={()=>setShowBubble(false)}
+                handleBubble={()=>router.push("/")}
+                onClose={() => router.push("/")}
                 type="delete" />
             </Overlay>
           }
+            </Title>
+          )}
           {isEditing && (
             <Title dir="row">
               <Input
@@ -972,6 +967,7 @@ export default function Converted() {
               />
             </Title>
           )}
+
           <Container
             className="file__content"
             width="100%"
@@ -1000,7 +996,6 @@ export default function Converted() {
         )}
         {/* </SidebarCont> */}
       </Layout>
-
       {/* </DocCont> */}
       {/* <DocCont>
         <Wrapper>

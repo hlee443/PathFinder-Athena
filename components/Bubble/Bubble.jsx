@@ -10,7 +10,7 @@ import { bubbleData } from "./data";
 import { btnData } from "../Button/data";
 
 const BubbleCont = styled(Flexbox)`
-  position: relative;
+  position: absolute;
   width:fit-content; 
   max-width: 44rem;
   max-height: 36rem;
@@ -18,8 +18,9 @@ const BubbleCont = styled(Flexbox)`
   background-color: ${colors.backgroundCream};
   padding: 2.5rem;
   gap: 1.5rem;
-  z-index: 1;
+  z-index: 5;
   align-items: flex-start;
+  box-shadow: 0px 11px 20px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const Heading = styled(Flexbox)`
@@ -64,8 +65,8 @@ export default function Bubble({
   type = "login",
   onClose = () => { },
   handleBubble = () => { },
-  onSignUp = () => { },
-  onSignIn = () => { },
+  // onSignUp = () => { },
+  // onSignIn = () => { },
 }) {
   return (
     <BubbleCont type={type}>
@@ -104,7 +105,7 @@ export default function Bubble({
       )} */}
 
       <BtnCont dir="row">
-        <Button
+        {/* <Button
           text={bubbleData[type].btnTextLeft}
           handleClick={onClose}
           primary={false}
@@ -112,7 +113,7 @@ export default function Bubble({
           border="2px solid"
           width="10rem"
           color={colors.lightGrey}
-        />
+        /> */}
         <Button
           text={bubbleData[type].btnTextRight}
           handleClick={handleBubble}

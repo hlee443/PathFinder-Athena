@@ -25,9 +25,9 @@ export const bubbleData = {
 
   delete: {
     type: "delete",
-    header: "Are you sure you want to delete this file?",
-    subHeader1: "This is irreversible and your study notes will be deleted forever.",
-    btnTextLeft: "Cancel",
-    btnTextRight: "Delete a file",
+    header: "Your file has been deleted.",
+    subHeader1: "Upload another file and start studying again.",
+    btnTextLeft: "Go to the Library",
+    btnTextRight: "Back to Main",
   },
 };
