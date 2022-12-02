@@ -29,6 +29,7 @@ const DropdownCont = styled(Flexbox)`
 
 const ButtonCont = styled(Flexbox)`
   align-self: flex-end;
+  padding:1rem;
 `;
 
 export default function ToolBarDropdown({
@@ -58,6 +59,7 @@ export default function ToolBarDropdown({
             text="Library"
             faIconNameRight={faClose}
             handleOption={onClose}
+            padding="2rem"
           />
         )}
         {type === "Library" &&
@@ -111,8 +113,6 @@ export default function ToolBarDropdown({
           <ButtonCont>
             <Button
               text="Save Settings"
-              backgroundColor="transparent"
-              type="IconButton"
               handleClick={onClose}
             />
           </ButtonCont>

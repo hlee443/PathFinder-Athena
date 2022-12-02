@@ -11,13 +11,9 @@ import { faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import * as mainHandler from "../handlers/main";
 import LogoBar from "../components/LogoBar/LogoBar";
 import { mediaQuery } from "../MediaQuery/data";
-import { motion } from "framer-motion";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
-const FileDisplay = styled(motion.div)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+const FileDisplay = styled(Flexbox)`
   width: 100%;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -48,6 +44,7 @@ const TopCont = styled(Flexbox)`
 export default function Library() {
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
+  const [visible, setVisible] = useState(true);
 
   const router = useRouter();
 
@@ -106,6 +103,7 @@ export default function Library() {
   function handleDelete(fileId) {
     mainHandler.handleDeleteFile(fileId);
     setFiles(files.filter((files) => files.file_id !== fileId));
+    setVisible(false);
   }
 
   let fileList = files.map((file) => {
@@ -134,26 +132,27 @@ export default function Library() {
         </TopCont> */}
         <Header text="Library" />
         <TabBar btnArr={folders} buttonClick={onSelectFolder} />
-        <FileDisplay
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ ease: "easeOut", duration: 2 }}
-        >
+        <FileDisplay dir="row">
           <File
             fileName="Add a new file"
             handleClick={() => {
               router.push("/");
             }}
           />
-          {files ? (
-            fileList
-          ) : (
-            <>
-              <BodyText>
-                Your library is currently empty, add a document to get started.
-              </BodyText>
-            </>
-          )}
+          <AnimatePresence>
+            {files ? (
+              <AnimateSharedLayout>
+                <AnimatePresence>{fileList}</AnimatePresence>
+              </AnimateSharedLayout>
+            ) : (
+              <>
+                <BodyText>
+                  Your library is currently empty, add a document to get
+                  started.
+                </BodyText>
+              </>
+            )}
+          </AnimatePresence>
         </FileDisplay>
       </StyledWrapper>
     </Flexbox>

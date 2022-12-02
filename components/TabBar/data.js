@@ -18,18 +18,16 @@ export const btnData = {
       color: colors.darkGrey,
       fontWeight: "bold",
       iconColor: colors.textBlack,
-
     },
     clicked: {
       borderBottom: `0.25rem solid ${colors.primaryBlue}`,
       color: colors.darkGrey,
       fontWeight: "bold",
       iconColor: colors.textBlack,
-
     },
     inactive: {
       borderBottom: "0.25rem solid transparent",
-      color: colors.grey,
+      color: colors.darkGrey,
       fontWeight: "normal",
       iconColor: colors.grey,
     },

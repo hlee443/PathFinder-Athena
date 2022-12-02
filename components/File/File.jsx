@@ -10,11 +10,13 @@ import * as mainHandler from "../../handlers/main";
 import { mediaQuery } from "../../MediaQuery/data";
 import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../MiniDropdown/data";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 // import * as htmlToImage from 'html-to-image';
 // import html2canvas from "html2canvas";
 
-const FileCont = styled(Flexbox)`
+const FileCont = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
   align-items: start;
   width: 9rem;
   position: relative;
@@ -51,7 +53,6 @@ const Preview = styled(motion.div)`
   min-height: 10rem;
   background-color: transparent;
 
-
   :hover {
     background-color: ${colors.opacity};
     border: 0.188rem solid ${colors.primaryBlue};
@@ -83,14 +84,6 @@ const Embed = styled.object`
   pointer-events: none;
 `
 
-const EmbedContainer = styled.div`
-  position: absolute;
-  display: flex;  
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`
 
 export default function File({
   fileName = "Title",
@@ -108,8 +101,8 @@ export default function File({
   const [newFolderId, setNewFolderId] = useState(folderId);
   const [isHover, setIsHover] = useState(false);
   const [showMiniDropdown, setShowMiniDropdown] = useState(false);
-  const [editAnimation, setEditAnimation] = useState(false);
-  const [fileImgUrl, setFileImgUrl] = useState('')
+  const [fileImgUrl, setFileImgUrl] = useState("");
+  const [edited, setEdited] = useState(false);
 
   const editFilename = () => {
     setShowMiniDropdown(false);
@@ -122,6 +115,7 @@ export default function File({
 
   const saveFilename = () => {
     setIsEditing(false);
+    setEdited(true);
     setShowMiniDropdown(false);
     mainHandler.handleUpdateFile(
       {
@@ -149,7 +143,7 @@ export default function File({
   };
 
   useEffect(() => {
-    if(fileId){
+    if (fileId) {
       // const fileContentHtml = fileContent.innerHTML
 
       const previewContainer = document.querySelector('.filePreview__container')
@@ -165,21 +159,23 @@ export default function File({
 
       const fileTextUrl = URL.createObjectURL(fileContentBlob)
 
-      setFileImgUrl(fileTextUrl)
+      setFileImgUrl(fileTextUrl);
 
       //  embedded.contentDocument.style.backgroundColor = 'red'
        
     }
-  },[])
+  }, []);
 
   const moveFolder = () => {};
 
+  const variants = {
+    animated: { opacity: 0 },
+    default: { opacity: 1 },
+  };
+
   return (
-    <FileCont fileId={fileId}>
+    <FileCont fileId={fileId} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Preview
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ ease: "easeOut", duration: 1 }}
         border={fileId ? "solid" : "dashed"}
         onMouseEnter={setIsHover}
         onMouseLeave={() => setIsHover(false)}
@@ -188,15 +184,7 @@ export default function File({
       >
         {fileId && (
           <>
-
-              {/* <EmbedContainer> */}
-                <Embed className="embedded" data={fileImgUrl} type="image/png" >
-                
-                </Embed>
-              {/* </EmbedContainer> */}
-              
-           
-
+            <Embed className="embedded" data={fileImgUrl} type="text/html" />
           </>
         )}
         {fileId === null && (
@@ -211,8 +199,9 @@ export default function File({
       {!isEditing && (
         <BottomCont dir="row">
           <Title
-            initial={{ opacity: editAnimation ? 0 : 1 }}
+            initial={edited ? "animated" : "default"}
             animate={{ opacity: 1 }}
+            variants={variants}
             transition={{ ease: "easeOut", duration: 2 }}
           >
             {newFileName}
