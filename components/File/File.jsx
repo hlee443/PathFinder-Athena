@@ -85,7 +85,7 @@ export default function File({
   const [newFolderId, setNewFolderId] = useState(folderId);
   const [isHover, setIsHover] = useState(false);
   const [showMiniDropdown, setShowMiniDropdown] = useState(false);
-  const [editAnimation, setEditAnimation] = useState(false);
+  const [edited, setEdited] = useState(false);
 
   const editFilename = () => {
     setShowMiniDropdown(false);
@@ -98,6 +98,7 @@ export default function File({
 
   const saveFilename = () => {
     setIsEditing(false);
+    setEdited(true);
     setShowMiniDropdown(false);
     mainHandler.handleUpdateFile(
       {
@@ -126,6 +127,11 @@ export default function File({
 
   const moveFolder = () => {};
 
+  const variants = {
+    animated: { opacity: 0 },
+    default: { opacity: 1 },
+  };
+
   return (
     <FileCont fileId={fileId} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Preview
@@ -148,8 +154,9 @@ export default function File({
       {!isEditing && (
         <BottomCont dir="row">
           <Title
-            initial={{ opacity: editAnimation ? 0 : 1 }}
+            initial={edited ? "animated" : "default"}
             animate={{ opacity: 1 }}
+            variants={variants}
             transition={{ ease: "easeOut", duration: 2 }}
           >
             {newFileName}
