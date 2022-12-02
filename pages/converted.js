@@ -608,7 +608,7 @@ export default function Converted() {
             }
           }
         }
-      }
+      }fileId
       // check if user is selecting a node used in a summary
       if (selectedText.toString().length > 0) {
         //console.log("text selected", highlightIds);

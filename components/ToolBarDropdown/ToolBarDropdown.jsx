@@ -33,17 +33,19 @@ const ButtonCont = styled(Flexbox)`
 `;
 
 export default function ToolBarDropdown({
-  onExpand = () => {},
-  onClose = () => {},
-  handleSaveSetting = () => {
-    onClose();
-  },
-  handleNewFolder = () => {},
+  onExpand = () => { },
+  onClose = () => { },
+  handleSaveSetting = () => { },
+  handleNewFolder = () => { },
   type = "",
   libraryArray,
   typeArray,
 }) {
   const [sel, setSel] = useState(0);
+  function handleClose() {
+    handleSaveSetting()
+    onClose()
+  }
 
   return (
     <motion.div
@@ -113,7 +115,7 @@ export default function ToolBarDropdown({
           <ButtonCont>
             <Button
               text="Save Settings"
-              handleClick={onClose}
+              handleClick={handleClose}
             />
           </ButtonCont>
         )}
