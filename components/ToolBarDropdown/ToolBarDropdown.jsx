@@ -23,8 +23,6 @@ const DropdownCont = styled(Flexbox)`
   max-width: 25rem;
   overflow: hidden;
   position: absolute;
-  top: 0;
-  // z-index: 999;
 `;
 
 const ButtonCont = styled(Flexbox)`

@@ -48,6 +48,38 @@ export default function Input({
           value="Arial">
           Arial
         </option>
+        <option
+          value="Verdana">
+          Verdana
+        </option>
+        <option
+          value="Tahoma">
+          Tahoma
+        </option>
+        <option
+          value="Trebuchet MS">
+          Trebuchet MS
+        </option>
+        <option
+          value="Times New Roman">
+          Times New Roman
+        </option>
+        <option
+          value="Georgia">
+          Georgia
+        </option>
+        <option
+          value="Garamond">
+          Garamond
+        </option>
+        <option
+          value="Courier New">
+          Courier New
+        </option>
+        <option
+          value="Cursive">
+          Cursive
+        </option>
       </OptionCont>
     );
   } else {
