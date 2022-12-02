@@ -81,9 +81,11 @@ export default function About() {
         <Flexbox>
           <Yellow bg="bg">
             <SubHeader text="Why Pathfinder?"></SubHeader>
-            <video width="100%" controls>
-              <source src="vid.mp4" type="video/mp4" />
-            </video>
+            <iframe
+              width="1000"
+              height="500"
+              src="https://www.youtube.com/embed/slQRO4DoSQo"
+            ></iframe>
             <Text>
               As a group of students studying for coursework every day, we found
               course guidelines and instructions were sometimes disorganized and
