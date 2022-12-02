@@ -705,11 +705,14 @@ export default function Converted() {
 
   useEffect(() => {
     if (!router.query.fileData) {
-      return;
+      router.push({pathname: "/"});
+      return
     } else if (!router.query.settingData) {
-      return;
+      router.push({pathname: "/"});
+      return
     } else if (!router.query.folderArray) {
-      return;
+      router.push({pathname: "/"});
+      return
     }
     setFileData(JSON.parse(router.query.fileData));
     const folderArray = JSON.parse(router.query.folderArray);
@@ -761,19 +764,6 @@ export default function Converted() {
     file__content.addEventListener("click", eventListenerCallback, false);
   }, []);
 
-  // useEffect(() => {
-  //   console.log("fileid", fileData);
-  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
-  //     setKeywordArray(res.data);
-  //   });
-  // },[])
-
-  // useEffect(() => {
-  //   const saveSelection = () => {
-  //     setSelectedText(window.getSelection());
-  //     file__content.removeEventListener("mouseup", saveSelection, false);
-  //   };
-
   useEffect(() => {
     updateTypeArray(settingData);
   }, [settingData]);
@@ -786,100 +776,9 @@ export default function Converted() {
     updateFileData(fileData);
   }, [fileData]);
 
-  // useEffect(() => {
-  //   console.log('use effect mouse up')
-  //   const file__content = document.querySelector(".file__content");
-  //   file__content.addEventListener(
-  //     "mouseup",
-  //     () => {
-  //       if (window.getSelection().toString() !== "") {
-  //         setSelectedText(window.getSelection());
-  //       }
-  //     },
-  //     false
-  //   );
-  // }), [];
-
-  // useEffect(() => {
-  //   // event listener for closing the summary component
-  //   console.log('use effect mouse down')
-  //   function eventListenerCallback(e) {
-  //     e.preventDefault();
-  //     let closeElement = e.target;
-  //     if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
-  //       handleCloseSummary(null, e);
-  //     }
-  //     // if (apples.closest(".summary__container")) {
-
-  //     // // if (apples.parent?.parent?.classList.contains("summarize__container")) {
-  //     //   e.preventDefault();
-  //     //   handleCloseSummary(null, e);
-  //     // }
-  //   };
-  //   const file__content = document.querySelector(".file__content");
-  //   file__content.addEventListener("click", eventListenerCallback, false);
-  // }), [];
-
-  // console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
-
   const handleDownloadFile = () => {
-    // // write html file contents to .txt file
-    // const element = document.createElement("a");
-    // // convert file with html tags to plain text
-    // const fileContent = htmlToText(fileData.file_content);
-    // const file = new Blob([fileContent], {
-    //   type: "text/plain",
-    // });
-
-    // element.href = URL.createObjectURL(file);
-    // element.download = fileData.file_name;
-    // document.body.appendChild(element); // Required for this to work in FireFox
-    // element.click();
-
-    // Source HTMLElement or a string containing HTML.
-    // download pdf
 
     var elementHTML = document.querySelector(".file__content");
-    // console.log("PEEPEE", elementHTML.clientHeight);
-
-    // const doc = new jsPDF({
-    //   orientation: "p",
-    //   unit: "px",
-    //   format: "a4",
-    //   hotfixes: ["px_scaling"],
-    // });
-
-    // html2canvas(elementHTML, {
-    //   width: doc.internal.pageSize.getWidth(),
-    //   height: doc.internal.pageSize.getHeight(),
-    //   autoPaging: "text",
-    // }).then((canvas) => {
-    //   const img = canvas.toDataURL("image/png");
-
-    //   doc.addImage(
-    //     img,
-    //     "PNG",
-    //     140,
-    //     10,
-    //     doc.internal.pageSize.getWidth(),
-    //     doc.internal.pageSize.getHeight()
-    //   );
-    //   doc.save("statement.pdf");
-    // });
-
-    //   doc.html(elementHTML, {
-    //     callback: function (doc) {
-    //       // Save the PDF
-    //       doc.save(`${newFileName}.pdf`);
-    //     },
-    //     margin: [10, 10, 10, 10],
-    //     x: 0,
-    //     y: 0,
-    //     autoPaging: "text",
-    //     width: 180,
-    //     windowWidth: 1080,
-    //   });
-
 
     let HTML_Width = elementHTML.clientWidth;
     let HTML_Height = elementHTML.clientHeight;
