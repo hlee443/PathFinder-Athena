@@ -75,7 +75,7 @@ export default function Home() {
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
   const [isActiveDrag, setIsActiveDrag] = useState(false);
-  const [test, setTest] = useState(true);
+  const [textSetting, setTextSetting] = useState(true);
 
   function showCustomizationBox() {
     setActive(true);
@@ -177,7 +177,7 @@ export default function Home() {
       };
     };
     setUploadSetting(newUploadSetting);
-    (test) ? setTest(false) : setTest(true);
+    (textSetting) ? setTextSetting(false) : setTextSetting(true);
   }
 
   function resetPageStates() {
@@ -246,7 +246,7 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 style={{ width: "100%" }}
               >
-                <Container key={test} gap="2rem" height="100%">
+                <Container key={textSetting} gap="2rem" height="100%">
                   <Option
                     src={iconSvgs.backgroundColor}
                     text="Background Colour"
