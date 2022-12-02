@@ -32,6 +32,8 @@ const Title = styled(motion.p)`
   white-space: normal;
 `;
 
+
+
 const Preview = styled(motion.div)`
   overflow: hidden;
   display: flex;
@@ -41,12 +43,13 @@ const Preview = styled(motion.div)`
   font-size: 1rem;
   padding: 1rem;
   border-radius: 2rem;
-  background-color: ${(props) =>
-    props.backgroundColor || colors.backgroundWhite};
+  /* background-color: ${(props) =>
+    props.backgroundColor || colors.backgroundWhite}; */
   border: 0.188rem ${(props) => props.border || "dashed"} ${colors.darkGray};
   cursor: pointer;
   width: 100%;
   min-height: 10rem;
+  background-color: transparent;
 
 
   :hover {
@@ -72,11 +75,21 @@ const BottomCont = styled(Flexbox)`
 `;
 
 const Embed = styled.object`
+  position: relative;
   overflow-y: hidden;
-  object-position: fill;
   width: 100%;
   min-height: 100%;
   font-size: 2px;
+  pointer-events: none;
+`
+
+const EmbedContainer = styled.div`
+  position: absolute;
+  display: flex;  
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 `
 
 export default function File({
@@ -140,13 +153,22 @@ export default function File({
       // const fileContentHtml = fileContent.innerHTML
 
       const previewContainer = document.querySelector('.filePreview__container')
+      const embedded = document.querySelector(".embedded")
       
       const fileContentBlob = new Blob([fileContent.substring(0, 130) + '...'], { type: 'text/html' })
       
+      // console.log("embedded", embedded)
+      // console.log("embedded content document", embedded.contentDocument.html)
+
+      // embedded.contentDocument.html
+
+
       const fileTextUrl = URL.createObjectURL(fileContentBlob)
 
       setFileImgUrl(fileTextUrl)
 
+      //  embedded.contentDocument.style.backgroundColor = 'red'
+       
     }
   },[])
 
@@ -166,7 +188,15 @@ export default function File({
       >
         {fileId && (
           <>
-            <Embed className="embedded" data={fileImgUrl} type="text/html"/>
+
+              {/* <EmbedContainer> */}
+                <Embed className="embedded" data={fileImgUrl} type="image/png" >
+                
+                </Embed>
+              {/* </EmbedContainer> */}
+              
+           
+
           </>
         )}
         {fileId === null && (

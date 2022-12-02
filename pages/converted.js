@@ -710,7 +710,20 @@ export default function Converted() {
 
   // USE EFFECTS
 
+  // useEffect(() => {
+  //   // if(window.PerformanceNavigationTiming.type === 1 ){
+  //   //   router.push('/')
+  //   // }
+  //   document.addEventListener
+
+  //   if(window.onbeforeunload){
+
+  //   }
+  // }, [])
+
   useEffect(() => {
+    
+
     if (!router.query.fileData) {
       router.push({ pathname: "/" });
       return
@@ -767,7 +780,7 @@ export default function Converted() {
         handleCloseSummary(null, e);
       }
     };
-    // const file__content = document.querySelector(".file__content");
+   
     file__content.addEventListener("click", eventListenerCallback, false);
   }, []);
 
@@ -782,6 +795,8 @@ export default function Converted() {
   useEffect(() => {
     updateFileData(fileData);
   }, [fileData]);
+
+ 
 
   const handleDownloadFile = () => {
 
