@@ -75,6 +75,7 @@ export default function Home() {
   const [displayFileNameForm, setFileNameForm] = useState(false);
   const fileInput = useRef(null);
   const [isActiveDrag, setIsActiveDrag] = useState(false);
+  const [textSetting, setTextSetting] = useState(true);
 
   function showCustomizationBox() {
     setActive(true);
@@ -176,6 +177,7 @@ export default function Home() {
       };
     };
     setUploadSetting(newUploadSetting);
+    (textSetting) ? setTextSetting(false) : setTextSetting(true);
   }
 
   function resetPageStates() {
@@ -221,22 +223,22 @@ export default function Home() {
             )} */}
             {
               displayFileNameForm && <CustomizeInputBox dir="row">
-              <Input
-                border="none"
-                placeholder="Enter file name"
-                type="text"
-                name="fileName"
-                value={uploadedFile.fileName}
-                onChange={handleChange}
-                borderRadius="3.125rem 0 0 3.125rem;"
-              />
-              <Button
-                handleClick={showCustomizationBox}
-                borderRadius="0 3.125rem 3.125rem 0;"
-                text={!isMobile ? "Customize" : ""}
-                faIconName={active ? faChevronUp : faChevronDown}
-              />
-            </CustomizeInputBox>
+                <Input
+                  border="none"
+                  placeholder="Enter file name"
+                  type="text"
+                  name="fileName"
+                  value={uploadedFile.fileName}
+                  onChange={handleChange}
+                  borderRadius="3.125rem 0 0 3.125rem;"
+                />
+                <Button
+                  handleClick={showCustomizationBox}
+                  borderRadius="0 3.125rem 3.125rem 0;"
+                  text={!isMobile ? "Customize" : ""}
+                  faIconName={active ? faChevronUp : faChevronDown}
+                />
+              </CustomizeInputBox>
             }
             {
               active && (<motion.div
@@ -244,7 +246,7 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 style={{ width: "100%" }}
               >
-                <Container gap="2rem" height="100%">
+                <Container key={textSetting} gap="2rem" height="100%">
                   <Option
                     src={iconSvgs.backgroundColor}
                     text="Background Colour"
@@ -301,13 +303,13 @@ export default function Home() {
                   />
                   <BtnCont align={isMobile ? "center" : "end"}>
                     <Button
-                      text="Clear"
-                      handleClick={handleClear}
-                    />
+                      text="Clear" 
+                      handleClick={handleClear} 
+                      />
                   </BtnCont>
                 </Container>
               </motion.div>
-              )}
+            )}
             {displayFileNameForm === false && inputType === "upload" && (
               <Container
                 backgroundColor={isActiveDrag && `rgba(240, 240, 240, .5)`}
