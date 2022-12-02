@@ -56,24 +56,24 @@ export default function WordSaved({
   word = "",
   definition = "",
   id = "",
-  handleCloseDictionary = () => {},
-  handleCloseSummary = () => {},
-  handleLocateSummary = () => {}
+  handleCloseDictionary = () => { },
+  handleCloseSummary = () => { },
+  handleLocateSummary = () => { }
 }) {
   const [open, setOpen] = useState(false);
   const [showDef, setShowDef] = useState(true);
 
-  function onSummaryClose(e){
+  function onSummaryClose(e) {
     e.preventDefault()
     handleCloseSummary(id)
   }
 
-  function onDictionaryClose(e){
+  function onDictionaryClose(e) {
     e.preventDefault()
     handleCloseDictionary(id)
   }
 
-  function onLocate(e){
+  function onLocate(e) {
     e.preventDefault()
 
     handleLocateSummary(id)
@@ -87,50 +87,60 @@ export default function WordSaved({
     >
       <TopDiv dir="row">
         {
-          type !== "summary" ? 
-          ( // show keyword
-            <>
-            <Word>{word}</Word>
-            <IconCont>
-            {(showDef && (
-              <Icon
-                size="sm"
-                faIconName={faChevronUp}
-                handleClick={() => setShowDef(false)}
-              />
-            )) || (
-              <Icon
-                size="sm"
-                faIconName={faChevronDown}
-                handleClick={() => setShowDef(true)}
-              />
-            )}
-             <Icon size="sm" faIconName={faClose} handleClick={onDictionaryClose} />
-            </IconCont>
-            </>
-          ) : (
-            // show Summary
-            <>
-            <Text>{definition.substring(0, 15) + '...'}</Text>
-            <IconCont>
-              {(showDef && (
-                <Icon
-                  size="m"
-                  faIconName={faChevronUp}
-                  handleClick={() => setShowDef(false)}
-                />
-              )) || (
-                <Icon
-                  size="m"
-                  faIconName={faChevronDown}
-                  handleClick={() => setShowDef(true)}
-                />
-              )}
-              <Icon size="sm" faIconName={faLocationDot} handleClick={onLocate} />
-              <Icon size="sm" faIconName={faClose} handleClick={onSummaryClose} />
-            </IconCont>
-            </>
-          )
+          type !== "summary" ?
+            ( // show keyword
+              <>
+                <Word>{word}</Word>
+                <IconCont>
+                  {(showDef && (
+                    <Icon
+                      size="sm"
+                      faIconName={faChevronUp}
+                      handleClick={() => setShowDef(false)}
+                    />
+                  )) || (
+                      <Icon
+                        size="sm"
+                        faIconName={faChevronDown}
+                        handleClick={() => setShowDef(true)}
+                      />
+                    )}
+                  <Icon size="sm" faIconName={faClose} handleClick={onDictionaryClose} />
+                </IconCont>
+              </>
+            ) : (
+              // show Summary
+              <>
+                <Text>{definition.substring(0, 15) + '...'}</Text>
+                <IconCont>
+                  {(showDef && (
+                    <Icon
+                      hoverColor={colors.backgroundYellow}
+
+                      size="m"
+                      faIconName={faChevronUp}
+                      handleClick={() => setShowDef(false)}
+                    />
+                  )) || (
+                      <Icon
+                        hoverColor={colors.backgroundYellow}
+                        size="m"
+                        faIconName={faChevronDown}
+                        handleClick={() => setShowDef(true)}
+                      />
+                    )}
+                  <Icon
+                    size="sm"
+                    hoverColor={colors.backgroundYellow}
+                    faIconName={faLocationDot}
+                    handleClick={onLocate} />
+                  <Icon
+                    size="sm" hoverColor={colors.backgroundYellow}
+                    faIconName={faClose}
+                    handleClick={onSummaryClose} />
+                </IconCont>
+              </>
+            )
         }
 
         {/* {(type !== "summary" && <Word>{word}</Word>) || (
@@ -154,7 +164,7 @@ export default function WordSaved({
         </IconCont> */}
       </TopDiv>
       {showDef && <Divider />}
-      {showDef && <Text>{type !== 'summary'? definition : definition.substring(0, 80) + '...'}</Text>}
+      {showDef && <Text>{type !== 'summary' ? definition : definition.substring(0, 80) + '...'}</Text>}
     </WordCont>
   );
 }

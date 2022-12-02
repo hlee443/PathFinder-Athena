@@ -8,6 +8,7 @@ import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
 import Bubble from "../components/Bubble/Bubble";
+import SummaryLoading from "../components/Loading/SummaryLoading"
 import {
   faEllipsis,
   faCheck,
@@ -419,7 +420,10 @@ export default function Converted() {
 
   // Selected and Dom
 
+  // const [isSummaryLoading, setIsSummaryLoading] = useState();
+
   function handleSummary() {
+    // setIsSummaryLoading(true);
     // summary content received from api
     if (!summary) {
       try {
@@ -442,6 +446,7 @@ export default function Converted() {
 
               const summaryComponent = (
                 <Summary
+                  // onLoading={setIsSummaryLoading}
                   summarizedContent={res.data.summary_result}
                   // handleCloseSummary={handleCloseSummary}
                   summaryId={res.data.summary_id}
@@ -475,6 +480,8 @@ export default function Converted() {
               parentSummaryContainer.appendChild(summaryContainer);
               let root = ReactDomClient.createRoot(summaryContainer);
               root.render(summaryComponent);
+
+              // setIsSummaryLoading(false);
 
               // document.querySelector(
               //   `.parent-summary-container  .${highlightedNode.id}`
