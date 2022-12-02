@@ -28,10 +28,6 @@ form {
   flex-direction: column;
 }
 
-input {
-  height: 100%;
-}
-
 .fileOutput__container {
   white-space: pre-line; /* recognizes <br /> in the HTML and will line break it. Pretty coolllll*/
 }
@@ -48,29 +44,29 @@ input {
 input::placeholder {
   letter-spacing: 0.22rem;
 }
-/* input[type="text"] {
-  padding: 1rem;
-} */
 
 input[type="color"] {
-  -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
   cursor: pointer;
-  border: 1px solid;
-  width: 40px;
-  height: 40px;
+  height: 3rem;
+  padding: 0.3rem;
+  width: 6rem;
+  appearance: none;
+  border-radius: 50rem;
+  border: 2px solid #3E3E3E;
   background-color: transparent;
 }
 
 input[type="color"]::-webkit-color-swatch {
   border: none;
-  border-radius: 50px;
+  /* border-radius: 50%; */
 }
 
 input[type="color"]::-moz-color-swatch {
   border: none;
-  border-radius: 50px;
+  /* border-radius: 50%; */
 }
 
 p {

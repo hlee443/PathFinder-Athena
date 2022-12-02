@@ -25,12 +25,9 @@ import { mediaQuery } from "../MediaQuery/data";
 import Button from "../components/Button/Button";
 import Lottie from "lottie-react";
 import LoadingAnimation from "../public/lotties/loading_dots.json";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { jsPDF } from "jspdf";
-import { Component } from "react";
-
-
-const { htmlToText } = require("html-to-text");
+import html2canvas from "html2canvas";
 
 const Layout = styled(Flexbox)`
   padding: 4rem;
@@ -89,9 +86,9 @@ export default function Converted() {
   // Future - get response for Hermes (probably)
   // Props: get file settings and file info
   const [highlightColor, setHighlightColor] = useState({
-    colorText: 'yellow',
-    colorHex: '#FCFF7C'
-  })
+    colorText: "yellow",
+    colorHex: "#FCFF7C",
+  });
   const [showSidebar, setShowSidebar] = useState(true);
   const [isActive, setIsActive] = useState();
   const [showIcon, setShowIcon] = useState(false);
@@ -106,7 +103,7 @@ export default function Converted() {
   const [newFileName, setNewFileName] = useState("");
   const [test, setTest] = useState(0);
   const [summary, setSummary] = useState(false);
-  const [selectedText, setSelectedText] = useState('');
+  const [selectedText, setSelectedText] = useState("");
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
@@ -121,8 +118,7 @@ export default function Converted() {
       setShowSidebar(false);
       setShowIcon(true);
     }
-  };
-
+  }
 
   function handleBGColor(e) {
     e.preventDefault();
@@ -309,7 +305,6 @@ export default function Converted() {
   function handleUpdateFileContent() {
     const newFileContent = document.querySelector(".file__content").innerHTML;
 
-
     const fileObject = {
       fileData: {
         fileId: fileData.file_id,
@@ -321,217 +316,10 @@ export default function Converted() {
 
     mainHandler.handleUpdateFile(fileObject, (res) => {
       console.log("updatedFileData", res.data);
-      console.log("updatedFile content", res.data.file_content)
+      console.log("updatedFile content", res.data.file_content);
       setFileData(res.data);
     });
   }
-
-
-  // useEffect(() => {
-  //   if (!router.query.fileData) {
-  //     return;
-  //   } else if (!router.query.settingData) {
-  //     return;
-  //   } else if (!router.query.folderArray) {
-  //     return;
-  //   }
-  //   setFileData(JSON.parse(router.query.fileData));
-  //   const folderArray = JSON.parse(router.query.folderArray);
-  //   setFolderArray(folderArray);
-  //   const settingData = JSON.parse(router.query.settingData);
-  //   setSettingData(settingData);
-  //   setNewFileName(JSON.parse(router.query.fileData).file_name);
-  //   mainHandler.handleGetKeywordsByFileId(
-  //     JSON.parse(router.query.fileData).file_id,
-  //     (res) => {
-  //       console.log(res);
-  //       setKeywordArray(res.data);
-  //     }
-  //   );
-  //   mainHandler.handleGetSummariesByFileId(
-  //     JSON.parse(router.query.fileData).file_id,
-  //     (res) => {
-  //       console.log(res);
-  //       setSummaryArray(res.data);
-  //     }
-  //   );
-  // }, []);
-
-  // useEffect(() => {
-  //   updateTypeArray(settingData);
-  // }, [settingData]);
-
-  // useEffect(() => {
-  //   updateLibraryArray(folderArray);
-  // }, [folderArray]);
-
-  // const handleCloseSummary = (summaryId) => {
-
-  //   mainHandler.handleDeleteSummary(summaryId, (res) => {
-  //     console.log(res.data);
-
-  //     const selectedSummaryComponent = document.getElementsByClassName(
-  //       `summarize__wrapper-container ${summaryId}`
-  //     )[0];
-
-  //     selectedSummaryComponent.classList.add("summary--close"); // animation stuff
-
-  //     const grandParentElement = selectedSummaryComponent.closest(
-  //       "#selectedNode__container"
-  //     )
-  //       ? selectedSummaryComponent.closest("#selectedNode__container")
-  //       : selectedSummaryComponent.closest(".selectedNode__highlighted");
-  //     const selectedHighlightedNode = selectedSummaryComponent;
-
-  //     while (
-  //       !selectedHighlightedNode.classList.contains("selectedNode__highlighted")
-  //     ) {
-  //       selectedHighlightedNode = selectedHighlightedNode.parentElement;
-  //     }
-
-  //     const highlightedContainer = selectedHighlightedNode.querySelector(
-  //       ".selectedNode__highlighted > .highlighted__container"
-  //     );
-
-  //     setTimeout(() => {
-  //       // Delete highlight component and joining the original text back to normal
-  //       grandParentElement.parentElement.replaceChild(
-  //         highlightedContainer.firstChild,
-  //         grandParentElement
-  //       );
-  //       grandParentElement.remove();
-
-  //       // Delete summary component in the file__container
-  //       selectedSummaryComponent.remove();
-
-  //       // Delete the summary in sidebar
-  //       setSummaryArray(
-  //         summaryArray.filter((summary) => summary.summary_id !== summaryId)
-  //       );
-
-  //       handleUpdateFileContent();
-  //     }, 600); // animation
-  //   });
-  // };
-
-  // const closeDictionary = (id) => {
-  //   mainHandler.handleDeleteKeyword(id, (res) => {
-  //     setKeywordArray(res.data);
-  //     setKeywordArray(
-  //       keywordArray.filter((keyword) => keyword.keyword_id !== id)
-  //     );
-  //   });
-  // };
-
-
-
-  // function handleSummary() {
-  //   // summary content received from api
-  //   if (!summary) {
-  //     try {
-  //       setSummary(true);
-  //       mainHandler.handleSummarize(selectedText.toString(), (res) => {
-  //         console.log("res", res);
-  //         const rangeCount = selectedText.rangeCount;
-
-  //         if (rangeCount !== 0 || selectedText.toString() !== "") {
-  //           console.log("summary clicked, call highlight");
-  //           // console.log("highlight!");
-  //           moveSelectedHighlighted();
-
-  //           const selectedNodeContainer = document.createElement("div");
-  //           const highlightedContainer = document.createElement("div");
-  //           const highlightedNode = document.createElement("span");
-
-  //           selectedNodeContainer.setAttribute("id", "selectedNode__container"); // 1
-  //           highlightedContainer.className = "selectedNode__highlighted"; // 2
-  //           highlightedNode.className = "highlighted__container"; // 3
-
-  //           highlightedNode.style.backgroundColor = "#3df9b4";
-  //           highlightedNode.style.color = "#000000";
-
-  //           // #selectedNode__container > selectedNode__highlighted > highlighted__container (range node that contains the text) + summary container
-
-  //           const range = selectedText.getRangeAt(0);
-
-  //           range.surroundContents(highlightedNode);
-
-  //           highlightedNode.parentNode.insertBefore(
-  //             highlightedContainer,
-  //             highlightedNode
-  //           );
-  //           highlightedContainer.appendChild(highlightedNode);
-
-  //           highlightedContainer.parentNode.insertBefore(
-  //             selectedNodeContainer,
-  //             highlightedContainer
-  //           );
-  //           selectedNodeContainer.appendChild(highlightedContainer);
-
-  //           // setHighlightedNode(highlightedNode); // save to useState and pass to prop
-
-  //           let summaryData = {
-  //             summaryData: {
-  //               fileId: fileData.file_id,
-  //               summaryContent: selectedText.toString(),
-  //               summaryResult: `${res.data.summary}`,
-  //             },
-  //           };
-  //           mainHandler.handleAddSummary(summaryData, (res) => {
-  //             console.log("summary added", res.data);
-
-  //             const summaryComponent = (
-  //               <Summary
-  //                 summarizedContent={res.data.summary_result}
-  //                 handleCloseSummary={handleCloseSummary}
-  //                 summaryId={res.data.summary_id}
-  //               />
-  //             );
-
-  //             const container = document.querySelector(
-  //               "#selectedNode__container > .selectedNode__highlighted"
-  //             );
-
-  //             const summaryWrapperContainer = document.createElement("div");
-
-  //             summaryWrapperContainer.classList.add(
-  //               "summarize__wrapper-container",
-  //               `${res.data.summary_id}`
-  //             );
-
-  //             container.appendChild(summaryWrapperContainer);
-
-  //             const root = ReactDomClient.createRoot(
-  //               document.querySelector(
-  //                 "#selectedNode__container .summarize__wrapper-container"
-  //               )
-  //             );
-
-  //             root.render(summaryComponent);
-
-  //             document.querySelector(
-  //               "#selectedNode__container .summarize__wrapper-container"
-  //             ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
-
-  //             handleUpdateFileContent();
-
-  //             setSummaryArray([...summaryArray, res.data]);
-  //             setSummary(false);
-  //           });
-  //         }
-  //       }); // call handler for axios call
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // }
-
-  // function getKeywords() {
-  //   console.log("fileid", fileData.file_id);
-  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
-  //     setKeywordArray(res.data);
-  //   });
-  // }
 
   function handleDictionary() {
     if (!dictionary) {
@@ -562,7 +350,6 @@ export default function Converted() {
     }
   }
 
-
   function closeDictionary(id) {
     mainHandler.handleDeleteKeyword(id, (res) => {
       setKeywordArray(res.data);
@@ -570,16 +357,20 @@ export default function Converted() {
         keywordArray.filter((keyword) => keyword.keyword_id !== id)
       );
     });
-  };
+  }
 
   const handleLocateSummary = (summaryId) => {
-    console.log("SCROLL TO VIEW")
+    console.log("SCROLL TO VIEW");
     const selectedSummary = document.getElementsByClassName(
       `parent-summary-container ${summaryId}`
     )[0];
 
-    selectedSummary.closest(".highlightnode").scrollIntoView({ behavior: "smooth", block: 'center', inline: 'center' })
-  }
+    selectedSummary.closest(".highlightnode").scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  };
 
   // Selected and Dom
 
@@ -607,7 +398,7 @@ export default function Converted() {
               const summaryComponent = (
                 <Summary
                   summarizedContent={res.data.summary_result}
-                  handleCloseSummary={handleCloseSummary}
+                  // handleCloseSummary={handleCloseSummary}
                   summaryId={res.data.summary_id}
                 />
               );
@@ -623,7 +414,11 @@ export default function Converted() {
               //             );
               let highlitedContainer = document.createElement("div");
               const parentSummaryContainer = document.createElement("div");
-              parentSummaryContainer.classList.add("parent-summary-container", `${highlightedNode.id}`, `${res.data.summary_id}`);
+              parentSummaryContainer.classList.add(
+                "parent-summary-container",
+                `${highlightedNode.id}`,
+                `${res.data.summary_id}`
+              );
               const summaryContainer = document.createElement("div");
               summaryContainer.classList.add('summarize__container-wrapper')
               highlightedNode.parentNode.insertBefore(
@@ -642,11 +437,11 @@ export default function Converted() {
 
               setTimeout(function () {
                 handleUpdateFileContent();
-              })
+              });
               setSummaryArray([...summaryArray, res.data]);
               setSummary(false);
             }); // call handler for axios call
-          })
+          });
         });
       } catch (error) {
         console.log(error);
@@ -654,101 +449,129 @@ export default function Converted() {
     }
   }
 
-  function handleCloseSummary(summaryId) {
+  function handleCloseSummary(id, e) {
     // e.preventDefault();
     // e.stopPropagation();
-
-    // let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-    // let selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
-    // let fileContent = document.querySelector('.file__content')
-    let selectedSummaryComponent = document.getElementsByClassName(`parent-summary-container ${summaryId}`)[0]
-    let highlightedNode = document.querySelector(`[id='${selectedSummaryComponent.classList[1]}']`);
+    let summaryId = id
+    let selectedSummaryComponent = null;
+    let highlightedNode = null;
+    if (summaryId && !e) {
+      selectedSummaryComponent = document.getElementsByClassName(
+        `parent-summary-container ${summaryId}`
+      )[0];
+      highlightedNode = document.getElementById(
+        `${selectedSummaryComponent.classList[1]}`
+      );
+    } else if (!summaryId && e) {
+      let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
+      selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+      summaryId = +selectedSummaryComponent.classList[2];
+      highlightedNode = document.getElementById(
+        `${selectedSummaryComponent.classList[1]}`
+      );
+    }
     let nodeArray = Array.from(highlightedNode.childNodes);
-    nodeArray.forEach(node => {
+    nodeArray.forEach((node) => {
       selectedSummaryComponent.parentNode.insertBefore(
         node,
         selectedSummaryComponent
-      )
+      );
     });
 
-    // selectedSummaryComponent.classList.add("summary--close"); // animation 
+    // selectedSummaryComponent.classList.add("summary--close"); // animation
+    const newSummaryArray = (summaryArray) => 
+      [...summaryArray].filter((summary) => summary.summary_id != summaryId);
+    setSummaryArray(newSummaryArray);
+    // setSummaryArray(
+    //   summaryArray.filter((summary) => summary.summary_id !== summaryId)
+    // );
+    mainHandler.handleDeleteSummary(summaryId, (res) => {
+      const newHighlightIds = (highlightIds) =>
+        [...highlightIds].filter((id) => id !== highlightedNode.id);
+      setHighlightIds(newHighlightIds);
 
-    setSummaryArray(
-      summaryArray.filter((summary) => summary.summary_id !== summaryId)
-    );
-
-
-    // BUG WITH STATE RIGHT HERE
-    // NEED TO FIX ASAP
-
-    // HIGHLIGHT IDS ARE ONE STATE BEHIND
-    // FILTER DOESNT WORK BECAUSE OF THIS
-
-    const newHighlightIds = (highlightIds) => [...highlightIds].filter((id) => id !== highlightedNode.id);
-    setHighlightIds(newHighlightIds);
-
-    // setTimeout(() => { // let animation play first before removing everything
-    selectedSummaryComponent.remove();
-    highlightedNode.remove();
-    // }, 600)
-
-  };
+      mainHandler.handleDeleteHighlight(highlightedNode.id, (res) => {
+        // setTimeout(() => { // let animation play first before removing everything
+        selectedSummaryComponent.remove();
+        highlightedNode.remove();
+        // }, 600)
+      });
+    });
+  }
 
   const handleHighlight = (colorObj, type, cb) => {
     if (selectedText) {
       let match = false;
       // check if user is only clicking on a highlighted node
       if (selectedText.toString().length === 0) {
-        console.log('no text selected', highlightIds);
+        console.log("no text selected", highlightIds);
         for (const selectedId of highlightIds) {
           const selectedElement = document.getElementById(`${selectedId}`);
-          const selectedSummary = document.getElementsByClassName(`${selectedId}`);
+          const selectedSummary = document.getElementsByClassName(
+            `${selectedId}`
+          );
           if (selectedText.containsNode(selectedElement, true)) {
-            if (colorObj && colorObj.colorText !== 'clear') {
+            if (colorObj && colorObj.colorText !== "clear") {
               selectedElement.style.backgroundColor = colorObj.colorHex;
               match = true;
-            } else if (colorObj && colorObj.colorText === 'clear' && !selectedSummary[0]) {
+            } else if (
+              colorObj &&
+              colorObj.colorText === "clear" &&
+              !selectedSummary[0]
+            ) {
               let nodeArray = Array.from(selectedElement.childNodes);
-              nodeArray.forEach(node => {
-                selectedElement.parentNode.insertBefore(
-                  node,
-                  selectedElement
-                )
+              nodeArray.forEach((node) => {
+                selectedElement.parentNode.insertBefore(node, selectedElement);
               });
-              setHighlightIds(highlightIds.filter(id => id !== selectedElement.id));
-              selectedElement.remove();
-              match = true;
+              setHighlightIds(
+                highlightIds.filter((id) => id !== selectedElement.id)
+              );
+              mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
+                console.log(res)
+                selectedElement.remove();
+                match = true;
+              });
             }
           }
         }
       }
       // check if user is selecting a node used in a summary
       if (selectedText.toString().length > 0) {
-        console.log('text selected', highlightIds);
+        console.log("text selected", highlightIds);
         let newHighlightIds = [...highlightIds];
         for (const selectedId of highlightIds) {
           const selectedElement = document.getElementById(`${selectedId}`);
-          const selectedSummary = document.getElementsByClassName(`${selectedId}`);
-          console.log('summary component', selectedSummary);
+          const selectedSummary = document.getElementsByClassName(
+            `${selectedId}`
+          );
+          console.log("summary component", selectedSummary);
           if (selectedSummary[0]) {
             if (selectedText.containsNode(selectedElement, true)) {
-              if (colorObj && colorObj.colorText !== 'clear') {
+              if (colorObj && colorObj.colorText !== "clear") {
                 selectedElement.style.backgroundColor = colorObj.colorHex;
               }
               match = true;
             }
-          } else if (!selectedSummary[0] && colorObj && colorObj.colorText === 'clear') {
+          } else if (
+            !selectedSummary[0] &&
+            colorObj &&
+            colorObj.colorText === "clear" ||
+            !selectedSummary[0] &&
+            highlightColor.colorHex === "clear"
+          ) {
             if (selectedText.containsNode(selectedElement, true)) {
               let nodeArray = Array.from(selectedElement.childNodes);
-              nodeArray.forEach(node => {
-                selectedElement.parentNode.insertBefore(
-                  node,
-                  selectedElement
-                )
+              nodeArray.forEach((node) => {
+                selectedElement.parentNode.insertBefore(node, selectedElement);
               });
-              newHighlightIds = newHighlightIds.filter(id => id !== selectedElement.id);
-              selectedElement.remove();
-              match = true;
+              newHighlightIds = newHighlightIds.filter(
+                (id) => id !== selectedElement.id
+              );
+              mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
+                console.log(res)
+                selectedElement.remove();
+                match = true;
+              });
             }
           }
         }
@@ -757,16 +580,27 @@ export default function Converted() {
 
       if (!match) {
         let newColorObj = colorObj;
-        if (colorObj && colorObj.colorText === 'clear' && type !== `alternate`) {
-          return console.log('no match and clear highlight');
-        } else if (highlightColor.colorText === 'clear' && type === `alternate`) {
-          newColorObj = { colorText: 'yellow', colorHex: '#FCFF7C' };
+        if (
+          colorObj &&
+          colorObj.colorText === "clear" &&
+          type !== `alternate`
+        ) {
+          return console.log("no match and clear highlight");
+        } else if (
+          highlightColor.colorText === "clear" &&
+          type === `alternate`
+        ) {
+          newColorObj = { colorText: "yellow", colorHex: "#FCFF7C" };
           setHighlightColor(newColorObj);
         }
         const rangeCount = selectedText.rangeCount;
-        if (rangeCount > 0 && selectedText.toString() !== "" && selectedText.toString().length > 0) {
+        if (
+          rangeCount > 0 &&
+          selectedText.toString() !== "" &&
+          selectedText.toString().length > 0
+        ) {
           let id = uuidv4();
-          console.log('making highlight', id)
+          console.log("making highlight", id);
           const highlightedNode = document.createElement("span");
           highlightedNode.classList.add("highlightnode");
           if (!newColorObj) {
@@ -778,24 +612,36 @@ export default function Converted() {
           range.surroundContents(highlightedNode);
           highlightedNode.id = id;
           let newHighlightIds = [...highlightIds, id];
-          for (const selectedId of highlightIds) {
-            const selectedElement = document.getElementById(`${selectedId}`);
-            if (selectedText.containsNode(selectedElement, true) && selectedId !== id) {
-              let nodeArray = Array.from(selectedElement.childNodes);
-              nodeArray.forEach(node => {
-                selectedElement.parentNode.insertBefore(
-                  node,
-                  selectedElement
-                )
-              });
-              newHighlightIds = newHighlightIds.filter(id => id !== selectedElement.id);
-              selectedElement.remove();
+          let dbData = {
+            highlightData: {
+              fileId: fileData.file_id,
+              highlightId: id
+            },
+          };
+          mainHandler.handleAddHighlight(dbData, (res) => {
+            console.log(res)
+            for (const selectedId of highlightIds) {
+              const selectedElement = document.getElementById(`${selectedId}`);
+              if (
+                selectedText.containsNode(selectedElement, true) &&
+                selectedId !== id
+              ) {
+                let nodeArray = Array.from(selectedElement.childNodes);
+                nodeArray.forEach((node) => {
+                  selectedElement.parentNode.insertBefore(node, selectedElement);
+                });
+                newHighlightIds = newHighlightIds.filter(
+                  (id) => id !== selectedElement.id
+                );
+                mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
+                  console.log(res)
+                  selectedElement.remove();
+                });
+              }
             }
-          }
 
-          setHighlightIds(newHighlightIds);
-
-
+            setHighlightIds(newHighlightIds);
+          });
           // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
             cb(highlightedNode);
@@ -803,17 +649,15 @@ export default function Converted() {
         }
       }
     }
-  }
+  };
 
   function handleChangeHighlightColor(colorObj) {
-
     setHighlightColor(colorObj);
-    console.log(selectedText.toString())
+    console.log(selectedText.toString());
     handleHighlight(colorObj);
     // console.log('colorObj update', colorObj)
     // setHighlightColor(colorObj)
   }
-
 
   // USE EFFECTS
 
@@ -845,6 +689,13 @@ export default function Converted() {
         setSummaryArray(res.data);
       }
     );
+    mainHandler.handleGetHighlightsByFileId(
+      JSON.parse(router.query.fileData).file_id,
+      (res) => {
+        console.log(res);
+        setHighlightIds(res.data.map((highlight) => highlight.highlight_uuid));
+      }
+    );
   }, []);
 
   // useEffect(() => {
@@ -868,17 +719,39 @@ export default function Converted() {
     updateLibraryArray(folderArray);
   }, [folderArray]);
 
-
   useEffect(() => {
     const file__content = document.querySelector(".file__content");
-    file__content.addEventListener("mouseup", () => {
-      if (window.getSelection().toString() !== "") {
-        setSelectedText(window.getSelection());
-      }
-    }, false);
+    file__content.addEventListener(
+      "mouseup",
+      () => {
+        if (window.getSelection().toString() !== "") {
+          setSelectedText(window.getSelection());
+        }
+      },
+      false
+    );
   }), [];
 
-  console.log('CURRENT HIHGLIGH ARRAY', highlightIds)
+  useEffect(() => {
+    // event listener for closing the summary component
+    function eventListenerCallback(e) {
+      e.preventDefault();
+      let closeElement = e.target;
+      if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
+        handleCloseSummary(null, e);
+      }
+      // if (apples.closest(".summary__container")) {
+      
+      // // if (apples.parent?.parent?.classList.contains("summarize__container")) {
+      //   e.preventDefault();
+      //   handleCloseSummary(null, e);
+      // }
+    };
+    const file__content = document.querySelector(".file__content");
+    file__content.addEventListener("click", eventListenerCallback, false);
+  }), [];
+
+  // console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
 
   const handleDownloadFile = () => {
     // // write html file contents to .txt file
@@ -896,29 +769,80 @@ export default function Converted() {
 
     // Source HTMLElement or a string containing HTML.
     // download pdf
-    let doc = new jsPDF();
-    var elementHTML = document.querySelector(".file__content").outerHTML;
-    console.log("PEEPEE", elementHTML)
 
-    doc.html(elementHTML, {
-      callback: function (doc) {
-        // Save the PDF
-        doc.save(`${newFileName}.pdf`);
-      },
-      margin: [10, 10, 10, 10],
-      x: 0,
-      y: 0,
-      autoPaging: "text",
-      width: 180,
-      windowWidth: 1080,
-    });
-    // autoPaging:"text",
-    //   x: 0,
-    //   y: 0,
-    //   width: 190, //target width in the PDF document
-    //   windowWidth: 675, //window width in CSS pixels
+    var elementHTML = document.querySelector(".file__content");
+    // console.log("PEEPEE", elementHTML.clientHeight);
+
+    // const doc = new jsPDF({
+    //   orientation: "p",
+    //   unit: "px",
+    //   format: "a4",
+    //   hotfixes: ["px_scaling"],
     // });
+
+    // html2canvas(elementHTML, {
+    //   width: doc.internal.pageSize.getWidth(),
+    //   height: doc.internal.pageSize.getHeight(),
+    //   autoPaging: "text",
+    // }).then((canvas) => {
+    //   const img = canvas.toDataURL("image/png");
+
+    //   doc.addImage(
+    //     img,
+    //     "PNG",
+    //     140,
+    //     10,
+    //     doc.internal.pageSize.getWidth(),
+    //     doc.internal.pageSize.getHeight()
+    //   );
+    //   doc.save("statement.pdf");
+    // });
+
+    //   doc.html(elementHTML, {
+    //     callback: function (doc) {
+    //       // Save the PDF
+    //       doc.save(`${newFileName}.pdf`);
+    //     },
+    //     margin: [10, 10, 10, 10],
+    //     x: 0,
+    //     y: 0,
+    //     autoPaging: "text",
+    //     width: 180,
+    //     windowWidth: 1080,
+    //   });
+
+
+    let HTML_Width = elementHTML.clientWidth;
+    let HTML_Height = elementHTML.clientHeight;
+    let top_left_margin = 15;
+    let PDF_Width = HTML_Width + (top_left_margin * 2);
+    let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    let canvas_image_width = HTML_Width;
+    let canvas_image_height = HTML_Height;
+    let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+    html2canvas((elementHTML), { allowTaint: true, autoPaging: "text", }).then(function (canvas) {
+      canvas.getContext('2d');
+
+      // console.log(canvas.height + "  " + canvas.width);
+
+
+      let imgData = canvas.toDataURL("image/jpeg", 1.0);
+      let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+      for (let i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+      }
+
+      pdf.save(`${newFileName}.pdf`);
+    });
   };
+
+  console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
+  console.log("CURRENT SUMMARY ARRAY", summaryArray);
 
   return (
     <Flexbox>
@@ -991,7 +915,7 @@ export default function Converted() {
           <Container
             className="file__content"
             width="100%"
-            height="100vh"
+            height="100%"
             scroll="scroll"
             display="inline"
             backgroundColor={settingData.background_colour}
