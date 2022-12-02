@@ -14,13 +14,15 @@ import { mediaQuery } from "../../MediaQuery/data";
 
 const SideBarCont = styled(Container)`
   // min-height: 100vh;
+  position: sticky;
+  top: 13rem;
   height: 70vh;
   background-color: ${colors.backgroundCream};
   padding: 2rem;
   gap: 1rem;
   width: 100%;
   justify-content: start;
-  min-width: fit-content;
+  /* min-width: fit-content; */
   user-select: none;
   flex-basis: 30vw;
   @media ${mediaQuery.maxWidth.tablet} {
