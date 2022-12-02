@@ -7,6 +7,7 @@ import Input from "../components/Input/Input";
 import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
+import Bubble from "../components/Bubble/Bubble";
 import {
   faEllipsis,
   faCheck,
@@ -67,20 +68,30 @@ const StickyCont = styled(Flexbox)`
   z-index: 100;
 `;
 
-const SidebarCont = styled.div`
-  top: 13rem;
-  position: sticky;
-  overflow-y: scroll;
-  height: auto;
-  flex-basis: 30vw;
+// const SidebarCont = styled.div`
+//   top: 13rem;
+//   position: sticky;
+//   overflow-y: scroll;
+//   height: auto;
+//   flex-basis: 30vw;
 
-  @media ${mediaQuery.maxWidth.tablet} {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    height: 30vh;
-  } ;
-`;
+//   @media ${mediaQuery.maxWidth.tablet} {
+//     position: fixed;
+//     width: 100%;
+//     bottom: 0;
+//     height: 30vh;
+//   } ;
+// `;
+
+const Overlay = styled.div`
+position:absolute;
+top:50%;
+left:50%;
+transform: translate(-50%,-50%);
+-webkit-transform: translate(-50%,-50%);
+-ms-transform: translate(-50%,-50%);
+-moz-transform: translate(-50%,-50%);
+`
 
 export default function Converted() {
   const [dictionary, setDictionary] = useState(false);
@@ -111,6 +122,7 @@ export default function Converted() {
   const [keywordArray, setKeywordArray] = useState([]);
   const [highlightIds, setHighlightIds] = useState([]);
   const [summaryArray, setSummaryArray] = useState([]);
+  const [showBubble, setShowBubble] = useState(false);
 
   function handleSidebar() {
     if (isActive) {
@@ -300,7 +312,8 @@ export default function Converted() {
   function handleDelete() {
     mainHandler.handleDeleteFile(fileData.file_id);
     setIsEditing(false);
-    router.push("/");
+    // router.push("/");
+    setShowBubble("delete")
   }
   // function handleMoveFolder() {
   //   console.log("move folder");
@@ -858,8 +871,10 @@ export default function Converted() {
                     }}
                   />
                 )}
+
                 {dropdown && (
                   <MiniDropdown
+                    handleMouseLeave={handleMiniDropdown}
                     onClose={() => {
                       showDropdown(false);
                     }}
@@ -871,7 +886,9 @@ export default function Converted() {
                     }}
                     onDelete={() => {
                       //console.log("clicking delete");
-                      handleDelete();
+                      // handleDelete();
+                      setShowBubble(true);
+                      showDropdown(false)
                     }}
                   // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
@@ -879,6 +896,14 @@ export default function Converted() {
               </IconCont>
             </Title>
           )}
+          {
+            showBubble && <Overlay>
+              <Bubble
+                handleBubble={handleDelete}
+                onClose={()=>setShowBubble(false)}
+                type="delete" />
+            </Overlay>
+          }
           {isEditing && (
             <Title dir="row">
               <Input
