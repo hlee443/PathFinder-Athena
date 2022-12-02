@@ -51,7 +51,6 @@ export default function MiniDropdown({
           right={right}
         />
       ))}
-      <Button text="Close" handleClick={onClose}></Button>
     </DropdownCont>
   );
 }
