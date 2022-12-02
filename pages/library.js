@@ -67,7 +67,7 @@ export default function Library() {
   async function onSelectFolder(folderId) {
     mainHandler.handleGetFilesByFolderId(folderId, (res) => {
       let fileData = res.data;
-      console.log(fileData);
+      // console.log(fileData);
       setFiles(fileData);
     });
   }
