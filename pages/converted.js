@@ -240,7 +240,7 @@ export default function Converted() {
             };
             mainHandler.handleUpdateFile(uploadFileData, (res) => {
               let fileData = res.data;
-              console.log(fileData);
+              //console.log(fileData);
               setFileData(fileData);
             });
 
@@ -264,8 +264,8 @@ export default function Converted() {
 
   const getFilenameValue = (e) => {
     setNewFileName(e.target.value);
-    console.log("new file name", newFileName);
-    console.log(e.target.value);
+    //console.log("new file name", newFileName);
+    //console.log(e.target.value);
   };
 
   // function t() {
@@ -278,7 +278,7 @@ export default function Converted() {
     // console.log(isEditing);
     // console.log("before setisediting");
     setIsEditing(false);
-    console.log("newFileName", newFileName);
+    //console.log("newFileName", newFileName);
     const fileObject = {
       fileData: {
         fileId: fileData.file_id,
@@ -287,7 +287,7 @@ export default function Converted() {
         fileContent: fileData.file_content,
       },
     };
-    console.log(typeof newFileName);
+    //console.log(typeof newFileName);
     mainHandler.handleUpdateFile(fileObject);
     // console.log("after handleupdatefile");
     showDropdown(false);
@@ -302,24 +302,37 @@ export default function Converted() {
   //   console.log("move folder");
   // }
 
-  function handleUpdateFileContent() {
-    const newFileContent = document.querySelector(".file__content").innerHTML;
-
-    const fileObject = {
-      fileData: {
-        fileId: fileData.file_id,
-        fileName: newFileName,
-        folderId: fileData.folder_id,
-        fileContent: newFileContent,
-      },
-    };
-
-    mainHandler.handleUpdateFile(fileObject, (res) => {
-      console.log("updatedFileData", res.data);
-      console.log("updatedFile content", res.data.file_content);
-      setFileData(res.data);
-    });
+  function updateFileData(fileData) {
+    if (fileData && fileData.file_id) {
+      const dbData = {
+        fileData: {
+          fileId: fileData.file_id,
+          fileName: newFileName,
+          folderId: fileData.folder_id,
+          fileContent: fileData.file_content,
+        },
+      };
+      mainHandler.handleUpdateFile(dbData, res => console.log('file updated', res.data));
+    }
   }
+  // function handleUpdateFileContent() {
+  //   const newFileContent = document.querySelector(".file__content").innerHTML;
+
+  //   const fileObject = {
+  //     fileData: {
+  //       fileId: fileData.file_id,
+  //       fileName: newFileName,
+  //       folderId: fileData.folder_id,
+  //       fileContent: newFileContent,
+  //     },
+  //   };
+
+  //   mainHandler.handleUpdateFile(fileObject, (res) => {
+  //     //console.log("updatedFileData", res.data);
+  //     //console.log("updatedFile content", res.data.file_content);
+  //     setFileData(res.data);
+  //   });
+  // }
 
   function handleDictionary() {
     if (!dictionary) {
@@ -339,7 +352,7 @@ export default function Converted() {
           // add keyword to database
           // console.log(keywordData);
           mainHandler.handleAddKeyword(keywordData, (res) => {
-            console.log("keyword added", res);
+            //console.log("keyword added", res);
             setKeywordArray([...keywordArray, res.data]);
             setDictionary(false);
           });
@@ -360,7 +373,7 @@ export default function Converted() {
   }
 
   const handleLocateSummary = (summaryId) => {
-    console.log("SCROLL TO VIEW");
+    //console.log("SCROLL TO VIEW");
     const selectedSummary = document.getElementsByClassName(
       `parent-summary-container ${summaryId}`
     )[0];
@@ -393,7 +406,7 @@ export default function Converted() {
               },
             };
             mainHandler.handleAddSummary(summaryData, (res) => {
-              console.log("summary added", res.data);
+              //console.log("summary added", res.data);
 
               const summaryComponent = (
                 <Summary
@@ -435,7 +448,10 @@ export default function Converted() {
               // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
               setTimeout(function () {
-                handleUpdateFileContent();
+                const newFileContent = document.querySelector(".file__content").innerHTML;
+                setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+                console.log("handle summary, file content updated", fileData.file_id);
+                // handleUpdateFileContent();
               });
               setSummaryArray([...summaryArray, res.data]);
               setSummary(false);
@@ -476,9 +492,8 @@ export default function Converted() {
         selectedSummaryComponent
       );
     });
-
     // selectedSummaryComponent.classList.add("summary--close"); // animation
-    const newSummaryArray = (summaryArray) => 
+    const newSummaryArray = (summaryArray) =>
       [...summaryArray].filter((summary) => summary.summary_id != summaryId);
     setSummaryArray(newSummaryArray);
     // setSummaryArray(
@@ -493,7 +508,12 @@ export default function Converted() {
         // setTimeout(() => { // let animation play first before removing everything
         selectedSummaryComponent.remove();
         highlightedNode.remove();
-        // }, 600)
+        setTimeout(function () {
+          const newFileContent = document.querySelector(".file__content").innerHTML;
+          setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+          console.log("handle summary close, file content updated", fileData.file_content);
+          //   handleUpdateFileContent();
+        });
       });
     });
   }
@@ -503,7 +523,7 @@ export default function Converted() {
       let match = false;
       // check if user is only clicking on a highlighted node
       if (selectedText.toString().length === 0) {
-        console.log("no text selected", highlightIds);
+        //console.log("no text selected", highlightIds);
         for (const selectedId of highlightIds) {
           const selectedElement = document.getElementById(`${selectedId}`);
           const selectedSummary = document.getElementsByClassName(
@@ -526,9 +546,15 @@ export default function Converted() {
                 highlightIds.filter((id) => id !== selectedElement.id)
               );
               mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
-                console.log(res)
+                //console.log(res)
                 selectedElement.remove();
                 match = true;
+              });
+              setTimeout(function () {
+                const newFileContent = document.querySelector(".file__content").innerHTML;
+                setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+                console.log("handle highlight click, file content updated", fileData.file_id);
+                // handleUpdateFileContent();
               });
             }
           }
@@ -536,14 +562,14 @@ export default function Converted() {
       }
       // check if user is selecting a node used in a summary
       if (selectedText.toString().length > 0) {
-        console.log("text selected", highlightIds);
+        //console.log("text selected", highlightIds);
         let newHighlightIds = [...highlightIds];
         for (const selectedId of highlightIds) {
           const selectedElement = document.getElementById(`${selectedId}`);
           const selectedSummary = document.getElementsByClassName(
             `${selectedId}`
           );
-          console.log("summary component", selectedSummary);
+          //console.log("summary component", selectedSummary);
           if (selectedSummary[0]) {
             if (selectedText.containsNode(selectedElement, true)) {
               if (colorObj && colorObj.colorText !== "clear") {
@@ -567,7 +593,7 @@ export default function Converted() {
                 (id) => id !== selectedElement.id
               );
               mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
-                console.log(res)
+                //console.log(res)
                 selectedElement.remove();
                 match = true;
               });
@@ -575,6 +601,12 @@ export default function Converted() {
           }
         }
         setHighlightIds(newHighlightIds);
+        setTimeout(function () {
+          console.log("handle highlight drag, file content updated", fileData.file_id);
+          const newFileContent = document.querySelector(".file__content").innerHTML;
+          setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+          //handleUpdateFileContent();
+        });
       }
 
       if (!match) {
@@ -584,7 +616,8 @@ export default function Converted() {
           colorObj.colorText === "clear" &&
           type !== `alternate`
         ) {
-          return console.log("no match and clear highlight");
+          //console.log("no match and clear highlight");
+          return
         } else if (
           highlightColor.colorText === "clear" &&
           type === `alternate`
@@ -599,7 +632,7 @@ export default function Converted() {
           selectedText.toString().length > 0
         ) {
           let id = uuidv4();
-          console.log("making highlight", id);
+          //console.log("making highlight", id);
           const highlightedNode = document.createElement("span");
           highlightedNode.classList.add("highlightnode");
           if (!newColorObj) {
@@ -608,7 +641,12 @@ export default function Converted() {
             highlightedNode.style.backgroundColor = newColorObj.colorHex;
           }
           const range = selectedText.getRangeAt(0);
-          range.surroundContents(highlightedNode);
+          try {
+            range.surroundContents(highlightedNode);
+          } catch (e) {
+            console.log(e);
+            return
+          }
           highlightedNode.id = id;
           let newHighlightIds = [...highlightIds, id];
           let dbData = {
@@ -618,7 +656,7 @@ export default function Converted() {
             },
           };
           mainHandler.handleAddHighlight(dbData, (res) => {
-            console.log(res)
+            //console.log(res)
             for (const selectedId of highlightIds) {
               const selectedElement = document.getElementById(`${selectedId}`);
               if (
@@ -633,13 +671,18 @@ export default function Converted() {
                   (id) => id !== selectedElement.id
                 );
                 mainHandler.handleDeleteHighlight(selectedElement.id, (res) => {
-                  console.log(res)
+                  //console.log(res)
                   selectedElement.remove();
                 });
               }
             }
-
             setHighlightIds(newHighlightIds);
+            // setTimeout(function () {
+              const newFileContent = document.querySelector(".file__content").innerHTML;
+              setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+              console.log("handle highlight create, file content updated", fileData.file_id);
+              //handleUpdateFileContent();
+            // });
           });
           // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
@@ -652,7 +695,7 @@ export default function Converted() {
 
   function handleChangeHighlightColor(colorObj) {
     setHighlightColor(colorObj);
-    console.log(selectedText.toString());
+    //console.log(selectedText.toString());
     handleHighlight(colorObj);
     // console.log('colorObj update', colorObj)
     // setHighlightColor(colorObj)
@@ -662,11 +705,14 @@ export default function Converted() {
 
   useEffect(() => {
     if (!router.query.fileData) {
-      return;
+      router.push({pathname: "/"});
+      return
     } else if (!router.query.settingData) {
-      return;
+      router.push({pathname: "/"});
+      return
     } else if (!router.query.folderArray) {
-      return;
+      router.push({pathname: "/"});
+      return
     }
     setFileData(JSON.parse(router.query.fileData));
     const folderArray = JSON.parse(router.query.folderArray);
@@ -677,48 +723,25 @@ export default function Converted() {
     mainHandler.handleGetKeywordsByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
-        console.log(res);
+        //console.log(res);
         setKeywordArray(res.data);
       }
     );
     mainHandler.handleGetSummariesByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
-        console.log(res);
+        //console.log(res);
         setSummaryArray(res.data);
       }
     );
     mainHandler.handleGetHighlightsByFileId(
       JSON.parse(router.query.fileData).file_id,
       (res) => {
-        console.log(res);
+        //console.log(res);
         setHighlightIds(res.data.map((highlight) => highlight.highlight_uuid));
       }
     );
-  }, []);
-
-  // useEffect(() => {
-  //   console.log("fileid", fileData);
-  //   mainHandler.handleGetKeywordsByFileId(fileData.file_id, (res) => {
-  //     setKeywordArray(res.data);
-  //   });
-  // },[])
-
-  // useEffect(() => {
-  //   const saveSelection = () => {
-  //     setSelectedText(window.getSelection());
-  //     file__content.removeEventListener("mouseup", saveSelection, false);
-  //   };
-
-  useEffect(() => {
-    updateTypeArray(settingData);
-  }, [settingData]);
-
-  useEffect(() => {
-    updateLibraryArray(folderArray);
-  }, [folderArray]);
-
-  useEffect(() => {
+    //console.log('use effect mouse up')
     const file__content = document.querySelector(".file__content");
     file__content.addEventListener(
       "mouseup",
@@ -729,87 +752,33 @@ export default function Converted() {
       },
       false
     );
-  }), [];
-
-  useEffect(() => {
-    // event listener for closing the summary component
+    //console.log('use effect mouse down')
     function eventListenerCallback(e) {
       e.preventDefault();
       let closeElement = e.target;
       if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
         handleCloseSummary(null, e);
       }
-      // if (apples.closest(".summary__container")) {
-      
-      // // if (apples.parent?.parent?.classList.contains("summarize__container")) {
-      //   e.preventDefault();
-      //   handleCloseSummary(null, e);
-      // }
     };
-    const file__content = document.querySelector(".file__content");
+    // const file__content = document.querySelector(".file__content");
     file__content.addEventListener("click", eventListenerCallback, false);
-  }), [];
+  }, []);
 
-  // console.log("CURRENT HIHGLIGH ARRAY", highlightIds);
+  useEffect(() => {
+    updateTypeArray(settingData);
+  }, [settingData]);
+
+  useEffect(() => {
+    updateLibraryArray(folderArray);
+  }, [folderArray]);
+
+  useEffect(() => {
+    updateFileData(fileData);
+  }, [fileData]);
 
   const handleDownloadFile = () => {
-    // // write html file contents to .txt file
-    // const element = document.createElement("a");
-    // // convert file with html tags to plain text
-    // const fileContent = htmlToText(fileData.file_content);
-    // const file = new Blob([fileContent], {
-    //   type: "text/plain",
-    // });
-
-    // element.href = URL.createObjectURL(file);
-    // element.download = fileData.file_name;
-    // document.body.appendChild(element); // Required for this to work in FireFox
-    // element.click();
-
-    // Source HTMLElement or a string containing HTML.
-    // download pdf
 
     var elementHTML = document.querySelector(".file__content");
-    // console.log("PEEPEE", elementHTML.clientHeight);
-
-    // const doc = new jsPDF({
-    //   orientation: "p",
-    //   unit: "px",
-    //   format: "a4",
-    //   hotfixes: ["px_scaling"],
-    // });
-
-    // html2canvas(elementHTML, {
-    //   width: doc.internal.pageSize.getWidth(),
-    //   height: doc.internal.pageSize.getHeight(),
-    //   autoPaging: "text",
-    // }).then((canvas) => {
-    //   const img = canvas.toDataURL("image/png");
-
-    //   doc.addImage(
-    //     img,
-    //     "PNG",
-    //     140,
-    //     10,
-    //     doc.internal.pageSize.getWidth(),
-    //     doc.internal.pageSize.getHeight()
-    //   );
-    //   doc.save("statement.pdf");
-    // });
-
-    //   doc.html(elementHTML, {
-    //     callback: function (doc) {
-    //       // Save the PDF
-    //       doc.save(`${newFileName}.pdf`);
-    //     },
-    //     margin: [10, 10, 10, 10],
-    //     x: 0,
-    //     y: 0,
-    //     autoPaging: "text",
-    //     width: 180,
-    //     windowWidth: 1080,
-    //   });
-
 
     let HTML_Width = elementHTML.clientWidth;
     let HTML_Height = elementHTML.clientHeight;
@@ -841,7 +810,8 @@ export default function Converted() {
   };
 
   console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
-  console.log("CURRENT SUMMARY ARRAY", summaryArray);
+  // console.log("CURRENT SUMMARY ARRAY", summaryArray);
+  console.log("FILE DATA", fileData);
 
   return (
     <Flexbox>
@@ -884,11 +854,11 @@ export default function Converted() {
                     position="absolute"
                     arr={editFileDataArr}
                     onEdit={() => {
-                      console.log("clicking edit");
+                      //console.log("clicking edit");
                       handleEdit();
                     }}
                     onDelete={() => {
-                      console.log("clicking delete");
+                      //console.log("clicking delete");
                       handleDelete();
                     }}
                   // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}

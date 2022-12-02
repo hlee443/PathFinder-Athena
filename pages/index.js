@@ -193,7 +193,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useMediaQuery(mediaQuery.maxWidth.mobile);
 
-  console.log(uploadSetting)
   return (
     <Flexbox>
       <LogoBar />
