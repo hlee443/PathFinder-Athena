@@ -11,6 +11,8 @@ import { mediaQuery } from "../../MediaQuery/data";
 import MiniDropdown from "../MiniDropdown/MiniDropdown";
 import { editFileDataArr } from "../MiniDropdown/data";
 import { motion } from "framer-motion";
+// import * as htmlToImage from 'html-to-image';
+// import html2canvas from "html2canvas";
 
 const FileCont = styled(Flexbox)`
   align-items: start;
@@ -31,6 +33,7 @@ const Title = styled(motion.p)`
 `;
 
 const Preview = styled(motion.div)`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,6 +47,7 @@ const Preview = styled(motion.div)`
   cursor: pointer;
   width: 100%;
   min-height: 10rem;
+
 
   :hover {
     background-color: ${colors.opacity};
@@ -67,6 +71,14 @@ const BottomCont = styled(Flexbox)`
   padding-top: 0.5rem;
 `;
 
+const Embed = styled.object`
+  overflow-y: hidden;
+  object-position: fill;
+  width: 100%;
+  min-height: 100%;
+  font-size: 2px;
+`
+
 export default function File({
   fileName = "Title",
   // type = "default",
@@ -84,6 +96,7 @@ export default function File({
   const [isHover, setIsHover] = useState(false);
   const [showMiniDropdown, setShowMiniDropdown] = useState(false);
   const [editAnimation, setEditAnimation] = useState(false);
+  const [fileImgUrl, setFileImgUrl] = useState('')
 
   const editFilename = () => {
     setShowMiniDropdown(false);
@@ -122,6 +135,21 @@ export default function File({
     console.log(e.target.value);
   };
 
+  useEffect(() => {
+    if(fileId){
+      // const fileContentHtml = fileContent.innerHTML
+
+      const previewContainer = document.querySelector('.filePreview__container')
+      
+      const fileContentBlob = new Blob([fileContent.substring(0, 130) + '...'], { type: 'text/html' })
+      
+      const fileTextUrl = URL.createObjectURL(fileContentBlob)
+
+      setFileImgUrl(fileTextUrl)
+
+    }
+  },[])
+
   const moveFolder = () => {};
 
   return (
@@ -134,10 +162,14 @@ export default function File({
         onMouseEnter={setIsHover}
         onMouseLeave={() => setIsHover(false)}
         onClick={() => handleClick(fileId)}
+        className="filePreview__container"
       >
-        {fileId ? (
-          <p> file #{fileId} preview</p>
-        ) : (
+        {fileId && (
+          <>
+            <Embed className="embedded" data={fileImgUrl} type="text/html"/>
+          </>
+        )}
+        {fileId === null && (
           <Icon
             faIconName={faPlus}
             size="2x"
