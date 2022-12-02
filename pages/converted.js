@@ -8,6 +8,7 @@ import Content from "../components/Content/Content";
 import SideBar from "../components/SideBar/SideBar";
 import styled from "styled-components";
 import Bubble from "../components/Bubble/Bubble";
+import SummaryLoading from "../components/Loading/SummaryLoading"
 import {
   faEllipsis,
   faCheck,
@@ -357,29 +358,29 @@ export default function Converted() {
         // regex to find letter following a space following a letter
         const regex = /(?<=\s)\w/g;
         if (!regex.test(selectedText)) {
-        setDictionary(true);
-        mainHandler.handleDictionary(selectedText.toString(), (res) => {
-          const { data } = res;
-          const { definition } = data;
-          const newDefinition = data[0].shortdef[0];
-          let keywordData = {
-            keywordData: {
-              fileId: fileData.file_id,
-              keywordName: selectedText.toString(),
-              keywordDefinition: newDefinition,
-            },
-          };
-          // add keyword to database
-          // console.log(keywordData);
-          mainHandler.handleAddKeyword(keywordData, (res) => {
-            //console.log("keyword added", res);
-            setKeywordArray([...keywordArray, res.data]);
-            setDictionary(false);
+          setDictionary(true);
+          mainHandler.handleDictionary(selectedText.toString(), (res) => {
+            const { data } = res;
+            const { definition } = data;
+            const newDefinition = data[0].shortdef[0];
+            let keywordData = {
+              keywordData: {
+                fileId: fileData.file_id,
+                keywordName: selectedText.toString(),
+                keywordDefinition: newDefinition,
+              },
+            };
+            // add keyword to database
+            // console.log(keywordData);
+            mainHandler.handleAddKeyword(keywordData, (res) => {
+              //console.log("keyword added", res);
+              setKeywordArray([...keywordArray, res.data]);
+              setDictionary(false);
+            });
           });
-        });
-      } else {
-        console.log("not a word");
-      }
+        } else {
+          console.log("not a word");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -410,7 +411,10 @@ export default function Converted() {
 
   // Selected and Dom
 
+  // const [isSummaryLoading, setIsSummaryLoading] = useState();
+
   function handleSummary() {
+    // setIsSummaryLoading(true);
     // summary content received from api
     if (!summary) {
       try {
@@ -433,6 +437,7 @@ export default function Converted() {
 
               const summaryComponent = (
                 <Summary
+                  // onLoading={setIsSummaryLoading}
                   summarizedContent={res.data.summary_result}
                   // handleCloseSummary={handleCloseSummary}
                   summaryId={res.data.summary_id}
@@ -466,6 +471,8 @@ export default function Converted() {
               parentSummaryContainer.appendChild(summaryContainer);
               let root = ReactDomClient.createRoot(summaryContainer);
               root.render(summaryComponent);
+
+              // setIsSummaryLoading(false);
 
               // document.querySelector(
               //   `.parent-summary-container  .${highlightedNode.id}`
@@ -955,13 +962,13 @@ export default function Converted() {
                 )}
               </IconCont>
               {
-            showBubble && <Overlay>
-              <Bubble
-                handleBubble={()=>router.push("/")}
-                onClose={() => router.push("/")}
-                type="delete" />
-            </Overlay>
-          }
+                showBubble && <Overlay>
+                  <Bubble
+                    handleBubble={() => router.push("/")}
+                    onClose={() => router.push("/")}
+                    type="delete" />
+                </Overlay>
+              }
             </Title>
           )}
           {isEditing && (
