@@ -302,24 +302,37 @@ export default function Converted() {
   //   console.log("move folder");
   // }
 
-  function handleUpdateFileContent() {
-    const newFileContent = document.querySelector(".file__content").innerHTML;
-
-    const fileObject = {
-      fileData: {
-        fileId: fileData.file_id,
-        fileName: newFileName,
-        folderId: fileData.folder_id,
-        fileContent: newFileContent,
-      },
-    };
-
-    mainHandler.handleUpdateFile(fileObject, (res) => {
-      //console.log("updatedFileData", res.data);
-      //console.log("updatedFile content", res.data.file_content);
-      setFileData(res.data);
-    });
+  function updateFileData(fileData) {
+    if (fileData && fileData.file_id) {
+      const dbData = {
+        fileData: {
+          fileId: fileData.file_id,
+          fileName: newFileName,
+          folderId: fileData.folder_id,
+          fileContent: fileData.file_content,
+        },
+      };
+      mainHandler.handleUpdateFile(dbData, res => console.log('file updated', res.data));
+    }
   }
+  // function handleUpdateFileContent() {
+  //   const newFileContent = document.querySelector(".file__content").innerHTML;
+
+  //   const fileObject = {
+  //     fileData: {
+  //       fileId: fileData.file_id,
+  //       fileName: newFileName,
+  //       folderId: fileData.folder_id,
+  //       fileContent: newFileContent,
+  //     },
+  //   };
+
+  //   mainHandler.handleUpdateFile(fileObject, (res) => {
+  //     //console.log("updatedFileData", res.data);
+  //     //console.log("updatedFile content", res.data.file_content);
+  //     setFileData(res.data);
+  //   });
+  // }
 
   function handleDictionary() {
     if (!dictionary) {
@@ -435,8 +448,10 @@ export default function Converted() {
               // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
               setTimeout(function () {
-                handleUpdateFileContent();
+                const newFileContent = document.querySelector(".file__content").innerHTML;
+                setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
                 console.log("handle summary, file content updated", fileData.file_id);
+                // handleUpdateFileContent();
               });
               setSummaryArray([...summaryArray, res.data]);
               setSummary(false);
@@ -477,10 +492,6 @@ export default function Converted() {
         selectedSummaryComponent
       );
     });
-    setTimeout(function () {
-      console.log("handle summary close, file content updated", fileData.file_content);
-      handleUpdateFileContent();
-    });
     // selectedSummaryComponent.classList.add("summary--close"); // animation
     const newSummaryArray = (summaryArray) =>
       [...summaryArray].filter((summary) => summary.summary_id != summaryId);
@@ -497,7 +508,12 @@ export default function Converted() {
         // setTimeout(() => { // let animation play first before removing everything
         selectedSummaryComponent.remove();
         highlightedNode.remove();
-        // }, 600)
+        setTimeout(function () {
+          const newFileContent = document.querySelector(".file__content").innerHTML;
+          setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+          console.log("handle summary close, file content updated", fileData.file_content);
+          //   handleUpdateFileContent();
+        });
       });
     });
   }
@@ -535,8 +551,10 @@ export default function Converted() {
                 match = true;
               });
               setTimeout(function () {
-                handleUpdateFileContent();
+                const newFileContent = document.querySelector(".file__content").innerHTML;
+                setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
                 console.log("handle highlight click, file content updated", fileData.file_id);
+                // handleUpdateFileContent();
               });
             }
           }
@@ -584,8 +602,10 @@ export default function Converted() {
         }
         setHighlightIds(newHighlightIds);
         setTimeout(function () {
-          handleUpdateFileContent();
           console.log("handle highlight drag, file content updated", fileData.file_id);
+          const newFileContent = document.querySelector(".file__content").innerHTML;
+          setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+          //handleUpdateFileContent();
         });
       }
 
@@ -657,10 +677,12 @@ export default function Converted() {
               }
             }
             setHighlightIds(newHighlightIds);
-            setTimeout(function () {
+            // setTimeout(function () {
+              const newFileContent = document.querySelector(".file__content").innerHTML;
+              setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
               console.log("handle highlight create, file content updated", fileData.file_id);
-              handleUpdateFileContent();
-            });
+              //handleUpdateFileContent();
+            // });
           });
           // setHighlightIds([...highlightIds, id]);
           if (type === "alternate") {
@@ -716,7 +738,7 @@ export default function Converted() {
         setHighlightIds(res.data.map((highlight) => highlight.highlight_uuid));
       }
     );
-    console.log('use effect mouse up')
+    //console.log('use effect mouse up')
     const file__content = document.querySelector(".file__content");
     file__content.addEventListener(
       "mouseup",
@@ -727,7 +749,7 @@ export default function Converted() {
       },
       false
     );
-    console.log('use effect mouse down')
+    //console.log('use effect mouse down')
     function eventListenerCallback(e) {
       e.preventDefault();
       let closeElement = e.target;
@@ -759,6 +781,10 @@ export default function Converted() {
   useEffect(() => {
     updateLibraryArray(folderArray);
   }, [folderArray]);
+
+  useEffect(() => {
+    updateFileData(fileData);
+  }, [fileData]);
 
   // useEffect(() => {
   //   console.log('use effect mouse up')
@@ -886,6 +912,7 @@ export default function Converted() {
 
   console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
   // console.log("CURRENT SUMMARY ARRAY", summaryArray);
+  console.log("FILE DATA", fileData);
 
   return (
     <Flexbox>
