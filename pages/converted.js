@@ -316,7 +316,9 @@ export default function Converted() {
           fileContent: fileData.file_content,
         },
       };
-      mainHandler.handleUpdateFile(dbData, res => console.log('file updated', res.data));
+      mainHandler.handleUpdateFile(dbData, (res) =>
+        console.log("file updated", res.data)
+      );
     }
   }
   // function handleUpdateFileContent() {
@@ -437,7 +439,7 @@ export default function Converted() {
                 `${res.data.summary_id}`
               );
               const summaryContainer = document.createElement("div");
-              summaryContainer.classList.add('summarize__container-wrapper')
+              summaryContainer.classList.add("summarize__container-wrapper");
               highlightedNode.parentNode.insertBefore(
                 parentSummaryContainer,
                 highlightedNode
@@ -452,12 +454,19 @@ export default function Converted() {
               //   `.parent-summary-container  .${highlightedNode.id}`
               // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
 
-              handleLocateSummary(res.data.summary_id)
+              handleLocateSummary(res.data.summary_id);
 
               setTimeout(function () {
-                const newFileContent = document.querySelector(".file__content").innerHTML;
-                setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
-                console.log("handle summary, file content updated", fileData.file_id);
+                const newFileContent =
+                  document.querySelector(".file__content").innerHTML;
+                setFileData((fileData) => ({
+                  ...fileData,
+                  file_content: newFileContent,
+                }));
+                console.log(
+                  "handle summary, file content updated",
+                  fileData.file_id
+                );
                 // handleUpdateFileContent();
               });
               setSummaryArray([...summaryArray, res.data]);
@@ -474,7 +483,7 @@ export default function Converted() {
   function handleCloseSummary(id, e) {
     // e.preventDefault();
     // e.stopPropagation();
-    let summaryId = id
+    let summaryId = id;
     let selectedSummaryComponent = null;
     let highlightedNode = null;
     if (summaryId && !e) {
@@ -486,7 +495,9 @@ export default function Converted() {
       );
     } else if (!summaryId && e) {
       let selectedElement = e.target.parentElement; // x icon because needs to know which summary component to delete
-      selectedSummaryComponent = selectedElement.closest(".parent-summary-container");
+      selectedSummaryComponent = selectedElement.closest(
+        ".parent-summary-container"
+      );
       summaryId = +selectedSummaryComponent.classList[2];
       highlightedNode = document.getElementById(
         `${selectedSummaryComponent.classList[1]}`
@@ -516,9 +527,16 @@ export default function Converted() {
         selectedSummaryComponent.remove();
         highlightedNode.remove();
         setTimeout(function () {
-          const newFileContent = document.querySelector(".file__content").innerHTML;
-          setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
-          console.log("handle summary close, file content updated", fileData.file_content);
+          const newFileContent =
+            document.querySelector(".file__content").innerHTML;
+          setFileData((fileData) => ({
+            ...fileData,
+            file_content: newFileContent,
+          }));
+          console.log(
+            "handle summary close, file content updated",
+            fileData.file_content
+          );
           //   handleUpdateFileContent();
         });
       });
@@ -558,9 +576,16 @@ export default function Converted() {
                 match = true;
               });
               setTimeout(function () {
-                const newFileContent = document.querySelector(".file__content").innerHTML;
-                setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
-                console.log("handle highlight click, file content updated", fileData.file_id);
+                const newFileContent =
+                  document.querySelector(".file__content").innerHTML;
+                setFileData((fileData) => ({
+                  ...fileData,
+                  file_content: newFileContent,
+                }));
+                console.log(
+                  "handle highlight click, file content updated",
+                  fileData.file_id
+                );
                 // handleUpdateFileContent();
               });
             }
@@ -585,11 +610,10 @@ export default function Converted() {
               match = true;
             }
           } else if (
-            !selectedSummary[0] &&
-            colorObj &&
-            colorObj.colorText === "clear" ||
-            !selectedSummary[0] &&
-            highlightColor.colorHex === "clear"
+            (!selectedSummary[0] &&
+              colorObj &&
+              colorObj.colorText === "clear") ||
+            (!selectedSummary[0] && highlightColor.colorHex === "clear")
           ) {
             if (selectedText.containsNode(selectedElement, true)) {
               let nodeArray = Array.from(selectedElement.childNodes);
@@ -609,9 +633,16 @@ export default function Converted() {
         }
         setHighlightIds(newHighlightIds);
         setTimeout(function () {
-          console.log("handle highlight drag, file content updated", fileData.file_id);
-          const newFileContent = document.querySelector(".file__content").innerHTML;
-          setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+          console.log(
+            "handle highlight drag, file content updated",
+            fileData.file_id
+          );
+          const newFileContent =
+            document.querySelector(".file__content").innerHTML;
+          setFileData((fileData) => ({
+            ...fileData,
+            file_content: newFileContent,
+          }));
           //handleUpdateFileContent();
         });
       }
@@ -624,7 +655,7 @@ export default function Converted() {
           type !== `alternate`
         ) {
           //console.log("no match and clear highlight");
-          return
+          return;
         } else if (
           highlightColor.colorText === "clear" &&
           type === `alternate`
@@ -652,14 +683,14 @@ export default function Converted() {
             range.surroundContents(highlightedNode);
           } catch (e) {
             console.log(e);
-            return
+            return;
           }
           highlightedNode.id = id;
           let newHighlightIds = [...highlightIds, id];
           let dbData = {
             highlightData: {
               fileId: fileData.file_id,
-              highlightId: id
+              highlightId: id,
             },
           };
           mainHandler.handleAddHighlight(dbData, (res) => {
@@ -672,7 +703,10 @@ export default function Converted() {
               ) {
                 let nodeArray = Array.from(selectedElement.childNodes);
                 nodeArray.forEach((node) => {
-                  selectedElement.parentNode.insertBefore(node, selectedElement);
+                  selectedElement.parentNode.insertBefore(
+                    node,
+                    selectedElement
+                  );
                 });
                 newHighlightIds = newHighlightIds.filter(
                   (id) => id !== selectedElement.id
@@ -685,9 +719,16 @@ export default function Converted() {
             }
             setHighlightIds(newHighlightIds);
             // setTimeout(function () {
-            const newFileContent = document.querySelector(".file__content").innerHTML;
-            setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
-            console.log("handle highlight create, file content updated", fileData.file_id);
+            const newFileContent =
+              document.querySelector(".file__content").innerHTML;
+            setFileData((fileData) => ({
+              ...fileData,
+              file_content: newFileContent,
+            }));
+            console.log(
+              "handle highlight create, file content updated",
+              fileData.file_id
+            );
             //handleUpdateFileContent();
             // });
           });
@@ -713,13 +754,13 @@ export default function Converted() {
   useEffect(() => {
     if (!router.query.fileData) {
       router.push({ pathname: "/" });
-      return
+      return;
     } else if (!router.query.settingData) {
       router.push({ pathname: "/" });
-      return
+      return;
     } else if (!router.query.folderArray) {
       router.push({ pathname: "/" });
-      return
+      return;
     }
     setFileData(JSON.parse(router.query.fileData));
     const folderArray = JSON.parse(router.query.folderArray);
@@ -766,7 +807,7 @@ export default function Converted() {
       if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
         handleCloseSummary(null, e);
       }
-    };
+    }
     // const file__content = document.querySelector(".file__content");
     file__content.addEventListener("click", eventListenerCallback, false);
   }, []);
@@ -784,36 +825,49 @@ export default function Converted() {
   }, [fileData]);
 
   const handleDownloadFile = () => {
-
     var elementHTML = document.querySelector(".file__content");
 
     let HTML_Width = elementHTML.clientWidth;
     let HTML_Height = elementHTML.clientHeight;
     let top_left_margin = 15;
-    let PDF_Width = HTML_Width + (top_left_margin * 2);
-    let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    let PDF_Width = HTML_Width + top_left_margin * 2;
+    let PDF_Height = PDF_Width * 1.5 + top_left_margin * 2;
     let canvas_image_width = HTML_Width;
     let canvas_image_height = HTML_Height;
     let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
 
-    html2canvas((elementHTML), { allowTaint: true, autoPaging: "text", }).then(function (canvas) {
-      canvas.getContext('2d');
+    html2canvas(elementHTML, { allowTaint: true, autoPaging: "text" }).then(
+      function (canvas) {
+        canvas.getContext("2d");
 
-      // console.log(canvas.height + "  " + canvas.width);
+        // console.log(canvas.height + "  " + canvas.width);
 
+        let imgData = canvas.toDataURL("image/jpeg", 1.0);
+        let pdf = new jsPDF("p", "pt", [PDF_Width, PDF_Height]);
+        pdf.addImage(
+          imgData,
+          "JPG",
+          top_left_margin,
+          top_left_margin,
+          canvas_image_width,
+          canvas_image_height
+        );
 
-      let imgData = canvas.toDataURL("image/jpeg", 1.0);
-      let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (let i = 1; i <= totalPDFPages; i++) {
+          pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
+          pdf.addImage(
+            imgData,
+            "JPG",
+            top_left_margin,
+            -(PDF_Height * i) + top_left_margin * 4,
+            canvas_image_width,
+            canvas_image_height
+          );
+        }
 
-
-      for (let i = 1; i <= totalPDFPages; i++) {
-        pdf.addPage(PDF_Width.toString(), PDF_Height.toString());
-        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+        pdf.save(`${newFileName}.pdf`);
       }
-
-      pdf.save(`${newFileName}.pdf`);
-    });
+    );
   };
 
   console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
@@ -860,6 +914,7 @@ export default function Converted() {
                 )}
                 {dropdown && (
                   <MiniDropdown
+                    handleMouseLeave={() => showDropdown(false)}
                     onClose={() => {
                       showDropdown(false);
                     }}
@@ -873,7 +928,7 @@ export default function Converted() {
                       //console.log("clicking delete");
                       handleDelete();
                     }}
-                  // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
+                    // onMoveFolder={()=>{console.log("clicking move folder");handleMoveFolder}}
                   />
                 )}
               </IconCont>
