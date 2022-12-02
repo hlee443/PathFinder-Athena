@@ -25,6 +25,13 @@ const SideBarCont = styled(Container)`
   /* min-width: fit-content; */
   user-select: none;
   flex-basis: 30vw;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: 100%;
+    height: 100vh;
+
+  } ;
+
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
     width: 100%;
@@ -44,6 +51,8 @@ const Section = styled(Flexbox)`
   justify-content: start;
   width: 100%;
   gap: 3rem;
+  overflow-y: scroll;
+  height: 100%;
 `;
 
 const Divider = styled.div`
