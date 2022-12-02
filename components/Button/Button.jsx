@@ -9,7 +9,7 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: space-evenly;
   font-weight: "900";
-  border: none;
+  border: ${(props) => props.border};
   width: ${(props) => props.width || btnData.size.med.width};
   height: ${(props) => props.height || btnData.size.med.height};
   max-width: 15rem;
@@ -17,17 +17,15 @@ const StyledButton = styled.button`
   font-size: 1.25rem;
   white-space: nowrap;
   cursor: pointer;
-  border-color: ${(props) => props.borderColor};
+  border-color: ${(props) => props.borderColor || colors.lightGrey};
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.type};
-
-  background-color: ${(props) => props.primary ? colors.buttonPrimaryBlue : colors.buttonSecondaryBlue};
+  background-color: ${(props) => props.primary ? colors.buttonPrimaryBlue : "transparent"};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
   color: ${(props) => props.color || colors.textBlack};
   // padding: ${(props) => props.padding || "1rem"};
-
-  box-shadow: ${(props) => props.primary ? btnData.variants.primary.boxShadow: btnData.variants.primary.boxShadow};
+  box-shadow: ${(props) => props.primary ? btnData.variants.primary.boxShadow: "none"};
 
   @media ${mediaQuery.maxWidth.mobile} {
     width: ${btnData.size.small.width};
@@ -70,11 +68,13 @@ export default function Button({
   handleMouseLeave = () => { },
   primary = true,
   hover = true,
-  padding =""
+  padding = "",
+  border ="none"
 }) {
 
   return (
     <StyledButton
+      border={border}
       primary={primary}
       hover={hover}
       color={color}
