@@ -66,9 +66,11 @@ const StickyCont = styled(Flexbox)`
 `;
 
 const SidebarCont = styled.div`
+  top: 13rem;
+  position: sticky;
   width: 40vw;
   overflow-y: scroll;
-  height: 100%;
+  height: auto;
 
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
@@ -378,7 +380,7 @@ export default function Converted() {
       `parent-summary-container ${summaryId}`
     )[0];
 
-    selectedSummary.closest(".highlightnode").scrollIntoView({
+    selectedSummary.scrollIntoView({
       behavior: "smooth",
       block: "center",
       inline: "center",
@@ -433,6 +435,7 @@ export default function Converted() {
                 `${res.data.summary_id}`
               );
               const summaryContainer = document.createElement("div");
+              summaryContainer.classList.add('summarize__container-wrapper')
               highlightedNode.parentNode.insertBefore(
                 parentSummaryContainer,
                 highlightedNode
@@ -444,8 +447,10 @@ export default function Converted() {
               root.render(summaryComponent);
 
               // document.querySelector(
-              //   "#selectedNode__container .summarize__wrapper-container"
+              //   `.parent-summary-container  .${highlightedNode.id}`
               // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+              handleLocateSummary(res.data.summary_id)
 
               setTimeout(function () {
                 const newFileContent = document.querySelector(".file__content").innerHTML;

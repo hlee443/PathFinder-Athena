@@ -88,7 +88,7 @@ p {
   }
 }
 
-.summarize__container{
+.summarize__container-wrapper{
   overflow: hidden;
   transition: max-height .5s;
   height: auto;
