@@ -14,9 +14,9 @@ import { mediaQuery } from "../../MediaQuery/data";
 
 const SideBarCont = styled(Container)`
   // min-height: 100vh;
-  height: 100vh;
+  height: 70vh;
   background-color: ${colors.backgroundCream};
-  padding: 1rem;
+  padding: 2rem;
   gap: 1rem;
   width: 100%;
   justify-content: start;

@@ -66,9 +66,11 @@ const StickyCont = styled(Flexbox)`
 `;
 
 const SidebarCont = styled.div`
+  top: 13rem;
+  position: sticky;
   width: 40vw;
   overflow-y: scroll;
-  height: 100%;
+  height: auto;
 
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
@@ -365,7 +367,7 @@ export default function Converted() {
       `parent-summary-container ${summaryId}`
     )[0];
 
-    selectedSummary.closest(".highlightnode").scrollIntoView({
+    selectedSummary.scrollIntoView({
       behavior: "smooth",
       block: "center",
       inline: "center",
@@ -432,8 +434,10 @@ export default function Converted() {
               root.render(summaryComponent);
 
               // document.querySelector(
-              //   "#selectedNode__container .summarize__wrapper-container"
+              //   `.parent-summary-container  .${highlightedNode.id}`
               // ).scrollIntoView({behavior: 'smooth',  block: 'center', inline: 'center'})
+
+              handleLocateSummary(res.data.summary_id)
 
               setTimeout(function () {
                 handleUpdateFileContent();
@@ -478,7 +482,7 @@ export default function Converted() {
       );
     });
 
-    // selectedSummaryComponent.classList.add("summary--close"); // animation
+    selectedSummaryComponent.classList.add("summary--close"); // animation
     const newSummaryArray = (summaryArray) => 
       [...summaryArray].filter((summary) => summary.summary_id != summaryId);
     setSummaryArray(newSummaryArray);
