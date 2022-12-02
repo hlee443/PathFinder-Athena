@@ -621,7 +621,12 @@ export default function Converted() {
             highlightedNode.style.backgroundColor = newColorObj.colorHex;
           }
           const range = selectedText.getRangeAt(0);
-          range.surroundContents(highlightedNode);
+          try {
+            range.surroundContents(highlightedNode);
+          } catch (e) {
+            console.log(e);
+            return
+          }
           highlightedNode.id = id;
           let newHighlightIds = [...highlightIds, id];
           let dbData = {
@@ -879,7 +884,7 @@ export default function Converted() {
     });
   };
 
-  // console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
+  console.log("CURRENT HIHGLIGHT ARRAY", highlightIds);
   // console.log("CURRENT SUMMARY ARRAY", summaryArray);
 
   return (
