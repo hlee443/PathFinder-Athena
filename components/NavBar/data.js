@@ -22,29 +22,28 @@ export const btnData = {
 export const btns = [
   {
     text: "Log In",
-    type: "login"
+    type: "login",
   },
   {
     text: "Sign Up",
-    type: "signup"
+    type: "signup",
   },
-]
-
+];
 
 export const menus = [
   {
     src: "Home.svg",
     text: "Home",
-    page: "/"
+    page: "/",
   },
   {
     src: "Library.svg",
     text: "Library",
-    page: "/library"
+    page: "/library",
   },
   {
-    src: "Profile.svg",
-    text: "Profile",
-    page: ""
+    src: "About.svg",
+    text: "About",
+    page: "/about",
   },
 ];

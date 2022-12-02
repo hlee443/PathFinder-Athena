@@ -11,7 +11,7 @@ import {
   faEllipsis,
   faCheck,
   faSliders,
-  faArrowRightFromBracket,
+  faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useInsertionEffect, useState, useCallback } from "react";
@@ -49,14 +49,16 @@ const Title = styled(Flexbox)`
 `;
 
 const DocCont = styled(Flexbox)`
-  width: 100%;
-  max-width: 100%;
+  width: 85%;
   gap: 1rem;
   // height: 100vh;
+  justify-content: center;
 `;
 
 const IconCont = styled(Flexbox)`
   position: relative;
+  justify-content: space-between;
+  width: 8%;
 `;
 
 const StickyCont = styled(Flexbox)`
@@ -68,9 +70,9 @@ const StickyCont = styled(Flexbox)`
 const SidebarCont = styled.div`
   top: 13rem;
   position: sticky;
-  width: 40vw;
   overflow-y: scroll;
   height: auto;
+  flex-basis: 30vw;
 
   @media ${mediaQuery.maxWidth.tablet} {
     position: fixed;
@@ -683,10 +685,10 @@ export default function Converted() {
             }
             setHighlightIds(newHighlightIds);
             // setTimeout(function () {
-              const newFileContent = document.querySelector(".file__content").innerHTML;
-              setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
-              console.log("handle highlight create, file content updated", fileData.file_id);
-              //handleUpdateFileContent();
+            const newFileContent = document.querySelector(".file__content").innerHTML;
+            setFileData(fileData => ({ ...fileData, file_content: newFileContent }));
+            console.log("handle highlight create, file content updated", fileData.file_id);
+            //handleUpdateFileContent();
             // });
           });
           // setHighlightIds([...highlightIds, id]);
@@ -710,13 +712,13 @@ export default function Converted() {
 
   useEffect(() => {
     if (!router.query.fileData) {
-      router.push({pathname: "/"});
+      router.push({ pathname: "/" });
       return
     } else if (!router.query.settingData) {
-      router.push({pathname: "/"});
+      router.push({ pathname: "/" });
       return
     } else if (!router.query.folderArray) {
-      router.push({pathname: "/"});
+      router.push({ pathname: "/" });
       return
     }
     setFileData(JSON.parse(router.query.fileData));
@@ -843,12 +845,14 @@ export default function Converted() {
               <Header text={newFileName} />
               <IconCont dir="row">
                 <Icon
+                  size="2x"
                   faIconName={faEllipsis}
                   handleClick={handleMiniDropdown}
                 />
                 {!isActive && showIcon && (
                   <Icon
-                    faIconName={faArrowRightFromBracket}
+                    size="2x"
+                    faIconName={faAnglesRight}
                     handleClick={() => {
                       setShowSidebar(true), setShowIcon(false);
                     }}
@@ -856,6 +860,9 @@ export default function Converted() {
                 )}
                 {dropdown && (
                   <MiniDropdown
+                    onClose={() => {
+                      showDropdown(false);
+                    }}
                     position="absolute"
                     arr={editFileDataArr}
                     onEdit={() => {
@@ -901,18 +908,18 @@ export default function Converted() {
             <Content fileData={fileData} />
           </Container>
         </DocCont>
-        <SidebarCont>
-          {showSidebar && (
-            <SideBar
-              handleSidebar={handleSidebar}
-              keywordArray={keywordArray}
-              summaryArray={summaryArray}
-              closeDictionary={closeDictionary}
-              handleCloseSummary={handleCloseSummary}
-              handleLocateSummary={handleLocateSummary}
-            />
-          )}
-        </SidebarCont>
+        {/* <SidebarCont> */}
+        {showSidebar && (
+          <SideBar
+            handleSidebar={handleSidebar}
+            keywordArray={keywordArray}
+            summaryArray={summaryArray}
+            closeDictionary={closeDictionary}
+            handleCloseSummary={handleCloseSummary}
+            handleLocateSummary={handleLocateSummary}
+          />
+        )}
+        {/* </SidebarCont> */}
       </Layout>
 
       {/* </DocCont> */}

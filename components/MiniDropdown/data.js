@@ -4,6 +4,7 @@ import {
   faFolder,
   faPencil,
   faTrash,
+  faClose,
 } from "@fortawesome/free-solid-svg-icons";
 
 // export const SortingDataArr = [
