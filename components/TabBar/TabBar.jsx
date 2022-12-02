@@ -24,19 +24,19 @@ const TabBarCont = styled(Flexbox)`
 
 export default function TabBar({
   btnArr = [],
-  buttonClick = () => { },
-  changePage = () => { },
+  buttonClick = () => {},
+  changePage = () => {},
 }) {
   const [sel, setSel] = useState(0);
   const [isHover, setIsHover] = useState();
 
   const handleHover = () => {
     if (isHover) {
-      setIsHover(true)
+      setIsHover(true);
     } else if (!isHover) {
-      setIsHover(false)
+      setIsHover(false);
     }
-  }
+  };
 
   return (
     <TabBarCont dir="row">
@@ -45,25 +45,23 @@ export default function TabBar({
           width={btnData.width}
           height={btnData.height}
           key={o.folder_id || o.text}
-          color={
-            sel === i ? btnData.state.default.color : btnData.state.inactive.color
-          }
-          borderBottom={
-            sel === i && btnData.state.clicked.borderBottom
-          }
+          color={btnData.state.default.color}
+          borderBottom={sel === i && btnData.state.clicked.borderBottom}
           faIconName={o.icon}
-          backgroundColor={btnData.backgroundColor}
+          primary={false}
           iconSize="sm"
           iconColor={btnData.iconColor}
           borderRadius={btnData.borderRadius}
           text={o.folder_name || o.text}
           fontweight={
-            sel === i ? btnData.state.clicked.fontWeight : btnData.state.inactive.fontWeight
+            sel === i
+              ? btnData.state.clicked.fontWeight
+              : btnData.state.inactive.fontWeight
           }
           handleMouseEnter={handleHover}
           handleMouseLeave={handleHover}
           handleClick={() => {
-            setSel(i), changePage()
+            setSel(i), changePage();
             buttonClick(o.folder_id);
           }}
         ></Button>
