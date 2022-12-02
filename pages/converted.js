@@ -40,21 +40,28 @@ const Layout = styled(Flexbox)`
   flex: 2 1;
 
   @media ${mediaQuery.maxWidth.mobile} {
-    padding: 2rem;
-  } ;
+    padding: 2rem 0.5rem;
+  };
 `;
 
 const Title = styled(Flexbox)`
   user-select: none;
   justify-content: space-between;
   width: 100%;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: auto;
+  };
 `;
 
 const DocCont = styled(Flexbox)`
   width: 85%;
   gap: 1rem;
-  // height: 100vh;
   justify-content: center;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: 100%;
+  };
 `;
 
 const IconCont = styled(Flexbox)`

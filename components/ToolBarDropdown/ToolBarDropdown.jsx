@@ -28,6 +28,7 @@ const DropdownCont = styled(Flexbox)`
   @media ${mediaQuery.maxWidth.mobile} {
     top: 0;
     left: 0;
+    width: 100%;
   };
 `;
 
