@@ -18,10 +18,12 @@ export default function Content({
         //console.log("CONTENT CONVERSION", fileData.file_content)
 
         const isHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/
+        // regex string that looks ahead for <br> tags
+        const isBR = /<br\s*[\/]?>/gi
 
         const fileBody = document.querySelector(".file__content")
         setFileContent(fileData.file_content)
-        if(isHTML.test(fileContent)){
+        if(isHTML.test(fileContent) || isBR.test(fileContent)) {
             fileBody.innerHTML = fileContent
         } else {
             fileBody.innerText = fileContent

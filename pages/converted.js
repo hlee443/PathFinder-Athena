@@ -354,6 +354,9 @@ export default function Converted() {
   function handleDictionary() {
     if (!dictionary) {
       try {
+        // regex to find letter following a space following a letter
+        const regex = /(?<=\s)\w/g;
+        if (!regex.test(selectedText)) {
         setDictionary(true);
         mainHandler.handleDictionary(selectedText.toString(), (res) => {
           const { data } = res;
@@ -374,6 +377,9 @@ export default function Converted() {
             setDictionary(false);
           });
         });
+      } else {
+        console.log("not a word");
+      }
       } catch (error) {
         console.log(error);
       }
@@ -821,6 +827,11 @@ export default function Converted() {
     }
     // const file__content = document.querySelector(".file__content");
     file__content.addEventListener("click", eventListenerCallback, false);
+
+    window.onbeforeunload = function () {
+      return "Are you sure you want to leave?";
+    };
+
   }, []);
 
   useEffect(() => {
