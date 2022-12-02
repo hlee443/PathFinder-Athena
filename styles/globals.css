@@ -3,11 +3,10 @@
 html,
 body {
   font-family: "Open Sans", sans-serif;
-  padding: 0;
-  margin: 0;
+  height: 100%;
+  margin: 0 auto;
   /* background-color: #fffef7; */
   letter-spacing: 0.22em;
-  /* overflow-y: hidden; */
 }
 
 div {
@@ -45,36 +44,51 @@ form {
 input::placeholder {
   letter-spacing: 0.22rem;
 }
-/* input[type="text"] {
-  padding: 1rem;
-} */
 
 input[type="color"] {
-  -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
   cursor: pointer;
-  border: 1px solid;
-  width: 40px;
-  height: 40px;
+  height: 3rem;
+  padding: 0.3rem;
+  width: 6rem;
+  appearance: none;
+  border-radius: 50rem;
+  border: 2px solid #3E3E3E;
   background-color: transparent;
 }
 
 input[type="color"]::-webkit-color-swatch {
   border: none;
-  border-radius: 50px;
+  /* border-radius: 50%; */
 }
 
 input[type="color"]::-moz-color-swatch {
   border: none;
-  border-radius: 50px;
+  /* border-radius: 50%; */
 }
 
 p {
   margin: 0;
 }
 
-.summarize__wrapper-container{
+.wordSaved--close{
+  animation: fadeOut-X 1s ease-out;
+}
+
+@keyframes fadeOut-X {
+  0%{
+    opacity: 1;
+    transform: translateX(0)
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(20%)
+  }
+}
+
+.summarize__container-wrapper{
   overflow: hidden;
   transition: max-height .5s;
   height: auto;

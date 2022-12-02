@@ -15,10 +15,18 @@ export default function Content({
     const [fileContent, setFileContent] = useState('')
 
     useEffect(() => {
+        //console.log("CONTENT CONVERSION", fileData.file_content)
+
+        const isHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/
+        const isBr =/<br\s*[\/]?>/gi
 
         const fileBody = document.querySelector(".file__content")
         setFileContent(fileData.file_content)
-        fileBody.innerText = fileContent
+        if(isHTML.test(fileContent) || isBr.test(fileContent)){
+            fileBody.innerHTML = fileContent
+        } else {
+            fileBody.innerText = fileContent
+        }
 
     }, [fileContent])
 

@@ -14,14 +14,31 @@ import { mediaQuery } from "../../MediaQuery/data";
 
 const SideBarCont = styled(Container)`
   // min-height: 100vh;
-  height: 100vh;
+  position: sticky;
+  top: 13rem;
+  height: 70vh;
   background-color: ${colors.backgroundCream};
-  padding: 1rem;
+  padding: 2rem;
   gap: 1rem;
   width: 100%;
   justify-content: start;
-  min-width: fit-content;
+  /* min-width: fit-content; */
   user-select: none;
+  flex-basis: 30vw;
+  overflow-y: scroll;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    width: 100%;
+    height: 100vh;
+
+  } ;
+
+  @media ${mediaQuery.maxWidth.tablet} {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 30vh;
+  } ;
 `;
 
 const Category = styled(Flexbox)`
@@ -34,6 +51,8 @@ const Section = styled(Flexbox)`
   justify-content: start;
   width: 100%;
   gap: 3rem;
+  overflow-y: scroll;
+  height: 100%;
 `;
 
 const Divider = styled.div`
@@ -53,13 +72,11 @@ const Header = styled(Flexbox)`
 export default function SideBar({
   keywordArray = [],
   summaryArray = [],
-  closeDictionary = () => { },
-  closeSummarySidebar = () => {},
-  handleSidebar = () => { },
+  closeDictionary = () => {},
+  handleSidebar = () => {},
   handleCloseSummary = () => {},
-  handleLocateSummary = () => {}
- }) {
-
+  handleLocateSummary = () => {},
+}) {
   const [showPopUp, setShowPopUp] = useState("type");
 
   // const [summarizedContent, setSummarizedContent] = useState(null);
@@ -77,47 +94,41 @@ export default function SideBar({
   return (
     <SideBarCont>
       <CloseIcon>
-        <Icon
-          handleClick={handleSidebar}
-          faIconName={faClose} />
+        <Icon handleClick={handleSidebar} faIconName={faClose} />
       </CloseIcon>
       <Section>
         <Category>
-        <Header dir="row">
-          <Icon faIconName={faMagnifyingGlass} />
-          <p>Words</p>
-        </Header>
-        {
-          keywordArray.map((keyword) => (
-             <WordSaved
+          <Header dir="row">
+            <Icon faIconName={faMagnifyingGlass} />
+            <p>Words</p>
+          </Header>
+          {keywordArray.map((keyword) => (
+            <WordSaved
               key={keyword.keyword_id}
-              type='dictionary'
+              type="dictionary"
               word={keyword.keyword_name}
               definition={keyword.keyword_definition}
               id={keyword.keyword_id}
-              onClose={closeDictionary} />
-          ))
-        }
+              handleCloseDictionary={closeDictionary}
+            />
+          ))}
         </Category>
         <Divider />
         <Category>
-        <Header dir="row">
-          <Icon faIconName={faFileLines} />
+          <Header dir="row">
+            <Icon faIconName={faFileLines} />
             <p>Summary</p>
           </Header>
-          {
-            summaryArray.map((summary) => (
-              <WordSaved 
-                key={summary.summary_id}
-                type='summary'
-                definition={summary.summary_result}
-                id={summary.summary_id}
-                handleCloseSummary={handleCloseSummary}
-                handleLocateSummary={handleLocateSummary}
-              />
-            ))
-          }
-        
+          {summaryArray.map((summary) => (
+            <WordSaved
+              key={summary.summary_id}
+              type="summary"
+              definition={summary.summary_result}
+              id={summary.summary_id}
+              handleCloseSummary={handleCloseSummary}
+              handleLocateSummary={handleLocateSummary}
+            />
+          ))}
         </Category>
       </Section>
     </SideBarCont>

@@ -5,11 +5,16 @@ export const textData = {
   lineHeight: "150%",
   letterSpacing: "0.22em",
   h1: {
-    size: "2.375rem",
-    fontWeight: "700",
+    size: {
+      mobile: "1.5rem",
+      desktop: "2.375rem",
+    },
   },
   h2: {
-    size: "1.5rem",
+    size: {
+      mobile: "1.125rem",
+      desktop: "1.5rem",
+    },
   },
 };
 
@@ -47,14 +52,15 @@ export const Flexbox = styled.div`
   align-items: center;
   justify-content: center;
   // position: relative;
+  height: ${(props) => props.height};
 `;
 
 export const Wrapper = styled(Flexbox)`
+  // position: relative;
   align-items: start;
   justify-content: start;
   width: 100vw;
   height: 100vh;
-  min-height: 100vh;
   gap: 2.5rem;
   padding: 8rem;
   bottom: 0;
@@ -62,8 +68,14 @@ export const Wrapper = styled(Flexbox)`
 
   @media ${mediaQuery.maxWidth.mobile} {
     padding: 1rem;
-    gap: 1rem;
+    height: 100%;
+    gap: 2rem;
+    margin-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
+
+  @media ${mediaQuery.minWidth.tablet} {
+    padding: 4rem;
+  } ;
 
   @media ${mediaQuery.maxWidth.tablet} {
     padding: 3rem;
@@ -76,6 +88,7 @@ export const BodyText = styled.p`
   width: fit-content;
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
+  color: ${(props) => props.color || colors.textBlack};
 `;
 
 export const Container = styled(Flexbox)`
@@ -86,16 +99,27 @@ export const Container = styled(Flexbox)`
   // min-width: 100%;
   max-width: 100%;
   height: ${(props) => props.height || "fit-content"};
-  padding: ${(props) => props.padding || "2em"};
   border: 0.125rem solid;
   border-color: ${(props) => props.borderColor || colors.darkGray};
-  background-color: ${(props) =>
-    props.backgroundColor || colors.backgroundWhite};
+  background-color: ${(props) => props.backgroundColor || colors.backgroundWhite};
   border-radius: 2rem;
   gap: ${(props) => props.gap};
   font-family: ${(props) => props.typeface};
   font-size: ${(props) => props.fontSize}px;
   line-height: ${(props) => props.lineSpace}%;
   letter-spacing: ${(props) => props.letterSpace}rem;
-  animation: fadeIn 1s;
+  padding: 3rem;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  @media ${mediaQuery.minWidth.tablet} {
+    padding: 3rem;
+  };
+
+  @media ${mediaQuery.maxWidth.tablet} {
+    padding: 1.5rem;
+  };
 `;

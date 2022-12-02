@@ -11,13 +11,9 @@ import { faFolder, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import * as mainHandler from "../handlers/main";
 import LogoBar from "../components/LogoBar/LogoBar";
 import { mediaQuery } from "../MediaQuery/data";
-import { motion } from "framer-motion";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
-const FileDisplay = styled(motion.div)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+const FileDisplay = styled(Flexbox)`
   width: 100%;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -36,6 +32,10 @@ const FileDisplay = styled(motion.div)`
   } ;
 `;
 
+const StyledWrapper = styled(Wrapper)`
+  height: auto;
+`
+
 const TopCont = styled(Flexbox)`
   justify-content: space-between;
   width: 100%;
@@ -44,6 +44,7 @@ const TopCont = styled(Flexbox)`
 export default function Library() {
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
+  const [visible, setVisible] = useState(true);
 
   const router = useRouter();
 
@@ -54,7 +55,7 @@ export default function Library() {
         folderData.map((folder) => {
           folder.icon = faFolder;
         });
-        folderData.push({ text: "Create New", icon: faFolderPlus });
+        // folderData.push({ text: "Create New", icon: faFolderPlus });
         setFolders(folderData);
         cb(folderData[0]);
       });
@@ -62,12 +63,22 @@ export default function Library() {
     getFolders((folder) => {
       onSelectFolder(folder.folder_id);
     });
+
+    // function eventListenerCallback(e) {
+    //   e.preventDefault();
+    //   let closeElement = e.target;
+    //   if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
+    //     handleCloseSummary(null, e);
+    //   }
+    // };
+   
+    // file__content.addEventListener("click", eventListenerCallback, false);
   }, []);
 
   async function onSelectFolder(folderId) {
     mainHandler.handleGetFilesByFolderId(folderId, (res) => {
       let fileData = res.data;
-      console.log(fileData);
+      // console.log(fileData);
       setFiles(fileData);
     });
   }
@@ -92,6 +103,7 @@ export default function Library() {
   function handleDelete(fileId) {
     mainHandler.handleDeleteFile(fileId);
     setFiles(files.filter((files) => files.file_id !== fileId));
+    setVisible(false);
   }
 
   let fileList = files.map((file) => {
@@ -113,35 +125,36 @@ export default function Library() {
     <Flexbox>
       <LogoBar />
       <NavBar />
-      <Wrapper>
+      <StyledWrapper>
         {/* <TopCont dir="row">
           <Header text="Library" />
           <SearchBar />
         </TopCont> */}
         <Header text="Library" />
         <TabBar btnArr={folders} buttonClick={onSelectFolder} />
-        <FileDisplay
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ ease: "easeOut", duration: 2 }}
-        >
+        <FileDisplay dir="row">
           <File
             fileName="Add a new file"
             handleClick={() => {
               router.push("/");
             }}
           />
-          {files ? (
-            fileList
-          ) : (
-            <>
-              <BodyText>
-                Your library is currently empty, add a document to get started.
-              </BodyText>
-            </>
-          )}
+          <AnimatePresence>
+            {files ? (
+              <AnimateSharedLayout>
+                <AnimatePresence>{fileList}</AnimatePresence>
+              </AnimateSharedLayout>
+            ) : (
+              <>
+                <BodyText>
+                  Your library is currently empty, add a document to get
+                  started.
+                </BodyText>
+              </>
+            )}
+          </AnimatePresence>
         </FileDisplay>
-      </Wrapper>
+      </StyledWrapper>
     </Flexbox>
   );
 }

@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { colors, Flexbox } from "../../styles/globals";
 import Option from "../Option/Option";
 import { useState } from "react";
-import { faBedPulse, faLaptopHouse } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBedPulse,
+  faClose,
+  faLaptopHouse,
+} from "@fortawesome/free-solid-svg-icons";
+import Button from "../Button/Button";
 
 const DropdownCont = styled(Flexbox)`
   background-color: ${colors.backgroundYellow};
@@ -10,10 +15,11 @@ const DropdownCont = styled(Flexbox)`
   border-radius: 20px;
   overflow: hidden;
   z-index: 999;
-  position: ${(props) => props.position || ''};
+  position: ${(props) => props.position || ""};
   right: ${(props) => props.right};
   width: fit-content;
   height: fit-content;
+  justify-content: flex-end;
 `;
 
 export default function MiniDropdown({
@@ -21,34 +27,30 @@ export default function MiniDropdown({
   // top = "",
   position = "",
   arr = [],
-  handleOption = () => { },
-  onEdit = () => { },
-  onDelete = () => { },
-  onMoveFolder = () => { },
-  handleMouseLeave = () => { },
-  right = ""
+  handleOption = () => {},
+  onEdit = () => {},
+  onDelete = () => {},
+  onMoveFolder = () => {},
+  handleMouseLeave = () => {},
+  onClose = () => {},
+  right = "",
 }) {
-
   return (
-    <DropdownCont
-      onMouseLeave={handleMouseLeave}
-      position={position}>
-      {
-        arr.map((o, i) => (
-          <Option
-            handleOption={() => {
-              o.text === "Rename" && onEdit(),
-                o.text === "Delete" && onDelete(),
-                o.text === "Move" && onMoveFolder()
-            }}
-            key={i}
-            bgColor={o.bgColor}
-            text={o.text}
-            faIconNameRight={o.faIconNameRight}
-            right={right}
-          />
-        ))
-      }
+    <DropdownCont onMouseLeave={handleMouseLeave} position={position}>
+      {arr.map((o, i) => (
+        <Option
+          handleOption={() => {
+            o.text === "Rename" && onEdit(),
+              o.text === "Delete" && onDelete(),
+              o.text === "Move" && onMoveFolder();
+          }}
+          key={i}
+          bgColor={o.bgColor}
+          text={o.text}
+          faIconNameRight={o.faIconNameRight}
+          right={right}
+        />
+      ))}
     </DropdownCont>
   );
-};
+}

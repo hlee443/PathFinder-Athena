@@ -5,27 +5,32 @@ const InputCont = styled.input`
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border: ${(props) => props.border || `0.05rem solid ${colors.darkGray}`};
   width: ${(props) => props.width || "100%"};
-  height: ${(props) => props.height};
-  padding: 0.5rem;
+  height: ${(props) => props.height || "100%"};
+  padding: ${(props) => props.padding};
+  letter-spacing: ${textData.letterSpacing};
+  background-color: ${colors.backgroundWhite}
 `;
 
 const OptionCont = styled.select`
   border-radius: 2rem;
   border: 0.05rem solid ${colors.darkGray};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  padding: 0.5rem;
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "fit-content"};
+  padding: ${(props) => props.padding};
+  letter-spacing: ${textData.letterSpacing};
+  outline: 1px solid ${colors.darkGrey};
 `;
 
 export default function Input({
-  height = "100%",
+  height = "",
   width = "100%",
   type = "text",
   value = "",
   borderRadius = "3.125rem",
   placeholder = "placeholder",
   border = "",
-  onChange = () => { }
+  onChange = () => { },
+  padding = "1rem"
 }) {
   if (type === "dropdown") {
     return (
@@ -33,6 +38,7 @@ export default function Input({
         type="option"
         width={width}
         value={value}
+        padding={padding}
         onChange={onChange}>
         <option
           value="Open Sans" >
@@ -55,7 +61,8 @@ export default function Input({
         defaultValue={value}
         border={border}
         height={height}
-      ></InputCont>
+        padding={padding}
+      />
     );
   }
 }

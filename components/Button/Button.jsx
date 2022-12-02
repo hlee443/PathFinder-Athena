@@ -1,42 +1,56 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import { colors, textData } from "../../styles/globals";
-import { btnData } from "./data";
 import { mediaQuery } from "../../MediaQuery/data";
+import { btnData } from "./data";
 
 const StyledButton = styled.button`
-  font-weight: ${(props) => props.fontWeight};
-  border: none;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${(props) => props.backgroundColor};
+  font-weight: "900";
+  border: ${(props) => props.border};
+  width: ${(props) => props.width || btnData.size.med.width};
+  height: ${(props) => props.height || btnData.size.med.height};
+  max-width: 15rem;
+  // max-height: 3.875rem;
+  font-size: 1.25rem;
+  white-space: nowrap;
+  cursor: pointer;
+  border-color: ${(props) => props.borderColor || colors.lightGrey};
   border-radius: ${(props) => props.borderRadius || "3.125rem"};
   border-bottom: ${(props) => props.borderBottom};
-  width: 15rem;
-  max-width: 15rem;
-  max-height: 3.875rem;
-  height: ${(props) => props.height || "3.875rem"};
-  width: ${(props) => props.width};
-  min-width: fit-content;
-  white-space: nowrap;
-  // min-height: 3.875rem;
-  font-size: ${(props) => props.fontSize};
-  border-color: ${(props) => props.borderColor};
+  background-color: ${(props) =>
+    props.primary ? colors.buttonPrimaryBlue : "transparent"};
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
-  cursor: pointer;
   color: ${(props) => props.color || colors.textBlack};
-  padding: ${(props) => props.padding || "1rem"};
+  // padding: ${(props) => props.padding || "1rem"};
+  box-shadow: ${(props) =>
+    props.primary ? btnData.variants.primary.boxShadow : "none"};
 
   @media ${mediaQuery.maxWidth.mobile} {
-    width: 12rem;
-    min-width: fit-content;
-    height: fit-content;
+    width: ${btnData.size.small.width};
+    height: ${btnData.size.small.height};
+    font-size: ${btnData.size.small.fontSize};
+  }
+
+  @media ${mediaQuery.minWidth.tablet} {
+    height: ${btnData.size.med.height};
+    width: ${btnData.size.med.width};
+    font-size: ${btnData.size.med.fontSize};
   }
 
   :hover {
-    background-color: ${(props) => props.hoverColor || btnData.state.hover};
+    background-color: ${(props) =>
+      props.hover && btnData.variants.hover.backgroundColor};
+    font-weight: bolder;
+    box-shadow: ${(props) => props.hover && btnData.variants.hover.boxShadow};
+  }
+
+  :active {
+    background-color: ${(props) =>
+      props.active && btnData.variants.active.backgroundColor};
     font-weight: bolder;
   }
 `;
@@ -45,34 +59,38 @@ export default function Button({
   color = "",
   backgroundColor = "",
   text = "button text",
-  height = "",
-  padding = "",
-  // fontSize = "1rem",
   borderBottom = "none",
   borderRadius = "3.125rem",
-  handleClick = () => {},
   width = "",
+  height = "",
+  handleClick = () => {},
   faIconName = null,
-  fontWeight = "normal",
-  iconSize = "1x",
+  // fontWeight = "normal",
+  iconSize = "",
   iconColor = "",
   handleMouseEnter = () => {},
   handleMouseLeave = () => {},
+  primary = true,
+  hover = true,
+  padding = "",
+  border = "none",
 }) {
   return (
     <StyledButton
+      border={border}
+      primary={primary}
+      hover={hover}
       color={color}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       backgroundColor={backgroundColor}
       text="button text"
+      width={width}
       height={height}
-      // fontSize={fontSize}
       borderBottom={borderBottom}
       borderRadius={borderRadius}
-      width={width}
-      fontWeight={fontWeight}
+      // fontWeight={fontWeight}
       padding={padding}
     >
       {text}

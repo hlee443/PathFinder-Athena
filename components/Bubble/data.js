@@ -22,4 +22,12 @@ export const bubbleData = {
     btnTextLeft: "Back to Main",
     btnTextRight: "Go to the Library",
   },
+
+  delete: {
+    type: "delete",
+    header: "Your file has been deleted.",
+    subHeader1: "Upload another file and start studying again.",
+    btnTextLeft: "Go to the Library",
+    btnTextRight: "Back to Main",
+  },
 };

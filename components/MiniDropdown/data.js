@@ -3,7 +3,8 @@ import {
   faArrowRightFromBracket,
   faFolder,
   faPencil,
-  faTrash
+  faTrash,
+  faClose,
 } from "@fortawesome/free-solid-svg-icons";
 
 // export const SortingDataArr = [
@@ -34,10 +35,6 @@ export const editFileDataArr = [
   {
     text: "Rename",
     faIconNameRight: faPencil,
-  },
-  {
-    text: "Move",
-    faIconNameRight: faFolder,
   },
   {
     text: "Delete",
