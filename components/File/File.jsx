@@ -174,7 +174,7 @@ export default function File({
   };
 
   return (
-    <FileCont fileId={fileId} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <FileCont animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Preview
         border={fileId ? "solid" : "dashed"}
         onMouseEnter={setIsHover}
