@@ -34,7 +34,10 @@ const Title = styled(motion.p)`
   white-space: normal;
 `;
 
-const Preview = styled.div`
+
+
+const Preview = styled(motion.div)`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,12 +45,13 @@ const Preview = styled.div`
   font-size: 1rem;
   padding: 1rem;
   border-radius: 2rem;
-  background-color: ${(props) =>
-    props.backgroundColor || colors.backgroundWhite};
+  /* background-color: ${(props) =>
+    props.backgroundColor || colors.backgroundWhite}; */
   border: 0.188rem ${(props) => props.border || "dashed"} ${colors.darkGray};
   cursor: pointer;
   width: 100%;
   min-height: 10rem;
+  background-color: transparent;
 
   :hover {
     background-color: ${colors.opacity};
@@ -72,13 +76,14 @@ const BottomCont = styled(Flexbox)`
 `;
 
 const Embed = styled.object`
-  cursor: pointer;
+  position: relative;
   overflow-y: hidden;
-  object-position: fill;
   width: 100%;
   min-height: 100%;
   font-size: 2px;
-`;
+  pointer-events: none;
+`
+
 
 export default function File({
   fileName = "Title",
@@ -141,18 +146,23 @@ export default function File({
     if (fileId) {
       // const fileContentHtml = fileContent.innerHTML
 
-      const previewContainer = document.querySelector(
-        ".filePreview__container"
-      );
+      const previewContainer = document.querySelector('.filePreview__container')
+      const embedded = document.querySelector(".embedded")
+      
+      const fileContentBlob = new Blob([fileContent.substring(0, 130) + '...'], { type: 'text/html' })
+      
+      // console.log("embedded", embedded)
+      // console.log("embedded content document", embedded.contentDocument.html)
 
-      const fileContentBlob = new Blob(
-        [fileContent.substring(0, 130) + "..."],
-        { type: "text/html" }
-      );
+      // embedded.contentDocument.html
 
-      const fileTextUrl = URL.createObjectURL(fileContentBlob);
+
+      const fileTextUrl = URL.createObjectURL(fileContentBlob)
 
       setFileImgUrl(fileTextUrl);
+
+      //  embedded.contentDocument.style.backgroundColor = 'red'
+       
     }
   }, []);
 
@@ -164,7 +174,7 @@ export default function File({
   };
 
   return (
-    <FileCont fileId={fileId} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <FileCont animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Preview
         border={fileId ? "solid" : "dashed"}
         onMouseEnter={setIsHover}

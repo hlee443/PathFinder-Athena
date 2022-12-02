@@ -32,6 +32,10 @@ const FileDisplay = styled(Flexbox)`
   } ;
 `;
 
+const StyledWrapper = styled(Wrapper)`
+  height: auto;
+`
+
 const TopCont = styled(Flexbox)`
   justify-content: space-between;
   width: 100%;
@@ -59,6 +63,16 @@ export default function Library() {
     getFolders((folder) => {
       onSelectFolder(folder.folder_id);
     });
+
+    // function eventListenerCallback(e) {
+    //   e.preventDefault();
+    //   let closeElement = e.target;
+    //   if (closeElement.nodeName === "svg" || closeElement.nodeName === "path") {
+    //     handleCloseSummary(null, e);
+    //   }
+    // };
+   
+    // file__content.addEventListener("click", eventListenerCallback, false);
   }, []);
 
   async function onSelectFolder(folderId) {
@@ -111,7 +125,7 @@ export default function Library() {
     <Flexbox>
       <LogoBar />
       <NavBar />
-      <Wrapper>
+      <StyledWrapper>
         {/* <TopCont dir="row">
           <Header text="Library" />
           <SearchBar />
@@ -140,7 +154,7 @@ export default function Library() {
             )}
           </AnimatePresence>
         </FileDisplay>
-      </Wrapper>
+      </StyledWrapper>
     </Flexbox>
   );
 }
