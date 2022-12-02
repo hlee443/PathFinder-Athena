@@ -57,3 +57,11 @@ export * from "./database/getSummariesByFileId";
 export * from "./database/addSummary";
 export * from "./database/updateSummary";
 export * from "./database/deleteSummary";
+
+// Highlights
+
+export * from "./database/getHighlight";
+export * from "./database/getHighlightsByFileId";
+export * from "./database/addHighlight";
+export * from "./database/updateHighlight";
+export * from "./database/deleteHighlight";
