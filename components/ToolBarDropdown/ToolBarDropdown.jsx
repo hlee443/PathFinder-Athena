@@ -14,6 +14,7 @@ import { useState } from "react";
 import { libraryDataArr, typefaceDataArr, dataArr } from "./data";
 import { iconSvgs } from "../Icon/data";
 import { motion } from "framer-motion";
+import { mediaQuery } from "../../MediaQuery/data";
 
 const DropdownCont = styled(Flexbox)`
   border-radius: 3rem;
@@ -23,6 +24,11 @@ const DropdownCont = styled(Flexbox)`
   max-width: 25rem;
   overflow: hidden;
   position: absolute;
+
+  @media ${mediaQuery.maxWidth.mobile} {
+    top: 0;
+    left: 0;
+  };
 `;
 
 const ButtonCont = styled(Flexbox)`
