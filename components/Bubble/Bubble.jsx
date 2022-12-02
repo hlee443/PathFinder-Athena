@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
-import Header from "../Header/Header";
 import Input from "../Input/Input";
 import SubHeader from "../SubHeader/SubHeader";
 import Button from "../Button/Button";
@@ -8,17 +7,25 @@ import { colors, Flexbox, BodyText, textData } from "../../styles/globals";
 import { faClose, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { bubbleData } from "./data";
+import { btnData } from "../Button/data";
 
 const BubbleCont = styled(Flexbox)`
-  position: relative;
+  position: absolute;
+  width:fit-content; 
   max-width: 44rem;
   max-height: 36rem;
   border-radius: 2rem;
   background-color: ${colors.backgroundCream};
   padding: 2.5rem;
-  gap: 2rem;
-  z-index: 1;
+  gap: 1.5rem;
+  z-index: 5;
   align-items: flex-start;
+  box-shadow: 0px 11px 20px 0px rgba(0, 0, 0, 0.1);
+`;
+
+const Heading = styled(Flexbox)`
+ font-weight: bold;
+ font-size: 1.5rem;
 `;
 
 const BtnCont = styled(Flexbox)`
@@ -27,10 +34,7 @@ const BtnCont = styled(Flexbox)`
 `;
 
 const CloseButton = styled.div`
-  display: flex;
   align-self: end;
-  position: absolute;
-  top: 1.25rem;
   cursor: pointer;
 `;
 
@@ -59,18 +63,21 @@ const TextLink = styled.button`
 
 export default function Bubble({
   type = "login",
-  onClose = () => {},
-  handleBubble = () => {},
-  onSignUp = () => {},
-  onSignIn = () => {},
+  onClose = () => { },
+  handleBubble = () => { },
+  // onSignUp = () => { },
+  // onSignIn = () => { },
 }) {
   return (
     <BubbleCont type={type}>
       <CloseButton>
         <Icon handleClick={onClose} size="xl" faIconName={faClose} />
       </CloseButton>
-      <Header text={bubbleData[type].header} />
-      {(type == "login" || type === "signup") && (
+      <Heading>{bubbleData[type].header}</Heading>
+      <p>{bubbleData[type].subHeader1}</p>
+
+
+      {/* {(type == "login" || type === "signup") && (
         <InputCont>
           <Input placeholder="Enter your email" />
           <Input placeholder="Enter your password" />
@@ -95,14 +102,18 @@ export default function Bubble({
             <TextLink onClick={onSignUp}> Sign Up!</TextLink>
           </Flexbox>
         </TextCont>
-      )}
+      )} */}
 
       <BtnCont dir="row">
-        <Button
+        {/* <Button
           text={bubbleData[type].btnTextLeft}
           handleClick={onClose}
-          backgroundColor={colors.buttonPrimaryBlue}
-        />
+          primary={false}
+          borderColor={colors.lightGrey}
+          border="2px solid"
+          width="10rem"
+          color={colors.lightGrey}
+        /> */}
         <Button
           text={bubbleData[type].btnTextRight}
           handleClick={handleBubble}

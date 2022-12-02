@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar/NavBar";
 import Header from "../components/Header/Header";
 import SubHeader from "../components/SubHeader/SubHeader";
 import LogoBar from "../components/LogoBar/LogoBar";
-import { colors, Flexbox, Wrapper, Container } from "../styles/globals";
+import { colors, Flexbox, Wrapper, Container, BodyText } from "../styles/globals";
 import TabBar from "../components/TabBar/TabBar";
 import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
@@ -352,6 +352,7 @@ export default function Home() {
                   ref={fileInput}
                   style={{ display: "none" }}
                 />
+                <BodyText color={colors.darkGrey}>Please upload a txt file.</BodyText>
               </Container>
             )}
             <BtnCont align="center">

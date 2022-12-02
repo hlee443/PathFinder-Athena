@@ -88,6 +88,7 @@ export const BodyText = styled.p`
   width: fit-content;
   line-height: ${textData.lineHeight};
   letter-spacing: ${textData.letterSpacing};
+  color: ${(props) => props.color || colors.textBlack};
 `;
 
 export const Container = styled(Flexbox)`
