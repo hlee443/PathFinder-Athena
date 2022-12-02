@@ -21,6 +21,7 @@ const NavBarCont = styled(Flexbox)`
   // z-index: 100;
   justify-content: space-between;
   display: ${(props) => props.display};
+  z-index: 100;
 
   @media ${mediaQuery.maxWidth.mobile} {
     bottom: 0;
