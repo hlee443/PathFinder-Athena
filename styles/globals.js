@@ -60,7 +60,7 @@ export const Wrapper = styled(Flexbox)`
   align-items: start;
   justify-content: start;
   width: 100vw;
-  height: ${(props) => props.height || "100vh"}
+  height: ${(props) => props.height || "100vh"};
   gap: 2.5rem;
   padding: 8rem;
   bottom: 0;
